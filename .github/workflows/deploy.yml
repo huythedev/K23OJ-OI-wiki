@@ -19,18 +19,18 @@ jobs:
           fetch-depth: 0
           submodules: true
 
-      # NEW STEP: Set up Node.js (Required for the pre-build script)
+      # --- FIX 1: Set up Node.js for the pre-build script ---
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
 
-      # NEW STEP: Install Node dependencies (Fixes 'ts-node' error)
       - name: Install Node dependencies
         run: |
           npm install -g ts-node typescript
           if [ -f package.json ]; then npm install; fi
 
+      # --- FIX 2: Set up Python and install the MISSING package ---
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -39,17 +39,20 @@ jobs:
       - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
-          if [ -f requirements.txt ]; then
-            pip install -r requirements.txt
-          else
-            pip install mkdocs-material mkdocs-git-revision-date-localized-plugin mkdocs-static-i18n
-          fi
+          
+          # Install standard OI-wiki dependencies
+          pip install mkdocs-material mkdocs-git-revision-date-localized-plugin mkdocs-static-i18n
+          
+          # ⚠️ THE CRITICAL FIX: Install the package that provides "document-offsets-injection"
+          pip install python-markdown-document-offsets-injection-extension
+
+          # If you have a requirements.txt, install it last to cover anything else
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
       - name: Run Pre-build Script
         run: |
           if [ -f scripts/pre-build/pre-build.sh ]; then
             chmod +x scripts/pre-build/pre-build.sh
-            # We explicitly call the script, ensuring it runs in the environment we just set up
             ./scripts/pre-build/pre-build.sh
           fi
 
