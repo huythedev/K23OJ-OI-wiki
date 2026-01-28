@@ -3,7 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - master  # OI-wiki defaults to 'master', not 'main'
+      - master
   workflow_dispatch:
 
 permissions:
@@ -16,30 +16,40 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Required for 'git-revision-date-localized-plugin' to work
-          submodules: true # Required if your theme is a git submodule
+          fetch-depth: 0
+          submodules: true
+
+      # NEW STEP: Set up Node.js (Required for the pre-build script)
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # NEW STEP: Install Node dependencies (Fixes 'ts-node' error)
+      - name: Install Node dependencies
+        run: |
+          npm install -g ts-node typescript
+          if [ -f package.json ]; then npm install; fi
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.10' # OI-wiki typically relies on Python 3.10 features
+          python-version: '3.10'
 
-      - name: Install dependencies
+      - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
-          # Install dependencies from requirements.txt (Standard OI-wiki method)
           if [ -f requirements.txt ]; then
             pip install -r requirements.txt
           else
-            # Fallback if requirements.txt is missing
             pip install mkdocs-material mkdocs-git-revision-date-localized-plugin mkdocs-static-i18n
           fi
 
-      # Some OI-wiki forks require a pre-build script to fetch assets/themes
-      - name: Run Pre-build Script (if exists)
+      - name: Run Pre-build Script
         run: |
           if [ -f scripts/pre-build/pre-build.sh ]; then
             chmod +x scripts/pre-build/pre-build.sh
+            # We explicitly call the script, ensuring it runs in the environment we just set up
             ./scripts/pre-build/pre-build.sh
           fi
 
@@ -51,4 +61,4 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./site
-          force_orphan: true # Keeps the gh-pages branch clean/small
+          force_orphan: true
