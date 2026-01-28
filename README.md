@@ -1,4 +1,6 @@
-# Welcome to **OI Wiki**!
+# Welcome to **K23OJ - OI Wiki**!
+
+**K23OJ - OI Wiki** is the Vietnamese translation of **OI Wiki**.
 
 ---
 
@@ -6,25 +8,23 @@
 
 Competitive programming has developed for many years; the difficulty is increasing, and the content is becoming more complex. However, online resources are mostly scattered. Beginners often do not know how to systematically learn relevant knowledge and have to spend a lot of time groping in the dark.
 
-In order to help friends who love competitive programming get started more easily, **OI Wiki** migrated to GitHub in July 2018. As the content of **OI Wiki** continues to improve, more and more friends are participating.
+In order to help friends who love competitive programming get started more easily, **OI Wiki** migrated to GitHub in July 2018. **K23OJ - OI Wiki** aims to bring this valuable resource to the Vietnamese community.
 
-**OI Wiki** is dedicated to becoming a free, open, and continuously updated knowledge integration site. You can acquire interesting and practical knowledge about **Competitive Programming** here. We have prepared basic knowledge, common problem types, problem-solving ideas, and common tools to help you learn competitive programming more quickly and deeply.
+**K23OJ - OI Wiki** is dedicated to becoming a free, open, and continuously updated knowledge integration site for Vietnamese speakers. You can acquire interesting and practical knowledge about **Competitive Programming** here. We have prepared basic knowledge, common problem types, problem-solving ideas, and common tools to help you learn competitive programming more quickly and deeply.
 
-Currently, there are still many imperfections in the content of **OI Wiki**. The coverage of knowledge points is not comprehensive enough, and there are some low-quality pages that need revision. The **OI Wiki** team and contributing friends are actively improving this content.
+Currently, we are working on translating and improving the content. There might be imperfections. The **K23OJ - OI Wiki** team and contributing friends are actively improving this content.
 
-Regarding the above-mentioned content pending improvement, please refer to **OI Wiki**'s [Issues](https://github.com/OI-wiki/OI-wiki/issues) and [Iteration Plan](https://github.com/OI-wiki/OI-wiki/labels/Iteration%20Plan%20%2F%20%E8%BF%AD%E4%BB%A3%E8%AE%A1%E5%88%92).
+Regarding original content improvements, please refer to **OI Wiki**'s [Issues](https://github.com/OI-wiki/OI-wiki/issues). For translation issues, please open an issue in this repository.
 
-At the same time, **OI Wiki** originates from the community, advocates for **Freedom of Knowledge**, will never be commercialized in the future, and will always maintain its independent and free nature.
+At the same time, **OI Wiki** (and this translation) originates from the community, advocates for **Freedom of Knowledge**, will never be commercialized in the future, and will always maintain its independent and free nature.
 
 ---
 
 ## Deployment
 
-This project currently uses [MkDocs](https://github.com/mkdocs/mkdocs) for deployment on [oi-wiki.org](https://oi-wiki.org).
+This project currently uses [MkDocs](https://github.com/mkdocs/mkdocs) for deployment.
 
-We maintain a list of mirror sites at [status.oi-wiki.org](https://status.oi-wiki.org), and their content is identical to [oi-wiki.org](https://oi-wiki.org).
-
-Of course, you can also deploy it locally. (**Requires Python3 and uv installed**)
+You can deploy it locally. (**Requires Python3 and uv installed**)
 
 **If you encounter problems, please refer to the [F.A.Q.](https://oi-wiki.org/intro/faq/) for more information.**
 
@@ -93,11 +93,11 @@ python2 -m SimpleHTTPServer
 
 ---
 
-## How to Contribute to OI Wiki
+## How to Contribute
 
-We warmly welcome you to write content for **OI Wiki** and share what you have learned with everyone.
+We warmly welcome you to help translate and improve **K23OJ - OI Wiki** to share knowledge with the Vietnamese community.
 
-Specific ways to contribute can be found in [How to Contribute](https://oi-wiki.org/intro/htc/).
+For translation guidelines and how to contribute, please check our [issues page](https://github.com/huythedev/K23OJ-OI-wiki/issues).
 
 ---
 
@@ -107,15 +107,13 @@ Specific ways to contribute can be found in [How to Contribute](https://oi-wiki.
 
 In other words, you are free to share and adapt the material, but you must give appropriate credit, distribute under the same license, and share without additional restrictions.
 
-Furthermore, you should Star the GitHub repository.
-
 If you want to cite this GitHub repository, you can use the following BibTeX:
 
 ```
 @misc{oiwiki,
-  author = {OI Wiki Team},
-  title = {OI Wiki},
-  year = {2016},
+  author = {OI Wiki Team and K23OJ Team},
+  title = {K23OJ - OI Wiki},
+  year = {2024},
   publisher = {GitHub},
   journal = {GitHub Repository},
   howpublished = {\url{https://github.com/huythedev/K23OJ-OI-wiki}},
@@ -127,12 +125,12 @@ If you want to cite this GitHub repository, you can use the following BibTeX:
 
 ## Acknowledgments
 
-This project was inspired by [CTF Wiki](https://ctf-wiki.org/), and many references were consulted during the writing process. We would like to express our gratitude here.
+This project is a translation based on [OI Wiki](https://oi-wiki.org/). We would like to express our gratitude to the original authors and contributors.
 
-Many thanks to the [contributors](https://www.google.com/search?q=https://github.com/huythedev/K23OJ-OI-wiki/graphs/contributors) who helped improve **OI Wiki** together and the [friends](https://oi-wiki.org/intro/thanks/) who donated to **OI Wiki**!
+Many thanks to the [contributors](https://github.com/huythedev/K23OJ-OI-wiki/graphs/contributors) who are helping to translate and maintain **K23OJ - OI Wiki**!
 
 <img src="https://opencollective.com/oi-wiki/contributors.svg?width=890&button=false" /></a>
 
-Special thanks to the friends at [24OI](https://github.com/24OI) for their strong support!
+Special thanks to the friends at [24OI](https://github.com/24OI) for their strong support of the original project!
 
 Thanks to Peking University Algorithm Association and Hulu for their support!
