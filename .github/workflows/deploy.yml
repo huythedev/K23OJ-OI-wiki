@@ -19,7 +19,7 @@ jobs:
           fetch-depth: 0
           submodules: true
 
-      # --- Step 1: Node.js (for math scripts) ---
+      # --- Step 1: Setup Node.js (Required for MathJax/TypeScript scripts) ---
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
@@ -30,31 +30,45 @@ jobs:
           npm install -g ts-node typescript
           if [ -f package.json ]; then npm install; fi
 
-      # --- Step 2: Python (for MkDocs) ---
+      # --- Step 2: Setup Python & Install Dependencies ---
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
+          python-version: '3.12'
 
       - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
           
-          # Install ALL potential missing plugins
+          # 📦 Full install list based on your local environment
           pip install \
+            mkdocs \
             mkdocs-material \
+            mkdocs-toggle-sidebar-plugin \
+            python-markdown-document-offsets-injection-extension \
+            pymdown-extensions \
+            pyyaml-env-tag \
             mkdocs-static-i18n \
             mkdocs-git-revision-date-localized-plugin \
             mkdocs-minify-plugin \
             mkdocs-redirects \
-            python-markdown-document-offsets-injection-extension \
-            mkdocs-simple-hooks \
-            mkdocs-macros-plugin
+            ghp-import \
+            beautifulsoup4 \
+            mergedeep \
+            pygments \
+            requests \
+            jinja2 \
+            pyyaml \
+            watchdog \
+            markdown \
+            click \
+            packaging \
+            platformdirs
 
-          # If the repo has a requirements.txt, run it last
+          # Fallback to requirements.txt if it exists
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-      # --- Step 3: Build & Deploy ---
+      # --- Step 3: Run Scripts & Deploy ---
       - name: Run Pre-build Script
         run: |
           if [ -f scripts/pre-build/pre-build.sh ]; then
