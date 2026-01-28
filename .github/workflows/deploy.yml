@@ -40,17 +40,18 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           
-          # ⚠️ INSTALL EVERYTHING: We force install all common OI-wiki plugins here
-          # This covers minify, redirects, and the specific extensions you need.
+          # Install ALL potential missing plugins
           pip install \
             mkdocs-material \
             mkdocs-static-i18n \
             mkdocs-git-revision-date-localized-plugin \
             mkdocs-minify-plugin \
             mkdocs-redirects \
-            python-markdown-document-offsets-injection-extension
+            python-markdown-document-offsets-injection-extension \
+            mkdocs-simple-hooks \
+            mkdocs-macros-plugin
 
-          # If the repo has a requirements.txt, run it last to catch anything else
+          # If the repo has a requirements.txt, run it last
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
       # --- Step 3: Build & Deploy ---
