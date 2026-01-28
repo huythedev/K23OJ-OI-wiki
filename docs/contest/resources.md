@@ -48,7 +48,7 @@ author: Suyun514, ChungZH, Enter-tainer, StudyingFather, Konano, JulieSigtuna, G
 
 ## 教程资料
 
--   [**OI Wiki**](https://oi-wiki.org)
+-   [**OI Wiki**](https://oi-wiki.k23oj.io.vn/)
 -   [Codeforces 上网友整理的一份教程合集](https://codeforces.com/blog/entry/125623)
 -   [英文版 E-Maxx 算法教程](https://cp-algorithms.com/)
 -   [演算法筆記](https://web.ntnu.edu.tw/~algo/)：台湾师范大学总结的教程

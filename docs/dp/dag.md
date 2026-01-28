@@ -1,51 +1,51 @@
-## 定义
+## Định nghĩa
 
-DAG 即 [有向无环图](../graph/dag.md)，一些实际问题中的二元关系都可使用 DAG 来建模，从而将这些问题转化为 DAG 上的最长（短）路问题．
+DAG chính là [Đồ thị có hướng không chu trình](../graph/dag.md). Một số quan hệ nhị phân trong các bài toán thực tế có thể được mô hình hóa bằng DAG, từ đó chuyển đổi các bài toán này thành bài toán tìm đường đi dài (ngắn) nhất trên DAG.
 
-## 解释
+## Giải thích
 
-以这道题为例子，来分析一下 DAG 建模的过程．
+Lấy bài toán này làm ví dụ để phân tích quá trình mô hình hóa DAG.
 
-???+ note "例题 [UVa 437 巴比伦塔 The Tower of Babylon](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=24&page=show_problem&problem=378)"
-    有 $n (n\leqslant 30)$ 种砖块，已知三条边长，每种都有无穷多个．要求选一些立方体摞成一根尽量高的柱子（每个砖块可以自行选择一条边作为高），使得每个砖块的底面长宽分别严格小于它下方砖块的底面长宽，求塔的最大高度．
+???+ note "Ví dụ [UVa 437 Tòa tháp Babylon The Tower of Babylon](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=24&page=show_problem&problem=378)"
+    Có $n (n\leqslant 30)$ loại khối gạch, biết độ dài ba cạnh, mỗi loại có số lượng vô hạn. Yêu cầu chọn một số khối lập phương chồng thành một cột cao nhất có thể (mỗi khối gạch có thể tự chọn một cạnh làm chiều cao), sao cho chiều dài và chiều rộng mặt đáy của mỗi khối gạch phải nhỏ hơn nghiêm ngặt chiều dài và chiều rộng mặt đáy của khối gạch nằm dưới nó. Tìm chiều cao tối đa của tháp.
 
-## 过程
+## Quá trình
 
-### 建立 DAG
+### Xây dựng DAG
 
-由于每个砖块的底面长宽分别严格小于它下方砖块的底面长宽，因此不难将这样一种关系作为建图的依据，而本题也就转化为最长路问题．
+Vì chiều dài và chiều rộng mặt đáy của mỗi khối gạch phải nhỏ hơn nghiêm ngặt khối gạch bên dưới, nên không khó để dùng quan hệ này làm cơ sở dựng đồ thị, và bài toán này sẽ chuyển thành bài toán đường đi dài nhất.
 
-也就是说如果砖块 $j$ 能放在砖块 $i$ 上，那么 $i$ 和 $j$ 之间存在一条边 $(i, j)$，且边权就是砖块 $j$ 所选取的高．
+Nói cách khác, nếu khối gạch $j$ có thể đặt lên trên khối gạch $i$, thì giữa $i$ và $j$ tồn tại một cạnh $(i, j)$, và trọng số cạnh chính là chiều cao được chọn của khối gạch $j$.
 
-本题的另一个问题在于每个砖块的高有三种选法，怎样建图更合适呢？
+Một vấn đề khác của bài này là mỗi khối gạch có ba cách chọn chiều cao, vậy dựng đồ thị thế nào cho phù hợp?
 
-不妨将每个砖块拆解为三种堆叠方式，即将一个砖块分解为三个砖块，每一个拆解得到的砖块都选取不同的高．
+Ta có thể phân rã mỗi khối gạch thành ba cách xếp chồng, tức là chia một khối gạch thành ba thực thể khác nhau, mỗi thực thể chọn một cạnh khác nhau làm chiều cao.
 
-初始的起点是大地，大地的底面是无穷大的，则大地可达任意砖块，当然我们写程序时不必特意写上无穷大．
+Điểm bắt đầu ban đầu là mặt đất, mặt đất có diện tích đáy vô hạn, nên mặt đất có thể nối đến bất kỳ khối gạch nào. Tất nhiên khi lập trình chúng ta không cần viết cụ thể giá trị vô hạn.
 
-假设有两个砖块，三条边分别为 $31, 41, 59$ 和 $33, 83, 27$，那么整张 DAG 应该如下图所示．
+Giả sử có hai khối gạch với các cạnh lần lượt là $31, 41, 59$ và $33, 83, 27$, thì toàn bộ DAG sẽ như hình dưới đây.
 
 ![](./images/dag-babylon.png)
 
-图中蓝色实线框所表示的是一个砖块拆解得到的一组砖块，之所以用 $\{\}$ 表示底面边长，是因为砖块一旦选取了高，底面边长就是无序的．
+Trong hình, khung nét liền màu xanh lam biểu thị một nhóm khối gạch được phân rã từ một khối gạch gốc. Sở dĩ dùng $\{\}$ để biểu thị cạnh đáy là vì một khi khối gạch đã chọn chiều cao, thứ tự chiều dài và chiều rộng mặt đáy là không quan trọng (miễn là thỏa mãn điều kiện nhỏ hơn).
 
-图中黄色虚线框表示的是重复计算部分，可以采用 [记忆化搜索](./memo.md) 的方法来避免重复计算．
+Khung nét đứt màu vàng biểu thị phần tính toán bị lặp lại, có thể sử dụng phương pháp [Tìm kiếm ghi nhớ](./memo.md) để tránh việc này.
 
-### 转移
+### Chuyển trạng thái
 
-题目要求的是塔的最大高度，已经转化为最长路问题，其起点上文已指出是大地，那么终点呢？显然终点已经自然确定，那就是某砖块上不能再搭别的砖块的时候．
+Yêu cầu của đề bài là chiều cao tối đa của tháp, đã được chuyển thành bài toán đường đi dài nhất. Điểm bắt đầu như đã nêu trên là mặt đất, vậy điểm kết thúc ở đâu? Hiển nhiên điểm kết thúc được xác định tự nhiên khi không thể đặt thêm khối gạch nào lên trên một khối gạch nữa.
 
-下面我们开始考虑转移方程．
+Tiếp theo chúng ta xem xét phương trình chuyển trạng thái.
 
-设 $d(i,r)$ 表示第 $i$ 块砖块在最下面，且采取第 $r$ 种堆叠方式时的最大高度．那么有如下转移方程：
+Gọi $d(i, r)$ là chiều cao tối đa khi khối gạch thứ $i$ nằm ở dưới cùng và được đặt theo cách thứ $r$. Khi đó ta có phương trình chuyển trạng thái sau:
 
 $$
 d(i, r) = \max\left\{d(j, r') + h\right\}
 $$
 
-其中 $j$ 是所有那些在砖块 $i$ 以 $r$ 方式堆叠时可放上的砖块，$r'$ 对应 $j$ 此时的摆放方式，$h$ 对应砖块 $i$ 采用第 $r$ 种堆叠方式时的高度．
+Trong đó $j$ là tất cả những khối gạch có thể đặt lên trên khối gạch $i$ khi $i$ đang ở trạng thái $r$, $r'$ tương ứng với cách đặt của $j$ lúc đó, và $h$ là chiều cao của khối gạch $i$ khi chọn cách đặt thứ $r$.
 
-??? note "实现"
+??? note "Cài đặt"
     ```cpp
     --8<-- "docs/dp/code/dag/dag_1.cpp"
     ```

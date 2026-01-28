@@ -5,7 +5,7 @@
 以下是一个 **OI Wiki** 的镜像站列表，可供选用：
 
 -   **OI Wiki** 主站，线路：DMIT
-    -   <https://oi-wiki.org>
+    -   <https://oi-wiki.k23oj.io.vn/>
 
 -   维护者：**OI Wiki**，线路：阿里云，同步频率：与主站相同
     -   <http://oi-wiki.com>

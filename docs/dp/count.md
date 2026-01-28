@@ -1,62 +1,62 @@
-**计数 DP** 是一种利用类似 DP 的记忆化搜索方法（与在狭义上的 DP，即最优化问题有一定区别），用于解决计数（以及求和）问题．
+**DP Đếm (Counting DP)** là một phương pháp sử dụng kỹ thuật tìm kiếm có ghi nhớ tương tự như DP (có một số điểm khác biệt so với DP theo nghĩa hẹp, tức là các bài toán tối ưu hóa), được sử dụng để giải quyết các bài toán đếm (và tính tổng).
 
-## 基础
+## Cơ sở
 
-### 基本思想
+### Tư tưởng cơ bản
 
-计数问题一般指求一个集合 $S$ 的大小，在 OI 中，$S$ 的大小有时会达到 $\Theta(n^n)$ 甚至 $\Theta(2^{n!})$ 的级别（当然，一般会对某一个固定的数取模），其中 $n$ 是问题规模，所以我们不能逐一求出 $S$ 的元素．
+Bài toán đếm thường chỉ việc tìm kích thước của một tập hợp $S$. Trong OI, kích thước của $S$ đôi khi đạt đến mức $\Theta(n^n)$ hoặc thậm chí $\Theta(2^{n!})$ (tất nhiên, thông thường sẽ yêu cầu lấy modulo cho một số cố định nào đó), trong đó $n$ là quy mô của bài toán, vì vậy chúng ta không thể liệt kê từng phần tử của $S$.
 
-如果我们能够将 $S$ 分成若干无交的子集，那么 $S$ 的元素个数就等于这些部分的元素个数的和．如果这些子集的计数恰好与原问题类似，那么我们就可以通过类似动态规划的方法来解决．
+Nếu chúng ta có thể chia $S$ thành các tập con rời nhau, thì số lượng phần tử của $S$ sẽ bằng tổng số lượng phần tử của các phần này. Nếu việc đếm các tập con này tương tự như bài toán gốc, chúng ta có thể giải quyết bằng phương pháp tương tự như quy hoạch động.
 
-### 例题
+### Ví dụ
 
-???+ note "例题"
-    给定一个正整数 $n$，求有多少个把 $n$ 划分成 $k$ 个正整数的和的方案，位置调换视为不同的划分方案．
+???+ note "Ví dụ"
+    Cho một số nguyên dương $n$, hỏi có bao nhiêu cách phân hoạch $n$ thành tổng của $k$ số nguyên dương, các cách thay đổi thứ tự được coi là các cách phân hoạch khác nhau.
 
-需集合 $S_{n,k}$ 为形如 $(a_1, \dots, a_k)$ 的正整数组组成的集合，其中 $a_1 + \dots + a_k = n$．如果 $a_k$ 固定，则有如下推导：因为 $a_1 + a_2 + \dots + a_{k-1} + a_k = n$，所以 $a_1 + a_2 + \dots + a_{k-1} = n - a_k$．根据 $S_{n,k}$ 的定义，$(a_1, a_2, \dots, a_{k-1}) \in S_{n - a_k, k - 1}$．
+Cần tập hợp $S_{n,k}$ là tập hợp các bộ số nguyên dương có dạng $(a_1, \dots, a_k)$ sao cho $a_1 + \dots + a_k = n$. Nếu $a_k$ cố định, ta có suy luận sau: vì $a_1 + a_2 + \dots + a_{k-1} + a_k = n$, nên $a_1 + a_2 + \dots + a_{k-1} = n - a_k$. Theo định nghĩa của $S_{n,k}$, $(a_1, a_2, \dots, a_{k-1}) \in S_{n - a_k, k - 1}$.
 
-由于 $a_1, a_2, \dots, a_k$ 是正整数，所以 $a_k$ 的取值范围是 $[1, n - k + 1] \cap \mathbb Z$．因此，$S_{n,k}$ 可以按照 $a_k$ 被划分，分成 $n - k + 1$ 个子集，其中当 $a_k = i$ 时，这个子集为：
+Vì $a_1, a_2, \dots, a_k$ là các số nguyên dương, nên phạm vi giá trị của $a_k$ là $[1, n - k + 1] \cap \mathbb Z$. Do đó, $S_{n,k}$ có thể được phân hoạch theo $a_k$ thành $n - k + 1$ tập con, trong đó khi $a_k = i$, tập con này là:
 
 $$
 \{(L, i) \mid L \in S_{n-i,k-1}\}.
 $$
 
-这个子集的元素个数显然等于 $S_{n-i,k-1}$，由于 $i$ 的不同，这些子集两两无交．所以：
+Số lượng phần tử của tập con này hiển nhiên bằng $S_{n-i,k-1}$. Do các giá trị $i$ khác nhau, các tập con này đôi một rời nhau. Vì vậy:
 
 $$
 |S_{n,k}| = \sum_{i=1}^{n-k+1} |S_{n-i,k-1}|.
 $$
 
-这样我们就可以使用类似 DP 的方法处理它：设 $f_{n,k}$ 为 $|S_{n,k}|$，则有状态转移方程：
+Bằng cách này, chúng ta có thể sử dụng phương pháp tương tự DP để xử lý: gọi $f_{n,k}$ là $|S_{n,k}|$, ta có phương trình chuyển trạng thái:
 
 $$
 f_{n,k} = \sum_{i=1}^{n-k+1} f_{n-i,k-1}.
 $$
 
-这样就可以使用 DP 的方法求解了．
+Như vậy có thể sử dụng phương pháp DP để giải quyết.
 
-### 与最优化 DP 的异同
+### Sự giống và khác nhau với DP tối ưu hóa
 
-可以发现，计数 DP 和最优化 DP 都是在一个范围 $\Omega$ 内求一个值（大小值、最优值），这个值通过将 $\Omega$ 中的所有元素做一次处理，再对处理值做一次整合得到．
+Có thể thấy rằng, DP đếm và DP tối ưu hóa đều tìm một giá trị (giá trị cực đại/cực tiểu, giá trị tối ưu) trong một phạm vi $\Omega$. Giá trị này có được bằng cách xử lý tất cả các phần tử trong $\Omega$ một lần, sau đó tổng hợp các giá trị đã xử lý.
 
-例如，对于 0-1 背包问题，$\Omega$ 中的元素为背包内的所有物品组成的集合，对于 $\Omega$ 中的一个方案 $S$，我们对 $S$ 做一次处理，处理得到的结果 $w(S)$ 为 $S$ 中物品的总价值，对所有得到的处理值，我们取最大值，得到问题的答案．
+Ví dụ, đối với bài toán cái túi 0-1, các phần tử trong $\Omega$ là tập hợp tất cả các vật phẩm trong túi. Đối với một phương án $S$ trong $\Omega$, chúng ta xử lý $S$ một lần để nhận được kết quả $w(S)$ là tổng giá trị của các vật phẩm trong $S$. Đối với tất cả các giá trị nhận được, chúng ta lấy giá trị lớn nhất để có câu trả lời cho bài toán.
 
-对于计数问题，$\Omega$ 中的元素为要计算元素个数的集合 $S$，它的处理是把所有的 $S$ 中元素变为 $1$，然后将这些 $1$ 通过加法的方式汇总起来，因为每一个 $S$ 中元素都对应一个 $1$，所以这样得到的值就是 $S$ 中元素个数．
+Đối với bài toán đếm, các phần tử trong $\Omega$ là tập hợp $S$ cần tính số lượng phần tử. Cách xử lý của nó là biến tất cả các phần tử trong $S$ thành $1$, sau đó tập hợp các số $1$ này lại bằng cách cộng chúng. Vì mỗi phần tử trong $S$ tương ứng với một số $1$, nên giá trị nhận được chính là số lượng phần tử trong $S$.
 
-当汇总操作为最大/最小值时，我们可以将 $\Omega$ 分成任意若干个部分，只需这些部分的并为 $\Omega$ 即可，无需无交的条件．而计数问题由于不满足这个条件，所以我们需要将 $\Omega$ 分成若干个部分，这些部分两两无交，这就是与最优化 DP 的区别．
+Khi thao tác tổng hợp là giá trị lớn nhất/nhỏ nhất, chúng ta có thể chia $\Omega$ thành các phần bất kỳ, chỉ cần hợp của các phần này là $\Omega$, không cần điều kiện rời nhau. Tuy nhiên, bài toán đếm không thỏa mãn điều kiện này, vì vậy chúng ta cần chia $\Omega$ thành các phần đôi một rời nhau, đây chính là điểm khác biệt so với DP tối ưu hóa.
 
-## 例题
+## Ví dụ
 
-???+ note "例题"
-    给定一个正整数 $n$，求有多少个把 $n$ 划分成任意多个正整数的和的方案，位置调换视为 **相同** 的划分方案．
+???+ note "Ví dụ"
+    Cho một số nguyên dương $n$, hỏi có bao nhiêu cách phân hoạch $n$ thành tổng của một số lượng bất kỳ các số nguyên dương, các cách thay đổi thứ tự được coi là các cách phân hoạch **giống nhau**.
 
-### 解法 1
+### Cách giải 1
 
-需要计算的集合的元素为满足其和为 $n$ 的正整数多重集．但是这样显然不好推．
+Tập hợp cần tính toán có các phần tử là đa tập các số nguyên dương có tổng bằng $n$. Tuy nhiên, cách này hiển nhiên không dễ để suy luận.
 
-若一个多重集 $T$ 只包含 $\le M$ 的正整数，且 $T$ 中所有元素的和为 $n$，则称 $T \in S_{n, M}$．考虑 $M$ 出现的个数．可能为 $k \in \left[0, \left\lfloor \dfrac nM \right\rfloor\right] \cap \mathbb Z$．于是它可以被转移到 $S_{n - kM, M - 1}$．求和一下即可．复杂度是 $\Theta(n^2 \log n)$（$\log$ 来自于 $k$ 的范围导致的调和级数）．
+Nếu một đa tập $T$ chỉ chứa các số nguyên dương $\le M$, và tổng tất cả các phần tử trong $T$ bằng $n$, thì ta nói $T \in S_{n, M}$. Xét số lần xuất hiện của $M$, có thể là $k \in \left[0, \left\lfloor \dfrac nM \right\rfloor\right] \cap \mathbb Z$. Do đó, nó có thể được chuyển trạng thái sang $S_{n - kM, M - 1}$. Tính tổng lại là được. Độ phức tạp là $\Theta(n^2 \log n)$ ($\log$ đến từ cấp số điều hòa do phạm vi của $k$).
 
-但是这样还不够优秀．考虑下面所示的一个例子：
+Nhưng như vậy vẫn chưa đủ tối ưu. Xét một ví dụ dưới đây:
 
 $$
 \begin{aligned}
@@ -69,26 +69,26 @@ f_{13, 3} &= f_{13, 2} + {\color{green}f_{10, 2} + f_{7, 2} + f_{4, 2} + f_{1, 2
 \end{aligned}
 $$
 
-等量代换得 $f_{11, 3} = f_{11, 2} + f_{8, 3}$，$f_{12, 3} = f_{12, 2} + f_{9, 3}$，$f_{13, 3} = f_{13, 2} + f_{10, 3}$．同理我们可以得到一个通用的状态转移方程：
+Thay thế tương đương ta được $f_{11, 3} = f_{11, 2} + f_{8, 3}$, $f_{12, 3} = f_{12, 2} + f_{9, 3}$, $f_{13, 3} = f_{13, 2} + f_{10, 3}$. Tương tự, ta có thể thu được một phương trình chuyển trạng thái tổng quát:
 
 $$
 f_{n, M} = f_{n, M - 1} + \begin{cases} f_{n - M, M} & n \ge M, \\ 0 & \text{otherwise}. \end{cases}
 $$
 
-此时，时间复杂度为 $\Theta(n^2)$．
+Lúc này, độ phức tạp thời gian là $\Theta(n^2)$.
 
-### 解法 2
+### Cách giải 2
 
-考虑到某一个正整数组成的多重集 $T$ 必然可以通过「将 $T$ 中每一个元素自增」、「在 $T$ 中加一个值为 $1$ 的元素」两个操作得到，并且不同的操作序列得到的结果是不同的．
+Xét thấy một đa tập $T$ gồm các số nguyên dương chắc chắn có thể nhận được thông qua hai thao tác: "tăng mỗi phần tử trong $T$ lên 1 đơn vị", "thêm một phần tử có giá trị là $1$ vào $T$". Các chuỗi thao tác khác nhau sẽ cho kết quả khác nhau.
 
-这样对 $T$ 的转移可以变为对操作序列的转移．考虑将 $n$ 划分成 $m$ 个数的操作序列（所有的这些操作序列记作 $B_{n,m}$）中的最后一次操作，如果是 $1$ 操作，那么不会增加数，但是 $\sum T$ 增加了 $m$．为了使最终的 $\sum T = n$，原来的 $T$（记作 $T'$）的和需要为 $n-m$．所以 $B_{n,m} \to B_{n-m,m}$；如果是 $2$ 操作，那么会增加一个数，$\sum T$ 增加了 $1$．所以 $B_{n,m} \to B_{n-1,m-1}$．
+Bằng cách này, việc chuyển trạng thái đối với $T$ có thể trở thành chuyển trạng thái đối với chuỗi thao tác. Xét chuỗi thao tác phân hoạch $n$ thành $m$ số (ký hiệu tập hợp các chuỗi thao tác này là $B_{n,m}$), xét thao tác cuối cùng: nếu là thao tác 1, số lượng các số không tăng, nhưng $\sum T$ tăng thêm $m$. Để $\sum T = n$ cuối cùng, tổng của $T$ ban đầu (ký hiệu là $T'$) cần là $n-m$. Vì vậy $B_{n,m} \to B_{n-m,m}$; nếu là thao tác 2, số lượng các số tăng thêm 1, và $\sum T$ tăng thêm $1$. Vì vậy $B_{n,m} \to B_{n-1,m-1}$.
 
-这样做的时间复杂度依旧是 $\Theta(n^2)$．
+Độ phức tạp thời gian của cách này vẫn là $\Theta(n^2)$.
 
-### 解法 3
+### Cách giải 3
 
-考虑将 $T$ 分为大于 $\sqrt n$ 的部分 $T_1$ 和小于等于 $\sqrt n$ 的部分 $T_2$．$T_2$ 可以使用解法 1 求出，而 $T_1$ 的数量可以通过略微修改解法 2 求出：考虑将两个操作变为「将 $T_1$ 中每一个元素自增」、「在 $T_1$ 中加一个值为 $\lfloor \sqrt n \rfloor + 1$ 的元素」．容易列出状态转移方程．
+Cân nhắc việc chia $T$ thành phần $T_1$ gồm các số lớn hơn $\sqrt n$ và phần $T_2$ gồm các số nhỏ hơn hoặc bằng $\sqrt n$. $T_2$ có thể tính bằng Cách giải 1, còn số lượng $T_1$ có thể tính bằng cách sửa đổi nhẹ Cách giải 2: coi hai thao tác là "tăng mỗi phần tử trong $T_1$ lên 1 đơn vị", "thêm một phần tử có giá trị là $\lfloor \sqrt n \rfloor + 1$ vào $T_1$". Dễ dàng liệt kê phương trình chuyển trạng thái.
 
-将 $n$ 拆为 $A$ 和 $B$ 两部分．枚举其中一个即可得出另一个．将满足 $\sum T_1 = A$ 的 $T_1$ 个数和 $\sum T_2 = B$ 的 $T_2$ 个数求出，乘起来，对所有的 $A$ 求和便是最终结果．
+Chia $n$ thành hai phần $A$ và $B$. Duyệt qua một phần có thể suy ra phần còn lại. Tính số lượng $T_1$ thỏa mãn $\sum T_1 = A$ và số lượng $T_2$ thỏa mãn $\sum T_2 = B$, nhân chúng lại, tổng của tất cả các giá trị $A$ chính là kết quả cuối cùng.
 
-由于在计算 $T_1$ 个数的过程中，$M \le \sqrt n$，所以我们利用解法 1 计算 $T_1$ 的时间复杂度为 $\Theta(n^{3/2})$．同样地，由于在计算 $T_2$ 个数的过程中，$|T_2| \le \dfrac{\sum T_2}{\sqrt n} \le \dfrac{n}{\sqrt n} = \sqrt n$，所以我们利用解法 2 计算 $T_2$ 的时间复杂度也是 $\Theta(n^{3/2})$．所以总时间复杂度为 $\Theta(n^{3/2})$．
+Vì trong quá trình tính số lượng $T_1$, $M \le \sqrt n$, nên độ phức tạp thời gian khi sử dụng Cách giải 1 để tính $T_1$ là $\Theta(n^{3/2})$. Tương tự, vì trong quá trình tính số lượng $T_2$, $|T_2| \le \dfrac{\sum T_2}{\sqrt n} \le \dfrac{n}{\sqrt n} = \sqrt n$, nên độ phức tạp thời gian khi sử dụng Cách giải 2 để tính $T_2$ cũng là $\Theta(n^{3/2})$. Do đó tổng độ phức tạp thời gian là $\Theta(n^{3/2})$.

@@ -12,8 +12,8 @@ def fix_details(md_content: str, **kwargs):
     determine proper indentation levels.
 
     see also:
-    - <https://oi-wiki.org/intro/format/#LINT-6>
-    - <https://oi-wiki.org/intro/format/#MDFM-6>
+    - <https://oi-wiki.k23oj.io.vn//intro/format/#LINT-6>
+    - <https://oi-wiki.k23oj.io.vn//intro/format/#MDFM-6>
 
     Args:
         md_content: The Markdown content to process

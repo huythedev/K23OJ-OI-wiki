@@ -1,144 +1,144 @@
-author: Hope666666
+tác giả: Hope666666
 
-## 引入
+## Giới thiệu
 
-本文将介绍 DP 套 DP 的思想，并通过两道例题展示它如何应用到具体问题中．
+Bài viết này sẽ giới thiệu tư tưởng DP lồng DP (DP lồng DP) và thông qua hai ví dụ để minh họa cách áp dụng nó vào các bài toán cụ thể.
 
-## 思想
+## Tư tưởng
 
-所谓「DP 套 DP」，实际上指的是在动态规划的过程中，把一个子问题的求解过程（通常是一个 DP）抽象成一个自动机（DFA），然后在这个自动机的基础上再设计一层新的 DP 的方法．
+Cái gọi là "DP lồng DP" thực chất chỉ việc trong quá trình quy hoạch động, ta trừu tượng hóa quá trình giải một bài toán con (thường là một DP) thành một máy tự động (DFA), sau đó thiết kế một lớp DP mới dựa trên máy tự động này.
 
-这种技巧主要应用于一类 **序列计数**、**概率** 或 **期望** 问题．一个典型的问题具有如下结构：
+Kỹ thuật này chủ yếu được áp dụng cho lớp bài toán **đếm dãy**, **xác suất** hoặc **kỳ vọng**. Một bài toán điển hình có cấu trúc như sau:
 
--   给定字符集 $\Sigma$ 和它上面一个长度为 $n$ 的「合法序列」的集合 $A\subseteq\Sigma^n$．根据字符集不同，序列可以是二进制串、数字串、状态序列等．
--   对于每一个具体的序列 $s\in\Sigma^n$，可以通过动态规划来判断它是否合法（即 $s\in A$），计算它的权值或求出相关值．
--   最终，我们希望统计集合 $A$ 中所有序列的数目、总权值、期望值等．
+-   Cho bảng chữ cái $\Sigma$ và một tập hợp các "dãy hợp lệ" độ dài $n$ trên đó là $A \subseteq \Sigma^n$. Tùy vào bảng chữ cái, dãy có thể là chuỗi nhị phân, chuỗi số, dãy trạng thái, v.v.
+-   Đối với mỗi dãy cụ thể $s \in \Sigma^n$, có thể dùng quy hoạch động để kiểm tra xem nó có hợp lệ hay không (tức là $s \in A$), tính trọng số của nó hoặc tìm các giá trị liên quan.
+-   Cuối cùng, chúng ta muốn thống kê số lượng tất cả các dãy trong tập $A$, tổng trọng số, giá trị kỳ vọng, v.v.
 
-这时，枚举所有序列是不可行的．于是我们考虑将「判断一个序列是否合法」的过程（即内层 DP）抽象为一个 [确定有限状态自动机](../misc/fsm.md#确定性有限状态自动机)（DFA）．一般地，对于固定的序列 $s\in\Sigma^n$，内层 DP 的状态函数可以表示为 $g(i,x;s)$，即已经处理完序列 $s$ 的长度为 $i$ 的前缀，且其他状态分量为 $x$ 时某个量的取值．相应地，内层 DP 的状态转移方程为
+Lúc này, việc liệt kê tất cả các dãy là không khả thi. Do đó, chúng ta cân nhắc trừu tượng hóa quá trình "kiểm tra một dãy có hợp lệ hay không" (tức là DP lớp trong) thành một [máy tự động hữu hạn đơn định](../misc/fsm.md#máy-tự-động-hữu-hạn-đơn-định) (DFA). Thông thường, đối với dãy $s \in \Sigma^n$ cố định, hàm trạng thái của DP lớp trong có thể biểu diễn là $g(i, x; s)$, tức là đã xử lý xong tiền tố độ dài $i$ của dãy $s$, và giá trị của một đại lượng nào đó khi các thành phần trạng thái khác là $x$. Tương ứng, phương trình chuyển trạng thái của DP lớp trong là:
 
 $$
 g(i,\cdot;s) = G(g(i-1,\cdot;s),s_i).
 $$
 
-也就是说，函数 $g(i,\cdot;s)$ 由之前的函数 $g(i-1,\cdot;s)$ 和当前的字符 $s_i$ 唯一确定．如果将函数 $g(i,\cdot;s)$ 看作是自动机的一个状态，那么，内层 DP 的状态转移方程就给出了自动机的一个转移．因此，内层 DP 对应的自动机 $(Q,\Sigma,\delta,q_0,F)$ 结构如下：
+Nói cách khác, hàm $g(i, \cdot; s)$ được xác định duy nhất bởi hàm $g(i-1, \cdot; s)$ trước đó và ký tự hiện tại $s_i$. Nếu coi hàm $g(i, \cdot; s)$ là một trạng thái của máy tự động, thì phương trình chuyển trạng thái của DP lớp trong sẽ đưa ra phép chuyển trạng thái của máy tự động. Do đó, máy tự động $(Q, \Sigma, \delta, q_0, F)$ tương ứng với DP lớp trong có cấu trúc như sau:
 
--   状态集合 $Q$ 就是所有可能的 $s\in\Sigma^n$ 和 $i=0,1,\cdots,n$ 对应的函数 $g(i,\cdot;s)$ 的集合；
--   转移函数 $\delta:Q\times\Sigma\to Q$ 就是内层 DP 的状态转移方程中的 $G$；
--   起始状态 $q_0$ 通常是显然的，即内层 DP 的初始状态；
--   接受状态集合 $F$ 就对应着所有的合法序列 $s\in A$．
+-   Tập hợp trạng thái $Q$ là tập hợp tất cả các hàm $g(i, \cdot; s)$ khả dĩ tương ứng với các $s \in \Sigma^n$ và $i = 0, 1, \dots, n$;
+-   Hàm chuyển $\delta: Q \times \Sigma \to Q$ chính là hàm $G$ trong phương trình chuyển trạng thái của DP lớp trong;
+-   Trạng thái bắt đầu $q_0$ thường là hiển nhiên, tức là trạng thái ban đầu của DP lớp trong;
+-   Tập hợp trạng thái chấp nhận $F$ tương ứng với tất cả các dãy hợp lệ $s \in A$.
 
-函数 $g(i,\cdot;s)$ 本身可能相当复杂，因此，在处理具体问题时，通常需要进行 [状态压缩](./state.md) 或结合 DFA 最小化的技巧来压缩状态空间．这也是 DP 套 DP 相较于暴力 DP 能够显著降低时空复杂度的主要原因．
+Bản thân hàm $g(i, \cdot; s)$ có thể khá phức tạp, vì vậy khi xử lý các bài toán cụ thể, thường cần thực hiện [nén trạng thái](./state.md) hoặc kết hợp với các kỹ thuật tối ưu hóa DFA để nén không gian trạng thái. Đây cũng là lý do chính khiến DP lồng DP có thể giảm đáng kể độ phức tạp về thời gian và không gian so với DP vét cạn.
 
-将内层 DP 抽象为 DFA 后，就可以在这个 DFA 上设计一个新的 DP 用于求解原问题，即外层 DP．为方便表述，以简单的计数问题为例．外层 DP 的状态函数定义为 $f(i,q)$，即处理到长度为 $i$ 的前缀时，到达 DFA 中状态 $q\in Q$ 的前缀的数目．它的状态转移方程为
+Sau khi trừu tượng hóa DP lớp trong thành DFA, ta có thể thiết kế một DP mới trên DFA này để giải quyết bài toán gốc, gọi là DP lớp ngoài. Để thuận tiện, lấy bài toán đếm đơn giản làm ví dụ. Hàm trạng thái của DP lớp ngoài được định nghĩa là $f(i, q)$, tức là số lượng tiền tố độ dài $i$ dẫn đến trạng thái $q \in Q$ trong DFA. Phương trình chuyển trạng thái của nó là:
 
 $$
 f(i,q) = \sum_{c\in\Sigma}\sum_{q'\in Q:\delta(q',c)=q} f(i-1,q').
 $$
 
-起始状态当然是 $f(0,q_0)$，而最终要求的答案通常可以根据 $\{f(n,q):q\in F\}$ 简单计算得到．外层 DP 实际上是 [DAG 上 DP](./dag.md) 的特殊情形．
+Trạng thái bắt đầu đương nhiên là $f(0, q_0)$, và đáp án cuối cùng thường có thể tính toán đơn giản từ $\{f(n, q): q \in F\}$. DP lớp ngoài thực chất là một trường hợp đặc biệt của [DP trên DAG](./dag.md).
 
-## 例题
+## Ví dụ
 
-接下来的两个例题会详细说明 DP 套 DP 的一般做法．
+Hai ví dụ tiếp theo sẽ giải thích chi tiết cách làm chung của DP lồng DP.
 
-### 例一
+### Ví dụ 1
 
 ???+ example "[Hero meet devil](https://www.luogu.com.cn/problem/P10614)"
-    给定一个字符集为 `ACGT` 的字符串 $S$，且 $|S|\le 15$．对于每个 $0\leq i \leq |S|$，求有多少个长度为 $m$，字符集 `ACGT` 的字符串 $T$，满足它与 $S$ 的最长公共子序列长度为 $i$．
+    Cho một xâu $S$ có bảng chữ cái là `ACGT`, và $|S| \le 15$. Với mỗi $0 \le i \le |S|$, hãy tìm xem có bao nhiêu xâu $T$ độ dài $m$ trên bảng chữ cái `ACGT` sao cho độ dài dãy con chung dài nhất của nó với $S$ bằng $i$.
 
-??? note "题解"
-    我们首先会想到一个 DP：设 $f_{i,j}$ 表示长度为 $i$ 的 $T$ 中，和 $S$ 的最长公共子序列的长度为 $j$ 的方案数．但是这样无法转移，我们发现主要的问题是，我们不知道这个最长公共子序列对应的是哪些字符．
+??? note "Lời giải"
+    Đầu tiên ta nghĩ đến một DP: Gọi $f_{i,j}$ là số phương án cho xâu $T$ độ dài $i$ có độ dài dãy con chung dài nhất với $S$ là $j$. Nhưng cách này không chuyển trạng thái được, vấn đề chính là ta không biết dãy con chung dài nhất đó ứng với những ký tự nào.
     
-    考虑朴素求最长公共子序列的过程．设 $g_{i,j}$ 表示 $T$ 的前 $i$ 位和 $S$ 的前 $j$ 位，它们的最长公共子序列的长度，就有
+    Xét quá trình tìm dãy con chung dài nhất (LCS) thông thường. Gọi $g_{i,j}$ là độ dài LCS của $i$ ký tự đầu của $T$ và $j$ ký tự đầu của $S$, ta có:
     
     $$
     g_{i,j} = \max\{g_{i-1,j},g_{i,j-1},g_{i-1,j-1}+[T_i=S_j]\}.
     $$
     
-    我们发现，对于一个 $i$，只需要记录 $g_i$ 这个一维数组每一位的值，就能准确维护当前 $S$ 与 $T$ 前 $i$ 位最长公共子序列的状态．因为 $S$ 长度只有 $15$，我们发现这个思想是可行的．
+    Ta nhận thấy rằng, với một giá trị $i$, chỉ cần ghi lại giá trị của từng vị trí trong mảng một chiều $g_i$ là có thể duy trì chính xác trạng thái LCS của $S$ và $i$ ký tự đầu của $T$. Vì độ dài $S$ chỉ tối đa 15, tư tưởng này là khả thi.
     
-    于是重新设状态 $f_{i,x}$ 表示对于长度为 $i$ 的 $T$，与 $S$ 的 DP 数组（就是 $g_i$）状态为 $x$ 的方案数．这个 DP 看起来状态数很多，然而我们发现 $g_{i,j}-g_{i,j-1}\in\{0,1\}$，就可以维护 $g_i$ 的差分数组，状态数是 $2^{|S|}$ 的．
+    Vì vậy, thiết lập lại trạng thái $f_{i,x}$ là số phương án cho xâu $T$ độ dài $i$ có trạng thái mảng DP của $S$ (chính là $g_i$) là $x$. DP này có vẻ có rất nhiều trạng thái, tuy nhiên ta thấy $g_{i,j} - g_{i,j-1} \in \{0, 1\}$, nên có thể duy trì mảng hiệu phân (difference array) của $g_i$, số trạng thái sẽ là $2^{|S|}$.
     
-    现在思考怎么转移．容易发现，如果我们知道了 $g_i$ 这个数组，也知道了 $T_{i+1}$，就能通过朴素 LCS 转移（即前文的 DP 方程）求出 $g_{i+1}$．于是朴素的 LCS 就成为了帮助 $f$ 转移的内层 DP．
+    Bây giờ suy nghĩ cách chuyển trạng thái. Dễ thấy nếu biết mảng $g_i$ và biết $T_{i+1}$, ta có thể thông qua chuyển trạng thái LCS thông thường (phương trình DP nêu trên) để tìm ra $g_{i+1}$. Do đó, LCS thông thường trở thành DP lớp trong hỗ trợ chuyển trạng thái cho $f$.
     
-    因此，我们枚举 $T_{i+1}$，计算出 $x$ 转移后的状态 $x'$，再将 $f_{i+1,x'}$ 加上 $f_{i,x}$ 就可以完成外层 DP 的状态转移．最后，我们记录 $\textit{ans}_i$ 为 LCS 长度为 $i$ 的答案，枚举每个状态 $S$，$\textit{ans}_{\operatorname{popcount}(S)}$ 加上 $f_{m,S}$ 即可．
+    Vì vậy, ta duyệt qua $T_{i+1}$, tính toán trạng thái $x'$ sau khi chuyển từ $x$, rồi cộng $f_{i,x}$ vào $f_{i+1,x'}$. Cuối cùng, ta ghi lại $\textit{ans}_i$ là đáp án cho độ dài LCS bằng $i$, duyệt qua mỗi trạng thái $S$, cộng $f_{m,S}$ vào $\textit{ans}_{\operatorname{popcount}(S)}$.
 
-??? note "参考代码"
+??? note "Mã tham khảo"
     ```cpp
     --8<-- "docs/dp/code/dp-of-dp/dp-of-dp_1.cpp"
     ```
 
-### 例二
+### Ví dụ 2
 
-???+ example "[\[ZJOI2019\] 麻将](https://loj.ac/p/3042)"
-    假设麻将牌有 $n$ 种大小的牌，每种大小有 $4$ 张牌．定义面子为三张相邻大小的麻将牌 $i,i+1,i+2$（顺子）或三种相同大小的麻将牌 $i,i,i$（刻子），对子为两张相同大小的麻将牌 $i,i$．定义一个麻将牌的序列是胡的，当且仅当它（看作多重集合）可以拆成四个面子和一个对子，或者七个不同的对子．给定 $13$ 张麻将牌，问期望再摸多少张牌可以满足存在一个胡牌的子序列的条件．
+???+ example "[\[ZJOI2019\] 麻将 (Mạt chược)](https://loj.ac/p/3042)"
+    Giả sử mạt chược có $n$ loại quân, mỗi loại có 4 quân. Định nghĩa một "bộ" (mianzi) là ba quân có giá trị liên tiếp $i, i+1, i+2$ (chi/shunzu) hoặc ba quân cùng giá trị $i, i, i$ (pơ/kezu), một "cặp" (duizi) là hai quân cùng giá trị $i, i$. Một dãy quân mạt chược được gọi là "ù" (hu) khi và chỉ khi nó (coi như một đa tập) có thể chia thành bốn bộ và một cặp, hoặc bảy cặp khác nhau. Cho trước 13 quân, hỏi kỳ vọng cần bốc thêm bao nhiêu quân nữa để thỏa mãn điều kiện tồn tại một dãy con "ù".
 
-??? note "题解"
-    首先，对于一副牌，我们只需考虑每种牌的数量，而不必关心它们的顺序．因此，对于任何一副牌的任意前缀，我们都可以将它转化为一个长度为 $n$，每个位置上为 $0\sim 4$ 的序列．初始时，第 $i$ 张牌的数量为 $a_i$，就相当于限制了序列中第 $i$ 个数字 $x_i$ 的取值为 $[a_i,4]$ 内的整数．注意，转化后的序列没有考虑摸牌的顺序，但是题目中的麻将牌的序列是考虑顺序的．
+??? note "Lời giải"
+    Trước hết, đối với một bộ bài, ta chỉ cần quan tâm đến số lượng mỗi loại quân mà không cần để ý đến thứ tự của chúng. Do đó, với bất kỳ tiền tố nào của bộ bài, ta đều có thể chuyển nó thành một dãy độ dài $n$, mỗi vị trí có giá trị từ $0 \sim 4$. Ban đầu, nếu số lượng quân thứ $i$ là $a_i$, tương đương với việc giới hạn giá trị $x_i$ tại vị trí thứ $i$ trong dãy nằm trong đoạn $[a_i, 4]$. Lưu ý, dãy sau khi chuyển đổi không xét đến thứ tự bốc quân, nhưng dãy mạt chược trong đề bài thì có xét thứ tự.
     
-    设 $X$ 表示可以胡牌的最小摸牌次数．直接计算期望 $\mathbf E[X]$ 较为困难，可以考虑进行如下转化．设 $h_i$ 表示摸了 $i$ 张牌后 **没有胡** 的序列数．因为它对应的麻将牌序列中，这 $i$ 张牌必然排在剩下的 $(4n-13-i)$ 张牌前方，但是这 $i$ 张牌和剩下的 $(4n-13-i)$ 张牌的顺序是任意的，所以，只摸前 $i$ 张牌无法胡牌的麻将牌序列的数目就是
+    Gọi $X$ là số lần bốc quân tối thiểu để có thể "ù". Việc tính trực tiếp kỳ vọng $\mathbf E[X]$ khá khó khăn, ta cân nhắc chuyển đổi như sau. Gọi $h_i$ là số lượng dãy gồm $i$ quân bốc thêm mà **chưa ù**. Vì trong dãy mạt chược tương ứng, $i$ quân này chắc chắn đứng trước $(4n-13-i)$ quân còn lại, nhưng thứ tự giữa $i$ quân này và thứ tự giữa các quân còn lại là bất kỳ, nên số lượng dãy mạt chược bốc $i$ quân mà chưa ù là:
     
     $$
-    h_i\cdot i!(4n-13-i)!.
+    h_i \cdot i!(4n-13-i)!.
     $$
     
-    因为麻将牌序列的总数为 $(4n-13)!$，所以，只摸前 $i$ 张牌无法胡牌的概率为
+    Vì tổng số dãy mạt chược là $(4n-13)!$, nên xác suất bốc $i$ quân mà chưa ù là:
     
     $$
     \mathbf P[X>i] = \dfrac{h_i\cdot i!(4n-13-i)!}{(4n-13)!}.
     $$
     
-    利用尾求和公式，就可以得到所求期望
+    Sử dụng công thức tổng đuôi (tail sum formula), ta có kỳ vọng cần tìm:
     
     $$
     \mathbf E[X] = \sum_{i=0}^\infty\mathbf P[X>i] = 1 + \sum_{i=1}^{4n-13}\dfrac{h_i\cdot i!(4n-13-i)!}{(4n-13)!}.
     $$
     
-    至此，问题转化为如何计算 $h_i$．我们采用 DP 套 DP 的方法来解决这一问题．
+    Đến đây, bài toán chuyển thành cách tính $h_i$. Ta sử dụng phương pháp DP lồng DP.
     
-    首先，考虑内层 DP，也就是要用动态规划判断一个（转化后的）序列是否对应一副能胡的牌．七对子的情形较为容易，重点讨论第一种胡牌的形式．为此，设 $g_{0/1,i,j,k}$ 表示处理完前 $i$ 种牌，还剩 $j$ 组 $(i−1,i)$ 以及 $k$ 张 $i$，且存在/不存在对子（即 $0/1$）时最多的面子数．如果对于一个序列进行 DP，最后得到的 $g_{1,n}$ 中包括一个大于等于 $4$ 的数字，那么这个序列就是能胡的．
+    Đầu tiên xét DP lớp trong, tức là dùng DP để kiểm tra một dãy (sau chuyển đổi) có tương ứng với một bộ bài "ù" hay không. Trường hợp bảy cặp khá dễ, trọng tâm là hình thức "ù" thứ nhất. Để làm việc này, gọi $g_{0/1,i,j,k}$ là số lượng bộ tối đa sau khi xử lý xong $i$ loại quân đầu tiên, còn thừa $j$ nhóm $(i-1, i)$ và $k$ quân $i$, và đã có/chưa có cặp (tương ứng $1/0$). Nếu thực hiện DP trên một dãy, cuối cùng $g_{1,n}$ chứa một số lớn hơn hoặc bằng 4 thì dãy đó là "ù".
     
-    这个 DP 的状态转移较为复杂．我们分两步讨论．第一步，考虑 $g_{0/1,i}$ 的转移．这相当于说，如果要向现在的牌型中，添加 $x_i$ 张大小为 $i$ 的牌，但是不组成新的对子时，面子数如何转移．显然，如果希望在添加 $x_i$ 张大小为 $i$ 的牌后，要得到 $\ell$ 个顺子，$j$ 个 $(i-1,i)$ 和 $k$ 个单独的 $i$，那么，就应该从 $(g_{0/1,i-1})_{\ell,j}$ 中转移过来（这里的选择最大程度避免了浪费），并将剩余的牌 $(x_i-\ell-j-k)$ 用于组成尽可能多的刻子．穷举所有的可能性，就得到如下转移方程：
+    Chuyển trạng thái của DP này khá phức tạp. Ta chia làm hai bước. Bước 1, xét chuyển trạng thái cho $g_{0/1,i}$. Điều này tương đương với việc nếu thêm $x_i$ quân loại $i$ vào bộ bài hiện tại nhưng không tạo cặp mới, số lượng bộ sẽ thay đổi thế nào. Hiển nhiên, nếu muốn sau khi thêm $x_i$ quân loại $i$ sẽ có $\ell$ bộ dây (shunzu), $j$ nhóm $(i-1, i)$ và $k$ quân $i$ riêng lẻ, thì ta nên chuyển từ $(g_{0/1,i-1})_{\ell,j}$ sang (lựa chọn này tránh lãng phí nhất), và dùng số quân còn lại $(x_i-\ell-j-k)$ để tạo ra nhiều bộ ba (kezu) nhất có thể. Liệt kê mọi khả năng, ta có phương trình:
     
     $$
     \tilde G(g_{0/1,i-1}, x_i)_{j,k} = \max\left\{(g_{0/1,i-1})_{\ell,j} + \ell + \left\lfloor\dfrac{x_i-\ell-j-k}{3}\right\rfloor:\ell+j+k\le x_i\right\}.
     $$
     
-    第二步，再考虑需要组成对子的情形．加入 $x_i$ 张大小为 $i$ 的牌时，有如下三种转移：
+    Bước 2, xét trường hợp cần tạo cặp. Khi thêm $x_i$ quân loại $i$, có ba loại chuyển trạng thái:
     
-    -   将 $g_{0,i-1}$ 加 $x_i$ 张牌转移到 $g_{0,i}$；
-    -   将 $g_{1,i-1}$ 加 $x_i$ 张牌转移到 $g_{1,i}$；
-    -   若 $x_i\ge 2$，将 $g_{0,i-1}$ 加 $x_i-2$ 张牌转移到 $g_{1,i}$．
+    -   Chuyển từ $g_{0,i-1}$ thêm $x_i$ quân sang $g_{0,i}$;
+    -   Chuyển từ $g_{1,i-1}$ thêm $x_i$ quân sang $g_{1,i}$;
+    -   Nếu $x_i \ge 2$, chuyển từ $g_{0,i-1}$ thêm $x_i-2$ quân sang $g_{1,i}$.
     
-    由此，就得到了从 $g_{i-1}$ 添加 $x_i$ 张牌得到 $g_i$ 的全部转移．
+    Từ đó, ta có toàn bộ các phép chuyển từ $g_{i-1}$ thêm $x_i$ quân để được $g_i$.
     
-    解决了内层 DP 的状态转移，就可以构建 **胡牌自动机**．自动机的转移就是上述内层 DP 的转移，还需要考虑如何表示自动机的每个状态．每个状态都对应 $g_i$ 的一种可能的取值．它有三个维度 $(0/1,j,k)$．因为 $j$ 和 $k$ 对应的维度中保留的 $(i-1,i)$ 和 $i$ 都是用于将来组成顺子的，而三个相同顺子总是可以重组为三个刻子，所以，只需要考虑组成不超过 $2$ 个相同顺子的需求就行，每种牌型也就只要保留不超过 $2$ 个，即 $j,k\in\{0,1,2\}$．因此，$g_i$ 可以表示为一个 $2\times 3\times 3$ 的数组．另外，为了维护七对子的胡牌牌型，还需要为每个状态添加一个计数器，用于表示当前最多可组成的对子数目．
+    Giải quyết xong chuyển trạng thái DP lớp trong, ta có thể xây dựng **máy tự động ù mạt chược**. Các phép chuyển của máy tự động chính là các phép chuyển DP lớp trong nêu trên, đồng thời cần cân nhắc cách biểu diễn mỗi trạng thái. Mỗi trạng thái tương ứng với một bộ giá trị khả dĩ của $g_i$. Nó có ba chiều $(0/1, j, k)$. Vì các giá trị $j$ và $k$ dùng để tạo bộ dây trong tương lai, mà ba bộ dây giống nhau luôn có thể chuyển thành ba bộ ba, nên chỉ cần xét nhu cầu tạo không quá 2 bộ dây giống nhau, mỗi loại quân chỉ cần giữ lại không quá 2 quân, tức $j, k \in \{0, 1, 2\}$. Do đó, $g_i$ có thể biểu diễn bằng mảng $2 \times 3 \times 3$. Ngoài ra, để duy trì hình thức "ù" bảy cặp, cần thêm một biến đếm cho mỗi trạng thái để biểu thị số cặp tối đa hiện có.
     
-    数组 $g_i$ 中每个元素的取值范围可能是 $\{-\infty\}\cup\mathbf N$，但是，因为面子数目大于等于 $4$ 都是胡牌，所以，可以限制每个元素取值不超过 $4$．由于胡牌序列再添加任何牌都是胡牌序列，所以，可以利用 DFA 最小化的思想，将全体胡牌状态压缩为一个状态．因此，对于非胡牌状态，实际上每个位置的取值只要考虑 $\{-\infty\}\cup\{0,1,2,3\}$ 就可以了．实现时，$-\infty$ 用 $-1$ 表示．
+    Mỗi phần tử trong mảng $g_i$ có thể nhận giá trị trong $\{-\infty\} \cup \mathbf N$, nhưng vì số bộ $\ge 4$ là đã "ù", nên có thể giới hạn mỗi phần tử không quá 4. Vì một dãy đã "ù" thêm bất kỳ quân nào vẫn là "ù", ta có thể dùng tư tưởng tối thiểu hóa DFA để nén tất cả các trạng thái "ù" thành một trạng thái duy nhất. Do đó, đối với trạng thái chưa "ù", thực tế mỗi vị trí chỉ cần xét giá trị trong $\{-\infty\} \cup \{0, 1, 2, 3\}$. Khi cài đặt, $-\infty$ dùng $-1$.
     
-    尽管如此，所有可能的状态依然相当地多，共有 $1+7\times 5^{18}$ 种．穷举它们并不现实．实际上，绝大多数这些可能性都不会真的出现在一个胡牌自动机中．为了避免考虑实际不存在的状态，可以利用 BFS 的思想，从初始状态开始，一步一步扩展状态，直到胡牌状态处停止．这样得到的自动机中有 $N = 2092$ 个状态．
+    Mặc dù vậy, số lượng trạng thái khả dĩ vẫn rất lớn, tổng cộng $1 + 7 \times 5^{18}$. Liệt kê chúng là không thực tế. Thực tế, đại đa số các khả năng này không thực sự xuất hiện trong một máy tự động "ù". Để tránh xét các trạng thái không tồn tại, ta dùng tư tưởng BFS, bắt đầu từ trạng thái ban đầu, mở rộng từng bước cho đến khi dừng ở trạng thái "ù". Máy tự động thu được có $N = 2092$ trạng thái.
     
-    最后，考虑如何在胡牌自动机上 DP（即外层 DP）．设 $f_{i,j,k}$ 表示处理到第 $i$ 张牌，共摸了 $j$ 张牌，走到了胡牌自动机上的 $k$ 号状态的序列数．转移时，枚举摸牌数 $0\leq t\leq 4-a_i$，其中 $a_i$ 为初始 $13$ 张牌中用掉的 $i$ 的张数，将之前的序列数乘以 $4−a_i$ 张牌中选 $t$ 张牌的方案数 $\dbinom{4-a_i}{t}$，再累加到一起．形式化地，有：
+    Cuối cùng, xét DP trên máy tự động (DP lớp ngoài). Gọi $f_{i,j,k}$ là số lượng dãy đã xử lý đến loại quân thứ $i$, bốc tổng cộng $j$ quân, và đang ở trạng thái thứ $k$ trên máy tự động. Khi chuyển trạng thái, duyệt số quân bốc thêm $0 \le t \le 4-a_i$ ($a_i$ là số quân loại $i$ đã có trong 13 quân ban đầu), nhân số dãy trước đó với số cách chọn $t$ quân từ $4-a_i$ quân là $\dbinom{4-a_i}{t}$, rồi cộng dồn lại. Một cách hình thức:
     
     $$
     f_{i+1,j+t,k'} = \sum_{t=0}^{4-a_i}\dbinom{4-a_i}{t}f_{i,j,k}.
     $$
     
-    其中，$k'=\delta(k,a_i+t)$，表示向自动机的状态 $k$ 中加入 $a_i+t$ 张牌后的状态．外层 DP 结束后，就可以计算出摸了 $i$ 张牌仍然没有胡牌的序列数目，即
+    Trong đó $k' = \delta(k, a_i+t)$ là trạng thái sau khi thêm $a_i+t$ quân vào trạng thái $k$. Sau khi kết thúc DP lớp ngoài, ta có thể tính được số lượng dãy bốc $i$ quân mà vẫn chưa "ù":
     
     $$
-    h_i=\sum_{j=1}^{N} f_{n,i,j}.
+    h_i = \sum_{j=1}^N f_{n,i,j}.
     $$
     
-    代入前文所述表达式，就可以得到所要求的期望．
+    Thay vào biểu thức kỳ vọng ở trên để được kết quả.
 
-??? note "参考代码"
+??? note "Mã tham khảo"
     ```cpp
     --8<-- "docs/dp/code/dp-of-dp/dp-of-dp_2.cpp"
     ```
 
-## 习题
+## Bài tập
 
 -   [CF979E Kuro and Topological Parity](https://codeforces.com/problemset/problem/979/E)
--   [\[TJOI2018\] 游园会](https://loj.ac/p/2575)
--   [\[NOI2022\] 移除石子](https://loj.ac/p/3848)
+-   [\[TJOI2018\] 游园会 (Hội hoa viên)](https://loj.ac/p/2575)
+-   [\[NOI2022\] 移除石子 (Loại bỏ sỏi)](https://loj.ac/p/3848)

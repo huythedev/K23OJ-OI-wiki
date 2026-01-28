@@ -1,13 +1,13 @@
-author: Ir1d, CBW2007, ChungZH, xhn16729, Xeonacid, tptpp, hsfzLZH1, ouuan, Marcythm, HeRaNO, greyqz, Chrogeek, partychicken, zhb2000, xyf007, Persdre, XiaoSuan250, hhc0001, ZhangZhanhaoxiang, Taoran\_01
+Tác giả: Ir1d, CBW2007, ChungZH, xhn16729, Xeonacid, tptpp, hsfzLZH1, ouuan, Marcythm, HeRaNO, greyqz, Chrogeek, partychicken, zhb2000, xyf007, Persdre, XiaoSuan250, hhc0001, ZhangZhanhaoxiang, Taoran\_01
 
-本页面主要介绍了动态规划的基本思想，以及动态规划中状态及状态转移方程的设计思路，帮助各位初学者对动态规划有一个初步的了解．
+Trang này chủ yếu giới thiệu tư tưởng cơ bản của Quy hoạch động (Dynamic Programming), cũng như tư duy thiết kế trạng thái và phương trình chuyển trạng thái trong quy hoạch động, giúp những người mới bắt đầu có cái nhìn sơ lược về nội dung này.
 
-本部分的其他页面，将介绍各种类型问题中动态规划模型的建立方法，以及一些动态规划的优化技巧．
+Các trang khác trong phần này sẽ giới thiệu phương pháp xây dựng mô hình quy hoạch động cho các loại bài toán khác nhau, cùng một số kỹ thuật tối ưu hóa quy hoạch động.
 
-## 引入
+## Giới thiệu
 
-???+ note "[\[IOI1994\] 数字三角形](https://www.luogu.com.cn/problem/P1216)"
-    给定一个 $r$ 行的数字三角形（$r \leq 1000$），需要找到一条从最高点到底部任意处结束的路径，使路径经过数字的和最大．每一步可以走到当前点左下方的点或右下方的点．
+???+ note "[\[IOI1994\] Tam giác số](https://www.luogu.com.cn/problem/P1216)"
+    Cho một tam giác số gồm $r$ hàng ($r \leq 1000$), cần tìm một con đường từ đỉnh cao nhất đến một vị trí bất kỳ ở đáy sao cho tổng các số trên đường đi là lớn nhất. Mỗi bước có thể đi xuống điểm phía dưới bên trái hoặc phía dưới bên phải của điểm hiện tại.
     
     ```plain
             7 
@@ -17,82 +17,82 @@ author: Ir1d, CBW2007, ChungZH, xhn16729, Xeonacid, tptpp, hsfzLZH1, ouuan, Marc
     4   5   2   6   5 
     ```
     
-    在上面这个例子中，最优路径是 $7 \to 3 \to 8 \to 7 \to 5$．
+    Trong ví dụ trên, đường đi tối ưu là $7 \to 3 \to 8 \to 7 \to 5$.
 
-最简单粗暴的思路是尝试所有的路径．因为路径条数是 $O(2^r)$ 级别的，这样的做法无法接受．
+Cách tiếp cận đơn giản và thô bạo nhất là thử mọi con đường. Vì số lượng đường đi ở mức $O(2^r)$, cách làm này không thể chấp nhận được.
 
-注意到这样一个事实，一条最优的路径，它的每一步决策都是最优的．
+Chú ý một sự thật rằng: một con đường tối ưu thì mỗi quyết định trong từng bước của nó đều phải là tối ưu.
 
-以例题里提到的最优路径为例，只考虑前四步 $7 \to 3 \to 8 \to 7$，不存在一条从最顶端到 $4$ 行第 $2$ 个数的权值更大的路径．
+Lấy đường đi tối ưu trong ví dụ làm mẫu, nếu chỉ xét bốn bước đầu $7 \to 3 \to 8 \to 7$, sẽ không tồn tại con đường nào từ đỉnh đến số thứ $2$ của hàng $4$ có tổng giá trị lớn hơn.
 
-而对于每一个点，它的下一步决策只有两种：往左下角或者往右下角（如果存在）．因此只需要记录当前点的最大权值，用这个最大权值执行下一步决策，来更新后续点的最大权值．
+Đối với mỗi điểm, quyết định tiếp theo chỉ có hai lựa chọn: xuống dưới bên trái hoặc xuống dưới bên phải (nếu có). Do đó, chỉ cần ghi lại giá trị lớn nhất tại điểm hiện tại, dùng giá trị này thực hiện quyết định bước tiếp theo để cập nhật giá trị lớn nhất cho các điểm kế tiếp.
 
-这样做还有一个好处：我们成功缩小了问题的规模，将一个问题分成了多个规模更小的问题．要想得到从顶端到第 $r$ 行的最优方案，只需要知道从顶端到第 $r-1$ 行的最优方案的信息就可以了．
+Làm như vậy còn có một ưu điểm: chúng ta đã thu hẹp quy mô bài toán thành công, chia một bài toán lớn thành nhiều bài toán quy mô nhỏ hơn. Để tìm phương án tối ưu từ đỉnh đến hàng thứ $r$, chỉ cần biết thông tin về phương án tối ưu từ đỉnh đến hàng thứ $r-1$ là đủ.
 
-这时候还存在一个问题：子问题间重叠的部分会有很多，同一个子问题可能会被重复访问多次，效率还是不高．解决这个问题的方法是把每个子问题的解存储下来，通过记忆化的方式限制访问顺序，确保每个子问题只被访问一次．
+Lúc này vẫn còn một vấn đề: phần chồng lấn giữa các bài toán con sẽ rất nhiều, cùng một bài toán con có thể bị truy cập lặp lại nhiều lần, hiệu suất vẫn không cao. Cách giải quyết vấn đề này là lưu trữ lời giải của mỗi bài toán con lại, thông qua phương pháp ghi nhớ (memoization) để hạn chế thứ tự truy cập, đảm bảo mỗi bài toán con chỉ được truy cập một lần.
 
-上面就是动态规划的一些基本思路．下面将会更系统地介绍动态规划的思想．
+Trên đây là một số tư tưởng cơ bản của quy hoạch động. Dưới đây sẽ giới thiệu hệ thống hơn về tư tưởng này.
 
-## 动态规划原理
+## Nguyên lý Quy hoạch động
 
-能用动态规划解决的问题，需要满足三个条件：最优子结构，无后效性和子问题重叠．
+Một bài toán có thể giải bằng quy hoạch động cần thỏa mãn ba điều kiện: Cấu trúc con tối ưu, Tính không hệ quả và Bài toán con chồng lấn.
 
-### 最优子结构
+### Cấu trúc con tối ưu (Optimal Substructure)
 
-具有最优子结构也可能是适合用贪心的方法求解．
+Việc có cấu trúc con tối ưu cũng có thể phù hợp để giải bằng phương pháp tham lam (Greedy).
 
-注意要确保我们考察了最优解中用到的所有子问题．
+Lưu ý cần đảm bảo chúng ta đã xem xét tất cả các bài toán con được sử dụng trong lời giải tối ưu.
 
-1.  证明问题最优解的第一个组成部分是做出一个选择；
-2.  对于一个给定问题，在其可能的第一步选择中，假定你已经知道哪种选择才会得到最优解．你现在并不关心这种选择具体是如何得到的，只是假定已经知道了这种选择；
-3.  给定可获得的最优解的选择后，确定这次选择会产生哪些子问题，以及如何最好地刻画子问题空间；
-4.  证明作为构成原问题最优解的组成部分，每个子问题的解就是它本身的最优解．方法是反证法，考虑加入某个子问题的解不是其自身的最优解，那么就可以从原问题的解中用该子问题的最优解替换掉当前的非最优解，从而得到原问题的一个更优的解，从而与原问题最优解的假设矛盾．
+1.  Chứng minh rằng thành phần đầu tiên của lời giải tối ưu là thực hiện một lựa chọn;
+2.  Đối với một bài toán cho trước, trong các lựa chọn bước đầu tiên có thể, giả định bạn đã biết lựa chọn nào sẽ dẫn đến lời giải tối ưu. Lúc này bạn không quan tâm lựa chọn đó cụ thể có được như thế nào, chỉ giả định là đã biết nó;
+3.  Sau khi có lựa chọn tối ưu, xác định lựa chọn này sẽ sinh ra những bài toán con nào và cách mô tả không gian bài toán con tốt nhất;
+4.  Chứng minh rằng với tư cách là thành phần cấu thành lời giải tối ưu của bài toán gốc, lời giải của mỗi bài toán con chính là lời giải tối ưu của chính nó. Phương pháp là phản chứng: giả sử lời giải của một bài toán con không phải là tối ưu của chính nó, thì ta có thể thay thế lời giải không tối ưu đó bằng lời giải tối ưu của bài toán con đó vào lời giải bài toán gốc để được một lời giải tốt hơn, mâu thuẫn với giả thiết ban đầu.
 
-要保持子问题空间尽量简单，只在必要时扩展．
+Cần giữ cho không gian bài toán con đơn giản nhất có thể, chỉ mở rộng khi cần thiết.
 
-最优子结构的不同体现在两个方面：
+Sự khác biệt của cấu trúc con tối ưu thể hiện ở hai khía cạnh:
 
-1.  原问题的最优解中涉及多少个子问题；
-2.  确定最优解使用哪些子问题时，需要考察多少种选择．
+1.  Lời giải tối ưu của bài toán gốc liên quan đến bao nhiêu bài toán con;
+2.  Khi xác định sử dụng những bài toán con nào cho lời giải tối ưu, cần xem xét bao nhiêu lựa chọn.
 
-子问题图中每个定点对应一个子问题，而需要考察的选择对应关联至子问题顶点的边．
+Mỗi đỉnh trong đồ thị bài toán con tương ứng với một bài toán con, và các lựa chọn cần xem xét tương ứng với các cạnh nối đến đỉnh bài toán con đó.
 
-### 无后效性
+### Tính không hệ quả (No-after-effect)
 
-已经求解的子问题，不会再受到后续决策的影响．
+Các bài toán con đã được giải sẽ không bị ảnh hưởng bởi các quyết định sau đó.
 
-### 子问题重叠
+### Bài toán con chồng lấn (Overlapping Subproblems)
 
-如果有大量的重叠子问题，我们可以用空间将这些子问题的解存储下来，避免重复求解相同的子问题，从而提升效率．
+Nếu có một lượng lớn các bài toán con chồng lấn, chúng ta có thể dùng không gian lưu trữ lời giải của các bài toán con này để tránh việc giải lặp lại, từ đó nâng cao hiệu suất.
 
-### 基本思路
+### Tư tưởng cơ bản
 
-对于一个能用动态规划解决的问题，一般采用如下思路解决：
+Đối với một bài toán có thể giải bằng quy hoạch động, thường áp dụng quy trình sau:
 
-1.  将原问题划分为若干 **阶段**，每个阶段对应若干个子问题，提取这些子问题的特征（称之为 **状态**）；
-2.  寻找每一个状态的可能 **决策**，或者说是各状态间的相互转移方式（用数学的语言描述就是 **状态转移方程**）．
-3.  按顺序求解每一个阶段的问题．
+1.  Chia bài toán gốc thành nhiều **giai đoạn**, mỗi giai đoạn tương ứng với một số bài toán con, trích xuất đặc trưng của các bài toán con này (gọi là **trạng thái**);
+2.  Tìm các **quyết định** khả thi cho mỗi trạng thái, hoặc cách chuyển đổi giữa các trạng thái (mô tả bằng ngôn ngữ toán học gọi là **phương trình chuyển trạng thái**);
+3.  Giải quyết bài toán của từng giai đoạn theo thứ tự.
 
-如果用图论的思想理解，我们建立一个 [有向无环图](../graph/dag.md)，每个状态对应图上一个节点，决策对应节点间的连边．这样问题就转变为了一个在 DAG 上寻找最长（短）路的问题（参见：[DAG 上的 DP](./dag.md)）．
+Nếu hiểu theo tư tưởng đồ thị, chúng ta xây dựng một [đồ thị có hướng không chu trình (DAG)](../graph/dag.md), mỗi trạng thái tương ứng với một nút trên đồ thị, quyết định tương ứng với các cạnh nối giữa các nút. Như vậy bài toán chuyển thành việc tìm đường đi dài (ngắn) nhất trên DAG (xem thêm: [DP trên DAG](./dag.md)).
 
-## 最长公共子序列
+## Dãy con chung dài nhất (Longest Common Subsequence)
 
-???+ note "最长公共子序列问题"
-    给定一个长度为 $n$ 的序列 $A$ 和一个 长度为 $m$ 的序列 $B$（$n,m \leq 5000$），求出一个最长的序列，使得该序列既是 $A$ 的子序列，也是 $B$ 的子序列．
+???+ note "Bài toán dãy con chung dài nhất"
+    Cho một dãy $A$ độ dài $n$ và một dãy $B$ độ dài $m$ ($n, m \leq 5000$), tìm một dãy dài nhất sao cho dãy đó vừa là dãy con của $A$, vừa là dãy con của $B$.
 
-子序列的定义可以参考 [子序列](../string/basic.md)．一个简要的例子：字符串 `abcde` 与字符串 `acde` 的公共子序列有 `a`、`c`、`d`、`e`、`ac`、`ad`、`ae`、`cd`、`ce`、`de`、`acd`、`ade`、`ace`、`cde`、`acde`，最长公共子序列的长度是 4．
+Định nghĩa dãy con có thể tham khảo [Xâu con](../string/basic.md). Ví dụ ngắn gọn: xâu `abcde` và xâu `acde` có các dãy con chung là `a`, `c`, `d`, `e`, `ac`, `ad`, `ae`, `cd`, `ce`, `de`, `acd`, `ade`, `ace`, `cde`, `acde`, độ dài dãy con chung dài nhất là 4.
 
-设 $f(i,j)$ 表示只考虑 $A$ 的前 $i$ 个元素，$B$ 的前 $j$ 个元素时的最长公共子序列的长度，求这时的最长公共子序列的长度就是 **子问题**．$f(i,j)$ 就是我们所说的 **状态**，则 $f(n,m)$ 是最终要达到的状态，即为所求结果．
+Gọi $f(i, j)$ là độ dài dãy con chung dài nhất khi chỉ xét $i$ phần tử đầu của $A$ và $j$ phần tử đầu của $B$. Việc tìm độ dài này chính là **bài toán con**. $f(i, j)$ là cái chúng ta gọi là **trạng thái**, khi đó $f(n, m)$ là trạng thái cuối cùng cần đạt tới, tức là kết quả cần tìm.
 
-对于每个 $f(i,j)$，存在三种决策：如果 $A_i=B_j$，则可以将它接到公共子序列的末尾；另外两种决策分别是跳过 $A_i$ 或者 $B_j$．状态转移方程如下：
+Với mỗi $f(i, j)$, có ba quyết định: nếu $A_i = B_j$, ta có thể nối nó vào cuối dãy con chung; hai quyết định còn lại lần lượt là bỏ qua $A_i$ hoặc $B_j$. Phương trình chuyển trạng thái như sau:
 
 $$
 f(i,j)=\begin{cases}f(i-1,j-1)+1&A_i=B_j\\\max(f(i-1,j),f(i,j-1))&A_i\ne B_j\end{cases}
 $$
 
-可参考 [SourceForge 的 LCS 交互网页](http://lcs-demo.sourceforge.net/) 来更好地理解 LCS 的实现过程．
+Có thể tham khảo [Trang web tương tác LCS của SourceForge](http://lcs-demo.sourceforge.net/) để hiểu rõ hơn quá trình thực hiện LCS.
 
-???+ example "参考实现"
+???+ example "Tham khảo mã nguồn"
     === "C++"
         ```cpp
         --8<-- "docs/dp/code/basic/lcs.cpp:core"
@@ -103,22 +103,22 @@ $$
         --8<-- "docs/dp/code/basic/lcs.py:core"
         ```
 
-该做法的时间复杂度为 $O(nm)$．
+Độ phức tạp thời gian của cách làm này là $O(nm)$.
 
-另外，本题存在 $O\left(\dfrac{nm}{w}\right)$ 的算法[^ref1]．有兴趣的同学可以自行探索．
+Ngoài ra, bài toán này tồn tại thuật toán $O\left(\dfrac{nm}{w}\right)$ [^ref1]. Các bạn có hứng thú có thể tự tìm hiểu.
 
-## 最长不下降子序列
+## Dãy con không giảm dài nhất (Longest Non-decreasing Subsequence)
 
-???+ note "最长不下降子序列问题"
-    给定一个长度为 $n$ 的序列 $a$（$n \leq 5000$），求出一个最长的 $a$ 的子序列，满足该子序列的后一个元素不小于前一个元素．
+???+ note "Bài toán dãy con không giảm dài nhất"
+    Cho một dãy $a$ độ dài $n$ ($n \leq 5000$), tìm một dãy con dài nhất của $a$ thỏa mãn phần tử đứng sau không nhỏ hơn phần tử đứng trước.
 
-### 算法一
+### Thuật toán 1
 
-设 $f(i)$ 表示以 $a_i$ 为结尾的最长不下降子序列的长度，则所求为 $\max_{1 \leq i \leq n} f(i)$．
+Gọi $f(i)$ là độ dài dãy con không giảm dài nhất kết thúc tại $a_i$, kết quả cần tìm là $\max_{1 \leq i \leq n} f(i)$.
 
-计算 $f(i)$ 时，尝试将 $a_i$ 接到其他的最长不下降子序列后面，以更新答案．于是可以写出这样的状态转移方程：$f(i)=\max_{1 \leq j < i,~a_j \leq a_i} (f(j)+1)$．
+Khi tính $f(i)$, thử nối $a_i$ vào sau các dãy con không giảm dài nhất khác để cập nhật kết quả. Do đó có thể viết phương trình chuyển trạng thái: $f(i)=\max_{1 \leq j < i,~a_j \leq a_i} (f(j)+1)$.
 
-???+ example "参考实现"
+???+ example "Tham khảo mã nguồn"
     === "C++"
         ```cpp
         --8<-- "docs/dp/code/basic/lis-1.cpp:core"
@@ -129,30 +129,30 @@ $$
         --8<-- "docs/dp/code/basic/lis-1.py:core"
         ```
 
-容易发现该算法的时间复杂度为 $O(n^2)$．
+Dễ thấy độ phức tạp thời gian của thuật toán này là $O(n^2)$.
 
-### 算法二
+### Thuật toán 2
 
-当 $n$ 的范围扩大到 $n \leq 10^5$ 时，第一种做法就不够快了，下面给出了一个 $O(n \log n)$ 的做法．
+Khi phạm vi của $n$ mở rộng đến $n \leq 10^5$, cách làm thứ nhất không còn đủ nhanh, dưới đây là cách làm $O(n \log n)$.
 
-考虑之前定义的状态 $(i, l)$，表示序列以第 $i$ 个元素结尾的不下降子序列最长为 $l$．不同于以往按固定 $i$ 处理状态的方法，这里直接判断 $(i, l)$ 是否合法：
+Xét trạng thái $(i, l)$ đã định nghĩa trước đó, biểu thị dãy con không giảm kết thúc tại phần tử thứ $i$ có độ dài lớn nhất là $l$. Khác với phương pháp xử lý trạng thái theo $i$ cố định, ở đây ta trực tiếp kiểm tra xem $(i, l)$ có hợp lệ hay không:
 
--   初始状态 $(1,1)$ 必然合法．
--   对于任意 $(i, l)$，如果存在 $j < i$ 且 $(j, l-1)$ 合法，同时 $a_j \le a_i$，则 $(i, l)$ 合法．
+-   Trạng thái ban đầu $(1, 1)$ chắc chắn hợp lệ.
+-   Với bất kỳ $(i, l)$ nào, nếu tồn tại $j < i$ sao cho $(j, l-1)$ hợp lệ và $a_j \leq a_i$, thì $(i, l)$ hợp lệ.
 
-最终，只需要找到合法状态中 $l$ 最大的 $(i,l)$，即可得到最长不下降子序列的长度．
+Cuối cùng, chỉ cần tìm giá trị $l$ lớn nhất trong các trạng thái hợp lệ $(i, l)$ là có được độ dài dãy con không giảm dài nhất.
 
-设原序列为 $a_1, \cdots, a_n$，定义数组 $d$，其中第 $x$ 位表示长度为 $x$ 的不下降子序列末尾元素的最小值．初始时序列为空．令 $i$ 从 $1$ 到 $n$ 遍历，依次求出前 $i$ 个元素的最长不下降子序列的长度．对于当前元素 $a_i$：
+Giả sử dãy ban đầu là $a_1, \dots, a_n$, định nghĩa mảng $d$, trong đó vị trí thứ $x$ lưu giá trị nhỏ nhất của phần tử cuối cùng trong các dãy con không giảm độ dài $x$. Ban đầu dãy trống. Cho $i$ chạy từ $1$ đến $n$, lần lượt tìm độ dài dãy con không giảm dài nhất của $i$ phần tử đầu tiên. Đối với phần tử hiện tại $a_i$:
 
--   如果 $a_i$ 大于等于序列 $d$ 中最后一个元素，直接将元素 $a_i$ 插入到序列 $d$ 的末尾．
-    -   解释：若 $a_i$ 大于等于当前最长子序列的末尾元素，说明存在一个不下降子序列可以接上 $a_i$．不插入将破坏最优性．
--   如果 $a_i$ 严格小于 $d$ 中最后一个元素，找到 **第一个** 大于它的元素，并用 $a_i$ 替换它．
-    -   解释：若直接插在末尾，会破坏 $d$ 的单调性；替换操作可以保证每个长度的末尾元素尽可能小，从而为后续元素保留更多可能性．
-    -   优化：因为 $d$ 单调不减，可用二分查找直接找到元素的插入位置，将整体复杂度降低到 $O(n\log n)$ 而非暴力查找的 $O(n^2)$．
+-   Nếu $a_i$ lớn hơn hoặc bằng phần tử cuối cùng trong dãy $d$, trực tiếp chèn $a_i$ vào cuối dãy $d$.
+    -   Giải thích: Nếu $a_i$ không nhỏ hơn phần tử cuối của dãy con dài nhất hiện tại, chứng tỏ tồn tại một dãy con không giảm có thể nối thêm $a_i$. Không chèn vào sẽ làm mất tính tối ưu.
+-   Nếu $a_i$ nhỏ hơn phần tử cuối cùng trong $d$, tìm phần tử **đầu tiên** lớn hơn nó và thay thế bằng $a_i$.
+    -   Giải thích: Nếu chèn trực tiếp vào cuối sẽ phá hỏng tính đơn điệu của $d$; thao tác thay thế đảm bảo phần tử cuối cùng của mỗi độ dài là nhỏ nhất có thể, từ đó để lại nhiều khả năng hơn cho các phần tử sau.
+    -   Tối ưu: Vì $d$ là dãy đơn điệu không giảm, có thể dùng tìm kiếm nhị phân để trực tiếp tìm vị trí chèn, giảm độ phức tạp tổng thể xuống $O(n \log n)$ thay vì $O(n^2)$ nếu tìm kiếm tuần tự.
 
-如果还要输出具体的最长不下降子序列，可以额外维护数组 $d'_x$，表示长度为 $x$ 的不下降子序列中末尾最小元素的位置（有多个可任选一个）．具体维护时，只需要在插入元素 $a_i$ 到 $d_x$ 时，同时更新 $d'_x$ 为 $i$ 即可．同时，需要记录 $i$ 的最优前驱 $p_i$ 为 $d'_{x-1}$．最终，从任意最大长度状态出发，沿前驱 $p_i$ 回溯，即可得到完整子序列．
+Nếu cần xuất dãy con không giảm dài nhất cụ thể, có thể duy trì thêm mảng $d'_x$ lưu vị trí của phần tử cuối nhỏ nhất của dãy con độ dài $x$. Khi thực hiện, chỉ cần cập nhật $d'_x = i$ khi chèn $a_i$ vào $d_x$. Đồng thời, cần ghi lại tiền bối tối ưu $p_i$ của $i$ là $d'_{x-1}$. Cuối cùng, từ bất kỳ trạng thái có độ dài cực đại nào, lần theo tiền bối $p_i$ để truy hồi lại toàn bộ dãy con.
 
-???+ example "参考实现"
+???+ example "Tham khảo mã nguồn"
     === "C++"
         ```cpp
         --8<-- "docs/dp/code/basic/lis-2.cpp:core"
@@ -163,17 +163,17 @@ $$
         --8<-- "docs/dp/code/basic/lis-2.py:core"
         ```
 
-该算法的时间复杂度为 $O(n\log n)$．输出答案的时间复杂度为 $O(\textit{ans})$．
+Độ phức tạp thời gian của thuật toán này là $O(n \log n)$. Độ phức tạp thời gian để xuất kết quả là $O(\textit{ans})$.
 
-???+ tip "注意"
-    对于最长 **上升** 子序列问题，类似地，可以令 $d_i$ 表示所有长度为 $i$ 的最长上升子序列的末尾元素的最小值．
+???+ tip "Lưu ý"
+    Đối với bài toán dãy con **tăng** dài nhất, tương tự, có thể gọi $d_i$ là giá trị nhỏ nhất của phần tử cuối cùng trong tất cả các dãy con tăng dài nhất độ dài $i$.
     
-    需要注意的是，在步骤 2 中，若 $a_i \leq d_{len}$，由于最长上升子序列中相邻元素不能相等，需要在 $d$ 序列中找到 **第一个**  **不小于**  $a_i$ 的元素，用 $a_i$ 替换之．
+    Cần chú ý rằng ở bước 2, nếu $a_i \leq d_{len}$, do các phần tử liền kề trong dãy con tăng không được bằng nhau, cần tìm phần tử **đầu tiên** **không nhỏ hơn** $a_i$ trong dãy $d$ và thay thế nó bằng $a_i$.
     
-    在实现上（以 C++ 为例），需要将 `upper_bound` 函数改为 `lower_bound`．
+    Về mặt cài đặt (lấy C++ làm ví dụ), cần đổi hàm `upper_bound` thành `lower_bound`.
 
-## 参考资料与注释
+## Tài liệu tham khảo và chú thích
 
--   [最长不下降子序列 nlogn 算法详解 - lvmememe - 博客园](https://www.cnblogs.com/itlqs/p/5743114.html)
+-   [Giải thích chi tiết thuật toán nlogn cho dãy con không giảm dài nhất - lvmememe - Blog Garden](https://www.cnblogs.com/itlqs/p/5743114.html)
 
-[^ref1]: [位运算求最长公共子序列 - -Wallace- - 博客园](https://www.cnblogs.com/-Wallace-/p/bit-lcs.html)
+[^ref1]: [Dùng phép toán bit tìm dãy con chung dài nhất - -Wallace- - Blog Garden](https://www.cnblogs.com/-Wallace-/p/bit-lcs.html)
