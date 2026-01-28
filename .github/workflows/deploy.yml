@@ -19,7 +19,7 @@ jobs:
           fetch-depth: 0
           submodules: true
 
-      # --- FIX 1: Set up Node.js for the pre-build script ---
+      # --- Step 1: Node.js (for math scripts) ---
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
@@ -30,7 +30,7 @@ jobs:
           npm install -g ts-node typescript
           if [ -f package.json ]; then npm install; fi
 
-      # --- FIX 2: Set up Python and install the MISSING package ---
+      # --- Step 2: Python (for MkDocs) ---
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -40,15 +40,20 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           
-          # Install standard OI-wiki dependencies
-          pip install mkdocs-material mkdocs-git-revision-date-localized-plugin mkdocs-static-i18n
-          
-          # ⚠️ THE CRITICAL FIX: Install the package that provides "document-offsets-injection"
-          pip install python-markdown-document-offsets-injection-extension
+          # ⚠️ INSTALL EVERYTHING: We force install all common OI-wiki plugins here
+          # This covers minify, redirects, and the specific extensions you need.
+          pip install \
+            mkdocs-material \
+            mkdocs-static-i18n \
+            mkdocs-git-revision-date-localized-plugin \
+            mkdocs-minify-plugin \
+            mkdocs-redirects \
+            python-markdown-document-offsets-injection-extension
 
-          # If you have a requirements.txt, install it last to cover anything else
+          # If the repo has a requirements.txt, run it last to catch anything else
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
+      # --- Step 3: Build & Deploy ---
       - name: Run Pre-build Script
         run: |
           if [ -f scripts/pre-build/pre-build.sh ]; then
