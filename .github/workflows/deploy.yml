@@ -1,0 +1,41 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main  # ⚠️ Check if your default branch is 'main' or 'master'
+
+# This permission block is CRITICAL for the action to write to your repo
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Required for git-revision-date plugins
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.x
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          # OI-wiki usually has a requirements.txt, this installs it
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          # Fallback if requirements.txt is missing/broken
+          pip install mkdocs-material mkdocs-git-revision-date-localized-plugin
+
+      - name: Build site
+        run: mkdocs build
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./site
