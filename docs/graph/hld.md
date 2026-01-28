@@ -1,47 +1,42 @@
 author: GoodCoder666, Ir1d, Marcythm, ouuan, hsfzLZH1, Xeonacid, greyqz, Chrogeek, ftxj, sshwy, LuoshuiTianyi, hyp1231, sun2snow
 
-## 引入
+## Giới thiệu
 
-树链剖分用于将树分割成若干条链的形式，以维护树上路径的信息．
+Phân tích chuỗi nặng nhẹ (Heavy-Light Decomposition, viết tắt HLD) là kỹ thuật chia cây thành các chuỗi để dễ dàng quản lý thông tin trên đường đi trong cây.
 
-具体来说，将整棵树剖分为若干条链，使它组合成线性结构，然后用其他的数据结构维护信息．
+Cụ thể, HLD chia cây thành nhiều chuỗi, kết hợp thành cấu trúc tuyến tính, sau đó dùng các cấu trúc dữ liệu khác để quản lý thông tin.
 
-**树链剖分**（树剖/链剖）有多种形式，如 **重链剖分**，**长链剖分** 和用于 Link/cut Tree 的剖分（有时被称作「实链剖分」）．大多数情况下（没有特别说明时），「树链剖分」都指「重链剖分」．
+**Phân tích chuỗi nặng nhẹ** (còn gọi là "phân tích chuỗi", "phân tích đường") có nhiều biến thể như **phân tích chuỗi nặng** (heavy chain), **phân tích chuỗi dài** (long chain), và phân tích dùng cho Link/Cut Tree (đôi khi gọi là "phân tích chuỗi thực"). Nếu không nói rõ, "phân tích chuỗi" thường chỉ "phân tích chuỗi nặng".
 
-重链剖分可以将树上的任意一条路径划分成不超过 $O(\log n)$ 条连续的链，每条链上的点深度互不相同（即是自底向上的一条链，链上所有点的 LCA 为链的一个端点）．
+Phân tích chuỗi nặng nhẹ đảm bảo mọi đường đi trên cây có thể chia thành không quá $O(\log n)$ chuỗi liên tiếp, các đỉnh trên mỗi chuỗi có độ sâu khác nhau (chuỗi đi từ dưới lên, LCA của chuỗi là một đầu mút).
 
-重链剖分还能保证划分出的每条链上的结点 DFS 序连续，因此可以方便地用一些维护序列的数据结构（如线段树）来维护树上路径的信息．例如：
+HLD còn đảm bảo các đỉnh trên mỗi chuỗi có thứ tự DFS liên tiếp, nên có thể dùng các cấu trúc dữ liệu quản lý dãy số (như segment tree) để quản lý thông tin đường đi. Ví dụ:
 
-1.  修改 **树上两点之间的路径上** 所有点的值．
-2.  查询 **树上两点之间的路径上** 结点权值的 **和/极值/其它（在序列上可以用数据结构维护，便于合并的信息）**．
+1.  Cập nhật giá trị các đỉnh trên đường đi giữa hai đỉnh bất kỳ.
+2.  Truy vấn tổng/giá trị lớn nhất/các thông tin khác trên đường đi giữa hai đỉnh bất kỳ (miễn là có thể quản lý trên dãy số).
 
-除了配合数据结构来维护树上路径信息，树剖还可以用来 $O(\log n)$（且常数较小）地求 LCA．在某些题目中，还可以利用其性质来灵活地运用树剖．
+Ngoài việc phối hợp với cấu trúc dữ liệu để quản lý đường đi, HLD còn có thể dùng để tìm LCA trong $O(\log n)$ (với hằng số nhỏ). Một số bài toán còn tận dụng các tính chất đặc biệt của HLD.
 
-## 重链剖分
+## Phân tích chuỗi nặng
 
-我们给出一些定义：
+Một số định nghĩa:
 
-定义 **重子结点** 表示其子结点中子树最大的子结点．如果有多个子树最大的子结点，取其一．如果没有子结点，就无重子结点．
+-   **Con nặng** của một đỉnh là con có cây con lớn nhất. Nếu có nhiều con cùng lớn nhất, chọn một. Nếu không có con, không có con nặng.
+-   **Con nhẹ** là các con còn lại.
+-   Cạnh nối tới con nặng gọi là **cạnh nặng**.
+-   Cạnh nối tới con nhẹ gọi là **cạnh nhẹ**.
+-   Nhiều cạnh nặng nối tiếp tạo thành **chuỗi nặng**.
+-   Đỉnh lẻ cũng coi là chuỗi nặng, nên toàn bộ cây được chia thành nhiều chuỗi nặng.
 
-定义 **轻子结点** 表示剩余的所有子结点．
-
-从这个结点到重子结点的边为 **重边**．
-
-到其他轻子结点的边为 **轻边**．
-
-若干条首尾衔接的重边构成 **重链**．
-
-把落单的结点也当作重链，那么整棵树就被剖分成若干条重链．
-
-如图：
+Minh họa:
 
 ![HLD](./images/hld.png)
 
-## 实现
+## Cài đặt
 
-树剖的实现分两个 DFS 的过程．伪代码如下：
+HLD gồm hai lần DFS. Pseudocode:
 
-第一个 DFS 记录每个结点的父结点（$\textit{father}$）、深度（$\textit{depth}$）、子树大小（$\textit{size}$）、重子结点（$\textit{hson}$）．
+DFS đầu tiên ghi nhận cha ($\textit{father}$), độ sâu ($\textit{depth}$), kích thước cây con ($\textit{size}$), con nặng ($\textit{hson}$).
 
 $$
 \begin{array}{l}
@@ -61,7 +56,7 @@ $$
 \end{array}
 $$
 
-第二个 DFS 记录所在链的链顶（$\textit{top}$，应初始化为结点本身）、重边优先遍历时的 DFS 序（$\textit{top}$）、DFS 序对应的结点编号（$\textit{rank}$）．
+DFS thứ hai ghi nhận đỉnh đầu chuỗi ($\textit{top}$, khởi tạo là chính nó), thứ tự DFS khi duyệt chuỗi nặng ($\textit{top}$), và ánh xạ thứ tự DFS sang đỉnh ($\textit{rank}$).
 
 $$
 \begin{array}{l}
@@ -80,19 +75,17 @@ $$
 \end{array}
 $$
 
-以下为代码实现．
+Mã tham khảo:
 
-我们先给出一些定义：
+-   $\operatorname{fa}(x)$: cha của $x$.
+-   $\operatorname{dep}(x)$: độ sâu của $x$.
+-   $\operatorname{siz}(x)$: kích thước cây con của $x$.
+-   $\operatorname{son}(x)$: con nặng của $x$.
+-   $\operatorname{top}(x)$: đầu chuỗi nặng chứa $x$.
+-   $\operatorname{dfn}(x)$: thứ tự DFS của $x$, cũng là vị trí trên segment tree.
+-   $\operatorname{rnk}(x)$: ánh xạ từ thứ tự DFS sang đỉnh, $\operatorname{rnk}(\operatorname{dfn}(x))=x$.
 
--   $\operatorname{fa}(x)$ 表示结点 $x$ 在树上的父亲．
--   $\operatorname{dep}(x)$ 表示结点 $x$ 在树上的深度．
--   $\operatorname{siz}(x)$ 表示结点 $x$ 的子树的结点个数．
--   $\operatorname{son}(x)$ 表示结点 $x$ 的 **重儿子**．
--   $\operatorname{top}(x)$ 表示结点 $x$ 所在 **重链** 的顶部结点（深度最小）．
--   $\operatorname{dfn}(x)$ 表示结点 $x$ 的 **DFS 序**，也是其在线段树中的编号．
--   $\operatorname{rnk}(x)$ 表示 DFS 序所对应的结点编号，有 $\operatorname{rnk}(\operatorname{dfn}(x))=x$．
-
-我们进行两遍 DFS 预处理出这些值，其中第一次 DFS 求出 $\operatorname{fa}(x)$，$\operatorname{dep}(x)$，$\operatorname{siz}(x)$，$\operatorname{son}(x)$，第二次 DFS 求出 $\operatorname{top}(x)$，$\operatorname{dfn}(x)$，$\operatorname{rnk}(x)$．
+Hai lần DFS: lần 1 tính $\operatorname{fa}(x)$, $\operatorname{dep}(x)$, $\operatorname{siz}(x)$, $\operatorname{son}(x)$; lần 2 tính $\operatorname{top}(x)$, $\operatorname{dfn}(x)$, $\operatorname{rnk}(x)$.
 
 ```cpp
 void dfs1(int u, int f) {
@@ -113,38 +106,38 @@ void dfs2(int u, int ftop) {
 }
 ```
 
-## 重链剖分的性质
+## Tính chất của phân tích chuỗi nặng
 
-**树上每个结点都属于且仅属于一条重链**．
+**Mỗi đỉnh thuộc duy nhất một chuỗi nặng.**
 
-重链开头的结点不一定是重子结点（因为重边是对于每一个结点都有定义的）．
+Đầu chuỗi nặng không nhất thiết là con nặng (vì cạnh nặng xác định cho từng đỉnh).
 
-所有的重链将整棵树 **完全剖分**．
+Các chuỗi nặng chia cây thành các chuỗi không giao nhau.
 
-在剖分时 **重边优先遍历**，最后树的 DFS 序上，重链内的 DFS 序是连续的．按 DFN 排序后的序列即为剖分后的链．
+Khi duyệt chuỗi nặng trước, thứ tự DFS trên chuỗi là liên tiếp. Sắp xếp theo DFN sẽ ra chuỗi.
 
-一棵子树内的 DFS 序是连续的．
+Thứ tự DFS của cây con là liên tiếp.
 
-可以发现，当我们向下经过一条 **轻边** 时，所在子树的大小至少会除以二．
+Khi đi qua một cạnh nhẹ, kích thước cây con giảm ít nhất một nửa.
 
-因此，对于树上的任意一条路径，把它拆分成从 [LCA](./lca.md) 分别向两边往下走，分别最多走 $O(\log n)$ 次，因此，树上的每条路径都可以被拆分成不超过 $O(\log n)$ 条重链．
+Với mọi đường đi trên cây, chia thành hai đoạn từ LCA xuống hai đầu, mỗi đoạn đi qua tối đa $O(\log n)$ chuỗi nặng.
 
-??? info "怎么有理有据地卡树剖"
-    一般情况下树剖的 $O(\log n)$ 常数不满很难卡，如果要卡只能建立二叉树深度低．
-    
-    于是我们可以考虑折中方案．
-    
-    我们建立一棵 $\sqrt{n}$ 个结点的二叉树．对于每个结点到其儿子的边，我们将其替换成一条长度为 $\sqrt{n}$ 的链．
-    
-    这样子我们可以将随机询问轻重链切换次数卡到平均 $\frac{\log n}{2}$ 次，同时有 $O(\sqrt{n} \log n)$ 的深度．
-    
-    加上若干随机叶子看上去可以卡树剖．但是树剖常数小有可能卡不掉．
+??? info "Làm sao để kiểm tra HLD có thực sự $O(\log n)$?"
+    Thường thì hằng số của HLD rất nhỏ, khó kiểm tra. Nếu muốn kiểm tra, có thể xây cây nhị phân có độ sâu thấp.
 
-## 常见应用
+    Có thể dùng phương pháp trung gian.
 
-### 路径上维护
+    Xây cây nhị phân $\sqrt{n}$ đỉnh, mỗi cạnh nối tới con thay bằng chuỗi dài $\sqrt{n}$.
 
-用树链剖分求树上两点路径权值和，伪代码如下：
+    Như vậy, số lần chuyển chuỗi khi truy vấn ngẫu nhiên là trung bình $\frac{\log n}{2}$, độ sâu $O(\sqrt{n} \log n)$.
+
+    Thêm một số lá ngẫu nhiên có thể kiểm tra HLD. Tuy nhiên, hằng số nhỏ nên khó kiểm tra.
+
+## Ứng dụng phổ biến
+
+### Quản lý đường đi
+
+Dùng HLD để tính tổng trọng số trên đường đi giữa hai đỉnh, pseudocode:
 
 $$
 \begin{array}{l}
@@ -162,29 +155,29 @@ $$
 \end{array}
 $$
 
-链上的 DFS 序是连续的，可以使用线段树、树状数组维护．
+Thứ tự DFS trên chuỗi là liên tiếp, có thể dùng segment tree, BIT để quản lý.
 
-每次选择深度较大的链往上跳，直到两点在同一条链上．
+Mỗi lần nhảy lên chuỗi có độ sâu lớn hơn, đến khi hai đỉnh cùng chuỗi.
 
-同样的跳链结构适用于维护、统计路径上的其他信息．
+Cách nhảy chuỗi này cũng dùng cho các truy vấn khác trên đường đi.
 
-### 子树维护
+### Quản lý thông tin cây con
 
-有时会要求，维护子树上的信息，譬如将以 $x$ 为根的子树的所有结点的权值增加 $v$．
+Đôi khi cần quản lý thông tin trên cây con, ví dụ tăng trọng số mọi đỉnh trong cây con gốc $x$.
 
-在 DFS 搜索的时候，子树中的结点的 DFS 序是连续的．
+Khi DFS, thứ tự DFS của cây con là liên tiếp.
 
-每一个结点记录 bottom 表示所在子树连续区间末端的结点．
+Mỗi đỉnh lưu bottom là đỉnh cuối cùng của cây con trên DFS.
 
-这样就把子树信息转化为连续的一段区间信息．
+Như vậy, thông tin cây con chuyển thành một đoạn liên tiếp.
 
-### 求最近公共祖先
+### Tìm LCA
 
-不断向上跳重链，当跳到同一条重链上时，深度较小的结点即为 LCA．
+Nhảy lên chuỗi nặng, khi hai đỉnh cùng chuỗi, đỉnh có độ sâu nhỏ hơn là LCA.
 
-向上跳重链时需要先跳所在重链顶端深度较大的那个．
+Khi nhảy, luôn nhảy chuỗi có độ sâu lớn hơn.
 
-参考代码：
+Mã tham khảo:
 
 ```cpp
 int lca(int u, int v) {
@@ -192,135 +185,136 @@ int lca(int u, int v) {
     if (dep[top[u]] > dep[top[v]])
       u = fa[top[u]];
     else
-      v = fa[top[v]];
+      v = fa[top[v)];
   }
   return dep[u] > dep[v] ? v : u;
 }
 ```
 
-### 换根操作
+### Đổi gốc
 
-考虑一类新的问题：除了树链剖分支持的基本操作外，加上了换根操作．
+Xét bài toán: ngoài các thao tác cơ bản, còn có thao tác đổi gốc.
 
-由于树链剖分维护的信息是静态的，不支持动态修改．同时，不可能每次换根后重新预处理信息，复杂度过高．那么，需要充分利用之前得到的信息来帮助解决换根操作．
+Vì HLD quản lý thông tin tĩnh, không hỗ trợ cập nhật động. Không thể mỗi lần đổi gốc lại tiền xử lý, quá tốn thời gian. Cần tận dụng thông tin đã có.
 
-对于路径修改和查询操作，由于树上两点之间的简单路径唯一，所以不会发生变化，与正常的处理方式相同．
+Với truy vấn đường đi, vì đường đi giữa hai đỉnh là duy nhất, không bị ảnh hưởng, xử lý như bình thường.
 
-对于子树修改和查询操作，一般的思路就是将换根后的子树映射到原来的子树．这需要分类讨论操作子树的根结点、换根后的整个树的根结点，以及原来树的根结点的相对位置关系．具体细节详见 [后文例题](./hld.md#loj-139-树链剖分)．
+Với truy vấn cây con, cần ánh xạ cây con sau khi đổi gốc về cây con ban đầu. Phải xét vị trí của gốc mới, gốc cũ và đỉnh truy vấn. Chi tiết xem [phần ví dụ](./hld.md#loj-139-树链剖分).
 
-## 例题
+## Ví dụ
 
-本文通过例题展示如何应用重链剖分．首先是一道模板题．
+Dưới đây là một số ví dụ ứng dụng HLD. Đầu tiên là bài mẫu.
 
-???+ example "[「ZJOI2008」树的统计](https://loj.ac/problem/10138)"
-    对一棵有 $n$ 个结点，结点带权值的静态树，进行三种操作共 $q$ 次：
+???+ example "[「ZJOI2008」Thống kê trên cây](https://loj.ac/problem/10138)"
+    Cho cây $n$ đỉnh có trọng số, thực hiện $q$ thao tác:
     
-    1.  修改单个结点的权值；
-    2.  查询 $u$ 到 $v$ 的路径上的最大权值；
-    3.  查询 $u$ 到 $v$ 的路径上的权值之和．
+    1.  Đổi trọng số một đỉnh;
+    2.  Truy vấn giá trị lớn nhất trên đường đi giữa hai đỉnh;
+    3.  Truy vấn tổng trọng số trên đường đi giữa hai đỉnh.
     
-    保证 $1\le n\le 30000$，$0\le q\le 200000$．
+    $1\le n\le 30000$, $0\le q\le 200000$.
 
-??? note "解答"
-    根据题面以及前文所述性质，线段树需要维护三种操作：
+??? note "Giải thích"
+    Theo đề và các tính chất trên, segment tree cần hỗ trợ:
     
-    1.  单点修改；
-    2.  区间查询最大值；
-    3.  区间查询和．
+    1.  Đổi trọng số một đỉnh;
+    2.  Truy vấn giá trị lớn nhất trên đoạn;
+    3.  Truy vấn tổng trên đoạn.
     
-    单点修改很容易实现．
+    Đổi trọng số một đỉnh rất dễ.
     
-    由于子树的 DFS 序连续（无论是否树剖都是如此），修改一个结点的子树只用修改这一段连续的 DFS 序区间．
+    Vì thứ tự DFS của cây con là liên tiếp (không cần HLD), đổi trọng số cây con chỉ cần cập nhật đoạn liên tiếp.
     
-    问题是如何修改/查询两个结点之间的路径．
+    Vấn đề là làm sao cập nhật/truy vấn đường đi giữa hai đỉnh.
     
-    考虑我们是如何用 **倍增法求解 LCA** 的．首先我们 **将两个结点提到同一高度，然后将两个结点一起向上跳**．对于树链剖分也可以使用这样的思想．
+    Xét cách tìm LCA bằng phương pháp nhảy bậc: đưa hai đỉnh lên cùng độ sâu, rồi nhảy lên cùng nhau. Với HLD cũng vậy.
     
-    在向上跳的过程中，如果当前结点在重链上，向上跳到重链顶端，如果当前结点不在重链上，向上跳一个结点．如此直到两结点相同．沿途更新/查询区间信息．
+    Khi nhảy, nếu đang ở chuỗi nặng, nhảy lên đầu chuỗi; nếu không, nhảy lên một đỉnh. Lặp lại đến khi hai đỉnh trùng nhau. Cập nhật/truy vấn trên đoạn tương ứng.
     
-    对于每个询问，最多经过 $O(\log n)$ 条重链，每条重链上线段树的复杂度为 $O(\log n)$，因此总时间复杂度为 $O(n\log n+q\log^2 n)$．实际上重链个数很难达到 $O(\log n)$（可以用完全二叉树卡满），所以树剖在一般情况下常数较小．
+    Mỗi truy vấn đi qua tối đa $O(\log n)$ chuỗi nặng, mỗi chuỗi truy vấn segment tree $O(\log n)$, tổng $O(n\log n+q\log^2 n)$. Thực tế số chuỗi nặng khó đạt $O(\log n)$ (chỉ khi cây nhị phân đầy), nên HLD thường có hằng số nhỏ.
 
-??? note "参考代码"
+??? note "Mã tham khảo"
     ```cpp
     --8<-- "docs/graph/code/hld/hld_1.cpp"
     ```
 
-然后是一道带换根操作的重链剖分模板题．
+Tiếp theo là bài mẫu có đổi gốc.
 
 <a id="loj-139-树链剖分"></a>
 
-???+ example "[LOJ 139. 树链剖分](https://loj.ac/p/139)"
-    给定一棵 $n$ 个结点的树（初始根结点为 $1$），要求支持如下的 $m$ 次操作：
+???+ example "[LOJ 139. Phân tích chuỗi trên cây](https://loj.ac/p/139)"
+    Cho cây $n$ đỉnh (gốc ban đầu là $1$), thực hiện $m$ thao tác:
     
-    -   换根，将结点 $u$ 设为新的树根．
-    -   修改路径上结点权值，将结点 $u$ 和结点 $v$ 之间路径上的所有结点（包括这两个结点）的权值增加 $w$．
-    -   修改子树上结点权值，将以结点 $u$ 为根的子树上的所有结点的权值增加 $w$．
-    -   询问路径，询问结点 $u$ 和结点 $v$ 之间路径上的所有结点（包括这两个结点）的权值和．
-    -   询问子树，询问以结点 $u$ 为根的子树上的所有结点的权值和．
+    -   Đổi gốc, đặt $u$ làm gốc mới;
+    -   Tăng trọng số các đỉnh trên đường đi giữa $u$ và $v$ lên $w$;
+    -   Tăng trọng số các đỉnh trong cây con gốc $u$ lên $w$;
+    -   Truy vấn tổng trọng số các đỉnh trên đường đi giữa $u$ và $v$;
+    -   Truy vấn tổng trọng số các đỉnh trong cây con gốc $u$.
     
-    $1 \le n,m \le 10^5$．
+    $1 \le n,m \le 10^5$.
 
-??? note "解法"
-    先以 $1$ 作为根结点跑 DFS，预处理出树链剖分所必需的信息．为方便表述，称以 $1$ 为根结点的树为「原始树」，而称经历了若干次换根操作之后的树为「当前树」．在操作过程中，需要维护 $\textit{root}$ 为当前树的根结点．由于线段树中存储的是原始树的 DFS 序的信息，所以每次查询和修改时，都需要将当前树的查询和修改操作转换到原始树上．
-    
-    对于换根操作，我们直接令 $\textit{root}\gets u$．对于路径操作，由于换根不影响路径，所以直接在原始树上做对应操作即可．
-    
-    重点考虑操作子树的问题．我们根据 $u$ 和 $\textit{root}$ 的相对位置关系做分类讨论：
-    
-    -   $u = \textit{root}$：这是最特殊的情况，相当于对整棵树做操作．为此，直接对线段树的根结点打上标记或查询答案即可．
-    -   $u$ 是 $\textit{root}$ 在原始树上的祖先，即 $u$ 位于 $1$ 到 $\textit{root}$ 的简单路径上．
-    
-        这是最值得注意的情况．定义 $v$ 为原始树上 $u$ 到 $\textit{root}$ 的简单路径上除 $u$ 以外的深度最小的点，可以发现原始树上 $v$ 及其子树以外的部分恰好是当前树上 $u$ 及其子树．
-    
-        考虑如何高效找到 $v$．我们先令 $v\gets\textit{root}$，然后沿着重链往上跳直到 $\operatorname{dep}(\operatorname{top}(v))\le\operatorname{dep}(u)+1$．
-    
-        -   若 $\operatorname{dep}(\operatorname{top}(v))=\operatorname{dep}(u)+1$，令 $v\gets\operatorname{top}(v)$．此时，$v$ 是 $u$ 的一个轻儿子．
-        -   若 $\operatorname{dep}(\operatorname{top}(v))<\operatorname{dep}(u)+1$，亦即 $\operatorname{dep}(\operatorname{top}(v))\le \operatorname{dep}(u)$，这说明 $u,v$ 处在同一条重链上．根据同一条重链上 DFS 序连续的性质，所求的 $v$ 必然满足 $\operatorname{dfn}(v)=\operatorname{dfn}(u)+1$．所以，可以令 $v\gets\operatorname{rnk}(\operatorname{dfn}(u)+1)$．
-    
-        注意，这两种情形中可以合并：在跳完之后可以直接令
-    
+??? note "Giải thích"
+    Tiền xử lý DFS với gốc $1$, lưu thông tin HLD. Gọi cây gốc $1$ là "cây gốc", cây sau khi đổi gốc là "cây hiện tại". Khi thao tác, cần ánh xạ truy vấn/cập nhật về cây gốc.
+
+    Đổi gốc: gán $\textit{root}\gets u$. Truy vấn/cập nhật đường đi: không bị ảnh hưởng, xử lý như bình thường.
+
+    Truy vấn/cập nhật cây con: cần xét vị trí của $u$ và $\textit{root}$ trên cây gốc:
+
+    -   $u = \textit{root}$: thao tác trên toàn bộ cây, cập nhật/truy vấn segment tree gốc.
+    -   $u$ là tổ tiên của $\textit{root}$ trên cây gốc (nằm trên đường từ $1$ tới $\textit{root}$):
+
+        Trường hợp này cần chú ý. Gọi $v$ là đỉnh trên đường từ $u$ tới $\textit{root}$ (trừ $u$) có độ sâu nhỏ nhất. Khi đó, phần ngoài cây con gốc $v$ trên cây gốc chính là cây con gốc $u$ trên cây hiện tại.
+
+        Làm sao tìm $v$? Đầu tiên gán $v\gets\textit{root}$, rồi nhảy lên chuỗi nặng cho tới khi $\operatorname{dep}(\operatorname{top}(v))\le\operatorname{dep}(u)+1$.
+
+        -   Nếu $\operatorname{dep}(\operatorname{top}(v))=\operatorname{dep}(u)+1$, gán $v\gets\operatorname{top}(v)$, tức $v$ là con nhẹ của $u$.
+        -   Nếu $\operatorname{dep}(\operatorname{top}(v))<\operatorname{dep}(u)+1$, tức $u,v$ cùng chuỗi nặng, $v$ có $\operatorname{dfn}(v)=\operatorname{dfn}(u)+1$, nên gán $v\gets\operatorname{rnk}(\operatorname{dfn}(u)+1)$.
+
+        Hai trường hợp này có thể gộp: sau khi nhảy, gán
+
         $$
         v\gets\operatorname{rnk}(\operatorname{dfn}(\operatorname{top}(v))+\operatorname{dep}(u)+1-\operatorname{dep}(\operatorname{top}(v))).
         $$
-    
-        容易验证，利用这一表达式找到的 $v$，和分类讨论找到的 $v$ 是等价的．参考实现中就用到了这一表达式．
-    
-        由于 $v$ 子树覆盖的区间为 $[\operatorname{dfn}(v),\operatorname{dfn}(v)+\operatorname{siz}(v))$，所以只需要对 $[1,\operatorname{dfn}(v))\cup[\operatorname{dfn}(v)+\operatorname{siz}(v),n]$ 操作即可．
-    -   其它情况．可以发现换根操作不会影响 $u$ 的子树，用正常的方式维护即可．
-    
-    这样做的复杂度与不带换根的做法相同，均为 $O(n\log^2 n)$．
 
-??? note "参考代码"
+        Có thể kiểm chứng $v$ tìm được như trên là đúng. Mã tham khảo cũng dùng cách này.
+
+        Vì cây con gốc $v$ là đoạn $[\operatorname{dfn}(v),\operatorname{dfn}(v)+\operatorname{siz}(v))$, nên chỉ cần thao tác trên $[1,\operatorname{dfn}(v))\cup[\operatorname{dfn}(v)+\operatorname{siz}(v),n]$.
+
+    -   Trường hợp khác: thao tác trên cây con gốc $u$ như bình thường.
+
+    Độ phức tạp như không đổi gốc, $O(n\log^2 n)$.
+
+??? note "Mã tham khảo"
     ```cpp
     --8<-- "docs/graph/code/hld/hld_4.cpp"
     ```
 
-最后是一道交互题，也是树剖的非传统应用．
+Cuối cùng là một bài tương tác, ứng dụng đặc biệt của HLD.
 
-???+ example "[Nauuo and Binary Tree](https://loj.ac/problem/6669)"
-    有一棵以 $1$ 为根的二叉树，你可以询问任意两点之间的距离，求出每个点的父亲．
-    
-    结点数不超过 $3000$，你最多可以进行 $30000$ 次询问．
+???+ example "[Nauuo và cây nhị phân](https://loj.ac/problem/6669)"
+    Cho cây nhị phân gốc $1$, bạn có thể hỏi khoảng cách giữa hai đỉnh bất kỳ, yêu cầu xác định cha của mỗi đỉnh.
 
-??? note "解法"
-    首先可以通过 $n-1$ 次询问确定每个结点的深度．
-    
-    然后考虑按深度从小到大确定每个结点的父亲，这样的话确定一个结点的父亲时其所有祖先一定都是已知的．
-    
-    确定一个结点的父亲之前，先对树已知的部分进行重链剖分．
-    
-    假设我们需要在子树 $u$ 中找结点 $k$ 所在的位置，我们可以询问 $k$ 与 $u$ 所在重链的尾端的距离，就可以进一步确定 $k$ 的位置，具体见图：
-    
+    Số đỉnh không quá $3000$, tối đa $30000$ truy vấn.
+
+??? note "Giải thích"
+    Đầu tiên hỏi $n-1$ lần để xác định độ sâu từng đỉnh.
+
+    Sau đó, duyệt theo thứ tự tăng dần độ sâu để xác định cha từng đỉnh, khi đó các tổ tiên đều đã biết.
+
+    Trước khi xác định cha một đỉnh, xây HLD cho phần cây đã biết.
+
+    Giả sử cần tìm vị trí của đỉnh $k$ trong cây con gốc $u$, hỏi khoảng cách giữa $k$ và đỉnh cuối chuỗi nặng gốc $u$, xác định vị trí $k$ như hình:
+
     ![](./images/hld2.png)
-    
-    其中红色虚线是一条重链，$d$ 是询问的结果即 $\textit{dis}(k, \textit{bot}(u))$，$v$ 的深度为 $(\textit{dep}(k)+\textit{dep}(\textit{bot}(u))-d)/2$．
-    
-    这样的话，如果 $v$ 只有一个儿子，$k$ 的父亲就是 $v$，否则可以递归地在 $w$ 的子树中找 $k$ 的父亲．
-    
-    时间复杂度 $O(n^2)$，询问复杂度 $O(n\log n)$．
-    
-    具体地，设 $T(n)$ 为最坏情况下在一棵大小为 $n$ 的树中找到一个新结点的位置所需的询问次数，可以得到：
-    
+
+    Đường đỏ là chuỗi nặng, $d$ là kết quả truy vấn $\textit{dis}(k, \textit{bot}(u))$, độ sâu $v$ là $(\textit{dep}(k)+\textit{dep}(\textit{bot}(u))-d)/2$.
+
+    Nếu $v$ có một con, cha của $k$ là $v$, nếu không thì đệ quy tìm trong cây con gốc $w$.
+
+    Độ phức tạp $O(n^2)$, số truy vấn $O(n\log n)$.
+
+    Gọi $T(n)$ là số truy vấn tối đa để tìm vị trí một đỉnh mới trong cây $n$ đỉnh:
+
     $$
     T(n)\le
     \begin{cases}
@@ -328,132 +322,125 @@ int lca(int u, int v) {
     T\left(\left\lfloor\frac{n-1}2\right\rfloor\right)+1&n\ge2
     \end{cases}
     $$
-    
-    $2999+\sum_{i=1}^{2999}T(i)\le 29940$，事实上这个上界是可以通过构造数据达到的，然而只要进行一些随机扰动（如对深度进行排序时使用不稳定的排序算法），询问次数很难超过 $21000$ 次．
 
-??? note "参考代码"
+    $2999+\sum_{i=1}^{2999}T(i)\le 29940$, thực tế có thể đạt được nếu dữ liệu xấu, nhưng nếu thêm một chút ngẫu nhiên (ví dụ sắp xếp độ sâu không ổn định), số truy vấn khó vượt quá $21000$.
+
+??? note "Mã tham khảo"
     ```cpp
     --8<-- "docs/graph/code/hld/hld_2.cpp"
     ```
 
-## 长链剖分
+## Phân tích chuỗi dài
 
-长链剖分本质上就是另外一种链剖分方式．
+Phân tích chuỗi dài là một biến thể khác của phân tích chuỗi.
 
-定义 **重子结点** 表示其子结点中子树深度最大的子结点．如果有多个子树最大的子结点，取其一．如果没有子结点，就无重子结点．
+-   **Con nặng** là con có cây con sâu nhất. Nếu có nhiều con sâu nhất, chọn một. Nếu không có con, không có con nặng.
+-   **Con nhẹ** là các con còn lại.
+-   Cạnh nối tới con nặng gọi là **cạnh nặng**.
+-   Cạnh nối tới con nhẹ gọi là **cạnh nhẹ**.
+-   Nhiều cạnh nặng nối tiếp tạo thành **chuỗi nặng**.
+-   Đỉnh lẻ cũng coi là chuỗi nặng, nên toàn bộ cây được chia thành nhiều chuỗi nặng.
 
-定义 **轻子结点** 表示剩余的子结点．
-
-从这个结点到重子结点的边为 **重边**．
-
-到其他轻子结点的边为 **轻边**．
-
-若干条首尾衔接的重边构成 **重链**．
-
-把落单的结点也当作重链，那么整棵树就被剖分成若干条重链．
-
-如图（这种剖分方式既可以看成重链剖分也可以看成长链剖分）：
+Minh họa (cách chia này cũng là phân tích chuỗi nặng hoặc chuỗi dài):
 
 ![HLD](./images/hld.png)
 
-长链剖分实现方式和重链剖分类似，这里就不再展开．
+Cách cài đặt giống phân tích chuỗi nặng, không trình bày lại.
 
-### 常见应用
+### Ứng dụng phổ biến
 
-首先，我们发现长链剖分从一个结点到根的路径的轻边切换条数是 $\sqrt{n}$ 级别的．
+Phân tích chuỗi dài đảm bảo số lần chuyển chuỗi khi đi từ một đỉnh tới gốc là $O(\sqrt{n})$.
 
-??? info "如何构造数据将轻重边切换次数卡满"
-    我们可以构造这么一棵二叉树 T：
-    
-    假设构造的二叉树参数为 $D$．
-    
-    若 $D \neq 0$, 则在左儿子构造一棵参数为 $D-1$ 的二叉树，在右儿子构造一个长度为 $2D-1$ 的链．
-    
-    若 $D = 0$, 则我们可以直接构造一个单独叶结点，并且结束调用．
-    
-    这样子构造一定可以将单独叶结点到根的路径全部为轻边且需要 $D^2$ 级别的结点数．
-    
-    取 $D=\sqrt{n}$ 即可．
+??? info "Làm sao kiểm tra số lần chuyển chuỗi đạt tối đa?"
+    Có thể xây cây nhị phân như sau:
 
-#### 长链剖分优化 DP
+    Gọi tham số cây là $D$.
 
-一般情况下可以使用长链剖分来优化的 DP 会有一维状态为深度维．
+    Nếu $D \neq 0$, xây cây nhị phân trái với tham số $D-1$, cây phải là chuỗi dài $2D-1$.
 
-我们可以考虑使用长链剖分优化树上 DP．
+    Nếu $D = 0$, xây một lá riêng và kết thúc.
 
-具体的，我们每个结点的状态直接继承其重儿子的结点状态，同时将轻儿子的 DP 状态暴力合并．
+    Như vậy, các lá sẽ có đường đi tới gốc toàn cạnh nhẹ, số đỉnh $D^2$.
+
+    Chọn $D=\sqrt{n}$ là đạt tối đa.
+
+#### Tối ưu DP bằng phân tích chuỗi dài
+
+Các bài DP trên cây có một chiều là độ sâu có thể tối ưu bằng phân tích chuỗi dài.
+
+Ý tưởng: mỗi đỉnh kế thừa trạng thái DP của con nặng, các con nhẹ thì hợp trạng thái vào.
 
 ???+ example "[Codeforces 1009 F. Dominant Indices](http://codeforces.com/contest/1009/problem/F)"
-    给定一棵有 $n$ 个顶点的有根树，以顶点 $1$ 作为根．
-    
-    定义顶点 $x$ 的深度数组为一个无限序列 $[d_{x, 0}, d_{x, 1}, d_{x, 2}, \dots]$，其中 $d_{x, i}$ 表示满足以下两个条件的顶点 $y$ 的数量：
-    
-    -   $x$ 是 $y$ 的祖先；
-    -   从 $x$ 到 $y$ 的简单路径恰好经过 $i$ 条边．
-    
-    顶点 $x$ 的深度数组的主导下标（dominant index）（简称顶点 $x$ 的主导下标）定义为一个下标 $j$，满足：
-    
-    -   对于所有 $k < j$，都有 $d_{x, k} < d_{x, j}$；
-    -   对于所有 $k > j$，都有 $d_{x, k} \le d_{x, j}$．
-    
-    请计算树中每个顶点的主导下标．
+    Cho cây $n$ đỉnh gốc $1$.
 
-??? note "解答"
-    我们设 $f_{i,j}$ 表示在子树 i 内，和 i 距离为 j 的点数．
-    
-    直接暴力转移时间复杂度为 $O(n^2)$
-    
-    我们考虑每次转移我们直接继承重儿子的 DP 数组和答案，并且考虑在此基础上进行更新．
-    
-    首先我们需要将重儿子的 DP 数组前面插入一个元素 1, 这代表着当前结点．
-    
-    然后我们将所有轻儿子的 DP 数组暴力和当前结点的 DP 数组合并．
-    
-    注意到因为轻儿子的 DP 数组长度为轻儿子所在重链长度，而所有重链长度和为 $n$．
-    
-    也就是说，我们直接暴力合并轻儿子的总时间复杂度为 $O(n)$．
+    Định nghĩa mảng độ sâu của đỉnh $x$ là $[d_{x, 0}, d_{x, 1}, d_{x, 2}, \dots]$, với $d_{x, i}$ là số đỉnh $y$ thỏa:
 
-??? note "参考代码"
+    -   $x$ là tổ tiên của $y$;
+    -   Đường đi từ $x$ tới $y$ có đúng $i$ cạnh.
+
+    Chỉ số chủ đạo của $x$ là chỉ số $j$ thỏa:
+
+    -   Với mọi $k < j$, $d_{x, k} < d_{x, j}$;
+    -   Với mọi $k > j$, $d_{x, k} \le d_{x, j}$.
+
+    Tính chỉ số chủ đạo cho mọi đỉnh.
+
+??? note "Giải thích"
+    Gọi $f_{i,j}$ là số đỉnh trong cây con $i$ cách $i$ đúng $j$ cạnh.
+
+    Nếu chuyển trạng thái brute-force thì $O(n^2)$.
+
+    Ý tưởng: mỗi lần chuyển trạng thái, kế thừa mảng DP của con nặng và đáp án, sau đó cập nhật.
+
+    Đầu tiên, thêm 1 vào đầu mảng DP của con nặng (đỉnh hiện tại).
+
+    Sau đó, hợp mảng DP của các con nhẹ vào mảng hiện tại.
+
+    Vì mảng DP của con nhẹ có độ dài bằng chuỗi nặng của nó, tổng độ dài các chuỗi nặng là $n$.
+
+    Do đó, hợp mảng DP của các con nhẹ tổng $O(n)$.
+
+??? note "Mã tham khảo"
     ```cpp
     --8<-- "docs/graph/code/hld/hld_3.cpp"
     ```
 
-注意，一般情况下 DP 数组的内存分配为一条重链整体分配内存，链上不同的结点有不同的首位置指针．
+Lưu ý: thường mảng DP được cấp phát cho cả chuỗi nặng, mỗi đỉnh có con trỏ đầu riêng.
 
-DP 数组的长度我们可以根据子树最深结点算出．
+Độ dài mảng DP có thể xác định theo độ sâu lớn nhất của cây con.
 
-当然长链剖分优化 DP 技巧非常多，包括但是不仅限于打标记等等．这里不再展开．
+Kỹ thuật tối ưu DP bằng phân tích chuỗi dài còn nhiều biến thể, như đánh dấu,... không trình bày thêm.
 
-参考 [租酥雨的博客](https://www.cnblogs.com/zhoushuyu/p/9468669.html)．
+Tham khảo [blog của zhoushuyu](https://www.cnblogs.com/zhoushuyu/p/9468669.html).
 
-#### 长链剖分求 k 级祖先
+#### Truy vấn tổ tiên cấp k
 
-即询问一个点向父亲跳 $k$ 次跳到的结点．
+Tức là hỏi một đỉnh nhảy lên cha $k$ lần thì tới đâu.
 
-首先我们假设我们已经预处理了每一个结点的 $2^i$ 级祖先．
+Giả sử đã tiền xử lý tổ tiên $2^i$ cho mỗi đỉnh.
 
-现在我们假设我们找到了询问结点的 $2^i$ 级祖先满足 $2^i \le k < 2^{i+1}$．
+Giả sử tìm được tổ tiên $2^i$ của đỉnh truy vấn, với $2^i \le k < 2^{i+1}$.
 
-我们考虑求出其所在重链的结点并且按照深度列入表格．假设重链长度为 $d$．
+Tìm vị trí trên chuỗi nặng theo độ sâu. Gọi độ dài chuỗi là $d$.
 
-同时我们在预处理的时候找到每条重链的根结点的 $1$ 到 $d$ 级祖先，同样放入表格．
+Tiền xử lý cho mỗi chuỗi nặng, lưu tổ tiên từ $1$ tới $d$ cho gốc chuỗi.
 
-根据长链剖分的性质，$k-2^i \le 2^i \leq d$, 也就是说，我们可以 $O(1)$ 在这条重链的表格上求出的这个结点的 $k$ 级祖先．
+Theo tính chất phân tích chuỗi dài, $k-2^i \le 2^i \leq d$, nên có thể $O(1)$ truy vấn tổ tiên cấp $k$ trên chuỗi.
 
-预处理需要倍增出 $2^i$ 次级祖先，同时需要预处理每条重链对应的表格．
+Tiền xử lý cần truy vấn tổ tiên $2^i$, và lưu bảng cho mỗi chuỗi nặng.
 
-预处理复杂度 $O(n\log n)$, 询问复杂度 $O(1)$．
+Tiền xử lý $O(n\log n)$, truy vấn $O(1)$.
 
-## 习题
+## Bài tập
 
--   [「洛谷 P3379」【模板】最近公共祖先（LCA）](https://www.luogu.com.cn/problem/P3379)（树剖求 LCA 无需数据结构，可以用作练习）
--   [「JLOI2014」松鼠的新家](https://loj.ac/problem/2236)（当然也可以用树上差分）
--   [「HAOI2015」树上操作](https://loj.ac/problem/2125)
--   [「洛谷 P3384」【模板】重链剖分/树链剖分](https://www.luogu.com.cn/problem/P3384)
--   [「洛谷 P1505」\[国家集训队\] 旅游](https://www.luogu.com.cn/problem/P1505)
--   [「NOI2015」软件包管理器](https://uoj.ac/problem/128)
--   [「SDOI2011」染色](https://www.luogu.com.cn/problem/P2486)
--   [「SDOI2014」旅行](https://hydro.ac/p/bzoj-P3531)
--   [「洛谷 P3979」遥远的国度](https://www.luogu.com.cn/problem/P3979)
--   [「POI2014」Hotel 加强版](https://hydro.ac/p/bzoj-P4543)（长链剖分优化 DP）
--   [攻略](https://hydro.ac/p/bzoj-P3252)（长链剖分优化贪心）
+-   [「Luogu P3379」【Mẫu】LCA](https://www.luogu.com.cn/problem/P3379) (HLD tìm LCA không cần cấu trúc dữ liệu, có thể luyện tập)
+-   [「JLOI2014」Nhà mới của sóc](https://loj.ac/problem/2236) (cũng có thể dùng phân tích hiệu trên cây)
+-   [「HAOI2015」Thao tác trên cây](https://loj.ac/problem/2125)
+-   [「Luogu P3384」【Mẫu】Phân tích chuỗi nặng nhẹ](https://www.luogu.com.cn/problem/P3384)
+-   [「Luogu P1505」\[Đội tuyển quốc gia\] Du lịch](https://www.luogu.com.cn/problem/P1505)
+-   [「NOI2015」Quản lý phần mềm](https://uoj.ac/problem/128)
+-   [「SDOI2011」Tô màu](https://www.luogu.com.cn/problem/P2486)
+-   [「SDOI2014」Du lịch](https://hydro.ac/p/bzoj-P3531)
+-   [「Luogu P3979」Vương quốc xa xôi](https://www.luogu.com.cn/problem/P3979)
+-   [「POI2014」Hotel bản nâng cao](https://hydro.ac/p/bzoj-P4543) (phân tích chuỗi dài tối ưu DP)
+-   [Chiến thuật](https://hydro.ac/p/bzoj-P3252) (phân tích chuỗi dài tối ưu tham lam)

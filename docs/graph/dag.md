@@ -1,36 +1,36 @@
-## 定义
+## Định nghĩa
 
-边有向，无环．
+Đồ thị có cạnh có hướng, không chứa chu trình.
 
-英文名叫 Directed Acyclic Graph，缩写是 DAG．
+Tên tiếng Anh là Directed Acyclic Graph, viết tắt là DAG.
 
-## 性质
+## Tính chất
 
--   能 [拓扑排序](./topo.md) 的图，一定是有向无环图；
+-   Đồ thị có thể [sắp xếp tôpô](./topo.md) chắc chắn là đồ thị có hướng không chu trình;
 
-    如果有环，那么环上的任意两个节点在任意序列中都不满足条件了．
+    Nếu tồn tại chu trình, thì với bất kỳ hai đỉnh trên chu trình đó đều không thể thỏa mãn điều kiện trong bất kỳ thứ tự nào.
 
--   有向无环图，一定能拓扑排序；
+-   Đồ thị có hướng không chu trình chắc chắn có thể sắp xếp tôpô;
 
-    （归纳法）假设节点数不超过 $k$ 的 有向无环图都能拓扑排序，那么对于节点数等于 $k$ 的，考虑执行拓扑排序第一步之后的情形即可．
+    (Chứng minh quy nạp) Giả sử với đồ thị có số đỉnh không vượt quá $k$ đều có thể sắp xếp tôpô, thì với đồ thị có $k$ đỉnh, chỉ cần xét trường hợp sau khi thực hiện bước đầu tiên của sắp xếp tôpô.
 
-## 判定
+## Cách nhận biết
 
-如何判定一个图是否是有向无环图呢？
+Làm thế nào để kiểm tra một đồ thị có phải là đồ thị có hướng không chu trình?
 
-检验它是否可以进行 [拓扑排序](./topo.md) 即可．
+Chỉ cần kiểm tra xem nó có thể [sắp xếp tôpô](./topo.md) hay không.
 
-当然也有另外的方法，可以对图进行一遍 [DFS](../search/dfs.md)，在得到的 DFS 树上看看有没有连向祖先的非树边（返祖边）．如果有的话，那就有环了．
+Ngoài ra còn có cách khác, có thể thực hiện một lượt [DFS](../search/dfs.md) trên đồ thị, sau đó kiểm tra trên cây DFS xem có tồn tại cạnh không thuộc cây nhưng nối tới tổ tiên (cạnh ngược) hay không. Nếu có thì đồ thị có chu trình.
 
-## 应用
+## Ứng dụng
 
-### DP 求最长（短）路
+### Quy hoạch động (DP) tìm đường đi dài nhất (ngắn nhất)
 
-在一般图上，求单源最长（短）路径的最优时间复杂度为 $O(nm)$（[Bellman–Ford 算法](./shortest-path.md#bellmanford-算法)，适用于有负权图）或 $O(m \log m)$（[Dijkstra 算法](./shortest-path.md#dijkstra-算法)，适用于无负权图）．
+Trên đồ thị tổng quát, độ phức tạp tối ưu để tìm đường đi dài nhất (ngắn nhất) từ một đỉnh là $O(nm)$ ([Thuật toán Bellman–Ford](./shortest-path.md#bellmanford-算法), áp dụng cho đồ thị có cạnh âm) hoặc $O(m \log m)$ ([Thuật toán Dijkstra](./shortest-path.md#dijkstra-算法), áp dụng cho đồ thị không có cạnh âm).
 
-但在 DAG 上，我们可以使用 DP 求最长（短）路，使时间复杂度优化到 $O(n+m)$．状态转移方程为 $dis_v = min(dis_v, dis_u + w_{u,v})$ 或 $dis_v = max(dis_v, dis_u + w_{u,v})$．
+Nhưng trên DAG, ta có thể dùng quy hoạch động (DP) để tìm đường đi dài nhất (ngắn nhất), giúp giảm độ phức tạp xuống $O(n+m)$. Phương trình chuyển trạng thái là $dis_v = min(dis_v, dis_u + w_{u,v})$ hoặc $dis_v = max(dis_v, dis_u + w_{u,v})$.
 
-拓扑排序后，按照拓扑序遍历每个节点，用当前节点来更新之后的节点．
+Sau khi sắp xếp tôpô, duyệt các đỉnh theo thứ tự tôpô, dùng giá trị tại đỉnh hiện tại để cập nhật các đỉnh phía sau.
 
 ```cpp
 struct edge {
@@ -39,10 +39,10 @@ struct edge {
 
 int n, m;
 vector<edge> e[MAXN];
-vector<int> L;                               // 存储拓扑排序结果
-int max_dis[MAXN], min_dis[MAXN], in[MAXN];  // in 存储每个节点的入度
+vector<int> L;                               // Lưu kết quả sắp xếp tôpô
+int max_dis[MAXN], min_dis[MAXN], in[MAXN];  // in lưu bậc vào của mỗi đỉnh
 
-void toposort() {  // 拓扑排序
+void toposort() {  // Sắp xếp tôpô
   queue<int> S;
   memset(in, 0, sizeof(in));
   for (int i = 1; i <= n; i++) {
@@ -64,8 +64,8 @@ void toposort() {  // 拓扑排序
   }
 }
 
-void dp(int s) {  // 以 s 为起点求单源最长（短）路
-  toposort();     // 先进行拓扑排序
+void dp(int s) {  // Tìm đường đi dài nhất (ngắn nhất) từ đỉnh s
+  toposort();     // Sắp xếp tôpô trước
   memset(min_dis, 0x3f, sizeof(min_dis));
   memset(max_dis, 0, sizeof(max_dis));
   min_dis[s] = 0;
@@ -79,4 +79,4 @@ void dp(int s) {  // 以 s 为起点求单源最长（短）路
 }
 ```
 
-参见：[DAG 上的 DP](../dp/dag.md)．
+Tham khảo: [DP trên DAG](../dp/dag.md).

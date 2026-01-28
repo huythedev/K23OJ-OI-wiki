@@ -1,64 +1,64 @@
-author: HeRaNO, Xeonacid, AzurIce
+tác giả: HeRaNO, Xeonacid, AzurIce
 
-## 结构
+## Cấu trúc
 
-从二叉堆的结构说起，它是一棵二叉树，并且是完全二叉树，每个结点中存有一个元素（或者说，有个权值）．
+Bắt đầu từ cấu trúc của một Heap nhị phân (Binary Heap): nó là một cây nhị phân, cụ thể là một cây nhị phân đầy đủ (complete binary tree), trong đó mỗi nút lưu trữ một phần tử (hoặc một trọng số).
 
-堆性质：父亲的权值不小于儿子的权值（大根堆）．同样的，我们可以定义小根堆．本文以大根堆为例．
+Tính chất của Heap: trọng số của cha không nhỏ hơn trọng số của con (Max-heap). Tương tự, chúng ta có thể định nghĩa Min-heap. Bài viết này lấy Max-heap làm ví dụ.
 
-由堆性质，树根存的是最大值（getmax 操作就解决了）．
+Theo tính chất của Heap, gốc của cây lưu trữ giá trị lớn nhất (thao tác `getmax` đã được giải quyết).
 
-## 过程
+## Quá trình
 
-### 插入操作
+### Thao tác Chèn (Insert)
 
-插入操作是指向二叉堆中插入一个元素，要保证插入后也是一棵完全二叉树．
+Thao tác chèn là thêm một phần tử vào Heap nhị phân, phải đảm bảo sau khi chèn nó vẫn là một cây nhị phân đầy đủ.
 
-最简单的方法就是，最下一层最右边的叶子之后插入．
+Phương pháp đơn giản nhất là chèn vào sau lá ngoài cùng bên phải của tầng cuối cùng.
 
-如果最下一层已满，就新增一层．
+Nếu tầng cuối cùng đã đầy, hãy thêm một tầng mới.
 
-插入之后可能会不满足堆性质？
+Sau khi chèn, có thể tính chất Heap không còn được thỏa mãn?
 
-**向上调整**：如果这个结点的权值大于它父亲的权值，就交换，重复此过程直到不满足或者到根．
+**Điều chỉnh lên (Up-shift/Up-heap)**: Nếu trọng số của nút này lớn hơn trọng số của cha nó, hãy hoán đổi chúng, lặp lại quá trình này cho đến khi không còn thỏa mãn hoặc đến gốc.
 
-可以证明，插入之后向上调整后，没有其他结点会不满足堆性质．
+Có thể chứng minh rằng sau khi chèn và điều chỉnh lên, không có nút nào khác vi phạm tính chất Heap.
 
-向上调整的时间复杂度是 $O(\log n)$ 的．
+Độ phức tạp thời gian của điều chỉnh lên là $O(\log n)$.
 
-![二叉堆的插入操作](./images/binary_heap_insert.svg)
+![Thao tác chèn của Heap nhị phân](./images/binary_heap_insert.svg)
 
-### 删除操作
+### Thao tác Xóa (Delete)
 
-删除操作指删除堆中最大的元素，即删除根结点．
+Thao tác xóa là xóa phần tử lớn nhất trong Heap, tức là xóa nút gốc.
 
-但是如果直接删除，则变成了两个堆，难以处理．
+Tuy nhiên, nếu xóa trực tiếp, nó sẽ biến thành hai Heap riêng biệt, khó xử lý.
 
-所以不妨考虑插入操作的逆过程，设法将根结点移到最后一个结点，然后直接删掉．
+Vì vậy, hãy cân nhắc quá trình ngược lại của thao tác chèn, tìm cách di chuyển nút gốc đến vị trí nút cuối cùng, sau đó xóa trực tiếp.
 
-然而实际上不好做，我们通常采用的方法是，把根结点和最后一个结点直接交换．
+Thực tế, chúng ta thường làm là: hoán đổi trực tiếp nút gốc với nút cuối cùng.
 
-于是直接删掉（在最后一个结点处的）根结点，但是新的根结点可能不满足堆性质……
+Sau đó xóa nút gốc (lúc này đang ở vị trí nút cuối cùng), nhưng nút gốc mới có thể không thỏa mãn tính chất Heap...
 
-**向下调整**：在该结点的儿子中，找一个最大的，与该结点交换，重复此过程直到底层．
+**Điều chỉnh xuống (Down-shift/Down-heap)**: Trong các con của nút đó, tìm con lớn nhất, hoán đổi với nút đó, lặp lại quá trình này cho đến tầng đáy.
 
-可以证明，删除并向下调整后，没有其他结点不满足堆性质．
+Có thể chứng minh rằng sau khi xóa và điều chỉnh xuống, không có nút nào khác vi phạm tính chất Heap.
 
-时间复杂度 $O(\log n)$．
+Độ phức tạp thời gian là $O(\log n)$.
 
-### 增加某个点的权值
+### Tăng trọng số của một nút
 
-很显然，直接修改后，向上调整一次即可，时间复杂度为 $O(\log n)$．
+Rõ ràng, sau khi sửa đổi trực tiếp, chỉ cần thực hiện điều chỉnh lên một lần, độ phức tạp thời gian là $O(\log n)$.
 
-## 实现
+## Cài đặt
 
-我们发现，上面介绍的几种操作主要依赖于两个核心：向上调整和向下调整．
+Chúng ta nhận thấy rằng các thao tác giới thiệu ở trên chủ yếu dựa vào hai hạt nhân: điều chỉnh lên và điều chỉnh xuống.
 
-考虑使用一个序列 $h$ 来表示堆．$h_i$ 的两个儿子分别是 $h_{2i}$ 和 $h_{2i+1}$，$1$ 是根结点：
+Cân nhắc sử dụng một dãy $h$ để biểu diễn Heap. Hai con của $h_i$ lần lượt là $h_{2i}$ và $h_{2i+1}$, nút $1$ là nút gốc:
 
-![h 的堆结构](./images/binary-heap-array.svg)
+![Cấu trúc Heap của h](./images/binary-heap-array.svg)
 
-参考代码：
+Mã tham khảo:
 
 ```cpp
 void up(int x) {
@@ -70,7 +70,7 @@ void up(int x) {
 
 void down(int x) {
   while (x * 2 <= n) {
-    t = x * 2;
+    int t = x * 2;
     if (t + 1 <= n && h[t + 1] > h[t]) t++;
     if (h[t] <= h[x]) break;
     std::swap(h[x], h[t]);
@@ -79,46 +79,44 @@ void down(int x) {
 }
 ```
 
-### 建堆
+### Xây dựng Heap (Build Heap)
 
-考虑这么一个问题，从一个空的堆开始，插入 $n$ 个元素，不在乎顺序．
+Xét bài toán: từ một Heap rỗng, chèn $n$ phần tử, không quan tâm thứ tự.
 
-直接一个一个插入需要 $O(n \log n)$ 的时间，有没有更好的方法？
+Chèn từng cái một mất thời gian $O(n \log n)$, có cách nào tốt hơn không?
 
-#### 方法一：使用 decreasekey（即，向上调整）
+#### Cách 1: Sử dụng điều chỉnh lên
 
-从根开始，按 BFS 序进行．
+Bắt đầu từ gốc, thực hiện theo thứ tự BFS.
 
 ```cpp
 void build_heap_1() {
-  for (i = 1; i <= n; i++) up(i);
+  for (int i = 1; i <= n; i++) up(i);
 }
 ```
 
-为啥这么做：对于第 $k$ 层的结点，向上调整的复杂度为 $O(k)$ 而不是 $O(\log n)$．
+Tại sao làm vậy: Đối với nút ở tầng thứ $k$, độ phức tạp điều chỉnh lên là $O(k)$ chứ không phải $O(\log n)$.
 
-总复杂度：$\log 1 + \log 2 + \cdots + \log n = \Theta(n \log n)$．
+Tổng độ phức tạp: $\log 1 + \log 2 + \cdots + \log n = \Theta(n \log n)$.
 
-（在「基于比较的排序」中证明过）
+#### Cách 2: Sử dụng điều chỉnh xuống
 
-#### 方法二：使用向下调整
-
-这时换一种思路，从叶子开始，逐个向下调整
+Lần này đổi hướng tư duy, bắt đầu từ các lá, thực hiện điều chỉnh xuống từng cái một.
 
 ```cpp
 void build_heap_2() {
-  for (i = n; i >= 1; i--) down(i);
+  for (int i = n; i >= 1; i--) down(i);
 }
 ```
 
-换一种理解方法，每次「合并」两个已经调整好的堆，这说明了正确性．
+Một cách hiểu khác, mỗi lần "hợp nhất" hai Heap đã được điều chỉnh xong, điều này chứng minh tính đúng đắn.
 
-注意到向下调整的复杂度，为 $O(\log n - k)$，另外注意到叶节点无需调整，因此可从序列约 $n/2$ 的位置开始调整，可减少部分常数但不影响复杂度．
+Lưu ý độ phức tạp của điều chỉnh xuống là $O(\log n - k)$, ngoài ra các nút lá không cần điều chỉnh, do đó có thể bắt đầu điều chỉnh từ vị trí khoảng $n/2$ trong dãy để giảm bớt hằng số nhưng không ảnh hưởng độ phức tạp.
 
-???+ note "证明"
+???+ note "Chứng minh"
     $$
     \begin{aligned}
-    \text{总复杂度} & = n \log n - \log 1 - \log 2 - \cdots - \log n \\
+    \text{Tổng độ phức tạp} & = n \log n - \log 1 - \log 2 - \cdots - \log n \\
     & \leq n \log n - 0 \times 2^0 - 1 \times 2^1 -\cdots - (\log n - 1) \times \frac{n}{2} \\\
     & = n \log n - (n-1) - (n-2) - (n-4) - \cdots - (n-\frac{n}{2}) \\
     & = n \log n - n \log n + 1 + 2 + 4 + \cdots + \frac{n}{2} \\
@@ -126,42 +124,40 @@ void build_heap_2() {
     \end{aligned}
     $$
 
-之所以能 $O(n)$ 建堆，是因为堆性质很弱，二叉堆并不是唯一的．
+Sở dĩ có thể xây Heap trong $O(n)$ là vì tính chất Heap rất yếu, Heap nhị phân không phải là duy nhất.
 
-要是像排序那样的强条件就难说了．
+## Ứng dụng
 
-## 应用
-
-### 对顶堆
+### Heap đối đỉnh (Running Median)
 
 ??? note "[SPOJ RMID2 - Running Median Again](https://www.spoj.com/problems/RMID2/)"
-    维护一个序列，支持两种操作：
+    Duy trì một dãy, hỗ trợ hai thao tác:
     
-    1.  向序列中插入一个元素
-    2.  输出并删除当前序列的中位数（若序列长度为偶数，则输出较小的中位数）
+    1.  Chèn một phần tử vào dãy.
+    2.  Xuất và xóa số trung vị hiện tại của dãy (nếu độ dài dãy là chẵn, xuất số trung vị nhỏ hơn).
 
-这个问题可以被进一步抽象成：动态维护一个序列上第 $k$ 大的数，$k$ 值可能会发生变化．
+Bài toán này có thể được trừu tượng hóa thành: duy trì động số lớn thứ $k$ trên một dãy, giá trị $k$ có thể thay đổi.
 
-对于此类问题，我们可以使用 **对顶堆** 这一技巧予以解决（可以避免写权值线段树或 BST 带来的繁琐）．
+Đối với loại bài toán này, chúng ta có thể sử dụng kỹ thuật **Heap đối đỉnh** để giải quyết (tránh được sự rắc rối khi viết cây phân đoạn trọng số hoặc BST).
 
-对顶堆由一个大根堆与一个小根堆组成，小根堆维护大值即前 $k$ 大的值（包含第 k 个），大根堆维护小值即比第 $k$ 大数小的其他数．
+Heap đối đỉnh gồm một Max-heap và một Min-heap. Min-heap duy trì các giá trị lớn tức là $k$ số lớn nhất (bao gồm số thứ $k$), Max-heap duy trì các giá trị nhỏ tức là các số còn lại nhỏ hơn số thứ $k$.
 
-这两个堆构成的数据结构支持以下操作：
+Cấu trúc dữ liệu này hỗ trợ các thao tác sau:
 
--   维护：当小根堆的大小小于 $k$ 时，不断将大根堆堆顶元素取出并插入小根堆，直到小根堆的大小等于 $k$；当小根堆的大小大于 $k$ 时，不断将小根堆堆顶元素取出并插入大根堆，直到小根堆的大小等于 $k$；
--   插入元素：若插入的元素大于等于小根堆堆顶元素，则将其插入小根堆，否则将其插入大根堆，然后维护对顶堆；
--   查询第 $k$ 大元素：小根堆堆顶元素即为所求；
--   删除第 $k$ 大元素：删除小根堆堆顶元素，然后维护对顶堆；
--   $k$ 值 $+1/-1$：根据新的 $k$ 值直接维护对顶堆．
+-   Duy trì: Khi kích thước Min-heap nhỏ hơn $k$, liên tục lấy phần tử đỉnh Max-heap chèn vào Min-heap cho đến khi kích thước Min-heap bằng $k$; khi kích thước Min-heap lớn hơn $k$, liên tục lấy phần tử đỉnh Min-heap chèn vào Max-heap cho đến khi bằng $k$;
+-   Chèn phần tử: Nếu phần tử chèn vào lớn hơn hoặc bằng đỉnh Min-heap, chèn vào Min-heap, ngược lại chèn vào Max-heap, sau đó duy trì Heap đối đỉnh;
+-   Truy vấn số lớn thứ $k$: Đỉnh Min-heap chính là kết quả;
+-   Xóa số lớn thứ $k$: Xóa đỉnh Min-heap, sau đó duy trì Heap đối đỉnh;
+-   Thay đổi giá trị $k$ ($+1/-1$): Duy trì trực tiếp Heap đối đỉnh theo giá trị $k$ mới.
 
-显然，查询第 $k$ 大元素的时间复杂度是 $O(1)$ 的．由于插入、删除或调整 $k$ 值后，小根堆的大小与期望的 $k$ 值最多相差 $1$，故每次维护最多只需对大根堆与小根堆中的元素进行一次调整，因此，这些操作的时间复杂度都是 $O(\log n)$ 的．
+Hiển nhiên, độ phức tạp truy vấn số lớn thứ $k$ là $O(1)$. Các thao tác khác có độ phức tạp $O(\log n)$.
 
-??? note "参考代码"
+??? note "Mã tham khảo"
     ```cpp
     --8<-- "docs/ds/code/binary-heap/binary-heap_1.cpp"
     ```
 
-### 习题
+### Bài tập tự luyện
 
 -   [SPOJ RMID - Running Median](https://www.spoj.com/problems/RMID)
--   [洛谷 P1801 黑匣子](https://www.luogu.com.cn/problem/P1801)
+-   [Luogu P1801 Hộp đen (Black Box)](https://www.luogu.com.cn/problem/P1801)

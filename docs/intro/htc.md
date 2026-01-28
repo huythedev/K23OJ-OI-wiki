@@ -1,182 +1,182 @@
-在文章开始之前，**OI Wiki** 项目组全体成员十分欢迎您为本项目贡献页面．正因为有了上百位像您一样的人，才有了 **OI Wiki** 的今天！
+Trước khi bắt đầu bài viết, **Ban dự án OI Wiki** xin gửi lời chào mừng nồng nhiệt tới bạn vì đã đóng góp cho dự án này. Chính nhờ hàng trăm người như bạn mà **OI Wiki** mới có được như ngày hôm nay!
 
-这篇文章将主要叙述参与 **OI Wiki** 编写的写作过程．请您在撰稿或者修正 Wiki 页面以前，仔细阅读以下内容，以帮助您完成更高质量的内容．
+Bài viết này sẽ hướng dẫn chi tiết quy trình tham gia biên soạn nội dung cho **OI Wiki**. Trước khi viết mới hoặc chỉnh sửa bất kỳ trang nào, hãy đọc kỹ các hướng dẫn dưới đây để giúp bạn hoàn thiện nội dung chất lượng cao hơn.
 
-## 贡献指南
+## Hướng dẫn đóng góp
 
-请您在编辑前查看 [OI Wiki 贡献指南](https://github.com/OI-wiki/OI-wiki/blob/master/.github/CONTRIBUTING.md) 和 [项目方针](./about.md#项目方针)，以更好地和社区贡献者进行合作、交流．
+Trước khi chỉnh sửa, hãy xem qua [Hướng dẫn đóng góp cho OI Wiki](https://github.com/huythedev/K23OJ-OI-wiki/blob/master/.github/CONTRIBUTING.md) và [Phương châm dự án](./about.md#项目方针) để hợp tác, trao đổi hiệu quả hơn với cộng đồng.
 
-## 参与协作
+## Tham gia cộng tác
 
-???+ warning "Warning"
-    在开始编写一段内容之前，请查阅 [Issues](https://github.com/OI-wiki/OI-wiki/issues)，确认没有别人在做相同的工作之后，开个 [新 issue](https://github.com/OI-wiki/OI-wiki/issues/new) 记录待编写的内容．
+???+ warning "Cảnh báo"
+    Trước khi bắt đầu viết nội dung mới, hãy kiểm tra [Issues](https://github.com/huythedev/K23OJ-OI-wiki/issues) để đảm bảo chưa có ai làm việc trùng lặp, sau đó tạo một [issue mới](https://github.com/huythedev/K23OJ-OI-wiki/issues/new) để ghi nhận nội dung bạn sẽ thực hiện.
 
-???+ tip "Tip"
-    在 Issues 中也有很多待修复/解决的问题，尤其是我们的迭代计划（Iteration Plan）．从这里获取任务是一个很好的开始！
+???+ tip "Mẹo"
+    Trong Issues cũng có rất nhiều vấn đề cần sửa/chưa giải quyết, đặc biệt là các kế hoạch lặp (Iteration Plan). Lấy nhiệm vụ từ đây là một khởi đầu rất tốt!
 
-为了保证条目内容的专业性和准确性，我们建议您在编辑前先考虑以下几点：
+Để đảm bảo tính chuyên môn và chính xác của nội dung, bạn nên cân nhắc các điểm sau trước khi chỉnh sửa:
 
-1.  **选择您熟悉的领域**：请优先编辑那些与您的专业知识、学习背景或兴趣爱好相关的条目．这有助于您创作出高质量的内容．
-2.  **谨慎对待新领域**：如果您对某个主题还处于初学阶段或不太了解，建议您先通过阅读、学习加深理解，待有一定把握后再动手编辑．
-3.  **查阅相关资料**：为条目添加内容或进行修订时，建议您先查阅权威文献和资料，确保信息准确无误．也欢迎您在页面评论区或我们的社区提出问题，与其他编者交流讨论．
+1.  **Chọn lĩnh vực bạn am hiểu:** Ưu tiên chỉnh sửa các chủ đề phù hợp với kiến thức, nền tảng học tập hoặc sở thích của bạn. Điều này giúp bạn tạo ra nội dung chất lượng cao.
+2.  **Cẩn trọng với lĩnh vực mới:** Nếu bạn chưa quen hoặc chưa hiểu sâu về chủ đề nào đó, hãy đọc và tìm hiểu kỹ trước khi chỉnh sửa.
+3.  **Tham khảo tài liệu liên quan:** Khi thêm hoặc sửa nội dung, nên tra cứu các tài liệu, nguồn uy tín để đảm bảo thông tin chính xác. Bạn cũng có thể đặt câu hỏi ở phần bình luận hoặc cộng đồng để trao đổi với các biên tập viên khác.
 
-我们珍惜每位贡献者的热情和付出，也理解大家的专业水平不尽相同．让我们携手合作，共同呵护这个知识的乐园，用准确、专业的内容去帮助更多读者．期待您的贡献！在这里引用维基百科的一句话：
+Chúng tôi trân trọng sự nhiệt huyết và đóng góp của mỗi thành viên, đồng thời hiểu rằng trình độ chuyên môn của mọi người là khác nhau. Hãy cùng nhau xây dựng một kho tri thức chính xác, chuyên nghiệp để giúp đỡ nhiều bạn đọc hơn. Xin mượn lời của Wikipedia:
 
-> 不要害怕编辑，勇于更新页面！[^ref1]
+> Đừng ngại chỉnh sửa, hãy mạnh dạn cập nhật trang![^ref1]
 
-### 在 GitHub 上编辑
+### Chỉnh sửa trên GitHub
 
-参与 **OI Wiki** 的编写 **需要** 一个 GitHub 账号（可以前往 [GitHub 的账号注册页面](https://github.com/signup) 页面注册），但 **不需要** 高超的 GitHub 技巧，即使你是一名新手，只要按照下面所述的步骤操作，也能够 **非常出色** 地完成编辑．
+Để tham gia biên soạn **OI Wiki**, bạn **cần** có tài khoản GitHub ([Đăng ký tại đây](https://github.com/signup)), nhưng **không cần** kỹ năng GitHub nâng cao. Dù bạn là người mới, chỉ cần làm theo các bước dưới đây là có thể **hoàn thành chỉnh sửa xuất sắc**.
 
-???+ tip "Tip"
-    在你的更改被合并到 **OI Wiki** 的主仓库之前，你对 **OI Wiki** 的内容所作出的修改均不会出现在 **OI Wiki** 的主站上，所以无需担心你的修改会破坏 **OI Wiki** 上正在显示的内容．
+???+ tip "Mẹo"
+    Trước khi thay đổi của bạn được hợp nhất vào kho chính của **OI Wiki**, các chỉnh sửa sẽ **không xuất hiện** trên trang chủ, nên bạn không cần lo lắng việc làm hỏng nội dung đang hiển thị.
     
-    如果还是不放心，可以查看 [GitHub 的官方教程](https://skills.github.com/)．
+    Nếu vẫn chưa yên tâm, hãy xem [hướng dẫn chính thức của GitHub](https://skills.github.com/).
 
-#### 编辑单个页面内的内容
+#### Chỉnh sửa nội dung một trang
 
-1.  在 **OI Wiki** 上找到对应页面；
-2.  点击正文右上方（目录左侧）的 **「编辑此页」**（<i class="md-icon">edit</i>）按钮，在确认您已经阅读了本页面和 [格式手册](./format.md) 后点击按钮根据提示跳转到 GitHub 进行编辑；
-3.  在编辑框内编写你想修改的内容．请注意，在修改和接下来的提交过程中，请 **关闭您的自动翻译软件**，因为它可能产生不必要的麻烦（例如您修改的文件有时会被其错误改名，从而影响目录结构）；
-4.  编写完成后滚动到页面下方，按照本文中 [commit 信息格式规范](#commit-信息格式规范) 填写 commit 信息，之后点击 **Propose changes** 按钮提交修改．点击按钮后，GitHub 会自动帮你创建一份 **OI Wiki** 仓库的分支，并将你的提交添加到这个分支仓库．
-5.  GitHub 会自动跳转到你的分支仓库的页面，此时页面上方会显示一个绿色的 **Create pull request** 按钮，点击后 GitHub 会跳转到一个创建 Pull Request 页面．向下滚动检查自己所作出的修改没有错误后，按照本文中 [Pull Request 信息格式规范](#pull-request-信息格式规范) 一节中的规范书写 Pull Request 信息，然后点击页面上的绿色的 **Create pull request** 按钮创建 Pull Request．
-6.  不出意外的话，你的 Pull Request 就顺利提交到仓库，等待管理员审核并合并到主仓库中即可．
+1.  Tìm trang cần chỉnh sửa trên **OI Wiki**;
+2.  Nhấn nút **"Chỉnh sửa trang này"** (biểu tượng <i class="md-icon">edit</i> ở góc trên bên phải, cạnh mục lục), xác nhận bạn đã đọc trang này và [Sổ tay định dạng](./format.md), sau đó làm theo hướng dẫn để chuyển sang GitHub chỉnh sửa;
+3.  Soạn thảo nội dung bạn muốn thay đổi trong khung chỉnh sửa. **Lưu ý:** Trong quá trình chỉnh sửa và gửi thay đổi, hãy **tắt phần mềm dịch tự động** để tránh các lỗi không mong muốn (ví dụ: đổi tên file sai làm ảnh hưởng cấu trúc thư mục);
+4.  Sau khi chỉnh sửa, kéo xuống cuối trang, điền thông tin commit theo [quy tắc định dạng commit](#commit-信息格式规范) bên dưới, rồi nhấn **Propose changes** để gửi thay đổi. GitHub sẽ tự động tạo một nhánh (branch) mới cho bạn và thêm commit vào đó;
+5.  GitHub sẽ chuyển sang trang nhánh của bạn, ở trên cùng sẽ có nút xanh **Create pull request**, nhấn vào để chuyển sang trang tạo Pull Request. Kiểm tra lại thay đổi, điền thông tin Pull Request theo [quy tắc định dạng Pull Request](#pull-request-信息格式规范), rồi nhấn **Create pull request**;
+6.  Nếu không có gì bất thường, Pull Request của bạn đã được gửi, chờ quản trị viên duyệt và hợp nhất vào kho chính.
 
-在等待合并的时间里，你可以给他人的 Pull Request 提意见、点赞或者点踩．如果有新消息，会在网页右上角出现提示，并附有邮件提醒（取决于个人设置中配置的通知方式）．
+Trong thời gian chờ duyệt, bạn có thể bình luận, thích hoặc không thích Pull Request của người khác. Nếu có thông báo mới, sẽ hiện ở góc trên bên phải và gửi email (tùy cài đặt thông báo cá nhân).
 
-#### 编辑多个页面内的内容
+#### Chỉnh sửa nhiều trang không liên quan
 
-如果你需要同时编辑互相无关联的多个页面的内容，请按照上方的 [编辑单个页面内的内容](#编辑单个页面内的内容) 一节一次修改所有页面．
+Nếu bạn cần chỉnh sửa nhiều trang không liên quan, hãy làm theo hướng dẫn ở [Chỉnh sửa nội dung một trang](#编辑单个页面内的内容) để chỉnh sửa từng trang một.
 
-1.  打开 [OI-Wiki/OI-Wiki](https://github.com/OI-Wiki/OI-Wiki) 仓库，点击键盘上的<kbd>.</kbd>按钮（或者将 URL 中的 `github.com` 更改为 `github.dev`）[^ref2]，进入 GitHub 的网页版 VS Code 编辑器；
-2.  在编辑器中作出对页面源文件的更改，可以使用页面右上方的预览按钮（或按下<kbd>Ctrl+K</kbd><kbd>V</kbd>快捷键）在右侧打开预览界面；
-3.  修改完成后使用左侧的 Source Control 选项卡，并按照本文中 [commit 信息格式规范](#commit-信息格式规范) 填写 commit 信息并提交，提交时会提示是否创建此仓库的分支，点击绿色的 **Fork Repository** 按钮即可．
-4.  提交后会在网页上方的中央弹出一个提示框，在第一次的提示框内填写标题，第二次的提示框内填写此提交要提交到的仓库内分支名称，之后右下角会弹出一个提示框，内容类似于 `Created Pull Request #1 for OI-Wiki/OI-Wiki.`，点击蓝字链接即可查看该 Pull Request．
+1.  Mở kho [K23OJ-OI-wiki](https://github.com/huythedev/K23OJ-OI-wiki), nhấn phím <kbd>.</kbd> (hoặc đổi `github.com` thành `github.dev` trong URL)[^ref2] để vào trình soạn thảo VS Code trên web của GitHub;
+2.  Chỉnh sửa các file nguồn trong trình soạn thảo, có thể dùng nút xem trước (hoặc <kbd>Ctrl+K</kbd><kbd>V</kbd>) để xem kết quả;
+3.  Sau khi chỉnh sửa, dùng tab Source Control bên trái, điền thông tin commit theo [quy tắc định dạng commit](#commit-信息格式规范), rồi gửi commit. Khi được hỏi có tạo nhánh mới không, nhấn **Fork Repository** màu xanh;
+4.  Sau khi gửi, sẽ có thông báo ở giữa màn hình, nhập tiêu đề ở hộp thoại đầu tiên, nhập tên nhánh ở hộp thứ hai, sau đó sẽ có thông báo ở góc dưới bên phải, ví dụ `Created Pull Request #1 for OI-Wiki/OI-Wiki.`, nhấn vào liên kết xanh để xem Pull Request.
 
-#### 向 Pull Request 追加更改
+#### Thêm thay đổi vào Pull Request
 
-1.  打开 [OI-Wiki 的 Pull Request 列表](https://github.com/OI-wiki/OI-wiki/pulls)，找到您提交的 Pull Request 并点击．
-2.  Pull Request 页面的标题下方将会有一段例如 `<您的ID> wants to merge x commits into OI-wiki:master from <您的ID>:patch-1` 的文字，点击 `<您的ID>:patch-1` 部分．
-3.  您应该会被重定向到您的分支仓库中，而且文件列表左上角的分支名称是你提交 Pull Request 的分支名称（在本示例中应为 `patch-1`）．
-4.  进行您需要的更改．
-    -   如果您需要编辑单个文件或多个互相无关联的页面的内容，请直接找到你要的文件并进行更改，更改完成后滚动到页面下方，按照本文中 [commit 信息格式规范](#commit-信息格式规范) 填写 commit 信息，之后点击 **Commit changes** 按钮提交修改．
-    -   如果您需要编辑多个文件，点击键盘上的<kbd>.</kbd>按钮（或者将 URL 中的 `github.com` 更改为 `github.dev`）[^ref2]，进入 GitHub 的网页版 VS Code 编辑器并作出更改．然后使用左侧的 Source Control 选项卡，并按照本文中 [commit 信息格式规范](#commit-信息格式规范) 填写 commit 信息并提交修改．
-5.  这时你的更改会被自动追加在您的 Pull Request 中．
+1.  Mở [danh sách Pull Request của K23OJ-OI-wiki](https://github.com/huythedev/K23OJ-OI-wiki/pulls), tìm Pull Request bạn đã gửi và nhấn vào;
+2.  Dưới tiêu đề Pull Request sẽ có dòng như `<ID của bạn> wants to merge x commits into OI-wiki:master from <ID của bạn>:patch-1`, nhấn vào phần `<ID của bạn>:patch-1`;
+3.  Bạn sẽ được chuyển đến kho nhánh của mình, tên nhánh ở góc trên bên trái là tên nhánh đã gửi Pull Request (ví dụ `patch-1`);
+4.  Tiến hành chỉnh sửa tiếp:
+    -   Nếu chỉ sửa một file hoặc các trang không liên quan, tìm file cần sửa, chỉnh sửa rồi kéo xuống dưới, điền thông tin commit theo [quy tắc định dạng commit](#commit-信息格式规范), nhấn **Commit changes** để gửi;
+    -   Nếu sửa nhiều file, nhấn <kbd>.</kbd> (hoặc đổi `github.com` thành `github.dev`)[^ref2] để vào VS Code web, chỉnh sửa rồi dùng tab Source Control bên trái, điền thông tin commit và gửi;
+5.  Thay đổi của bạn sẽ tự động được thêm vào Pull Request.
 
-### 使用 Git 在本地进行编辑
+### Chỉnh sửa trên máy bằng Git
 
-???+ warning "Warning"
-    对于一般用户，我们更推荐使用上方所述的 GitHub 的 Web 编辑器进行编辑．
+???+ warning "Cảnh báo"
+    Đối với người dùng phổ thông, chúng tôi khuyến khích sử dụng trình soạn thảo web của GitHub như hướng dẫn trên.
 
-虽然大多数情况下您可以直接在 GitHub 上进行编辑，但对于一些较为特殊的情况（如需要使用 GPG 签名），我们更推荐使用 Git 在本地进行编辑．
+Dù đa số trường hợp bạn có thể chỉnh sửa trực tiếp trên GitHub, nhưng với một số trường hợp đặc biệt (ví dụ cần ký GPG), bạn nên dùng Git trên máy.
 
-大致流程如下：
+Quy trình cơ bản:
 
-1.  将主仓库 Fork 到自己的仓库中；
-2.  将 Fork 后的分支仓库克隆（clone）到本地；
-3.  在本地进行修改后提交（commit）这些更改；
-4.  将这些更改推送（push）到你克隆的分支仓库；
-5.  提交 Pull Request 至主仓库．
+1.  Fork kho chính về tài khoản của bạn;
+2.  Clone nhánh đã fork về máy;
+3.  Chỉnh sửa, commit các thay đổi trên máy;
+4.  Push các thay đổi lên kho nhánh của bạn;
+5.  Gửi Pull Request về kho chính.
 
-详细的操作方式可以参考 [Git](../tools/git.md) 页面．
+Xem hướng dẫn chi tiết tại trang [Git](../tools/git.md).
 
-#### 向 Pull Request 追加更改
+#### Thêm thay đổi vào Pull Request
 
-在 clone 下来的本地分支仓库中继续进行修改，并提交（commit）以及推送（push）这些更改即可．你的更改会被自动追加在 Pull Request 中．
+Tiếp tục chỉnh sửa trên nhánh đã clone về máy, commit và push các thay đổi. Pull Request sẽ tự động cập nhật.
 
-### 在构建的网页中预览变更
+### Xem trước thay đổi trên trang web
 
-在 Pull Request 页面下方可以找到测试页面，点击 netlify/oi-wiki/deploy-preview 一项的 Details 链接（如下图），可以进入自动构建的，由您变更后的页面供您预览．
+Ở cuối trang Pull Request sẽ có mục kiểm thử, nhấn vào liên kết Details của dòng netlify/oi-wiki/deploy-preview (như hình dưới) để xem bản dựng tự động của trang đã chỉnh sửa.
 
 ![deploy\_preview](./images/deploy_preview.png)
 
-### 对于目录和引用的变更
+### Thay đổi về mục lục và liên kết
 
-通常情况下，如果您需要添加一个新页面，或者修改已有页面在目录中的链接，您就需要对 [`mkdocs.yml`](https://github.com/OI-wiki/OI-wiki/blob/master/mkdocs.yml) 文件作出改动．
+Thông thường, nếu bạn thêm trang mới hoặc sửa liên kết trong mục lục, bạn cần chỉnh sửa file [`mkdocs.yml`](https://github.com/huythedev/K23OJ-OI-wiki/blob/master/mkdocs.yml).
 
-添加新页面可以参考既有的格式．但除非是进行重构或修正名词，否则 **我们不建议对既有页面的引用链接进行修改**，Pull Requests 中不必要的修改也将被驳回．
+Tham khảo các mục đã có để thêm trang mới. Trừ khi tái cấu trúc hoặc sửa thuật ngữ, **không nên thay đổi liên kết các trang hiện có**; các Pull Request thay đổi không cần thiết sẽ bị từ chối.
 
-如果您坚持要修改链接，请注意更新 author 字段和重定向文件．
+Nếu thực sự cần sửa liên kết, hãy cập nhật trường author và file chuyển hướng.
 
-### author 字段
+### Trường author
 
-GitHub API 在文件目录变更后不能跟踪统计，所以我们在文件头手动维护了一个作者列表来解决这个问题．author 字段位于整个 Markdown 文件的开头，形如 `author: Ir1d, cjsoft`，相邻两个 ID 之间用逗号加空格隔开．这里的 ID 是 GitHub 的用户名，即 GitHub profile 的地址（例如 <https://github.com/Ir1d> 中的 `Ir1d`）．
+Do GitHub API không thể theo dõi lịch sử khi thay đổi thư mục, chúng tôi duy trì thủ công danh sách tác giả ở đầu file Markdown, ví dụ: `author: Ir1d, cjsoft`, các ID cách nhau bởi dấu phẩy và cách. ID là tên người dùng GitHub (ví dụ <https://github.com/Ir1d> thì là `Ir1d`).
 
-修改链接时，需要将当前页面中的 contributors 逐一填入 author 字段．
+Khi sửa liên kết, hãy điền đầy đủ contributors vào trường author.
 
-### 重定向文件
+### File chuyển hướng
 
-在修改链接时，为了避免在站外引用时出现死链，需要修改重定向文件．
+Khi sửa liên kết để tránh lỗi liên kết ngoài, cần cập nhật file chuyển hướng.
 
-[`_redirects`](https://github.com/OI-wiki/OI-wiki/blob/master/docs/_redirects) 文件用于生成 [netlify 的配置](https://docs.netlify.com/routing/redirects/#syntax-for-the-redirects-file) 和 [用于跳转的文件](https://github.com/OI-wiki/OI-wiki/blob/master/scripts/gen_redirect.py)．
+File [`_redirects`](https://github.com/huythedev/K23OJ-OI-wiki/blob/master/docs/_redirects) dùng để tạo [cấu hình netlify](https://docs.netlify.com/routing/redirects/#syntax-for-the-redirects-file) và [file chuyển hướng](https://github.com/huythedev/K23OJ-OI-wiki/blob/master/scripts/gen_redirect.py).
 
-每一行表示一个重定向规则，分别写跳转的起点和终点的 url（不包含域名）：
+Mỗi dòng là một quy tắc chuyển hướng, gồm đường dẫn nguồn và đích (không có tên miền):
 
 ```text
 /path/to/src /path/to/desc
 ```
 
-注：所有跳转均为 301 跳转，只有在修改目录中 url 造成死链的时候需要修改．
+Lưu ý: Tất cả chuyển hướng đều là 301, chỉ cần sửa khi thay đổi url gây lỗi liên kết.
 
-### Commit 信息格式规范
+### Quy tắc định dạng thông tin Commit
 
-对于提交时需要填写的 commit 信息，请遵守以下几点基本要求：
+Khi gửi commit, hãy tuân thủ các yêu cầu sau:
 
-1.  commit 摘要请简要描述这一次 commit 改动的内容．注意 commit 摘要的长度不要超过 50 字符，超出的部分会自动置于正文中．
-2.  如果需要进一步描述本次 commit 内容，请在正文中详细说明．
+1.  Tiêu đề commit mô tả ngắn gọn thay đổi, không quá 50 ký tự, phần vượt quá sẽ chuyển xuống nội dung chi tiết.
+2.  Nếu cần, hãy mô tả chi tiết hơn ở phần nội dung commit.
 
-对于 commit 摘要，推荐按照如下格式书写：
+Khuyến nghị định dạng commit như sau:
 
 ```text
-<修改类型>(<文件名>): <修改的内容>
+<loại sửa đổi>(<tên file>): <nội dung thay đổi>
 ```
 
-修改类型分为如下几类：
+Các loại sửa đổi:
 
--   `feat`：用于添加内容的情况．
--   `fix`：用于修正现有内容错误的情况．
--   `refactor`：用于对一个页面进行重构（较大规模的更改）的情况．
--   `revert`：用于回退之前更改的情况．
+-   `feat`: Thêm nội dung mới.
+-   `fix`: Sửa lỗi nội dung hiện có.
+-   `refactor`: Tái cấu trúc (thay đổi lớn).
+-   `revert`: Hoàn tác thay đổi trước đó.
 
-### Pull Request 信息格式规范
+### Quy tắc định dạng thông tin Pull Request
 
-对于 Pull Request，请遵守以下几点要求：
+Khi gửi Pull Request, hãy tuân thủ các yêu cầu sau:
 
-1.  标题请写明本次 PR 的目的（做了 **什么** 工作，修复了 **什么** 问题）．
-2.  内容请简要叙述修改的内容．如果修复了一个 issue 的问题，请在内容中添加 `fix #xxxx` 字段，其中 `xxxx` 代表 issue 的编号．
-3.  请您仔细阅读 [贡献指南](https://github.com/OI-wiki/OI-wiki/blob/master/.github/CONTRIBUTING.md) 和 [社区公约](https://github.com/OI-wiki/OI-wiki/blob/master/CODE_OF_CONDUCT.md)，并在同意后勾选 PR 模板中的框，表示您同意了以上指南和公约．
+1.  Tiêu đề nêu rõ mục đích PR (đã làm gì, sửa lỗi gì).
+2.  Nội dung mô tả ngắn gọn thay đổi. Nếu sửa lỗi issue, thêm `fix #xxxx` với xxxx là số issue.
+3.  Đọc kỹ [Hướng dẫn đóng góp](https://github.com/huythedev/K23OJ-OI-wiki/blob/master/.github/CONTRIBUTING.md) và [Quy ước cộng đồng](https://github.com/huythedev/K23OJ-OI-wiki/blob/master/CODE_OF_CONDUCT.md), đồng ý bằng cách tick vào ô xác nhận trong mẫu PR.
 
-对于 Pull Request 的标题，推荐使用如下格式书写：
+Khuyến nghị định dạng tiêu đề Pull Request:
 
 ```plain
-<修改类型>(<文件名>): <修改的内容> (<对应 issue 的编号>)
+<loại sửa đổi>(<tên file>): <nội dung thay đổi> (<số issue>)
 ```
 
-修改类型分为如下几类：
+Các loại sửa đổi:
 
--   `feat`：用于添加内容的情况．
--   `fix`：用于修正现有内容错误的情况．
--   `refactor`：用于对一个页面进行重构（较大规模的更改）的情况．
--   `revert`：用于回退之前更改的情况．
+-   `feat`: Thêm nội dung mới.
+-   `fix`: Sửa lỗi nội dung hiện có.
+-   `refactor`: Tái cấu trúc (thay đổi lớn).
+-   `revert`: Hoàn tác thay đổi trước đó.
 
-示例：
+Ví dụ:
 
--   `fix(ds/persistent-seg): 修改代码注释使描述更清晰`
--   `fix: tools/judger/index 不在目录中 (#3709)`
--   `feat(math/poly/fft): better proof`
--   `refactor(ds/stack): 整理页面内容`
+-   `fix(ds/persistent-seg): sửa chú thích code cho rõ ràng`
+-   `fix: tools/judger/index không có trong mục lục (#3709)`
+-   `feat(math/poly/fft): chứng minh tốt hơn`
+-   `refactor(ds/stack): sắp xếp lại nội dung`
 
-### 协作流程
+### Quy trình cộng tác
 
-1.  在收到一个新的 Pull Request 之后，GitHub 会给 reviewer 发送邮件；
-2.  与此同时，在 [GitHub Actions](https://github.com/OI-wiki/OI-wiki/actions) 和 [Netlify](https://app.netlify.com/sites/oi-wiki) 上会运行两组测试，它们会把进度同步在 PR 页面的下方．GitHub Actions 主要用来确认 PR 中内容的修改不会影响到网站构建的进程；Netlify 用来把 PR 中的更新构建出来，方便 reviewer 审核（在测试完成后点击 Details 可以了解更多）；
-3.  reviewer 可能会发现问题，并提出 `review` 或 `suggested changes`（建议更改，显示为灰色图标）/`requested changes`（强制更改，显示为红色图标，只会在 reviewer 拥有 repo 写权限时出现）．一般来说，reviewer 也会附上建议和需要进行的更改，在这时，您将会需要继续向 Pull Request 追加其他更改．更改的方法可以参考 `在 GitHub 上编辑` 或者 `使用 Git 在本地进行编辑` 部分的 `向 Pull Request 追加更改` 部分．
-4.  在足够多 reviewer 投票通过一个 PR 之后，这个 PR 才可以合并到 master 分支中；
-5.  在合并到 master 分支之后，GitHub Actions 会重新构建一遍网站内容，并更新到 gh-pages 分支；
-6.  这时服务器才会拉取 gh-pages 分支的更新，并重新部署最新版本的内容．
+1.  Khi có Pull Request mới, reviewer sẽ nhận được email;
+2.  Đồng thời, [GitHub Actions](https://github.com/huythedev/K23OJ-OI-wiki/actions) và [Netlify](https://app.netlify.com/sites/oi-wiki) sẽ chạy kiểm thử, tiến trình sẽ hiển thị ở cuối trang PR. GitHub Actions kiểm tra thay đổi không làm lỗi quá trình dựng trang; Netlify dựng bản xem trước để reviewer kiểm tra (nhấn Details để xem);
+3.  Reviewer có thể phát hiện vấn đề và gửi `review` hoặc `suggested changes` (biểu tượng xám)/`requested changes` (biểu tượng đỏ, chỉ reviewer có quyền ghi mới có). Thường reviewer sẽ kèm nhận xét và hướng dẫn sửa, bạn cần tiếp tục bổ sung thay đổi vào Pull Request. Xem hướng dẫn ở phần `Chỉnh sửa trên GitHub` hoặc `Chỉnh sửa trên máy bằng Git` > `Thêm thay đổi vào Pull Request`;
+4.  Khi đủ reviewer đồng ý, PR sẽ được hợp nhất vào nhánh master;
+5.  Sau khi hợp nhất, GitHub Actions sẽ dựng lại nội dung và cập nhật lên nhánh gh-pages;
+6.  Máy chủ sẽ lấy bản mới từ gh-pages và triển khai nội dung mới nhất.
 
-## 参考资料与注释
+## Tài liệu tham khảo & chú thích
 
-[^ref1]: [维基百科：新手入门/编辑](https://zh.wikipedia.org/wiki/Wikipedia:%E6%96%B0%E6%89%8B%E5%85%A5%E9%96%80/%E7%B7%A8%E8%BC%AF)
+[^ref1]: [Wikipedia: Hướng dẫn cho người mới/Chỉnh sửa](https://zh.wikipedia.org/wiki/Wikipedia:%E6%96%B0%E6%89%8B%E5%85%A5%E9%96%80/%E7%B7%A8%E8%BC%AF)
 
 [^ref2]: [Web-based editor - GitHub Codespaces - GitHub Docs](https://docs.github.com/en/codespaces/developing-in-codespaces/web-based-editor)

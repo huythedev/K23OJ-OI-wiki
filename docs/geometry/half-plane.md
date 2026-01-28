@@ -1,24 +1,24 @@
 author: wjy-yy, Ir1d, Xeonacid
 
-## 定义
+## Định nghĩa
 
-### 半平面
+### Nửa mặt phẳng
 
-一条直线和直线的一侧．半平面是一个点集，因此是一条直线和直线的一侧构成的点集．当包含直线时，称为闭半平面；当不包含直线时，称为开半平面．
+Một nửa mặt phẳng được xác định bởi một đường thẳng và một phía của đường thẳng đó. Nửa mặt phẳng là một tập hợp điểm, tức là tập hợp các điểm nằm ở một phía của một đường thẳng. Nếu bao gồm cả đường thẳng, gọi là nửa mặt phẳng đóng; nếu không bao gồm, gọi là nửa mặt phẳng mở.
 
-解析式一般为 $Ax+By+C\ge 0$．
+Phương trình tổng quát thường dùng là $Ax+By+C\ge 0$.
 
-在计算几何中用向量表示，整个题统一以向量的左侧或右侧为半平面．
+Trong hình học tính toán, thường biểu diễn bằng vectơ, toàn bộ bài toán sẽ thống nhất lấy phía bên trái hoặc bên phải của vectơ làm nửa mặt phẳng.
 
-![半平面](./images/hpi1.svg)
+![Nửa mặt phẳng](./images/hpi1.svg)
 
-### 半平面交
+### Giao nửa mặt phẳng
 
-半平面交是指多个半平面的交集．因为半平面是点集，所以点集的交集仍然是点集．在平面直角坐标系围成一个区域．
+Giao nửa mặt phẳng là giao của nhiều nửa mặt phẳng. Vì nửa mặt phẳng là tập hợp điểm nên giao của chúng vẫn là tập hợp điểm, tạo thành một vùng trên mặt phẳng tọa độ.
 
-这就很像普通的线性规划问题了，得到的半平面交就是线性规划中的可行域．一般情况下半平面交是有限的，经常考察面积等问题的解决．
+Điều này rất giống với bài toán quy hoạch tuyến tính, giao nửa mặt phẳng chính là miền khả thi trong quy hoạch tuyến tính. Thông thường giao nửa mặt phẳng là một vùng hữu hạn, thường gặp trong các bài toán tính diện tích, v.v.
 
-它可以理解为向量集中每一个向量的右侧的交，或者是下面方程组的解．
+Có thể hiểu là giao của phía bên phải (hoặc bên trái) của mỗi vectơ trong tập vectơ, hoặc là tập nghiệm của hệ bất phương trình sau:
 
 $$
 \begin{cases}
@@ -28,75 +28,75 @@ A_2x+B_2y+C\ge 0\\
 \end{cases}
 $$
 
-### 多边形的核
+### Nhân của đa giác
 
-如果一个点集中的点与多边形上任意一点的连线与多边形没有其他交点，那么这个点集被称为多边形的核．
+Nếu một tập hợp điểm mà mọi điểm trong đó nối với bất kỳ điểm nào trên đa giác đều không cắt đa giác tại điểm nào khác, thì tập hợp đó gọi là nhân của đa giác.
 
-把多边形的每条边看成是首尾相连的向量，那么这些向量在多边形内部方向的半平面交就是多边形的核．
+Xem mỗi cạnh của đa giác là một vectơ nối tiếp nhau, thì giao nửa mặt phẳng phía trong của các vectơ này chính là nhân của đa giác.
 
-## 解法 - S&I 算法
+## Giải thuật - Thuật toán S&I
 
-### 极角排序
+### Sắp xếp theo góc cực
 
-C 语言有一个库函数叫做 `atan2(double y,double x)`，可以返回 $\theta\in (-\pi,\pi]$，$\theta =\arctan \frac{y}{x}$．
+Trong C có hàm `atan2(double y,double x)`, trả về $\theta\in (-\pi,\pi]$, với $\theta =\arctan \frac{y}{x}$.
 
-直接以向量为自变量，调用这个函数，以返回值为关键字排序，得到新的边（向量）集．
+Trực tiếp lấy vectơ làm biến, gọi hàm này, dùng giá trị trả về làm khóa để sắp xếp, thu được tập cạnh (vectơ) mới đã sắp xếp.
 
-排序时，如果遇到共线向量（且方向相同），则取靠近可行域的一个．比如两个向量的极角相同，而我们要的是向量的左侧半平面，那么我们只需要保留左侧的向量．判断方法是取其中一个向量的起点或终点与另一个比较，检查是在左边还是在右边．
+Khi sắp xếp, nếu gặp các vectơ đồng phương (cùng hướng), thì giữ lại vectơ gần miền khả thi hơn. Ví dụ, hai vectơ có cùng góc cực, và ta lấy phía bên trái của vectơ làm nửa mặt phẳng, thì chỉ cần giữ lại vectơ phía bên trái. Cách kiểm tra là lấy một điểm đầu hoặc cuối của một vectơ so với vectơ còn lại, kiểm tra xem nằm bên trái hay bên phải.
 
-### 维护单调队列
+### Duy trì hàng đợi đơn điệu
 
-因为半平面交是一个凸多边形，所以需要维护一个凸壳．因为后来加入的只可能会影响最开始加入的或最后加入的边（此时凸壳连通），只需要删除队首和队尾的元素，所以需要用单调队列．
+Vì giao nửa mặt phẳng là một đa giác lồi, nên cần duy trì một bao lồi. Khi thêm một cạnh mới, chỉ có thể ảnh hưởng đến cạnh đầu hoặc cuối của bao (vì bao lồi liên thông), nên chỉ cần loại bỏ phần tử ở đầu hoặc cuối hàng đợi, do đó dùng hàng đợi đơn điệu.
 
-我们遍历排好序了的向量，并维护另一个交点数组．当单队中元素超过 2 个时，他们之间就会产生交点．
+Ta duyệt qua các vectơ đã sắp xếp, đồng thời duy trì một mảng giao điểm. Khi hàng đợi có hơn 2 phần tử, giữa chúng sẽ sinh ra giao điểm.
 
-对于当前向量，如果上一个交点在这条向量表示的半平面交的 **异侧**，那么上一条边就没有意义了．
+Với vectơ hiện tại, nếu giao điểm trước đó nằm ở phía đối diện với nửa mặt phẳng của vectơ này, thì cạnh trước đó không còn ý nghĩa.
 
-![单调队列](./images/hpi2.svg)
+![Hàng đợi đơn điệu](./images/hpi2.svg)
 
-如上图，假设取向量左侧半平面．极角排序后，遍历顺序应该是 $\vec a\to\vec b\to\vec c$．当 $\vec a$ 和 $\vec b$ 入队时，在交点数组里会产生一个点 $D$（交点数组保存队列中相同下标的向量与前一向量的交点）．
+Như hình trên, giả sử lấy phía bên trái của vectơ làm nửa mặt phẳng. Sau khi sắp xếp theo góc cực, thứ tự duyệt là $\vec a\to\vec b\to\vec c$. Khi $\vec a$ và $\vec b$ vào hàng đợi, trong mảng giao điểm sẽ sinh ra điểm $D$ (mảng giao điểm lưu giao điểm của hai vectơ liên tiếp trong hàng đợi).
 
-接下来枚举到 $\vec c$ 时，发现 $D$ 在 $\vec c$ 的右侧．而因为 **产生**  $D$  **的向量的极角一定比** $\vec c$  **要小**，所以产生 $D$ 的向量（指 $\vec b$）就对半平面交没有影响了．
+Tiếp tục đến $\vec c$, phát hiện $D$ nằm bên phải $\vec c$. Vì **vectơ sinh ra $D$ có góc cực nhỏ hơn $\vec c$**, nên vectơ sinh ra $D$ (tức $\vec b$) không còn ảnh hưởng đến giao nửa mặt phẳng.
 
-还有一种可能的情况是快结束的时候，新加入的向量会从队首开始造成影响．
+Cũng có trường hợp khi gần kết thúc, vectơ mới thêm vào lại ảnh hưởng từ đầu hàng đợi.
 
-![队首影响](./images/hpi7.svg)
+![Ảnh hưởng từ đầu hàng đợi](./images/hpi7.svg)
 
-仍然假设取向量左侧半平面．加入向量 $\vec f$ 之后，第一个交点 $G$ 就在 $\vec f$ 的右侧，我们把上面的判断标准逆过来看，就知道此时应该删除向量 $\vec a$，也即 **队首** 的向量．
+Vẫn giả sử lấy phía bên trái của vectơ làm nửa mặt phẳng. Khi thêm vectơ $\vec f$, giao điểm đầu tiên $G$ nằm bên phải $\vec f$, ta đảo ngược tiêu chí kiểm tra ở trên, lúc này cần loại bỏ vectơ $\vec a$, tức là **phần tử đầu hàng đợi**.
 
-最后用队首的向量排除一下队尾多余的向量．因为队首的向量会被后面的约束，而队尾的向量不会．此时它们围成了一个环，因此队首的向量就可以约束队尾的向量．
+Cuối cùng, dùng vectơ đầu hàng đợi để loại bỏ các vectơ dư thừa ở cuối. Vì vectơ đầu hàng đợi sẽ bị các ràng buộc phía sau giới hạn, còn vectơ cuối thì không. Lúc này các cạnh tạo thành một vòng, nên vectơ đầu hàng đợi có thể giới hạn vectơ cuối.
 
-### 得到半平面交
+### Lấy giao nửa mặt phẳng
 
-如果半平面交是一个凸 $n$ 边形，最后在交点数组里会得到 $n$ 个点．我们再把它们首尾相连，就是一个统一方向（顺或逆时针）的 $n$ 多边形．
+Nếu giao nửa mặt phẳng là một đa giác lồi $n$ cạnh, cuối cùng trong mảng giao điểm sẽ có $n$ điểm. Nối chúng lại theo thứ tự sẽ được một đa giác $n$ cạnh cùng chiều (xuôi hoặc ngược kim đồng hồ).
 
-此时就可以用三角剖分求面积了．（求面积是最基础的考法）
+Lúc này có thể dùng chia tam giác để tính diện tích (tính diện tích là dạng bài cơ bản nhất).
 
-偶尔会出现半平面交不存在或面积为 0 的情况，注意考虑边界．
+Đôi khi giao nửa mặt phẳng không tồn tại hoặc diện tích bằng 0, cần chú ý các trường hợp biên.
 
-### 注意事项
+### Lưu ý
 
-当出现一个可以把队列里的点全部弹出去的向量（即所有队列里的点都在该向量的右侧），则我们 **必须** 先处理队尾，再处理队首．因此在循环中，我们先枚举 `--r;` 的部分，再枚举 `++l;` 的部分，才不会错．原因如下．
+Khi xuất hiện một vectơ có thể loại toàn bộ các điểm trong hàng đợi (tức là tất cả các điểm trong hàng đợi đều nằm bên phải vectơ đó), **bắt buộc** phải xử lý phần tử cuối trước, rồi mới xử lý phần tử đầu. Do đó trong vòng lặp, phải duyệt `--r;` trước, rồi mới `++l;`, như vậy mới đúng. Lý do như sau.
 
 ![](./images/hpi4.svg)
 
-一般情况下，我们在队列（队列顺序为 $\left\{\vec{u},\vec{v}\right\}$）后面加一条边（向量 $\vec w$），会产生一个交点 $N$，缩小 $\vec{v}$ 后面的范围．
+Thông thường, khi thêm một cạnh (vectơ $\vec w$) vào hàng đợi (hàng đợi gồm $\left\{\vec{u},\vec{v}\right\}$), sẽ sinh ra giao điểm $N$, thu hẹp phạm vi phía sau $\vec{v}$.
 
 ![](./images/hpi5.svg)
 
-但是毕竟每次操作都是一般的，因此可能会有把 $M$ 点「挤出去」的情况．
+Tuy nhiên, mỗi thao tác đều là trường hợp tổng quát, nên có thể xảy ra trường hợp điểm $M$ bị "đẩy ra ngoài".
 
 ![](./images/hpi6.svg)
 
-如果此时出现了向量 $\vec a$，使得 $M$ 在 $\vec a$ 的右侧，那么 $M$ 就要出队了．此时如果从队首枚举 `++l`，显然是扩大了范围．实际上 $M$ 点是由 $\vec u$ 和 $\vec v$ 共同构成的，因此需要考虑影响到现有进程的是 $\vec u$ 还是 $\vec v$．而因为我们在极角排序后，向量是逆时针顺序，所以 $\vec v$ 的影响要更大一些．
+Nếu lúc này xuất hiện vectơ $\vec a$ khiến $M$ nằm bên phải $\vec a$, thì $M$ phải bị loại khỏi hàng đợi. Nếu lúc này duyệt từ đầu hàng đợi `++l`, rõ ràng là đang mở rộng phạm vi. Thực tế, điểm $M$ được tạo bởi cả $\vec u$ và $\vec v$, nên cần xét xem bị ảnh hưởng bởi $\vec u$ hay $\vec v$. Vì sau khi sắp xếp theo góc cực, các vectơ theo thứ tự ngược chiều kim đồng hồ, nên ảnh hưởng của $\vec v$ lớn hơn.
 
-就如上图，如果 $M$ 确认在 $\vec a$ 的右侧，那么此时 $\vec v$ 的影响一定不会对半平面交的答案作出任何贡献．
+Như hình trên, nếu $M$ xác định nằm bên phải $\vec a$, thì ảnh hưởng của $\vec v$ chắc chắn không còn đóng góp gì cho giao nửa mặt phẳng.
 
-而我们排除队首的原因是 **当前向量的限制比队首向量要大**，这个条件的前提是队列里有不止两个线段（向量），不然就会出现上面的情况．
+Lý do loại bỏ phần tử đầu là **ràng buộc của vectơ hiện tại lớn hơn vectơ đầu hàng đợi**, điều kiện này chỉ đúng khi hàng đợi có nhiều hơn hai đoạn (vectơ), nếu không sẽ xảy ra trường hợp như trên.
 
-所以一定要先排除队尾再排除队首．
+Vì vậy, nhất định phải loại bỏ phần tử cuối trước, rồi mới loại bỏ phần tử đầu.
 
-???+ note "代码 - 比较部分"
+???+ note "Code - Phần so sánh"
     ```cpp
     friend bool operator<(seg x, seg y) {
       db t1 = atan2((x.b - x.a).y, (x.b - x.a).x);
@@ -108,7 +108,7 @@ C 语言有一个库函数叫做 `atan2(double y,double x)`，可以返回 $\the
     }
     ```
 
-???+ note "代码 - 增量部分"
+???+ note "Code - Phần thêm vào"
     ```cpp
     // pnt its(seg a,seg b)表示求线段a,b的交点
     // s[]是极角排序后的向量
@@ -137,10 +137,10 @@ C 语言有一个库函数叫做 `atan2(double y,double x)`，可以返回 $\the
     // 这里不能在t里面++r需要注意一下……
     ```
 
-## 练习
+## Bài tập luyện tập
 
-[POJ 2451 Uyuw's Concert](http://poj.org/problem?id=2451) 注意边界
+[POJ 2451 Uyuw's Concert](http://poj.org/problem?id=2451) (chú ý trường hợp biên)
 
-[POJ 1279 Art Gallery](http://poj.org/problem?id=1279) 求多边形的核
+[POJ 1279 Art Gallery](http://poj.org/problem?id=1279) (tìm nhân của đa giác)
 
-[「CQOI2006」凸多边形](https://www.luogu.com.cn/problem/P4196)
+[「CQOI2006」Đa giác lồi](https://www.luogu.com.cn/problem/P4196)

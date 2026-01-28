@@ -1,40 +1,40 @@
 author: Chrogeek, frank-xjh, ChungZH, hsfzLZH1, Marcythm, Planet6174, partychicken, i-Yirannn
 
-## 欧氏距离
+## Khoảng cách Euclid (欧氏距离)
 
-### 二维空间
+### Không gian hai chiều
 
-#### 定义
+#### Định nghĩa
 
-欧氏距离，一般也称作欧几里得距离．在平面直角坐标系中，设点 $A,B$ 的坐标分别为 $A(x_1,y_1),B(x_2,y_2)$，则两点间的欧氏距离为：
+Khoảng cách Euclid, còn gọi là khoảng cách Euclid (Euclidean distance). Trong hệ tọa độ vuông góc, giả sử hai điểm $A,B$ có tọa độ lần lượt là $A(x_1,y_1),B(x_2,y_2)$, thì khoảng cách Euclid giữa hai điểm là:
 
 $$
 \left | AB \right | = \sqrt{\left ( x_2 - x_1 \right )^2 + \left ( y_2 - y_1 \right )^2}
 $$
 
-#### 解释
+#### Giải thích
 
-举个例子，若在平面直角坐标系中，有两点 $A(6,5),B(2,2)$，通过公式，我们很容易得到 $A,B$ 两点间的欧氏距离：
+Ví dụ, trong hệ tọa độ vuông góc, có hai điểm $A(6,5),B(2,2)$, áp dụng công thức trên, ta dễ dàng tính được khoảng cách Euclid giữa $A$ và $B$:
 
 $$
 \left | AB \right | = \sqrt{\left ( 2 - 6 \right )^2 + \left ( 2 - 5 \right )^2} = \sqrt{4^2+3^2} = 5
 $$
 
-除此之外，$P(x,y)$ 到原点的欧氏距离可以用公式表示为：
+Ngoài ra, khoảng cách Euclid từ điểm $P(x,y)$ đến gốc tọa độ có thể được biểu diễn như sau:
 
 $$
 |P| = \sqrt{x^2+y^2}
 $$
 
-### n 维空间
+### Không gian n chiều
 
-#### 引入
+#### Dẫn nhập
 
-那么，三维空间中两点的欧氏距离公式呢？我们来观察下图．
+Vậy trong không gian ba chiều, công thức khoảng cách Euclid là gì? Hãy quan sát hình dưới.
 
 ![dis-3-dimensional](./images/distance-0.png)
 
-我们很容易发现，在 $\triangle ADC$ 中，$\angle ADC = 90^\circ$；在 $\triangle ACB$ 中，$\angle ACB = 90^\circ$．
+Ta dễ dàng nhận thấy, trong tam giác $\triangle ADC$, $\angle ADC = 90^\circ$; trong tam giác $\triangle ACB$, $\angle ACB = 90^\circ$.
 
 $$
 \begin{aligned}
@@ -43,9 +43,9 @@ $$
 \end{aligned}
 $$
 
-#### 定义
+#### Định nghĩa
 
-由此可得，三维空间中欧氏距离的距离公式为：
+Từ đó, công thức khoảng cách Euclid trong không gian ba chiều là:
 
 $$
 \begin{gathered}
@@ -54,11 +54,11 @@ $$
 \end{gathered}
 $$
 
-#### 解释
+#### Giải thích
 
-[NOIP2017 提高组 奶酪](https://uoj.ac/problem/332) 就运用了这一知识，可以作为欧氏距离的例题．
+[NOIP2017 Bảng nâng cao - Bài "Cheese"](https://uoj.ac/problem/332) đã sử dụng kiến thức này, có thể xem như một ví dụ điển hình về khoảng cách Euclid.
 
-以此类推，我们就得到了 $n$ 维空间中欧氏距离的距离公式：对于 $\vec A(x_{11}, x_{12}, \cdots,x_{1n}) ,~ \vec B(x_{21}, x_{22}, \cdots,x_{2n})$，有
+Tương tự, ta có công thức khoảng cách Euclid trong không gian $n$ chiều: Với $\vec A(x_{11}, x_{12}, \cdots,x_{1n}) ,~ \vec B(x_{21}, x_{22}, \cdots,x_{2n})$:
 
 $$
 \begin{aligned}
@@ -67,37 +67,37 @@ $$
 \end{aligned}
 $$
 
-欧氏距离虽然很有用，但也有明显的缺点．两个整点计算其欧氏距离时，往往答案是浮点型，会存在一定误差．
+Khoảng cách Euclid rất hữu dụng, nhưng cũng có nhược điểm rõ rệt: Khi tính khoảng cách giữa hai điểm nguyên, kết quả thường là số thực, có thể gây sai số do làm tròn.
 
-## 曼哈顿距离
+## Khoảng cách Manhattan
 
-### 定义
+### Định nghĩa
 
-在二维空间内，两个点之间的曼哈顿距离（Manhattan distance）为它们横坐标之差的绝对值与纵坐标之差的绝对值之和．设点 $A(x_1,y_1),B(x_2,y_2)$，则 $A,B$ 之间的曼哈顿距离用公式可以表示为：
+Trong không gian hai chiều, khoảng cách Manhattan (Manhattan distance) giữa hai điểm là tổng giá trị tuyệt đối hiệu hoành độ và tung độ của chúng. Giả sử $A(x_1,y_1),B(x_2,y_2)$, thì khoảng cách Manhattan giữa $A$ và $B$ là:
 
 $$
 d(A,B) = |x_1 - x_2| + |y_1 - y_2|
 $$
 
-### 解释
+### Giải thích
 
-观察下图：
+Quan sát hình dưới:
 
 ![manhattan-dis-diff](./images/distance-1.png)
 
-在 $A,B$ 间，黄线、橙线都表示曼哈顿距离，而红线、蓝线表示等价的曼哈顿距离，绿线表示欧氏距离．
+Giữa $A$ và $B$, các đoạn màu vàng, cam đều biểu diễn khoảng cách Manhattan, còn đoạn đỏ, xanh lam cũng là các cách đi tương đương, đoạn xanh lá là khoảng cách Euclid.
 
-同样的例子，在下图中 $A,B$ 的坐标分别为 $A(25,20),B(10,10)$．
+Tương tự, trong hình dưới, $A,B$ có tọa độ lần lượt là $A(25,20),B(10,10)$.
 
 ![manhattan-dis](./images/distance-2.svg)
 
-通过公式，我们很容易得到 $A,B$ 两点间的曼哈顿距离：
+Áp dụng công thức, ta dễ dàng tính được khoảng cách Manhattan giữa $A$ và $B$:
 
 $$
 d(A,B) = |20 - 10| + |25 - 10| = 10 + 15 = 25
 $$
 
-经过推导，我们得到 $n$ 维空间的曼哈顿距离公式为：
+Suy rộng ra, công thức khoảng cách Manhattan trong không gian $n$ chiều là:
 
 $$
 \begin{aligned}
@@ -106,28 +106,28 @@ d(A,B) &= |x_1 - y_1| + |x_2 - y_2| + \cdot \cdot \cdot + |x_n - y_n|\\
 \end{aligned}
 $$
 
-### 性质
+### Tính chất
 
-除了公式之外，曼哈顿距离还具有以下数学性质：
+Ngoài công thức, khoảng cách Manhattan còn có các tính chất toán học sau:
 
--   非负性：曼哈顿距离是一个非负数，即 $d(i,j)\geq 0$．
--   统一性：一个点到自身的曼哈顿距离为 $0$，即 $d(i,i) = 0$．
--   对称性：$A$ 到 $B$ 与 $B$ 到 $A$ 的曼哈顿距离相等，即 $d(i,j) = d(j,i)$．
--   三角不等式：从点 $i$ 到 $j$ 的直接距离不会大于途经的任何其它点 $k$ 的距离，即 $d(i,j)\leq d(i,k)+d(k,j)$．
+-   Không âm: Khoảng cách Manhattan luôn không âm, tức là $d(i,j)\geq 0$.
+-   Đơn vị: Khoảng cách từ một điểm đến chính nó là $0$, tức $d(i,i) = 0$.
+-   Đối xứng: Khoảng cách từ $A$ đến $B$ bằng khoảng cách từ $B$ đến $A$, tức $d(i,j) = d(j,i)$.
+-   Bất đẳng thức tam giác: Khoảng cách trực tiếp từ $i$ đến $j$ không lớn hơn tổng khoảng cách qua bất kỳ điểm $k$ nào, tức $d(i,j)\leq d(i,k)+d(k,j)$.
 
-### 例题
+### Bài tập ví dụ
 
 [P5098「USACO04OPEN」Cave Cows 3](https://www.luogu.com.cn/problem/P5098)
 
-根据题意，对于式子 $|x_1-x_2|+|y_1-y_2|$，我们可以假设 $x_1 - x_2 \geq 0$，根据 $y_1 - y_2$ 的符号分成两种情况：
+Theo đề bài, với công thức $|x_1-x_2|+|y_1-y_2|$, ta có thể giả sử $x_1 - x_2 \geq 0$, rồi chia thành hai trường hợp theo dấu của $y_1 - y_2$:
 
 -   $(y_1 - y_2 \geq 0)\rightarrow |x_1-x_2|+|y_1-y_2|=x_1 + y_1 - (x_2 + y_2)$
 
 -   $(y_1 - y_2 < 0)\rightarrow |x_1-x_2|+|y_1-y_2|=x_1 - y_1 - (x_2 - y_2)$
 
-只要分别求出 $x+y, x-y$ 的最大值和最小值即能得出答案．
+Chỉ cần tìm giá trị lớn nhất và nhỏ nhất của $x+y, x-y$ là ra đáp án.
 
-??? note "参考代码"
+??? note "Mã mẫu tham khảo"
     === "C++"
         ```cpp
         #include <algorithm>
@@ -163,21 +163,21 @@ $$
         print(max(maxx - minx, maxy - miny))
         ```
 
-其实还有第二种做法，那就是把曼哈顿距离转化为切比雪夫距离求解，最后部分会讲到．
+Thực ra còn một cách khác, đó là chuyển đổi khoảng cách Manhattan thành khoảng cách Chebyshev, sẽ trình bày ở phần sau.
 
-## 切比雪夫距离
+## Khoảng cách Chebyshev (切比雪夫距离)
 
-### 定义
+### Định nghĩa
 
-切比雪夫距离（Chebyshev distance）是向量空间中的一种度量，二个点之间的距离定义为其各坐标数值差的最大值．[^ref1]
+Khoảng cách Chebyshev (Chebyshev distance) là một loại độ đo trong không gian vectơ, khoảng cách giữa hai điểm được định nghĩa là giá trị lớn nhất trong các hiệu tuyệt đối từng tọa độ.[^ref1]
 
-在二维空间内，两个点之间的切比雪夫距离为它们横坐标之差的绝对值与纵坐标之差的绝对值的最大值．设点 $A(x_1,y_1),B(x_2,y_2)$，则 $A,B$ 之间的切比雪夫距离用公式可以表示为：
+Trong không gian hai chiều, khoảng cách Chebyshev giữa hai điểm là giá trị lớn nhất giữa hiệu tuyệt đối hoành độ và tung độ. Giả sử $A(x_1,y_1),B(x_2,y_2)$, thì:
 
 $$
 d(A,B) = \max(|x_1 - x_2|, |y_1 - y_2|)
 $$
 
-$n$ 维空间中切比雪夫距离的距离公式可以表示为：
+Trong không gian $n$ chiều, công thức là:
 
 $$
 \begin{aligned}
@@ -185,9 +185,9 @@ d(x,y) &= \max\begin{Bmatrix} |x_1 - y_1|,|x_2 - y_2|,\cdot \cdot \cdot,|x_n - y
 &= \max\begin{Bmatrix} |x_i - y_i|\end{Bmatrix}(i \in [1, n])\end{aligned}
 $$
 
-### 解释
+### Giải thích
 
-仍然是这个例子，下图中 $A,B$ 的坐标分别为 $A(25,20),B(10,10)$．
+Vẫn với ví dụ trên, trong hình dưới $A,B$ có tọa độ lần lượt là $A(25,20),B(10,10)$.
 
 ![Chebyshev-dis](./images/distance-2.svg)
 
@@ -195,15 +195,15 @@ $$
 d(A,B) = \max(|20 - 10|, |25 - 10|) = \max(10, 15) = 15
 $$
 
-## 曼哈顿距离与切比雪夫距离的相互转化
+## Chuyển đổi giữa khoảng cách Manhattan và Chebyshev
 
-### 过程
+### Quá trình
 
-首先，我们考虑画出平面直角坐标系上所有到原点的曼哈顿距离为 $1$ 的点．
+Trước tiên, hãy vẽ tập hợp các điểm có khoảng cách Manhattan đến gốc tọa độ bằng $1$.
 
-通过公式，我们很容易得到方程 $|x| + |y| = 1$．
+Theo công thức, ta có phương trình $|x| + |y| = 1$.
 
-将绝对值展开，得到 $4$ 个 一次函数，分别是：
+Khai triển giá trị tuyệt đối, ta được $4$ hàm bậc nhất:
 
 $$
 \begin{aligned}
@@ -214,17 +214,17 @@ $$
 \end{aligned}
 $$
 
-将这 $4$ 个函数画到平面直角坐标系上，得到一个边长为 $\sqrt{2}$ 的正方形，如下图所示：
+Vẽ các hàm này trên hệ tọa độ, ta được một hình vuông cạnh $\sqrt{2}$ như hình dưới:
 
 ![dis-diff-square-1](./images/distance-3.svg)
 
-正方形边界上所有的点到原点的 曼哈顿距离 都是 $1$．
+Tất cả các điểm trên biên hình vuông này đều có khoảng cách Manhattan đến gốc tọa độ là $1$.
 
-同理，我们再考虑画出平面直角坐标系上所有到原点的 切比雪夫距离 为 $1$ 的点．
+Tương tự, hãy vẽ tập hợp các điểm có khoảng cách Chebyshev đến gốc tọa độ bằng $1$.
 
-通过公式，我们知道 $\max(|x|,|y|)=1$．
+Theo công thức, ta có $\max(|x|,|y|)=1$.
 
-我们将式子展开，也同样可以得到 $4$ 条线段，分别是：
+Khai triển, ta cũng được $4$ đoạn thẳng:
 
 $$
 \begin{aligned}
@@ -235,25 +235,25 @@ $$
 \end{aligned}
 $$
 
-画到平面直角坐标系上，可以得到一个边长为 $2$ 的正方形，如下图所示：
+Vẽ lên hệ tọa độ, ta được một hình vuông cạnh $2$ như hình dưới:
 
 ![dis-diff-square-2](./images/distance-4.svg)
 
-正方形边界上所有的点到原点的切比雪夫距离都是 $1$．
+Tất cả các điểm trên biên hình vuông này đều có khoảng cách Chebyshev đến gốc tọa độ là $1$.
 
-将这两幅图对比，我们会神奇地发现：
+So sánh hai hình, ta thấy:
 
-这 $2$ 个正方形是相似图形．
+Hai hình vuông này là hai hình đồng dạng.
 
-### 证明
+### Chứng minh
 
-所以，曼哈顿距离与切比雪夫距离之间会不会有联系呢？
+Vậy, liệu có mối liên hệ nào giữa khoảng cách Manhattan và Chebyshev không?
 
-接下来我们简略证明一下：
+Hãy chứng minh ngắn gọn:
 
-假设 $A(x_1,y_1),B(x_2,y_2)$，
+Giả sử $A(x_1,y_1),B(x_2,y_2)$,
 
-我们把曼哈顿距离中的绝对值拆开，能够得到四个值，这四个值中的最大值是两个非负数之和，即曼哈顿距离．则 $A,B$ 两点的曼哈顿距离为：
+Khai triển giá trị tuyệt đối trong khoảng cách Manhattan, ta được bốn giá trị, giá trị lớn nhất là tổng hai số không âm, tức là khoảng cách Manhattan. Khi đó:
 
 $$
 \begin{aligned}
@@ -263,11 +263,11 @@ d(A,B)&=|x_1 - x_2| + |y_1 - y_2|\\
 \end{aligned}
 $$
 
-我们很容易发现，这就是 $(x_1 + y_1,x_1 - y_1), (x_2 + y_2,x_2 - y_2)$ 两点之间的切比雪夫距离．
+Ta thấy, đây chính là khoảng cách Chebyshev giữa hai điểm $(x_1 + y_1,x_1 - y_1)$ và $(x_2 + y_2,x_2 - y_2)$.
 
-所以将每一个点 $(x,y)$ 转化为 $(x + y, x - y)$，新坐标系下的切比雪夫距离即为原坐标系下的曼哈顿距离．
+Vậy, nếu chuyển mỗi điểm $(x,y)$ thành $(x + y, x - y)$, thì khoảng cách Chebyshev trong hệ tọa độ mới chính là khoảng cách Manhattan trong hệ cũ.
 
-同理，$A,B$ 两点的切比雪夫距离为：
+Tương tự, khoảng cách Chebyshev giữa $A,B$ là:
 
 $$
 \begin{aligned}
@@ -276,33 +276,33 @@ d(A,B)&=\max\begin{Bmatrix} |x_1 - x_2|,|y_1 - y_2|\end{Bmatrix}\\
 \end{aligned}
 $$
 
-而这就是 $(\dfrac{x_1 + y_1}{2},\dfrac{x_1 - y_1}{2}), (\dfrac{x_2 + y_2}{2},\dfrac{x_2 - y_2}{2})$ 两点之间的曼哈顿距离．
+Đây chính là khoảng cách Manhattan giữa hai điểm $(\dfrac{x_1 + y_1}{2},\dfrac{x_1 - y_1}{2})$ và $(\dfrac{x_2 + y_2}{2},\dfrac{x_2 - y_2}{2})$.
 
-所以将每一个点 $(x,y)$ 转化为 $(\dfrac{x + y}{2},\dfrac{x - y}{2})$，新坐标系下的曼哈顿距离即为原坐标系下的切比雪夫距离．
+Vậy, nếu chuyển mỗi điểm $(x,y)$ thành $(\dfrac{x + y}{2},\dfrac{x - y}{2})$, thì khoảng cách Manhattan trong hệ mới chính là khoảng cách Chebyshev trong hệ cũ.
 
-### 结论
+### Kết luận
 
--   曼哈顿坐标系是通过切比雪夫坐标系旋转 $45^\circ$ 后，再缩小到原来的一半得到的．
--   将一个点 $(x,y)$ 的坐标变为 $(x + y, x - y)$ 后，原坐标系中的曼哈顿距离等于新坐标系中的切比雪夫距离．
--   将一个点 $(x,y)$ 的坐标变为 $(\dfrac{x + y}{2},\dfrac{x - y}{2})$ 后，原坐标系中的切比雪夫距离等于新坐标系中的曼哈顿距离．
+-   Hệ tọa độ Manhattan là hệ Chebyshev quay $45^\circ$ rồi thu nhỏ một nửa.
+-   Nếu chuyển điểm $(x,y)$ thành $(x + y, x - y)$, thì khoảng cách Manhattan trong hệ cũ bằng khoảng cách Chebyshev trong hệ mới.
+-   Nếu chuyển điểm $(x,y)$ thành $(\dfrac{x + y}{2},\dfrac{x - y}{2})$, thì khoảng cách Chebyshev trong hệ cũ bằng khoảng cách Manhattan trong hệ mới.
 
-碰到求切比雪夫距离或曼哈顿距离的题目时，我们往往可以相互转化来求解．两种距离在不同的题目中有不同的优缺点，应该灵活运用．
+Khi gặp bài toán về khoảng cách Chebyshev hoặc Manhattan, ta có thể chuyển đổi qua lại để giải quyết. Hai loại khoảng cách này có ưu nhược điểm riêng, cần linh hoạt áp dụng.
 
-### 例题
+### Bài tập ví dụ
 
-[P4648「IOI2007」pairs 动物对数](https://www.luogu.com.cn/problem/P4648)（曼哈顿距离转切比雪夫距离）
+[P4648「IOI2007」pairs Số cặp động vật](https://www.luogu.com.cn/problem/P4648) (Chuyển Manhattan sang Chebyshev)
 
-[P3964「TJOI2013」松鼠聚会](https://www.luogu.com.cn/problem/P3964)（切比雪夫距离转曼哈顿距离）
+[P3964「TJOI2013」Hội tụ sóc](https://www.luogu.com.cn/problem/P3964) (Chuyển Chebyshev sang Manhattan)
 
-最后给出 [P5098「USACO04OPEN」Cave Cows 3](https://www.luogu.com.cn/problem/P5098) 的第二种解法：
+Cuối cùng là cách giải thứ hai cho [P5098「USACO04OPEN」Cave Cows 3](https://www.luogu.com.cn/problem/P5098):
 
-我们考虑将题目所求的曼哈顿距离转化为切比雪夫距离，即把每个点的坐标 $(x,y)$ 变为 $(x + y, x - y)$．
+Chuyển bài toán tìm khoảng cách Manhattan thành tìm khoảng cách Chebyshev, tức là chuyển mỗi điểm $(x,y)$ thành $(x + y, x - y)$.
 
-所求的答案就变为 $\max\limits_{i,j\in n}\begin{Bmatrix} \max\begin{Bmatrix} |x_i - x_j|,|y_i - y_j|\end{Bmatrix}\end{Bmatrix}$．
+Khi đó, đáp án là $\max\limits_{i,j\in n}\begin{Bmatrix} \max\begin{Bmatrix} |x_i - x_j|,|y_i - y_j|\end{Bmatrix}\end{Bmatrix}$.
 
-现要使得横坐标之差和纵坐标之差最大，只需要预处理出 $x,y$ 的最大值和最小值即可．
+Để hiệu hoành độ hoặc tung độ lớn nhất, chỉ cần tìm giá trị lớn nhất và nhỏ nhất của $x,y$.
 
-??? note "参考代码"
+??? note "Mã mẫu tham khảo"
     === "C++"
         ```cpp
         #include <algorithm>
@@ -341,26 +341,26 @@ $$
         print(max(maxx - minx, maxy - miny))
         ```
 
-对比两份代码，我们又能够发现，两种不同的思路，写出来的代码却是完全等价的，是不是很神奇呢？当然，更高深的东西需要大家另行研究．
+So sánh hai đoạn mã, ta thấy hai cách làm khác nhau nhưng mã lại hoàn toàn tương đương, thật thú vị phải không? Tất nhiên, các kiến thức sâu hơn các bạn có thể tự tìm hiểu thêm.
 
-## 闵可夫斯基距离
+## Khoảng cách Minkowski (闵可夫斯基距离)
 
-我们定义 $n$ 维空间中两点 $X(x_1, x_2, \dots, x_n)$，$Y(y_1, y_2, \dots, y_n)$ 之间的闵可夫斯基距离为：
+Ta định nghĩa khoảng cách Minkowski trong không gian $n$ chiều giữa hai điểm $X(x_1, x_2, \dots, x_n)$, $Y(y_1, y_2, \dots, y_n)$ là:
 
 $$
 D(X, Y) = \left(\sum_{i=1}^n \left\vert x_i - y_i \right\vert ^p\right)^{\frac{1}{p}}.
 $$
 
-特别的：
+Đặc biệt:
 
-1.  当 $p=1$ 时，$D(X, Y) = \sum_{i=1}^n \left\vert x_i - y_i \right\vert$ 即为曼哈顿距离；
-2.  当 $p=2$ 时，$D(X, Y) = \left(\sum_{i=1}^n (x_i - y_i)^2\right)^{1/2}$ 即为欧几里得距离；
-3.  当 $p \to \infty$ 时，$D(X, Y) = \lim_{p \to \infty}\left(\sum_{i=1}^n \left\vert x_i - y_i \right\vert ^p\right) ^{1/p} = \max\limits_{i=1}^n \left\vert x_i - y_i \right\vert$ 即为切比雪夫距离．
+1.  Khi $p=1$, $D(X, Y) = \sum_{i=1}^n \left\vert x_i - y_i \right\vert$ chính là khoảng cách Manhattan;
+2.  Khi $p=2$, $D(X, Y) = \left(\sum_{i=1}^n (x_i - y_i)^2\right)^{1/2}$ chính là khoảng cách Euclid;
+3.  Khi $p \to \infty$, $D(X, Y) = \lim_{p \to \infty}\left(\sum_{i=1}^n \left\vert x_i - y_i \right\vert ^p\right) ^{1/p} = \max\limits_{i=1}^n \left\vert x_i - y_i \right\vert$ chính là khoảng cách Chebyshev.
 
-注意：当 $p \ge 1$ 时，闵可夫斯基距离才是度量，具体证明参见 [Minkowski distance - Wikipedia](https://en.wikipedia.org/wiki/Minkowski_distance)．
+Lưu ý: Chỉ khi $p \ge 1$, khoảng cách Minkowski mới là một metric (độ đo), chứng minh chi tiết xem tại [Minkowski distance - Wikipedia](https://en.wikipedia.org/wiki/Minkowski_distance).
 
-## 参考资料与链接
+## Tài liệu tham khảo & liên kết
 
-1.  [浅谈三种常见的距离算法](https://www.luogu.com.cn/blog/xuxing/Distance-Algorithm)，感谢作者 xuxing 的授权．
+1.  [Bàn về ba loại thuật toán tính khoảng cách thường gặp](https://www.luogu.com.cn/blog/xuxing/Distance-Algorithm), cảm ơn tác giả xuxing đã cho phép sử dụng.
 
-[^ref1]: [切比雪夫距离 - 维基百科，自由的百科全书](https://zh.wikipedia.org/wiki/%E5%88%87%E6%AF%94%E9%9B%AA%E5%A4%AB%E8%B7%9D%E7%A6%BB)
+[^ref1]: [Khoảng cách Chebyshev - Wikipedia tiếng Việt](https://zh.wikipedia.org/wiki/%E5%88%87%E6%AF%94%E9%9B%AA%E5%A4%AB%E8%B7%9D%E7%A6%BB)

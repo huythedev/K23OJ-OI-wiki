@@ -1,1 +1,1 @@
-利用计算机建立数学模型解决几何问题．
+Sử dụng máy tính để xây dựng mô hình toán học nhằm giải quyết các bài toán hình học.

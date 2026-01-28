@@ -1,47 +1,47 @@
-## 定义
+## Định nghĩa
 
-区间类动态规划是线性动态规划的扩展，它在分阶段地划分问题时，与阶段中元素出现的顺序和由前一阶段的哪些元素合并而来有很大的关系．
+Quy hoạch động khoảng (Interval DP) là một dạng mở rộng của quy hoạch động tuyến tính. Khi phân chia bài toán theo các giai đoạn, nó có mối quan hệ mật thiết với thứ tự xuất hiện của các phần tử trong giai đoạn đó và việc các phần tử nào từ giai đoạn trước được hợp nhất lại.
 
-令状态 $f(i,j)$ 表示将下标位置 $i$ 到 $j$ 的所有元素合并能获得的价值的最大值，那么 $f(i,j)=\max\{f(i,k)+f(k+1,j)+cost\}$，$cost$ 为将这两组元素合并起来的价值．
+Giả sử trạng thái $f(i, j)$ biểu thị giá trị tối ưu nhận được khi hợp nhất tất cả các phần tử từ vị trí chỉ số $i$ đến $j$. Khi đó, $f(i, j) = \max\{f(i, k) + f(k+1, j) + cost\}$, với $cost$ là giá trị tiêu tốn (hoặc nhận được) khi hợp nhất hai nhóm phần tử này.
 
-## 性质
+## Tính chất
 
-区间 DP 有以下特点：
+Interval DP có các đặc điểm sau:
 
-**合并**：即将两个或多个部分进行整合，当然也可以反过来；
+**Hợp nhất**: Tức là tích hợp hai hoặc nhiều phần lại với nhau, tất nhiên cũng có thể làm ngược lại;
 
-**特征**：能将问题分解为能两两合并的形式；
+**Đặc trưng**: Có thể phân giải bài toán thành dạng các cặp có thể hợp nhất với nhau;
 
-**求解**：对整个问题设最优值，枚举合并点，将问题分解为左右两个部分，最后合并两个部分的最优值得到原问题的最优值．
+**Giải quyết**: Thiết lập giá trị tối ưu cho toàn bộ bài toán, duyệt qua các điểm hợp nhất (điểm chia), chia bài toán thành hai phần trái và phải, cuối cùng hợp nhất giá trị tối ưu của hai phần để có được giá trị tối ưu của bài toán gốc.
 
-## 解释
+## Giải thích
 
-### 例题
+### Ví dụ
 
-???+ note "[「NOI1995」石子合并](https://loj.ac/problem/10147)"
-    题目大意：在一个环上有 $n$ 个数 $a_1,a_2,\dots,a_n$，进行 $n-1$ 次合并操作，每次操作将相邻的两堆合并成一堆，能获得新的一堆中的石子数量的和的得分．你需要最大化你的得分．
+???+ note "[「NOI1995」Hợp nhất sỏi](https://loj.ac/problem/10147)"
+    Nội dung tóm tắt: Trên một vòng tròn có $n$ đống sỏi với số lượng $a_1, a_2, \dots, a_n$. Thực hiện $n-1$ lần thao tác hợp nhất, mỗi lần hợp nhất hai đống kề nhau thành một đống mới, nhận được số điểm bằng tổng số sỏi trong đống mới đó. Bạn cần tìm cách hợp nhất để tổng số điểm nhận được là lớn nhất.
 
-需要考虑不在环上，而在一条链上的情况．
+Cần xem xét trường hợp không phải trên vòng tròn mà là trên một chuỗi hàng ngang.
 
-令 $f(i,j)$ 表示将区间 $[i,j]$ 内的所有石子合并到一起的最大得分．
+Gọi $f(i, j)$ là số điểm lớn nhất khi hợp nhất tất cả sỏi trong khoảng $[i, j]$ lại với nhau.
 
-写出 **状态转移方程**：$f(i,j)=\max\{f(i,k)+f(k+1,j)+\sum_{t=i}^{j} a_t \}~(i\le k<j)$
+Viết **phương trình chuyển trạng thái**: $f(i, j) = \max\{f(i, k) + f(k+1, j) + \sum_{t=i}^{j} a_t \}~(i \le k < j)$
 
-令 $sum_i$ 表示 $a$ 数组的前缀和，状态转移方程变形为 $f(i,j)=\max\{f(i,k)+f(k+1,j)+sum_j-sum_{i-1} \}$．
+Gọi $sum_i$ là tổng tiền tố của mảng $a$, phương trình chuyển trạng thái trở thành $f(i, j) = \max\{f(i, k) + f(k+1, j) + sum_j - sum_{i-1}\}$.
 
-### 怎样进行状态转移
+### Cách thực hiện chuyển trạng thái
 
-由于计算 $f(i,j)$ 的值时需要知道所有 $f(i,k)$ 和 $f(k+1,j)$ 的值，而这两个中包含的元素的数量都小于 $f(i,j)$，所以我们以 $len=j-i+1$ 作为 DP 的阶段．首先从小到大枚举 $len$，然后枚举 $i$ 的值，根据 $len$ 和 $i$ 用公式计算出 $j$ 的值，然后枚举 $k$，时间复杂度为 $O(n^3)$
+Vì khi tính giá trị của $f(i, j)$ cần biết tất cả các giá trị $f(i, k)$ và $f(k+1, j)$, mà số lượng phần tử chứa trong hai trạng thái này đều nhỏ hơn $f(i, j)$, nên chúng ta lấy độ dài $len = j - i + 1$ làm giai đoạn của DP. Đầu tiên duyệt $len$ từ nhỏ đến lớn, sau đó duyệt giá trị của $i$, dựa vào $len$ và $i$ để tính ra giá trị của $j$, cuối cùng duyệt $k$. Độ phức tạp thời gian là $O(n^3)$.
 
-### 怎样处理环
+### Cách xử lý vòng tròn
 
-题目中石子围成一个环，而不是一条链，怎么办呢？
+Trong đề bài, các đống sỏi xếp thành một vòng tròn chứ không phải một chuỗi, phải làm sao?
 
-**方法一**：由于石子围成一个环，我们可以枚举分开的位置，将这个环转化成一个链，由于要枚举 $n$ 次，最终的时间复杂度为 $O(n^4)$．
+**Cách 1**: Vì các đống sỏi tạo thành vòng tròn, ta có thể duyệt qua từng vị trí ngắt để biến vòng tròn thành một chuỗi. Do phải duyệt $n$ lần, độ phức tạp thời gian cuối cùng là $O(n^4)$.
 
-**方法二**：我们将这条链延长两倍，变成 $2\times n$ 堆，其中第 $i$ 堆与第 $n+i$ 堆相同，用动态规划求解后，取 $f(1,n),f(2,n+1),\dots,f(n,2n-1)$ 中的最优值，即为最后的答案．时间复杂度 $O(n^3)$．
+**Cách 2**: Chúng ta kéo dài chuỗi này gấp đôi thành $2 \times n$ đống, trong đó đống thứ $n+i$ giống hệt đống thứ $i$. Sau khi giải bằng quy hoạch động, lấy giá trị tối ưu trong các kết quả $f(1, n), f(2, n+1), \dots, f(n, 2n-1)$ làm đáp án cuối cùng. Độ phức tạp thời gian là $O(n^3)$.
 
-## 实现
+## Cài đặt
 
 === "C++"
     ```cpp
@@ -62,10 +62,10 @@
                 f[i][j] = max(f[i][j], f[i][k] + f[k + 1][j] + sum[j] - sum[i - 1])
     ```
 
-## 几道练习题
+## Một số bài tập luyện tập
 
-[NOIP 2006 能量项链](https://www.luogu.com.cn/problem/P1063)
+[NOIP 2006 Vòng cổ năng lượng](https://www.luogu.com.cn/problem/P1063)
 
-[NOIP 2007 矩阵取数游戏](https://www.luogu.com.cn/problem/P1005)
+[NOIP 2007 Trò chơi lấy số trên ma trận](https://www.luogu.com.cn/problem/P1005)
 
-[「IOI2000」邮局](https://www.luogu.com.cn/problem/P4767)
+[「IOI2000」Bưu điện](https://www.luogu.com.cn/problem/P4767)

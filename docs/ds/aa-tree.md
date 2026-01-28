@@ -1,63 +1,59 @@
-AA 树是一种用于高效存储和检索有序数据的平衡树形结构，Arne Andersson 教授于 1993 年在他的论文 "Balanced search trees made simple" 中介绍，设计的目的是减少红黑树考虑的不同情况．AA 树可以在 $O(\log N)$ 的时间内做查找，插入和删除．下面是一个 AA 树的例子．
+Cây AA là một cấu trúc cây cân bằng được sử dụng để lưu trữ và truy xuất dữ liệu có thứ tự một cách hiệu quả. Giáo sư Arne Andersson đã giới thiệu nó trong bài báo "Balanced search trees made simple" năm 1993 với mục đích giảm bớt các trường hợp cần xem xét so với cây Đỏ-Đen. Cây AA có thể thực hiện tìm kiếm, chèn và xóa trong thời gian $O(\log N)$. Dưới đây là một ví dụ về cây AA.
 
 ![aa-tree-1](images/aa-tree-1.jpg)
 
-AA 树是红黑树的一种变体，与红黑树不同，AA 树上的红色节点只能作为右子节点．这导致 AA 树模拟了 2-3 树而不是 2-3-4 树，从而极大地简化了维护操作．红黑树的维护算法需要考虑七种不同的情况来正确平衡树．
+Cây AA là một biến thể của cây Đỏ-Đen. Khác với cây Đỏ-Đen, các nút đỏ trên cây AA chỉ có thể là nút con bên phải. Điều này khiến cây AA mô phỏng cây 2-3 thay vì cây 2-3-4, từ đó đơn giản hóa đáng kể các thao tác bảo trì. Các thuật toán bảo trì cây Đỏ-Đen cần xem xét bảy trường hợp khác nhau để cân bằng cây một cách chính xác.
 
 ![red-black tree](images/aa-tree-2.svg)
 
-因为红色节点只能作为右子节点，AA 树只需要考虑两种情况．
+Vì nút đỏ chỉ có thể là nút con bên phải, cây AA chỉ cần xem xét hai trường hợp.
 
 ![aa-tree](images/aa-tree-3.svg)
 
-## 定义
+## Định nghĩa
 
-AA 树遵循与红黑树相同的规则，但添加了一条新规则，**即红色节点不能作为左孩子出现**．
+Cây AA tuân theo các quy tắc giống như cây Đỏ-Đen, nhưng thêm một quy tắc mới, **đó là nút đỏ không được xuất hiện dưới dạng con bên trái**.
 
-1.  每个节点都可以是红色或黑色．
-2.  根节点总是黑色．
-3.  叶节点（NULL）总是黑色．
-4.  红色节点的两个子节点必须都是黑色，即没有两个相邻的红色节点．
-5.  从根节点到 NULL 节点的每条路径都有相同数量的黑色节点．
-6.  红色节点只能作为右子节点．
+1. Mỗi nút có thể là đỏ hoặc đen.
+2. Nút gốc luôn là màu đen.
+3. Các nút lá (NULL) luôn là màu đen.
+4. Hai nút con của một nút đỏ phải là màu đen, nghĩa là không có hai nút đỏ liền kề.
+5. Mỗi đường đi từ nút gốc đến nút NULL đều có cùng số lượng nút đen.
+6. Nút đỏ chỉ có thể là nút con bên phải.
 
-## 平衡维护
+## Bảo trì cân bằng
 
-AA 树的每个节点维护一个 **level** 字段，类似红黑树的每个节点维护一个 color 字段 ("RED" or "BLACK")．level 的规定满足以下 5 个条件：
+Mỗi nút của cây AA duy trì một trường **level**, tương tự như mỗi nút của cây Đỏ-Đen duy trì một trường màu sắc ("RED" hoặc "BLACK"). Quy định về level thỏa mãn 5 điều kiện sau:
 
-1、每个叶节点的 level 是 1．
-
-2、每个左孩子的 level 是其父节点的 level 减 1．
-
-3、每个右孩子的 level 等于其父节点的 level 或等于其父节点的 level 减 1．
-
-4、每个右孙子的 level 严格小于其祖父节点的 level．
-
-5、每个 level 大于 1 的节点有两个孩子．
+1. Level của mỗi nút lá là 1.
+2. Level của mỗi nút con bên trái bằng level của nút cha trừ đi 1.
+3. Level của mỗi nút con bên phải bằng level của nút cha hoặc bằng level của nút cha trừ đi 1.
+4. Level của mỗi nút cháu nội bên phải phải nhỏ hơn nghiêm ngặt level của nút ông nội.
+5. Mỗi nút có level lớn hơn 1 đều có hai con.
 
 ![aa-tree-4](images/aa-tree-4.jpg)
 
-### 水平链接（Horizontal Link）
+### Liên kết ngang (Horizontal Link)
 
-子节点的 level 等于父节点的 level 的链接被称为 **水平链接**，类似于红黑树中的红链接．允许单独的右水平链接，但不允许连续的右水平链接；不允许左水平链接．这些限制比红黑树的限制更加严格，因此 AA 树的平衡过程比红黑树的平衡过程在程序上要简单得多．
+Liên kết trong đó level của nút con bằng level của nút cha được gọi là **liên kết ngang**, tương tự như liên kết đỏ trong cây Đỏ-Đen. Cho phép liên kết ngang bên phải đơn lẻ, nhưng không cho phép các liên kết ngang bên phải liên tiếp; không cho phép liên kết ngang bên trái. Những hạn chế này chặt chẽ hơn so với cây Đỏ-Đen, do đó quá trình cân bằng cây AA đơn giản hơn nhiều về mặt thuật toán so với cây Đỏ-Đen.
 
 ![aa-tree-5](images/aa-tree-5.jpg)
 
-插入和删除操作可能会暂时导致 AA 树失去平衡（即违反 AA 树的不变性）．恢复平衡只需要两种不同的操作："**skew**"（斜化）和"**split**"（分裂）．"Skew"是将一个包含左水平链接的子树进行右旋转，以替换为一个包含右水平链接的子树．"Split"是进行左旋转并增加 level，以替换一个包含两个或更多连续的右水平链接的子树，使其变为一个包含两个较少连续的右水平链接的子树．保持平衡的插入和删除的实现通过依赖"skew"和"split"操作来仅在需要时修改树，而不是由调用者决定是否进行"skew"或"split"，从而变得更加简化．
+Các thao tác chèn và xóa có thể tạm thời khiến cây AA mất cân bằng (vi phạm tính bất biến của cây AA). Để khôi phục sự cân bằng chỉ cần hai thao tác khác nhau: "**skew**" (nghiêng) và "**split**" (phân tách). "Skew" là thực hiện xoay phải một cây con chứa liên kết ngang bên trái để thay thế bằng một cây con chứa liên kết ngang bên phải. "Split" là thực hiện xoay trái và tăng level để thay thế một cây con chứa hai hoặc nhiều liên kết ngang bên phải liên tiếp, biến nó thành một cây con chứa ít liên kết ngang bên phải liên tiếp hơn. Việc triển khai chèn và xóa duy trì cân bằng trở nên đơn giản hơn bằng cách dựa vào các thao tác "skew" và "split" để chỉ sửa đổi cây khi cần thiết, thay vì để người gọi quyết định có thực hiện "skew" hay "split" hay không.
 
-### split（左旋）
+### split (Xoay trái)
 
-出现连续向右的水平方向链（连续三个向右的孩子属于同一 level，节点 R 和节点 X 都是红色节点）．
+Xuất hiện chuỗi liên kết ngang liên tiếp hướng sang phải (ba nút liên tiếp bên phải thuộc cùng một level, nút R và nút X đều là nút đỏ).
 
-此时向左旋转节点*T*，把小于等于此 level 的节点看做一个子树．
+Lúc này xoay trái nút *T*, coi các nút nhỏ hơn hoặc bằng level này là một cây con.
 
-1.  子树的根的右孩子变为新的子树根；
-2.  原来的子树根变为新子树根的左孩子；
-3.  新的子树根 level+1．
+1. Con bên phải của gốc cây con trở thành gốc cây con mới;
+2. Gốc cây con ban đầu trở thành con bên trái của gốc cây con mới;
+3. Level của gốc cây con mới +1.
 
 ![aa-tree-split](images/aa-tree-split.svg)
 
-???+ note "伪代码实现"
+???+ note "Triển khai mã giả"
     $$
     \begin{array}{ll}
     1 & \textbf{function } \text{split}(\text{root}) \\
@@ -67,18 +63,18 @@ AA 树的每个节点维护一个 **level** 字段，类似红黑树的每个节
     \end{array}
     $$
 
-### skew（右旋）
+### skew (Xoay phải)
 
-出现向左的水平方向链（连续两个向左的孩子属于同一 level）
+Xuất hiện chuỗi liên kết ngang hướng sang trái (hai nút liên tiếp bên trái thuộc cùng một level).
 
-向右旋转节点*T*，把小于等于此 level 的节点看做一个子树．
+Xoay phải nút *T*, coi các nút nhỏ hơn hoặc bằng level này là một cây con.
 
-1.  子树的根的左孩子变为新的子树根；
-2.  原来的子树根变为新子树根的右孩子．
+1. Con bên trái của gốc cây con trở thành gốc cây con mới;
+2. Gốc cây con ban đầu trở thành con bên phải của gốc cây con mới.
 
 ![aa-tree-skew](images/aa-tree-skew.svg)
 
-???+ note "伪代码实现"
+???+ note "Triển khai mã giả"
     $$
     \begin{array}{ll}
     1 & \textbf{function } \text{skew}(\text{root}) \\
@@ -88,38 +84,38 @@ AA 树的每个节点维护一个 **level** 字段，类似红黑树的每个节
     \end{array}
     $$
 
-## AA 树的操作
+## Thao tác trên cây AA
 
-AA 树本身是一棵二叉搜索树，所以搜索操作与其他二叉搜索树相同．插入和删除操作与*AVL*树相同，首先在树中将 key 插入或删除，然后沿着搜索路径回退到根，并在此过程中重构树．
+Bản thân cây AA là một cây tìm kiếm nhị phân, vì vậy thao tác tìm kiếm giống như các cây tìm kiếm nhị phân khác. Các thao tác chèn và xóa tương tự như cây *AVL*, đầu tiên chèn hoặc xóa khóa (key) trong cây, sau đó quay lui dọc theo đường tìm kiếm về gốc và tái cấu trúc cây trong quá trình này.
 
-### 插入
+### Chèn
 
-???+ note "伪代码实现"
+???+ note "Triển khai mã giả"
     $$
     \begin{array}{ll}
     1 & \textbf{function } \text{insert}(\text{root}, \text{add}) \\
     2 & \qquad \textbf{if } \text{root} == \text{NULL} \\
     3 & \qquad\qquad \text{root} \gets \text{add} \\
-    4 & \qquad \textbf{else if } \text{add}\rightarrow\text{key} < \text{root}\rightarrow\text{key} \qquad //如果允许重复<= \\ 
+    4 & \qquad \textbf{else if } \text{add}\rightarrow\text{key} < \text{root}\rightarrow\text{key} \\ 
     5 & \qquad\qquad \text{insert}(\text{root}\rightarrow\text{left}, \text{add}) \\
     6 & \qquad \textbf{else if } \text{add}\rightarrow\text{key} > \text{root}\rightarrow\text{key} \\
     7 & \qquad\qquad \text{insert}(\text{root}\rightarrow\text{right}, \text{add}) \\
     8 & \qquad \textbf{end if} \\
-    9 & \qquad \text{//如果不允许重复，在每一level上进行skew和split} \\
+    9 & \qquad \text{// Thực hiện skew và split trên mỗi level} \\
     10 & \qquad \text{skew}(\text{root}); \\
     11 & \qquad \text{split}(\text{root}); \\
     12 & \textbf{end function}
     \end{array}
     $$
 
-### 删除
+### Xóa
 
-删除过程与其他二叉平衡树类似，首先将内部节点的删除转换为叶子节点的删除．具体方法是将内部节点与它最接近的前驱或后继节点替换．由于 AA 树的所有 level 大于 1 的节点都有两个子节点，前驱或后继节点将位于 level 1，删除 level 1 的节点较为简单．
+Quá trình xóa tương tự như các cây cân bằng nhị phân khác, đầu tiên chuyển đổi việc xóa nút nội bộ thành việc xóa nút lá. Phương pháp cụ thể là thay thế nút nội bộ bằng nút tiền nhiệm hoặc nút kế nhiệm gần nhất của nó. Vì tất cả các nút có level lớn hơn 1 của cây AA đều có hai nút con, nút tiền nhiệm hoặc nút kế nhiệm sẽ nằm ở level 1, việc xóa nút ở level 1 đơn giản hơn.
 
-???+ note "伪代码实现"
+???+ note "Triển khai mã giả"
     $$
     \begin{array}{ll}
-    1 &  \text{//To rebalance the tree} \\
+    1 &  \text{// Để tái cân bằng cây} \\
     2 &  \textbf{if} \ \text{root->left->level} < \text{root->level} -1 \ \textbf{or} \ \text{root->right->level} < \text{root->level} -1 \\
     3 &  \{ \\
     4 & \qquad \textbf{if} \ \text{root->right->level} > \text{--root->level} \\
@@ -135,13 +131,13 @@ AA 树本身是一棵二叉搜索树，所以搜索操作与其他二叉搜索�
     \end{array}
     $$
 
-## 性能
+## Hiệu suất
 
-AA 树的性能与红黑树的性能相当．尽管 AA 树进行的旋转操作比红黑树多，但 AA 树的算法更简单，最终导致相近的性能．红黑树的性能在各种情况下更加一致，而 AA 树往往更扁平，这使 AA 树有稍快的搜索速度．
+Hiệu suất của cây AA tương đương với hiệu suất của cây Đỏ-Đen. Mặc dù cây AA thực hiện nhiều thao tác xoay hơn cây Đỏ-Đen, nhưng thuật toán của cây AA đơn giản hơn, dẫn đến hiệu suất tương đương. Hiệu suất của cây Đỏ-Đen nhất quán hơn trong các tình huống khác nhau, trong khi cây AA có xu hướng phẳng hơn, điều này giúp cây AA có tốc độ tìm kiếm nhanh hơn một chút.
 
-## 参考资料
+## Tài liệu tham khảo
 
-1.  [AA tree - Wikipedia](https://en.wikipedia.org/wiki/AA_tree)
-2.  [Introduction to AA trees](https://iq.opengenus.org/aa-trees/)
-3.  [AA tree - Visualization](https://kubokovac.eu/gnarley-trees/AAtree.html)
-4.  [CMSC 420 Lecture 6: 2-3, Red-black, and AA trees](https://www.cs.umd.edu/class/fall2019/cmsc420-0201/Lects/lect06-aa.pdf)
+1. [AA tree - Wikipedia](https://en.wikipedia.org/wiki/AA_tree)
+2. [Introduction to AA trees](https://iq.opengenus.org/aa-trees/)
+3. [AA tree - Visualization](https://kubokovac.eu/gnarley-trees/AAtree.html)
+4. [CMSC 420 Lecture 6: 2-3, Red-black, and AA trees](https://www.cs.umd.edu/class/fall2019/cmsc420-0201/Lects/lect06-aa.pdf)

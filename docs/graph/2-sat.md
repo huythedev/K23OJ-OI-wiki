@@ -1,74 +1,79 @@
 author: chu-yuehan
 
-SAT 是适定性（Satisfiability）问题的简称．一般形式为 k - 适定性问题，简称 k-SAT．而当 $k>2$ 时该问题为 NP 完全的．所以我们只研究 $k=2$ 的情况．
+SAT là viết tắt của bài toán **tính thỏa mãn** (Satisfiability). Dạng tổng quát là bài toán **k-thỏa mãn**, gọi tắt là **k-SAT**. Khi $k>2$ thì bài toán là **NP-đầy đủ**, vì vậy ta chỉ xét trường hợp $k=2$.
 
-## 定义
+## Định nghĩa
 
-2-SAT，简单的说就是给出 $n$ 个布尔方程，每个方程和两个变量相关，如 $a \vee b$，表示变量 $a, b$ 至少满足一个．然后判断是否存在可行方案，显然可能有多种选择方案，一般题中只需要求出一种即可．另外，$\neg a$ 表示 $a$ 取反．
+**2-SAT**, nói đơn giản, là bài toán: cho $n$ mệnh đề logic, mỗi mệnh đề liên quan đến đúng hai biến, ví dụ $a \vee b$, nghĩa là trong hai điều kiện $a, b$ phải có **ít nhất một** điều đúng. Nhiệm vụ là kiểm tra xem có tồn tại một cách gán giá trị cho các biến để thỏa tất cả mệnh đề hay không. Rõ ràng có thể có nhiều cách gán; đa số bài chỉ yêu cầu tìm **một** nghiệm bất kỳ. Ngoài ra, $\neg a$ là phủ định của $a$.
 
-## 解决思路
+## Ý tưởng giải
 
 ???+ example "[洛谷 P4782「模板」2-SAT](https://www.luogu.com.cn/problem/P4782)"
-    有 $n$ 个布尔变量 $x_1\sim x_n$，另有 $m$ 个需要满足的条件，每个条件的形式都是「$x_i$ 为 `true`/`false` 或 $x_j$ 为 `true`/`false`」．比如「$x_1$ 为真或 $x_3$ 为假」、「$x_7$ 为假或 $x_2$ 为假」．
-    
-    2-SAT 问题的目标是给每个变量赋值使得所有条件得到满足．
+Có $n$ biến Boolean $x_1\sim x_n$, và $m$ điều kiện cần thỏa, mỗi điều kiện có dạng: “$x_i$ là `true`/`false` **hoặc** $x_j$ là `true`/`false`”.
+Ví dụ: “$x_1$ đúng hoặc $x_3$ sai”, “$x_7$ sai hoặc $x_2$ sai”.
 
-使用布尔方程表示上述问题．设 $a$ 表示 $x_a$ 为真（$\neg a$ 就表示 $x_a$ 为假）．如果有个人提出的要求分别是 $a$ 和 $b$，即 $(a \vee b)$（变量 $a, b$ 至少满足一个）．对这些变量关系建有向图，则把 $a$ 成立或不成立用图中的点表示，$\neg a\to b$ $\neg b\to a$，表示 $a$  **不成立** 则 $b$  **一定成立**；同理，$b$  **不成立** 则 $a$  **一定成立**．建图之后，我们就可以使用缩点算法来求解 2-SAT 问题了．
+```
+Mục tiêu của 2-SAT là gán giá trị cho từng biến sao cho mọi điều kiện đều được thỏa mãn.
+```
 
-|         原式         |                建图               |
-| :----------------: | :-----------------------------: |
-|   $\neg a \vee b$  | $a \to b$ 和 $\neg b \to \neg a$ |
-|     $a \vee b$     | $\neg a \to b$ 和 $\neg b \to a$ |
-| $\neg a\vee\neg b$ | $a \to \neg b$ 和 $b \to \neg a$ |
+Biểu diễn bài toán bằng các mệnh đề Boolean. Gọi $a$ là “$x_a$ đúng” (khi đó $\neg a$ là “$x_a$ sai”). Nếu có một điều kiện $(a \vee b)$ (tức $a, b$ có ít nhất một điều đúng). Ta xây dựng **đồ thị có hướng** thể hiện quan hệ kéo theo giữa các điều kiện: dùng các đỉnh để biểu diễn “$a$ đúng” và “$a$ sai”. Khi có mệnh đề $(a \vee b)$, ta thêm hai cạnh:
 
-许多 2-SAT 问题都需要找出如 $a$  **不成立**，则 $b$  **成立** 的关系．
+* $\neg a \to b$
+* $\neg b \to a$
 
-## 求解
+Ý nghĩa: nếu $a$ **không đúng** thì $b$ **bắt buộc đúng**; tương tự, nếu $b$ **không đúng** thì $a$ **bắt buộc đúng**. Sau khi xây đồ thị, ta có thể dùng thuật toán **co SCC** để giải 2-SAT.
 
-思考如果两点在同一强连通分量里有什么含义．根据前文边的逻辑意义可知：若两点在同一强连通分量内，则这两点代表的条件 **要么都满足，要么都不满足**．
+|     Mệnh đề gốc    |             Xây cạnh             |
+| :----------------: | :------------------------------: |
+|   $\neg a \vee b$  | $a \to b$ và $\neg b \to \neg a$ |
+|     $a \vee b$     | $\neg a \to b$ và $\neg b \to a$ |
+| $\neg a\vee\neg b$ | $a \to \neg b$ và $b \to \neg a$ |
 
-建图后我们使用 [Tarjan 算法找 SCC](./scc.md)，判断对于任意布尔变量 $a$，表示 $a$ 成立的点和表示 $a$ 不成立的点是否在同一个 SCC 中（同一条件不可能既满足又不满足，或既不满足又并非不满足），若有则输出无解，否则有解．
+Rất nhiều bài 2-SAT đều quy về việc tìm các quan hệ dạng: nếu $a$ **không thỏa**, thì $b$ **phải thỏa**.
 
-输出方案时可以通过变量在图中的拓扑序确定该变量的取值．如果变量 $x$ 的拓扑序在 $\neg x$ 之后，那么取 $x$ 值为真．应用到 Tarjan 算法的缩点，即 $x$ 所在 SCC 编号在 $\neg x$ 之前时，取 $x$ 为真．因为 Tarjan 算法求强连通分量时使用了栈，如果跑完 Tarjan 缩点之后呈现出的拓扑序更大，在 Tarjan 会更晚被遍历到，就会更早地被弹出栈而缩点，分量编号会更小，所以 Tarjan 求得的 SCC 编号相当于 **反拓扑序**．
+## Giải bài toán
 
-算法会把整张图遍历一遍，由于这张图 $n$ 和 $m$ 同阶，计算答案时复杂度为 $O(n)$，因此总复杂度为 $O(n)$．
+Hãy xét ý nghĩa của việc hai đỉnh nằm trong cùng một **thành phần liên thông mạnh** (SCC). Từ ý nghĩa logic của các cạnh suy ra: nếu hai đỉnh nằm trong cùng một SCC, thì hai điều kiện mà chúng biểu diễn sẽ **hoặc cùng đúng, hoặc cùng sai**.
+
+Sau khi xây đồ thị, ta dùng [thuật toán Tarjan để tìm SCC](./scc.md). Với mỗi biến Boolean $a$, kiểm tra xem đỉnh biểu diễn “$a$ đúng” và đỉnh biểu diễn “$a$ sai” có nằm trong cùng một SCC không. Nếu có, thì **vô nghiệm** (một biến không thể vừa đúng vừa sai). Nếu không, thì **có nghiệm**.
+
+Khi cần xuất một phương án, có thể dựa vào **thứ tự topo** trên đồ thị sau khi co SCC để quyết định giá trị biến. Nếu biến $x$ có thứ tự topo **sau** $\neg x$ thì gán $x$ là đúng. Khi áp dụng với Tarjan: nếu SCC của $x$ có “thứ tự topo” **sau** SCC của $\neg x$ thì gán $x$ là đúng. Lưu ý rằng trong Tarjan, do cơ chế stack, các SCC được đánh số theo **phản topo** (SCC “gần lá hơn” thường có số nhỏ hơn).
+
+Thuật toán duyệt toàn bộ đồ thị. Do đồ thị có kích thước cùng bậc theo $n$ và $m$, phần xuất nghiệm tính trong $O(n)$, nên tổng độ phức tạp là $O(n)$.
 
 ??? note "代码实现"
-    ```cpp
-    --8<-- "docs/graph/code/2-sat/2-sat_3.cpp"
-    ```
+`cpp     --8<-- "docs/graph/code/2-sat/2-sat_3.cpp"
+    `
 
-## 例题
+## Bài tập ví dụ
 
-### 例题 1
+### Ví dụ 1
 
 ???+ example "[HDU3062 Party](https://acm.hdu.edu.cn/showproblem.php?pid=3062)"
-    有 $n$ 对夫妻被邀请参加一个聚会，因为场地的问题，每对夫妻中只有一人可以列席．在 $2n$ 个人中，某些人之间有着很大的矛盾（当然夫妻之间是没有矛盾的），有矛盾的两个人是不会同时出现在聚会上的．有没有可能会有 $n$ 个人同时列席？
+Có $n$ cặp vợ chồng được mời đến một buổi tiệc. Do hạn chế về địa điểm, mỗi cặp chỉ có thể có **một người** tham dự. Trong $2n$ người, một số cặp người có mâu thuẫn lớn (dĩ nhiên giữa vợ chồng thì không có mâu thuẫn); hai người mâu thuẫn sẽ không thể cùng xuất hiện tại buổi tiệc. Hỏi có thể có đúng $n$ người cùng tham dự hay không?
 
-按照上面的分析，如果 $a_1$ 中的丈夫和 $a_2$ 中的妻子不合，我们就把 $a_1$ 中的丈夫和 $a_2$ 中的丈夫连边，把 $a_2$ 中的妻子和 $a_1$ 中的妻子连边，然后缩点染色判断即可．
+Theo phân tích ở trên, nếu “chồng của cặp $a_1$” mâu thuẫn với “vợ của cặp $a_2$”, ta nối cạnh giữa “chồng của $a_1$” và “chồng của $a_2$”, đồng thời nối cạnh giữa “vợ của $a_2$” và “vợ của $a_1$”. Sau đó co SCC và tô/kiểm tra như thường là được.
 
 ??? note "参考代码"
-    ```cpp
-    --8<-- "docs/graph/code/2-sat/2-sat_1.cpp"
-    ```
+`cpp     --8<-- "docs/graph/code/2-sat/2-sat_1.cpp"
+    `
 
-### 例题 2
+### Ví dụ 2
 
 ???+ example "[2018-2019 ACM-ICPC Asia Seoul Regional K TV Show Game](https://codeforces.com/gym/101987/problem/K)"
-    有 $k$ 盏灯，每盏灯是红色或者蓝色，但是初始的时候不知道灯的颜色．有 $n$ 个人，每个人选择三盏灯并猜灯的颜色．一个人猜对两盏灯或以上的颜色就可以获得奖品．判断是否存在一个灯的着色方案使得每个人都能领奖，若有则输出一种灯的着色方案．
+Có $k$ bóng đèn, mỗi bóng là đỏ hoặc xanh, nhưng ban đầu không biết màu. Có $n$ người, mỗi người chọn 3 bóng và đoán màu của chúng. Nếu một người đoán đúng **ít nhất 2** bóng thì sẽ nhận được quà. Hãy xác định xem có tồn tại một cách tô màu cho các bóng để ai cũng nhận được quà không; nếu có thì in ra một cách tô màu.
 
-根据 [伍昱 -《由对称性解 2-sat 问题》](https://github.com/OI-wiki/libs/blob/master/%E9%9B%86%E8%AE%AD%E9%98%9F%E5%8E%86%E5%B9%B4%E8%AE%BA%E6%96%87/%E5%9B%BD%E5%AE%B6%E9%9B%86%E8%AE%AD%E9%98%9F2003%E8%AE%BA%E6%96%87%E9%9B%86/%E4%BC%8D%E6%98%B1--%E7%94%B1%E5%AF%B9%E7%A7%B0%E6%80%A7%E8%A7%A32-SAT%E9%97%AE%E9%A2%98/%E4%BC%8D%E6%98%B1.ppt)，我们可以得出：如果要输出 2-SAT 问题的一个可行解，只需要在 tarjan 缩点后所得的 DAG 上自底向上地进行选择和删除．
+Theo [伍昱 -《由对称性解 2-sat 问题》](https://github.com/OI-wiki/libs/blob/master/%E9%9B%86%E8%AE%AD%E9%98%9F%E5%8E%86%E5%B9%B4%E8%AE%BA%E6%96%87/%E5%9B%BD%E5%AE%B6%E9%9B%86%E8%AE%AD%E9%98%9F2003%E8%AE%BA%E6%96%87%E9%9B%86/%E4%BC%8D%E6%98%B1--%E7%94%B1%E5%AF%B9%E7%A7%B0%E6%80%A7%E8%A7%A32-SAT%E9%97%AE%E9%A2%98/%E4%BC%8D%E6%98%B1.ppt), ta có thể rút ra: để xuất một nghiệm của 2-SAT, chỉ cần sau khi Tarjan co SCC tạo ra DAG, ta thực hiện quá trình **chọn và loại bỏ từ dưới lên** trên DAG đó.
 
-具体实现的时候，可以通过构造 DAG 的反图后在反图上进行拓扑排序实现；也可以根据 tarjan 缩点后，所属连通块编号越小，节点越靠近叶子节点这一性质，优先对所属连通块编号小的节点进行选择．
+Khi hiện thực, có thể dựng **đồ thị ngược** của DAG rồi topo trên đồ thị ngược; hoặc dựa vào tính chất: sau khi Tarjan co SCC, **SCC có số nhỏ hơn thì gần các đỉnh lá hơn**, nên ưu tiên chọn các nút thuộc SCC có số nhỏ.
 
-下面给出第二种实现方法的代码．
+Dưới đây là mã cho cách hiện thực thứ hai.
 
 ??? note "参考代码"
-    ```cpp
-    --8<-- "docs/graph/code/2-sat/2-sat_2.cpp"
-    ```
+`cpp     --8<-- "docs/graph/code/2-sat/2-sat_2.cpp"
+    `
 
-## 习题
+## Bài tập
 
--   [洛谷 P5782 和平委员会](https://www.luogu.com.cn/problem/P5782)
--   [POJ3683 Priest John's Busiest Day](http://poj.org/problem?id=3683)
+* [洛谷 P5782 和平委员会](https://www.luogu.com.cn/problem/P5782)
+* [POJ3683 Priest John's Busiest Day](http://poj.org/problem?id=3683)

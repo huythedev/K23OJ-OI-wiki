@@ -1,91 +1,91 @@
 本页面主要解答一些常见的问题．
 
-## 我想问点与这个 Wiki 相关的问题
+## Tôi muốn hỏi về Wiki này
 
-Q：你们是为什么想要做这个 Wiki 的呢？
+Q: Vì sao các bạn lại muốn xây dựng Wiki này?
 
-A：不知道你在学 **OI** 的时候，面对庞大的知识体系，有没有感到过迷茫无助的时候？**OI Wiki** 想要做的事情可能类似于「让更多竞赛资源不充裕的同学能方便地接触到训练资源」．当然这么表述也不完全，做 Wiki 的动机可能也很纯粹，只是简单地想要对 **OI** 的发展做出一点点微小的贡献吧．XD
-
-***
-
-Q：我很感兴趣，怎么参与？
-
-A：**OI Wiki** 现在托管在 GitHub 上，你可以直接访问这个 [repo](https://github.com/OI-wiki/OI-wiki) 来查看最新进展．参与的途径包括在 GitHub 上面开 [Issue](https://github.com/OI-wiki/OI-wiki/issues)、[Pull Request](https://github.com/OI-wiki/OI-wiki/pulls)，或者在交流群中分享你的想法、直接向管理员投稿．目前，我们使用的框架是用 Python 开发的 [MkDocs](https://mkdocs.readthedocs.io)，支持 Markdown 格式（也支持插入数学公式）．
+A: Khi học **OI**, bạn có từng cảm thấy lạc lõng trước một hệ thống kiến thức khổng lồ? **OI Wiki** mong muốn giúp nhiều bạn học sinh ở những nơi thiếu tài nguyên có thể dễ dàng tiếp cận nguồn tài liệu luyện tập. Tất nhiên, động lực xây dựng Wiki cũng rất đơn giản: chỉ là muốn đóng góp một phần nhỏ cho sự phát triển của **OI** mà thôi. XD
 
 ***
 
-Q：可是我比较弱……不知道我能做点什么．
+Q: Tôi rất hứng thú, làm sao để tham gia?
 
-A：一切源于热爱．你可以协助其他人审核修改稿件，帮助我们宣传 **OI Wiki**，为社区营造良好学习交流氛围！
-
-***
-
-Q：现在主要是谁在做这件事啊？感觉这是个大坑，真的能做好吗？
-
-A：最开始主要是一些退役老年选手在做这件事，后来遇到了很多志同道合的小伙伴：有现役选手，退役玩家，也有从未参加过 **OI** 的朋友．目前，这个项目主要是由 **OI Wiki** 项目组来维护（下面是一张合影）．
-
-<a href="https://github.com/OI-wiki/OI-wiki/graphs/contributors"><img src="https://opencollective.com/oi-wiki/contributors.svg?width=890&button=false"/></a>
-
-当然，这个项目只靠我们的力量是很难做得十全十美的，我们诚挚地邀请你一起来完善 **OI Wiki**．
+A: **OI Wiki** hiện được lưu trữ trên GitHub, bạn có thể truy cập [repo này](https://github.com/huythedev/K23OJ-OI-wiki) để xem tiến độ mới nhất. Bạn có thể tham gia bằng cách mở [Issue](https://github.com/huythedev/K23OJ-OI-wiki/issues), [Pull Request](https://github.com/huythedev/K23OJ-OI-wiki/pulls) trên GitHub, hoặc chia sẻ ý tưởng trong nhóm chat, gửi bài trực tiếp cho quản trị viên. Hiện tại, dự án sử dụng framework [MkDocs](https://mkdocs.readthedocs.io) viết bằng Python, hỗ trợ Markdown (và cả công thức toán học).
 
 ***
 
-Q：你们怎么保证我们添加的内容不会突然消失？
+Q: Nhưng tôi còn yếu... không biết mình giúp được gì.
 
-A：我们把内容托管在 [GitHub](https://github.com/OI-wiki/OI-wiki) 上面，即使我们的服务器翻车了，内容也不会丢失．另外，我们也会定期备份大家的心血，即使有一天 GitHub 倒闭了（？），我们的内容也不会丢失．
-
-***
-
-Q：**OI Wiki** 好像有空的页面啊！
-
-A：是的．受限于项目组成员的水平和时间，我们暂时无法完成这些空页面．所以我们在这里进行征稿和招募，希望可以遇到有同样想法的朋友，我们一起把 **OI Wiki** 完善起来．
+A: Mọi thứ bắt đầu từ đam mê. Bạn có thể giúp kiểm tra, duyệt bài, quảng bá **OI Wiki**, hoặc góp phần xây dựng môi trường học tập tích cực cho cộng đồng!
 
 ***
 
-Q：为什么不直接去写 [中文维基百科](https://zh.wikipedia.org/) 呢？
+Q: Ai là người chính đang làm dự án này? Đây là một dự án lớn, liệu có thể hoàn thiện không?
 
-A：因为我们希望可以真正帮到更多的选手或者对这些内容感兴趣的人．而且由于众所周知的原因，中文维基上的内容并不是无门槛就可以获取到的．
+A: Ban đầu là một số bạn đã nghỉ thi đấu OI, sau đó có thêm nhiều bạn cùng chí hướng: có cả tuyển thủ đang thi, cựu tuyển thủ, và cả những người chưa từng thi **OI**. Hiện tại, dự án chủ yếu do nhóm **OI Wiki** duy trì (dưới đây là ảnh nhóm).
 
-## 我想参与进来！
+<a href="https://github.com/huythedev/K23OJ-OI-wiki/graphs/contributors"><img src="https://opencollective.com/oi-wiki/contributors.svg?width=890&button=false"/></a>
 
-Q：我要怎么与项目组交流？
-
-A：可以通过 [关于本项目里的交流方式](./about.md#交流方式) 联系我们．
+Tất nhiên, chỉ dựa vào chúng tôi thì khó có thể hoàn thiện, rất mong bạn cùng chung tay xây dựng **OI Wiki**.
 
 ***
 
-Q：我要怎么贡献代码或者内容？
+Q: Làm sao để đảm bảo nội dung tôi đóng góp không bị mất?
 
-请参考 [如何参与](./htc.md) 页面．
-
-***
-
-Q：目录在哪？
-
-A：目录在项目根目录下的 [mkdocs.yml](https://github.com/OI-wiki/OI-wiki/blob/master/mkdocs.yml#L17) 文件中．
+A: Nội dung được lưu trữ trên [GitHub](https://github.com/huythedev/K23OJ-OI-wiki), nên kể cả khi server gặp sự cố, dữ liệu vẫn an toàn. Ngoài ra, chúng tôi cũng thường xuyên sao lưu, nên kể cả khi GitHub "biến mất" (?), nội dung vẫn được giữ lại.
 
 ***
 
-Q：如何修改一个 topic 的内容？
+Q: **OI Wiki** có nhiều trang còn trống?
 
-A：在对应页面右上方有一个编辑按钮<i class="md-icon">edit</i>，点击并确认阅读了 [如何贡献](./htc.md) 之后会跳转到 GitHub 上对应文件的位置．
-
-或者也可以自行阅读目录 [(mkdocs.yml)](https://github.com/OI-wiki/OI-wiki/blob/master/mkdocs.yml) 查找文件位置．
+A: Đúng vậy. Do giới hạn về thời gian và năng lực của thành viên dự án, chúng tôi chưa thể hoàn thiện hết các trang. Vì vậy, chúng tôi luôn chào đón bạn cùng tham gia đóng góp để hoàn thiện **OI Wiki**.
 
 ***
 
-Q：如何添加一个 topic？
+Q: Tại sao không viết trực tiếp trên [Wikipedia tiếng Trung](https://zh.wikipedia.org/)?
 
-A：有两种选择：
+A: Vì chúng tôi muốn thực sự giúp đỡ nhiều bạn học sinh, tuyển thủ hoặc những người quan tâm đến lĩnh vực này. Ngoài ra, do một số lý do khách quan, nội dung trên Wikipedia tiếng Trung không phải lúc nào cũng dễ dàng truy cập.
 
--   可以开一个 Issue，注明希望能添加的内容．
--   可以开一个 Pull Request，在目录 [(mkdocs.yml)](https://github.com/OI-wiki/OI-wiki/blob/master/mkdocs.yml) 中加上新的 topic，并在 [docs](https://github.com/OI-wiki/OI-wiki/tree/master/docs) 文件夹下对应位置创建一个空的 `.md` 文件．文档的格式细节请参考 [格式手册](./format.md#贡献文档要求)．
+## Tôi muốn tham gia!
+
+Q: Làm sao để liên hệ với nhóm dự án?
+
+A: Bạn có thể xem thông tin liên hệ tại [Giới thiệu - Kênh trao đổi](./about.md#交流方式).
 
 ***
 
-Q：我尝试访问 GitHub 的时候遇到了困难．
+Q: Làm sao để đóng góp code hoặc nội dung?
 
-A：推荐在 hosts 文件中加入如下几行[^ref1]：
+Vui lòng xem trang [Hướng dẫn tham gia](./htc.md).
+
+***
+
+Q: Mục lục ở đâu?
+
+A: Mục lục nằm trong file [mkdocs.yml](https://github.com/huythedev/K23OJ-OI-wiki/blob/master/mkdocs.yml#L17) ở thư mục gốc của dự án.
+
+***
+
+Q: Làm sao sửa nội dung một topic?
+
+A: Ở góc trên bên phải mỗi trang có nút chỉnh sửa <i class="md-icon">edit</i>, nhấn vào và xác nhận đã đọc [Hướng dẫn đóng góp](./htc.md), bạn sẽ được chuyển tới file tương ứng trên GitHub.
+
+Hoặc bạn cũng có thể tự đọc mục lục [(mkdocs.yml)](https://github.com/huythedev/K23OJ-OI-wiki/blob/master/mkdocs.yml) để tìm vị trí file.
+
+***
+
+Q: Làm sao thêm một topic mới?
+
+A: Có hai cách:
+
+-   Mở một Issue, ghi rõ nội dung muốn thêm.
+-   Mở một Pull Request, thêm topic mới vào [(mkdocs.yml)](https://github.com/huythedev/K23OJ-OI-wiki/blob/master/mkdocs.yml), đồng thời tạo file `.md` tương ứng trong thư mục [docs](https://github.com/huythedev/K23OJ-OI-wiki/tree/master/docs). Định dạng tài liệu xem tại [Hướng dẫn định dạng](./format.md#贡献文档要求).
+
+***
+
+Q: Tôi gặp khó khăn khi truy cập GitHub.
+
+A: Bạn có thể thêm các dòng sau vào file hosts[^ref1]:
 
 ```text
 # GitHub Start
@@ -131,30 +131,30 @@ A：推荐在 hosts 文件中加入如下几行[^ref1]：
 # GitHub End
 ```
 
-可以在 [GitHub520](https://gitee.com/klmahuaw/GitHub520) 上了解到最新内容和更多信息．
+Bạn có thể xem thêm tại [GitHub520](https://gitee.com/klmahuaw/GitHub520).
 
-Linux 和 macOS 用户可以尝试使用 [依云](https://github.com/lilydjwg/) 的 [gh-check 脚本](https://gist.github.com/lilydjwg/93d33ed04547e1b9f7a86b64ef2ed058) 获取访问最快的 IP，使用 `--hosts` 参数可以直接更新 hosts 文件．使用 `--help` 参数可以获取使用帮助．使用先需要安装 Python3 和 aiohttp（`pip install aiohttp -i https://pypi.tuna.tsinghua.edu.cn/simple/`）．依云博客的介绍：[寻找最快的 GitHub IP](https://blog.lilydjwg.me/2019/8/16/gh-check.214730.html)．
+Người dùng Linux/macOS có thể dùng script [gh-check của依云](https://gist.github.com/lilydjwg/93d33ed04547e1b9f7a86b64ef2ed058) để tìm IP GitHub nhanh nhất, dùng tham số `--hosts` để cập nhật file hosts, `--help` để xem hướng dẫn. Cần cài Python3 và aiohttp (`pip install aiohttp -i https://pypi.tuna.tsinghua.edu.cn/simple/`). Xem thêm tại blog: [Tìm IP GitHub nhanh nhất](https://blog.lilydjwg.me/2019/8/16/gh-check.214730.html).
 
-同时，您可以使用 [Gitclone](https://www.gitclone.com/) 服务加速 Clone，可以阅读其首页上的说明．
+Bạn cũng có thể dùng dịch vụ [Gitclone](https://www.gitclone.com/) để tăng tốc clone, hướng dẫn chi tiết trên trang chủ.
 
-如果您仅仅是想 Clone **OI Wiki** 的仓库，那么：
+Nếu chỉ muốn clone repo **OI Wiki**:
 
 ```bash
-git clone https://gitclone.com/github.com/OI-wiki/OI-wiki
+git clone https://gitclone.com/github.com/huythedev/K23OJ-OI-wiki
 ```
 
-如果您需要向 **OI Wiki** 贡献，那么首先 fork **OI Wiki** 的仓库，然后（将 `username` 替换为您的用户名），需要注意的是提供的示例将使您使用 SSH 连接到 GitHub[^only-ssh-connect]：
+Nếu muốn đóng góp cho **OI Wiki**, hãy fork repo, sau đó (thay `username` bằng tên của bạn), chú ý ví dụ dưới dùng SSH[^only-ssh-connect]:
 
 ```bash
-git clone https://gitclone.com/github.com/username/OI-wiki
-git remote set-url origin git@github.com:username/OI-wiki.git
+git clone https://gitclone.com/github.com/username/K23OJ-OI-wiki
+git remote set-url origin git@github.com:username/K23OJ-OI-wiki.git
 ```
 
 ***
 
-Q：我这里 pip 也太慢了！
+Q: pip của tôi quá chậm!
 
-A：可以选择更换国内源[^ref2]，或者：
+A: Có thể đổi sang nguồn trong nước[^ref2], hoặc:
 
 ```bash
 pip install -U -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple/
@@ -162,25 +162,25 @@ pip install -U -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple/
 
 ***
 
-Q：我在客户端 clone 了这个项目，速度太慢．
+Q: Clone repo về máy quá chậm.
 
-A：如果有安装 `git bash`，可以加几个限制来减少下载量．[^ref3]
+A: Nếu dùng `git bash`, có thể thêm tham số để giảm dung lượng tải về[^ref3]:
 
 ```bash
-git clone https://github.com/OI-wiki/OI-wiki.git --depth=1 -b master
+git clone https://github.com/huythedev/K23OJ-OI-wiki.git --depth=1 -b master
 ```
 
 ***
 
-Q：我没装过 Python 3．
+Q: Tôi chưa cài Python 3.
 
-A：可以访问 [Python 官网](https://www.python.org/downloads/) 了解更多信息．
+A: Truy cập [Trang chủ Python](https://www.python.org/downloads/) để tải và cài đặt.
 
 ***
 
-Q：好像提示我 pip 版本过低．
+Q: pip báo phiên bản quá thấp.
 
-A：进入 cmd/shell 之后，执行以下命令：
+A: Mở cmd/shell, chạy:
 
 ```bash
 python -m pip install --upgrade pip
@@ -188,27 +188,27 @@ python -m pip install --upgrade pip
 
 ***
 
-Q：我安装依赖失败了．
+Q: Tôi cài dependencies bị lỗi.
 
-A：检查一下：网络？权限？查看错误信息？
-
-***
-
-Q：我已经 clone 下来了，为什么部署不了？
-
-A：检查一下是否安装好了依赖？
+A: Kiểm tra lại: mạng? quyền truy cập? Xem kỹ thông báo lỗi.
 
 ***
 
-Q：我 clone 了很久之前的 repo，怎么更新到新版本呢？
+Q: Đã clone về rồi mà không deploy được?
 
-A：请参考 GitHub 官方的帮助页面 [Syncing a fork - GitHub Docs](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/syncing-a-fork)．
+A: Kiểm tra đã cài đủ dependencies chưa?
 
 ***
 
-Q：如果是装了之前的依赖怎么更新？
+Q: Tôi clone repo từ lâu, làm sao cập nhật lên bản mới?
 
-A：请输入以下命令：
+A: Xem hướng dẫn chính thức của GitHub: [Syncing a fork - GitHub Docs](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/syncing-a-fork).
+
+***
+
+Q: Nếu đã cài dependencies cũ, làm sao cập nhật?
+
+A: Chạy lệnh sau:
 
 ```bash
 pip install -U -r requirements.txt
@@ -216,88 +216,86 @@ pip install -U -r requirements.txt
 
 ***
 
-Q：为什么我的 markdown 格式乱了？
+Q: Tại sao định dạng markdown của tôi bị lỗi?
 
-A：可以查阅 [cyent 的笔记](https://cyent.github.io/markdown-with-mkdocs-material/)，或者 [MkDocs 使用说明](https://github.com/ctf-wiki/ctf-wiki/wiki/Mkdocs-%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E)．
+A: Tham khảo [ghi chú của cyent](https://cyent.github.io/markdown-with-mkdocs-material/) hoặc [Hướng dẫn MkDocs](https://github.com/ctf-wiki/ctf-wiki/wiki/Mkdocs-%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E).
 
-我们目前使用 [remark-lint](https://github.com/remarkjs/remark-lint) 来自动化修正格式，可能还有一些 [配置](https://github.com/OI-wiki/OI-wiki/blob/master/.remarkrc) 不够好的地方，欢迎指出．
-
-***
-
-Q：GitHub 是不是不显示我的数学公式？
-
-A：是的，GitHub 的预览不显示数学公式．但是请放心，MkDocs 是支持数学公式的，可以正常使用，只要是 MathJax 支持的句式都可以使用．
+Hiện tại, chúng tôi dùng [remark-lint](https://github.com/remarkjs/remark-lint) để tự động sửa định dạng, nếu có vấn đề về cấu hình, hãy góp ý tại [file cấu hình](https://github.com/huythedev/K23OJ-OI-wiki/blob/master/.remarkrc).
 
 ***
 
-Q：我的数学公式怎么乱码了？
+Q: GitHub không hiển thị công thức toán học?
 
-A：如果是行间公式（用的 `$$`），目前已知的问题是需要在 `$$` 两侧留有空行，且 `$$` 要 **单独** 放在一行里（且不要在前加空格）．格式如下：
+A: Đúng vậy, GitHub không hỗ trợ preview công thức toán học. Nhưng MkDocs hỗ trợ MathJax, bạn có thể dùng thoải mái.
+
+***
+
+Q: Công thức toán học bị lỗi hiển thị?
+
+A: Nếu là công thức dạng block (`$$`), cần để `$$` trên một dòng riêng, hai bên có dòng trống, không có dấu cách ở đầu dòng. Ví dụ:
 
 ```text
-// 空行
+// Dòng trống
 $$
 a_i
 $$
-// 空行
+// Dòng trống
 ```
 
 ***
 
-Q：我的公式为什么在目录里没有正常显示？好像双倍了．
+Q: Công thức trong mục lục bị lỗi hiển thị (bị lặp lại)?
 
-A：是的，这个是 python-markdown 的一个 bug，可能近期会修复．
+A: Đây là bug của python-markdown, có thể sẽ được sửa trong tương lai.
 
-如果想要避免目录中出现双倍公式，可以参考 [string 分类下 SAM 的目录写法](https://github.com/OI-wiki/OI-wiki/blame/master/docs/string/sam.md#L73)．
-
-```text
-结束位置 <script type="math/tex">endpos</script>
-```
-
-在目录中会变成
+Nếu muốn tránh lỗi này, tham khảo cách viết mục lục của phần SAM trong [string](https://github.com/huythedev/K23OJ-OI-wiki/blame/master/docs/string/sam.md#L73):
 
 ```text
-结束位置 endpos
+Kết thúc <script type="math/tex">endpos</script>
 ```
 
-注：现在请尽量避免在目录中引入 MathJax 公式．
+Trong mục lục sẽ hiển thị:
+
+```text
+Kết thúc endpos
+```
+
+Lưu ý: Hạn chế dùng MathJax trong mục lục.
 
 ***
 
-Q：如何给一个页面单独声明版权信息？
+Q: Làm sao khai báo bản quyền riêng cho một trang?
 
-A：在页面开头加一行即可．[^ref4]
-
-比如：
+A: Thêm dòng sau vào đầu file[^ref4]:
 
 ```text
 copyright: SATA
 ```
 
-注：默认的是 CC BY-SA 4.0 和 SATA．
+Mặc định là CC BY-SA 4.0 và SATA.
 
 ***
 
-Q：为什么作者信息统计处没有我的名字？
+Q: Tại sao tên tôi không xuất hiện trong danh sách tác giả?
 
-A：如果你发现自己写过一个页面中的部分内容，但是你没有被记录进作者列表，可以把自己的 GitHub ID 加入到文件头的 [author 字段](./htc.md#author-字段)．
+A: Nếu bạn đã đóng góp cho một trang mà không thấy tên mình, hãy thêm GitHub ID vào trường [author](./htc.md#author-字段) ở đầu file.
 
 ***
 
-感谢你看到了最后，我们现在亟需的，就是你的帮助．
+Cảm ơn bạn đã đọc đến đây, chúng tôi rất cần sự giúp đỡ của bạn!
 
-**OI Wiki** 项目组
+**Nhóm dự án OI Wiki**
 
 2018.8
 
-## 参考资料与注释
+## Tài liệu tham khảo & chú thích
 
 [^ref1]: [GitHub520](https://gitee.com/klmahuaw/GitHub520)
 
-[^ref2]: [更改 pip 源至国内镜像 - L 瑜 - CSDN 博客](https://blog.csdn.net/lambert310/article/details/52412059)
+[^ref2]: [Đổi nguồn pip sang mirror trong nước - L瑜 - CSDN Blog](https://blog.csdn.net/lambert310/article/details/52412059)
 
-[^ref3]: [GIT--- 看我一步步入门（Windows Git Bash）](https://blog.csdn.net/FreeApe/article/details/46845555)
+[^ref3]: [GIT--- Hướng dẫn từng bước (Windows Git Bash)](https://blog.csdn.net/FreeApe/article/details/46845555)
 
 [^ref4]: [Metadata - Material for MkDocs](https://squidfunk.github.io/mkdocs-material/extensions/metadata/#usage)
 
-[^only-ssh-connect]: GitHub 弃用了基于密码身份验证的 HTTPS 协议，连接必须使用 SSH 或者 Personal Access Token，参见 [我应使用哪个远程 URL？](https://docs.github.com/cn/github/using-git/which-remote-url-should-i-use)，[创建个人访问令牌](https://docs.github.com/cn/github/authenticating-to-github/creating-a-personal-access-token) 和 [使用 SSH 连接到 GitHub](https://docs.github.com/cn/github/authenticating-to-github/connecting-to-github-with-ssh)．
+[^only-ssh-connect]: GitHub đã bỏ xác thực HTTPS bằng mật khẩu, cần dùng SSH hoặc Personal Access Token, xem [Nên dùng URL nào?](https://docs.github.com/cn/github/using-git/which-remote-url-should-i-use), [Tạo Personal Access Token](https://docs.github.com/cn/github/authenticating-to-github/creating-a-personal-access-token) và [Kết nối GitHub bằng SSH](https://docs.github.com/cn/github/authenticating-to-github/connecting-to-github-with-ssh).

@@ -1,149 +1,150 @@
-弦图是一种特殊的图，很多在一般图上的 NP-Hard 问题在弦图上都有优秀的线性时间复杂度算法．
+Đồ thị chordal (đồ thị có dây cung, hay còn gọi là đồ thị có dây) là một loại đồ thị đặc biệt, nhiều bài toán NP-Hard trên đồ thị tổng quát lại có thuật toán tuyến tính trên đồ thị chordal.
 
-## 一些定义与性质
+## Một số định nghĩa và tính chất
 
-**子图**：点集和边集均为原图点集和边集子集的图．
+**Đồ thị con**: Đồ thị có tập đỉnh và tập cạnh đều là tập con của đồ thị gốc.
 
-**导出子图（诱导子图）**：点集为原图点集子集，边集为所有满足 **两个端点均在选定点集中** 的图．
+**Đồ thị con cảm ứng (đồ thị con dẫn xuất)**: Đồ thị có tập đỉnh là tập con của đồ thị gốc, tập cạnh gồm tất cả các cạnh mà **cả hai đầu mút đều thuộc tập đỉnh đã chọn**.
 
-**团**：完全子图．
+**Clique (Bộ đầy đủ)**: Đồ thị con đầy đủ.
 
-**极大团**：不是其他团子图的图．
+**Clique cực đại**: Clique không phải là đồ thị con của một clique lớn hơn.
 
-**最大团**：点数最大的团．
+**Clique lớn nhất**: Clique có số đỉnh lớn nhất.
 
-**团数**：最大团的点数，记为 $\omega(G)$．
+**Số clique**: Số đỉnh của clique lớn nhất, ký hiệu $\omega(G)$.
 
-**最小染色**：用最少的颜色给点染色使得所有边连接的两点颜色不同．
+**Tô màu tối thiểu**: Tô màu các đỉnh sao cho hai đỉnh kề nhau có màu khác nhau, dùng ít màu nhất.
 
-**色数**：最小染色的颜色数，记为 $\chi(G)$．
+**Số sắc (chromatic number)**: Số màu nhỏ nhất cần để tô màu, ký hiệu $\chi(G)$.
 
-**最大独立集**：最大的点集使得点集中任意两点都没有边直接相连．该集合的大小记为 $\alpha(G)$．
+**Tập độc lập lớn nhất**: Tập đỉnh lớn nhất sao cho hai đỉnh bất kỳ trong tập không có cạnh nối trực tiếp. Kích thước tập này ký hiệu $\alpha(G)$.
 
-**最小团覆盖**：用最少的团覆盖所有的点．使用团的数量记为 $\kappa(G)$．
+**Phủ clique tối thiểu**: Dùng ít clique nhất để phủ toàn bộ các đỉnh. Số clique dùng ký hiệu $\kappa(G)$.
 
-**弦**：连接环中不相邻两点的边．
+**Dây cung (chord)**: Cạnh nối hai đỉnh không kề nhau trên một chu trình.
 
-**弦图**：任意长度大于 $3$ 的环都有一个弦的图称为弦图．
+**Đồ thị chordal (đồ thị có dây cung)**: Đồ thị mà mọi chu trình độ dài lớn hơn $3$ đều có ít nhất một dây cung.
 
-**Lemma 1**：团数 $\omega(G)\le \chi(G)$ 色数
+**Bổ đề 1**: Số clique $\omega(G)\le \chi(G)$ (số sắc).
 
-证明：考虑单独对最大团的导出子图进行染色，至少需要 $\omega(G)$ 种颜色．
+Chứng minh: Xét riêng đồ thị con cảm ứng của clique lớn nhất, cần ít nhất $\omega(G)$ màu để tô.
 
-**Lemma 2**：最大独立集数 $\alpha(G)\le \kappa(G)$ 最小团覆盖数
+**Bổ đề 2**: Số tập độc lập lớn nhất $\alpha(G)\le \kappa(G)$ (số phủ clique tối thiểu).
 
-证明：每个团中至多选择一个点．
+Chứng minh: Mỗi clique chọn được nhiều nhất một đỉnh.
 
-**Lemma 3**：弦图的任意导出子图一定是弦图．
+**Bổ đề 3**: Mọi đồ thị con cảm ứng của đồ thị chordal đều là đồ thị chordal.
 
-证明：如果弦图有导出子图不是弦图，说明在这个导出子图上存在大于 $3$ 的无弦环，则无论原图如何（怎么加边）都不会使得原图是弦图，矛盾．
+Chứng minh: Nếu đồ thị chordal có đồ thị con cảm ứng không phải chordal, tức là tồn tại chu trình độ dài $>3$ không có dây cung, thì dù thêm cạnh thế nào cũng không thể làm đồ thị gốc là chordal, mâu thuẫn.
 
-**Lemma 4**：弦图的任意导出子图一定不可能是一个点数大于 $3$ 的环．
+**Bổ đề 4**: Mọi đồ thị con cảm ứng của đồ thị chordal không thể là chu trình độ dài $>3$.
 
-证明：一个点数大于 $3$ 的环不是弦图，用以上定理即可．
+Chứng minh: Chu trình độ dài $>3$ không phải là chordal, áp dụng bổ đề trên.
 
-## 弦图的判定
+## Nhận diện đồ thị chordal
 
-### 问题描述
+### Mô tả bài toán
 
-给定一个无向图，判断其是否为弦图．
+Cho một đồ thị vô hướng, kiểm tra xem nó có phải là đồ thị chordal không.
 
-### 点割集
+### Tập cắt đỉnh
 
-对于图 $G$ 上的两点 $u,v$，定义这两点间的 **点割集** 为满足删除这一集合后，$u,v$ 两点之间不连通．如果关于 $u,v$ 两点间的一个点割集的任意子集都不是点割集，则称这个点割集为 **极小点割集**．
+Với hai đỉnh $u,v$ trên đồ thị $G$, tập các đỉnh mà khi xóa đi thì $u,v$ không còn liên thông gọi là **tập cắt đỉnh** giữa $u,v$. Nếu mọi tập con thực sự của tập này đều không phải là tập cắt đỉnh, thì gọi là **tập cắt đỉnh tối tiểu**.
 
-**Lemma 5**：图关于 $u,v$ 的极小点割集将原图分成了若干个连通块，设包含 $u$ 的连通块为 $V_1$，包含 $v$ 的连通块为 $V_2$，则对于极小点割集上的任意一点 $a$，$N(a)$ 一定包含 $V_1$ 和 $V_2$ 中的点．
+**Bổ đề 5**: Tập cắt đỉnh tối tiểu giữa $u,v$ chia đồ thị thành nhiều thành phần liên thông, gọi $V_1$ là thành phần chứa $u$, $V_2$ là thành phần chứa $v$. Khi đó, với mọi đỉnh $a$ trong tập cắt đỉnh tối tiểu, $N(a)$ phải chứa đỉnh thuộc cả $V_1$ và $V_2$.
 
-证明：若 $N(a)$ 只包含 $V_1$ 或 $V_2$ 中的至多一个连通块中的点，从点割集中删去 $a$ 点，仍不连通，则原点割集不是最小点割集．
+Chứng minh: Nếu $N(a)$ chỉ chứa đỉnh thuộc tối đa một thành phần, khi xóa $a$ khỏi tập cắt vẫn không nối lại được $u,v$, mâu thuẫn với tính tối tiểu.
 
-**Lemma 6**：弦图上任意两点间的极小点割集的导出子图一定为一个团．
+**Bổ đề 6**: Đồ thị chordal, với mọi cặp đỉnh, tập cắt đỉnh tối tiểu cảm ứng luôn là một clique.
 
-证明：极小点割集大小 $\le 1$ 时，导出子图一定为一个团．
+Chứng minh: Nếu tập cắt đỉnh tối tiểu có kích thước $\le 1$ thì hiển nhiên là clique.
 
-否则，设极小点割集上有两点为 $x,y$，由 **Lemma 5** 得，$N(x)$ 中有 $V_1,V_2$ 中的点，设为 $x_1,x_2$，同样的，设 $y_1,y_2$，注意，可能有 $x_1=y_1,x_2=y_2$．
+Nếu lớn hơn, lấy hai đỉnh $x,y$ trong tập, theo **Bổ đề 5**, $N(x)$ có đỉnh ở $V_1,V_2$, gọi là $x_1,x_2$, tương tự với $y$. Có thể $x_1=y_1,x_2=y_2$.
 
-由于 $V_1,V_2$ 均为连通块，则在 $x_1,y_1$ 和 $x_2,y_2$ 两个点对之间存在最短路径．设 $x,y$ 在 $V_1,V_2$ 内部的最短路为 $x-x_1\sim y_1-y,x-x_2\sim y_2-y$，则图上存在一个环 $x-x_1\sim y_1-y-y_2\sim x_2-x$，该环的大小一定 $\ge 4$，根据弦图的定义，此时该环上一定存在一条弦．
+Vì $V_1,V_2$ liên thông, tồn tại đường đi ngắn nhất trong $V_1$ từ $x_1$ đến $y_1$, và trong $V_2$ từ $x_2$ đến $y_2$. Khi đó, tồn tại chu trình $x-x_1\sim y_1-y-y_2\sim x_2-x$ có độ dài $\ge 4$, theo định nghĩa chordal, chu trình này phải có dây cung.
 
-若这条弦连接了 $V_1,V_2$ 两个连通块，则点集不是点割集．若这条弦连接了单个连通块内部的两个点或一个连通块内部的一个点和一个点割集上的点，都不满足最短路的性质．所以这条弦只能连接 $x,y$ 两点．
+Nếu dây cung nối $V_1$ và $V_2$ thì tập không phải là tập cắt đỉnh. Nếu dây cung nối hai đỉnh trong cùng một thành phần hoặc nối một đỉnh trong thành phần với một đỉnh trong tập cắt, đều mâu thuẫn với đường đi ngắn nhất. Vậy dây cung chỉ có thể nối $x$ và $y$.
 
-由此，可证弦图中每个极小点割集中的两点都有边直接相连，故性质得证．
+Suy ra, mọi cặp đỉnh trong tập cắt đỉnh tối tiểu đều có cạnh nối trực tiếp, tức là clique.
 
-### 单纯点
+### Đỉnh đơn giản (simplicial vertex)
 
-设 $N(x)$ 表示与点 $x$ 相邻的点集．若点集 $\{x\}+N(x)$ 的导出子图为一个团，则称点 $x$ 为单纯点．
+Gọi $N(x)$ là tập các đỉnh kề với $x$. Nếu đồ thị con cảm ứng trên $\{x\}+N(x)$ là một clique, gọi $x$ là đỉnh đơn giản.
 
-**Lemma 7**：任何一个弦图都至少有一个单纯点，不是完全图的弦图至少有两个不相邻的单纯点．
+**Bổ đề 7**: Mọi đồ thị chordal đều có ít nhất một đỉnh đơn giản, nếu không phải là đồ thị đầy đủ thì có ít nhất hai đỉnh đơn giản không kề nhau.
 
-证明：数学归纳法．单独考虑每一连通块．
+Chứng minh: Quy nạp theo số đỉnh, xét từng thành phần liên thông.
 
-归纳基底：当图与完全图同构时，图上任意一点都是单纯点．当图的点数 $\le 3$ 时，引理成立．
+Cơ sở quy nạp: Nếu đồ thị là đầy đủ, mọi đỉnh đều là đỉnh đơn giản. Nếu số đỉnh $\le 3$, bổ đề đúng.
 
-若图上的点数 $\ge 4$ 且图不为完全图，可知必然存在 $u,v$ 使得 $(u,v)\notin E$．设 $I$ 是图关于 $u,v$ 的极小点割集．设 $A,B$ 分别是删去 $I$ 后的导出子图上 $u,v$ 所在的连通块．由于问题的对称性，我们只考虑 $A$ 一侧的情况，设 $L=A+I$．若 $L$ 为完全图，则 $u$ 为单纯点；若不是，因为 $L$ 是原图的导出子图，一定也是弦图，所以有两个不相邻的单纯点，因为 $I$ 是一个团，其上两点都相邻，所以 $A$ 中一定有一个单纯点．该单纯点扩展到全图也为单纯点．
+Nếu số đỉnh $\ge 4$ và không phải đồ thị đầy đủ, tồn tại $u,v$ không kề nhau. Gọi $I$ là tập cắt đỉnh tối tiểu giữa $u,v$. Gọi $A,B$ là thành phần liên thông chứa $u,v$ sau khi xóa $I$. Xét phía $A$, gọi $L=A+I$. Nếu $L$ là đồ thị đầy đủ thì $u$ là đỉnh đơn giản; nếu không, $L$ là đồ thị con cảm ứng của đồ thị chordal nên cũng là chordal, theo quy nạp có hai đỉnh đơn giản không kề nhau, vì $I$ là clique nên hai đỉnh này phải nằm trong $A$. Đỉnh đơn giản này mở rộng lên toàn bộ đồ thị vẫn là đỉnh đơn giản.
 
-由于每次将整个图分成若干个连通块证明，大小一定减小，且都满足性质，故归纳成立．
+Mỗi lần chia nhỏ đồ thị, kích thước giảm, quy nạp thành công.
 
-### 完美消除序列
+### Dãy loại bỏ hoàn hảo (Perfect Elimination Ordering - PEO)
 
-令 $n=|V|$，完美消除序列 $v_1,v_2,\ldots ,v_n$ 为 $1,2,\ldots ,n$ 的一个排列，满足 $v_i$ 在 $\{v_i,v_{i+1},\ldots ,v_n\}$ 的导出子图中为单纯点．
+Gọi $n=|V|$, dãy loại bỏ hoàn hảo $v_1,v_2,\ldots ,v_n$ là một hoán vị của $1,2,\ldots ,n$ sao cho $v_i$ là đỉnh đơn giản trong đồ thị con cảm ứng trên $\{v_i,v_{i+1},\ldots ,v_n\}$.
 
-**Lemma 8**：一个无向图是弦图当且仅当其有一个完全消除序列．
+**Bổ đề 8**: Đồ thị vô hướng là chordal khi và chỉ khi tồn tại dãy loại bỏ hoàn hảo.
 
-充分性：点数为 $1$ 的弦图有完全消除序列．由 **Lemma 3** 和 **Lemma 7**，点数为 $n$ 的弦图的完美消除序列可以由点数为 $n-1$ 的弦图的完美消除序列加上一个单纯点得到．
+Đủ: Đồ thị chordal một đỉnh có dãy loại bỏ hoàn hảo. Theo **Bổ đề 3** và **Bổ đề 7**, đồ thị $n$ đỉnh chordal có dãy loại bỏ hoàn hảo bằng cách thêm một đỉnh đơn giản vào dãy loại bỏ hoàn hảo của đồ thị $n-1$ đỉnh.
 
-必要性：假设有无向图存在结点数 $>3$ 的环且拥有完美消除序列，设在完美消除序列中出现的第一个环上的点为 $v$，设 $v$ 在环上与 $v_1,v_2$ 相连，则有完美消除序列的性质即单纯点的定义可得 $v_1,v_2$ 直接有边相连，矛盾．
+Cần: Nếu tồn tại chu trình độ dài $>3$ mà vẫn có dãy loại bỏ hoàn hảo, xét đỉnh đầu tiên $v$ của chu trình xuất hiện trong dãy, $v$ kề với $v_1,v_2$ trên chu trình, theo định nghĩa đỉnh đơn giản thì $v_1,v_2$ phải kề nhau, mâu thuẫn.
 
-### 朴素算法
+### Thuật toán đơn giản
 
-每次找到一个 **单纯点**  $v$，加入到完美消除序列中．
+Mỗi lần tìm một **đỉnh đơn giản** $v$, thêm vào dãy loại bỏ hoàn hảo.
 
-将点 $v$ 与其相邻的边从图上删除．
+Xóa $v$ và các cạnh kề khỏi đồ thị.
 
-重复以上过程，若所有点都被删除，则原图是弦图且求得了一个完美消除序列；若图上不存在单纯点，则原图不是弦图．
+Lặp lại đến khi hết đỉnh, nếu xóa hết thì đồ thị là chordal và đã tìm được dãy loại bỏ hoàn hảo; nếu không tìm được đỉnh đơn giản thì không phải chordal.
 
-时间复杂度 $O(n^4)$．
+Độ phức tạp $O(n^4)$.
 
-### MCS 算法
+### Thuật toán MCS
 
-**最大势算法**（Maximum Cardinality Search）是一种可以在 $O(n+m)$ 的时间复杂度内求出无向图的完美消除序列的方法．
+**Thuật toán Maximum Cardinality Search (MCS)** là một phương pháp tìm dãy loại bỏ hoàn hảo cho đồ thị vô hướng trong thời gian $O(n+m)$.
 
-逆序给结点编号，即按从 $n$ 到 $1$ 的顺序给点标号．
+Đánh số đỉnh ngược, từ $n$ đến $1$.
 
-设 $label_x$ 表示第 $x$ 个点与多少个已经标号的点相邻，每次选择 $label$ 值最大的未标号结点进行标号．
+Gọi $label_x$ là số đỉnh đã được đánh số mà $x$ kề. Mỗi lần chọn đỉnh chưa đánh số có $label$ lớn nhất để đánh số.
 
-用链表维护对于每个 $i$，满足 $label_x=i$ 的 $x$．
+Dùng danh sách liên kết để quản lý các đỉnh có cùng $label$.
 
-由于每条边对 $\sum_{i=1}^n label_i$ 的贡献最多是 $2$，时间复杂度 $O(n+m)$．
+Mỗi cạnh chỉ làm tăng tổng $label$ tối đa $2$ lần, nên độ phức tạp $O(n+m)$.
 
-**正确性证明**：
+**Chứng minh đúng**:
 
-设 $\alpha(x)$ 为 $x$ 在这个序列中的位置．
-我们需要证明对于任何一个弦图，算法求出的序列一定是一个完美消除序列，即在序列中位于某个点后面且与这个点相连的所有点两两相连．
+Gọi $\alpha(x)$ là vị trí của $x$ trong dãy.
 
-**Lemma 9**：考虑三个点 $u,v,w$ 满足 $\alpha(u)<\alpha(v)<\alpha(w)$，如果 $uw$ 相连，$vw$ 不相连，则 $w$ 只给 $u$ 的 $label$ 贡献，不给 $v$ 贡献．为了让 $v$ 比 $u$ 先加入序列，需要一个 $x$ 满足 $\alpha(v)<\alpha(x)$ 且 $vx$ 相连，$ux$ 不相连，即 $x$ 只给 $v$ 贡献而不给 $u$ 贡献．
+Cần chứng minh với mọi đồ thị chordal, dãy tìm được là dãy loại bỏ hoàn hảo, tức là với mọi đỉnh, các đỉnh kề phía sau nó trong dãy phải tạo thành clique.
 
-**Lemma 10**：任意一个弦图一定不存在一个序列 $v_0,v_1,\dots,v_k(k\ge 2)$ 满足下列性质：
+**Bổ đề 9**: Xét ba đỉnh $u,v,w$ với $\alpha(u)<\alpha(v)<\alpha(w)$, nếu $uw$ kề, $vw$ không kề, thì $w$ chỉ tăng $label$ cho $u$, không cho $v$. Để $v$ được chọn trước $u$, phải tồn tại $x$ với $\alpha(v)<\alpha(x)$, $vx$ kề, $ux$ không kề, tức là $x$ chỉ tăng $label$ cho $v$.
 
-1.  $v_iv_j$ 相连当且仅当 $|i-j|=1$．
-2.  $\alpha(v_0)>\alpha(v_i)(i\in[1,k])$．
-3.  存在 $i\in[1,k-1]$，满足 $\alpha(v_i)<\alpha(v_{i+1})<\dots<\alpha(v_k)$ 且 $\alpha(v_i)<\alpha(v_{i-1})<\dots<\alpha(v_1)<\alpha(v_k)<\alpha(v_0)$．
+**Bổ đề 10**: Không tồn tại dãy $v_0,v_1,\dots,v_k(k\ge 2)$ thỏa mãn:
 
-证明：
+1.  $v_iv_j$ kề khi và chỉ khi $|i-j|=1$.
+2.  $\alpha(v_0)>\alpha(v_i)(i\in[1,k])$.
+3.  Tồn tại $i\in[1,k-1]$ sao cho $\alpha(v_i)<\alpha(v_{i+1})<\dots<\alpha(v_k)$ và $\alpha(v_i)<\alpha(v_{i-1})<\dots<\alpha(v_1)<\alpha(v_k)<\alpha(v_0)$.
 
-由于 $\alpha(v_1)<\alpha(v_k)<\alpha(v_0)$，且 $v_1v_0$ 相连，$v_kv_0$ 不相连，所以由性质一，存在 $x$ 满足 $\alpha(v_k)<\alpha(x)$ 且 $v_kx$ 相连，$v_1x$ 不相连．
+Chứng minh:
 
-考虑最小的 $j\in(1,k]$ 满足 $v_jx$ 相连，我们可以推出 $v_0x$ 不相连，否则 $v_0v_1\cdots v_jx$ 构成了一个长度 $\ge 4$ 且无弦的环．
+Vì $\alpha(v_1)<\alpha(v_k)<\alpha(v_0)$, $v_1v_0$ kề, $v_kv_0$ không kề, nên tồn tại $x$ với $\alpha(v_k)<\alpha(x)$, $v_kx$ kề, $v_1x$ không kề.
 
-如果 $x<v_0$，则 $v_0,v_1,\dots,v_j,x$ 也是一个满足性质的序列；如果 $v_0<x$ 则 $x,v_j,\dots,v_1,v_0$ 也是一个满足性质的序列．
+Xét $j$ nhỏ nhất trong $(1,k]$ sao cho $v_jx$ kề, suy ra $v_0x$ không kề, nếu không $v_0v_1\cdots v_jx$ tạo thành chu trình độ dài $\ge 4$ không dây cung.
 
-在上面的推导中，我们扩大了 $\min(v_0,v_k)$，于是一直推下去，一定会产生矛盾．
+Nếu $x<v_0$, thì $v_0,v_1,\dots,v_j,x$ cũng thỏa mãn; nếu $v_0<x$ thì $x,v_j,\dots,v_1,v_0$ cũng thỏa mãn.
 
-**Theorem 1**：对于任何一个弦图，最大势算法求出的序列一定是一个完美消除序列．
+Lặp lại sẽ dẫn đến mâu thuẫn.
 
-证明：考虑任意三个点 $u,v,w$ 满足 $\alpha(u)<\alpha(v)<\alpha(w)$，我们需要证明若 $uv$ 相连，$uw$ 相连，则 $vw$ 一定相连．
+**Định lý 1**: Với mọi đồ thị chordal, thuật toán MCS cho ra dãy loại bỏ hoàn hảo.
 
-考虑反证法，假设不相连，那么 $w,u,v$ 就是一个满足 **Lemma 10** 中性质的序列，我们证明了这样序列不存在，所以矛盾，$vw$ 相连．
+Chứng minh: Xét ba đỉnh $u,v,w$ với $\alpha(u)<\alpha(v)<\alpha(w)$, nếu $uv$ kề, $uw$ kề, thì $vw$ cũng phải kề.
 
-参考代码：
+Giả sử không kề, thì $w,u,v$ tạo thành dãy thỏa mãn **Bổ đề 10**, mâu thuẫn, nên $vw$ phải kề.
+
+Code tham khảo:
 
 ```cpp
 while (cur) {
@@ -171,17 +172,17 @@ while (cur) {
 }
 ```
 
-如果此时原图是弦图，此时求出的就是完美消除序列；但是由于原图可能不是弦图，此时求出的一定不是完美消除序列，所以问题转化为 **判断求出的序列是否是原图的完美消除序列**．
+Nếu đồ thị là chordal, dãy tìm được là dãy loại bỏ hoàn hảo; nếu không, dãy này chắc chắn không phải dãy loại bỏ hoàn hảo, nên bài toán chuyển thành **kiểm tra dãy tìm được có phải dãy loại bỏ hoàn hảo của đồ thị gốc không**.
 
-### 判断一个序列是否是完美消除序列
+### Kiểm tra một dãy có phải dãy loại bỏ hoàn hảo
 
-#### 朴素算法
+#### Thuật toán đơn giản
 
-根据定义，依次判断完美消除序列 $v$ 上 $\{v_i,v_{i+1},\ldots ,v_n\}$ 中与 $v_i$ 相邻的点是否构成了一个团．时间复杂度 $O(nm)$．
+Theo định nghĩa, lần lượt kiểm tra với mỗi $v_i$ trong dãy, các đỉnh kề với $v_i$ phía sau nó có tạo thành clique không. Độ phức tạp $O(nm)$.
 
-#### 优化后的算法
+#### Thuật toán tối ưu
 
-根据完美消除序列的定义，设 $v_i$ 在 ${v_i,v_{i+1},\ldots , v_n}$ 中相邻的点从小到大为 $\{v_{c_1},v_{c_2},\ldots ,v_{c_k} \}$，则只需判断 $v_{c_1}$ 与其他点是否直接连通即可．时间复杂度 $O(n+m)$．
+Theo định nghĩa, với $v_i$, các đỉnh kề phía sau nó là $\{v_{c_1},v_{c_2},\ldots ,v_{c_k} \}$ (theo thứ tự tăng dần), chỉ cần kiểm tra $v_{c_1}$ có kề với tất cả các đỉnh còn lại không. Độ phức tạp $O(n+m)$.
 
 ```cpp
 jud = true;
@@ -204,23 +205,23 @@ else
   printf("Perfect\n");
 ```
 
-至此，**弦图判定问题** 可以在 $O(n+m)$ 的时间复杂度内解决．
+Như vậy, **bài toán nhận diện đồ thị chordal** có thể giải trong $O(n+m)$.
 
-## 弦图的极大团
+## Các clique cực đại của đồ thị chordal
 
-令 $N(x)$ 为满足与 $x$ 直接有边相连且在完美消除序列上的 $x$ 之后的序列．则弦图的极大团一定为 $\{x\}+N(x)$．
+Gọi $N(x)$ là tập các đỉnh kề với $x$ và đứng sau $x$ trong dãy loại bỏ hoàn hảo. Khi đó, mọi clique cực đại đều có dạng $\{x\}+N(x)$.
 
-证明：考虑弦图的一个极大团 $V$，其中的点在完美消除序列中出现的第一个点 $x$，一定有 $V\subseteq \{x\}+N(x)$，又因为 $V$ 是极大团，所以 $V=\{x\}+N(x)$．
+Chứng minh: Xét một clique cực đại $V$, đỉnh đầu tiên $x$ của $V$ xuất hiện trong dãy loại bỏ hoàn hảo, $V\subseteq \{x\}+N(x)$, do $V$ cực đại nên $V=\{x\}+N(x)$.
 
-弦图最多有 $n$ 个极大团．求出弦图的每个极大团，可以判断每个 $\{x\}+N(x)$ 是否为极大团．
+Đồ thị chordal có nhiều nhất $n$ clique cực đại. Để liệt kê, kiểm tra mỗi $\{x\}+N(x)$ có phải clique cực đại không.
 
-设 $A=\{x\}+N(x),B=\{y\}+N(y)$，若 $A\subsetneqq B$，则 $A$ 不是极大团．此时在完美消除序列上显然有 $y$ 在 $x$ 前．
+Gọi $A=\{x\}+N(x),B=\{y\}+N(y)$, nếu $A\subsetneqq B$ thì $A$ không phải clique cực đại. Khi đó, $y$ đứng trước $x$ trong dãy loại bỏ hoàn hảo.
 
-设 $nxt_x$ 表示 $N(x)$ 中在完美消除序列上最靠前的点，$y*$ 表示所有满足 $A\subseteq B$ 的 $y$ 中的最靠后的点．此时必然有 $nxt_{y*}=x$，否则 $y*$ 不是最靠后的，令 $y*=nxt_{y*}$ 仍然满足条件．
+Gọi $nxt_x$ là đỉnh trong $N(x)$ đứng sớm nhất trong dãy, $y^*$ là đỉnh $y$ cuối cùng sao cho $A\subseteq B$. Khi đó $nxt_{y^*}=x$, nếu không thì $y^*$ chưa phải cuối cùng.
 
-$A\subsetneqq B$ 当且仅当 $|A|+1\le |B|$．
+$A\subsetneqq B$ khi và chỉ khi $|A|+1\le |B|$.
 
-问题转化为判断是否存在 $y$，满足 $nxt_y=x$ 且 $|N(x)|+1\le |N(y)|$．时间复杂度 $O(n+m)$．
+Bài toán chuyển thành kiểm tra có tồn tại $y$ sao cho $nxt_y=x$ và $|N(x)|+1\le |N(y)|$. Độ phức tạp $O(n+m)$.
 
 ```cpp
 for (int i = 1; i <= n; i++) {
@@ -239,25 +240,25 @@ for (int i = 1; i <= n; i++) {
 }
 ```
 
-## 弦图的色数/弦图的团数
+## Số sắc/số clique của đồ thị chordal
 
-一种构造方法：按完美消除序列从后往前依次给每个点染色，给每个点染上可以染的最小颜色．时间复杂度 $O(m+n)$．
+Một cách xây dựng: tô màu các đỉnh theo thứ tự ngược của dãy loại bỏ hoàn hảo, mỗi đỉnh nhận màu nhỏ nhất có thể. Độ phức tạp $O(n+m)$.
 
-正确性证明：设以上方法使用了 $t$ 种颜色，则 $t\ge \chi(G)$．由于团上每个点都是不同的颜色，所以 $t=\omega(G)$，由 **Lemma 1**，$t=\omega(G)\le \chi(G)$．综上，可得 $t=\chi(G)=\omega(G)$．
+Chứng minh: Gọi số màu dùng là $t$, rõ ràng $t\ge \chi(G)$. Vì mỗi clique các đỉnh đều khác màu, nên $t=\omega(G)$, theo **Bổ đề 1**, $t=\chi(G)=\omega(G)$.
 
-无需染色方案，只需求出弦图的色数/团数时，可以取 $|\{x\}+N(x)|$ 的最大值得到．
+Nếu chỉ cần số sắc/số clique mà không cần phương án tô màu, chỉ cần lấy giá trị lớn nhất của $|\{x\}+N(x)|$.
 
 ```cpp
 for (int i = 1; i <= n; i++) ans = max(ans, deg[i] + 1);
 ```
 
-## 弦图的最大独立集/最小团覆盖
+## Tập độc lập lớn nhất/phủ clique tối thiểu của đồ thị chordal
 
-最大独立集：完美消除序列从前往后，选择所有没有与已经选择的点有直接连边的点．
+Tập độc lập lớn nhất: Duyệt dãy loại bỏ hoàn hảo từ đầu, chọn các đỉnh không kề với đỉnh nào đã chọn.
 
-最小团覆盖：设最大独立集为 $\{v_1,v_2,\ldots ,v_t\}$，则团的集合 $\{\{v_1+N(v_1)\},\{v_2+N(v_2)\},\ldots ,\{v_t+N(v_t)\} \}$ 为图的最小团覆盖．时间复杂度均为 $O(n+m)$．
+Phủ clique tối thiểu: Gọi tập độc lập lớn nhất là $\{v_1,v_2,\ldots ,v_t\}$, tập các clique $\{\{v_1+N(v_1)\},\{v_2+N(v_2)\},\ldots ,\{v_t+N(v_t)\} \}$ là phủ clique tối thiểu. Độ phức tạp đều $O(n+m)$.
 
-正确性证明：设以上方案独立集数和团覆盖数为 $t$，由定义得 $t\le \alpha(G),t\ge \kappa(G)$，由 **Lemma 2** 得，$\alpha(G)\le \kappa(G)$，所以 $t=\alpha(G)=\kappa(G)$．
+Chứng minh: Gọi số tập độc lập và số phủ clique là $t$, theo định nghĩa $t\le \alpha(G),t\ge \kappa(G)$, theo **Bổ đề 2** thì $\alpha(G)\le \kappa(G)$, nên $t=\alpha(G)=\kappa(G)$.
 
 ```cpp
 for (int i = 1; i <= n; i++)
@@ -268,20 +269,20 @@ for (int i = 1; i <= n; i++)
   }
 ```
 
-## 习题
+## Bài tập
 
 [SPOJ FISHNET - Fishing Net](https://www.spoj.com/problems/FISHNET)
 
-[P3196\[HNOI2008\] 神奇的国度](https://www.luogu.com.cn/problem/P3196)
+[P3196\[HNOI2008\] Vương quốc thần kỳ](https://www.luogu.com.cn/problem/P3196)
 
-[P3852\[TJOI2007\] 小朋友](https://www.luogu.com.cn/problem/P3852)
+[P3852\[TJOI2007\] Các bạn nhỏ](https://www.luogu.com.cn/problem/P3852)
 
-## 参考资料
+## Tài liệu tham khảo
 
-[弦图相关](https://yhx-12243.github.io/OI-transit/memos/15.html)
+[Chuyên đề chordal](https://yhx-12243.github.io/OI-transit/memos/15.html)
 
-[2009 WC 讲稿](https://github.com/hzwer/shareOI/blob/master/%E5%9B%BE%E8%AE%BA/%E5%BC%A6%E5%9B%BE%E4%B8%8E%E5%8C%BA%E9%97%B4%E5%9B%BE_%E9%99%88%E4%B8%B9%E7%90%A6.pptx)
+[Slide WC 2009](https://github.com/hzwer/shareOI/blob/master/%E5%9B%BE%E8%AE%BA/%E5%BC%A6%E5%9B%BE%E4%B8%8E%E5%8C%BA%E9%97%B4%E5%9B%BE_%E9%99%88%E4%B8%B9%E7%90%A6.pptx)
 
-[弦图总结 - 租酥雨](https://www.cnblogs.com/zhoushuyu/p/8716935.html)
+[Tổng kết chordal - zhoushuyu](https://www.cnblogs.com/zhoushuyu/p/8716935.html)
 
 [R. E. Tarjan and M. Yannakakis, Simple linear-time algorithms to test chordality of graphs,test acyclicity of hypergraphs,and selectively reduce acyclic hypergraphs, SIAM J. Comput., 13 (1984), pp. 566–579.](https://dl.acm.org/doi/abs/10.1137/0213035)

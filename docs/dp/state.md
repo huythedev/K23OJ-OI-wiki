@@ -1,51 +1,51 @@
-## 简介
+## Giới thiệu
 
-状压 DP 是动态规划的一种，通过将状态集合转化为整数记录在 DP 状态中来实现状态转移的目的．
+DP trạng thái nén là một dạng của quy hoạch động, bằng cách chuyển tập hợp trạng thái thành số nguyên để ghi lại trong trạng thái DP nhằm thực hiện chuyển trạng thái.
 
-为了达到更低的时间复杂度，通常需要寻找更低状态数的状态．大部分题目中会利用二元状态，用 $n$ 位二进制数表示 $n$ 个独立二元状态的情况．
+Để đạt được độ phức tạp thời gian thấp hơn, thường cần tìm trạng thái có số lượng nhỏ hơn. Phần lớn bài toán sẽ sử dụng trạng thái nhị phân, dùng số nhị phân $n$ bit để biểu diễn $n$ trạng thái độc lập hai giá trị.
 
-使用状态压缩通常涉及位操作，关于基础位操作详见 [位操作](../math/bit.md) 页面．
+Sử dụng trạng thái nén thường liên quan đến thao tác bit, xem thêm về thao tác bit tại trang [Toán tử bit](../math/bit.md).
 
-## 例题 1
+## Bài mẫu 1
 
-???+ note "[「SCOI2005」互不侵犯](https://loj.ac/problem/2153)"
-    在 $N\times N$ 的棋盘里面放 $K$ 个国王（$1 \leq N \leq 9, 1 \leq K \leq N \times N$），使他们互不攻击，共有多少种摆放方案．
+???+ note "[「SCOI2005」Không xâm phạm lẫn nhau](https://loj.ac/problem/2153)"
+    Trên bàn cờ $N\times N$ đặt $K$ quân vua ($1 \leq N \leq 9, 1 \leq K \leq N \times N$), sao cho chúng không tấn công lẫn nhau, hỏi có bao nhiêu cách đặt quân.
     
-    国王能攻击到它上下左右，以及左上左下右上右下八个方向上附近的各一个格子，共 $8$ 个格子．
+    Quân vua có thể tấn công 8 ô xung quanh nó (trên, dưới, trái, phải, và 4 ô chéo).
 
-### 解释
+### Giải thích
 
-设 $f(i,j,l)$ 表示前 $i$ 行，第 $i$ 行的状态为 $j$，且棋盘上已经放置 $l$ 个国王时的合法方案数．
+Gọi $f(i,j,l)$ là số cách hợp lệ khi đã xét $i$ hàng, trạng thái hàng $i$ là $j$, và đã đặt $l$ quân vua trên bàn cờ.
 
-对于编号为 $j$ 的状态，我们用二进制整数 $sit(j)$ 表示国王的放置情况，$sit(j)$ 的某个二进制位为 $0$ 表示对应位置不放国王，为 $1$ 表示在对应位置上放置国王；用 $sta(j)$ 表示该状态的国王个数，即二进制数 $sit(j)$ 中 $1$ 的个数．例如，如下图所示的状态可用二进制数 $100101$ 来表示（棋盘左边对应二进制低位），则有 $sit(j)=100101_{(2)}=37, sta(j)=3$．
+Với trạng thái $j$, ta dùng số nguyên nhị phân $sit(j)$ để biểu diễn cách đặt quân vua, bit $0$ là không đặt, bit $1$ là có đặt; $sta(j)$ là số quân vua trong trạng thái đó, tức là số bit $1$ trong $sit(j)$. Ví dụ, trạng thái như hình dưới có thể biểu diễn bằng $100101$ (bit thấp bên trái), $sit(j)=100101_{(2)}=37, sta(j)=3$.
 
 ![](./images/SCOI2005-互不侵犯.png)
 
-设当前行的状态为 $j$，上一行的状态为 $x$，可以得到下面的状态转移方程：$f(i,j,l) = \sum f(i-1,x,l-sta(j))$．
+Gọi trạng thái hàng hiện tại là $j$, trạng thái hàng trước là $x$, ta có phương trình chuyển trạng thái: $f(i,j,l) = \sum f(i-1,x,l-sta(j))$.
 
-设上一行的状态编号为 $x$，在保证当前行和上一行不冲突的前提下，枚举所有可能的 $x$ 进行转移，转移方程：
+Khi xét trạng thái $x$ của hàng trước, cần đảm bảo không xung đột với trạng thái $j$ của hàng hiện tại, liệt kê tất cả $x$ hợp lệ để chuyển trạng thái:
 
 $$
 f(i,j,l) = \sum f(i-1,x,l-sta(j))
 $$
 
-### 实现
+### Cài đặt
 
-??? note "参考代码"
+??? note "Mã tham khảo"
     ```cpp
     --8<-- "docs/dp/code/state/state_1.cpp"
     ```
 
-## 例题 2
+## Bài mẫu 2
 
 ???+ note "[\[POI2004\] PRZ](https://www.luogu.com.cn/problem/P5911)"
-    有 $n$ 个人需要过桥，第 $i$ 的人的重量为 $w_i$，过桥用时为 $t_i$. 这些人过桥时会分成若干组，只有在某一组的所有人全部过桥后，其余的组才能过桥．桥最大承重为 $W$，问这些人全部过桥的最短时间．
+    Có $n$ người cần qua cầu, người thứ $i$ nặng $w_i$, thời gian qua cầu là $t_i$. Những người này sẽ chia thành nhiều nhóm, chỉ khi một nhóm qua xong thì nhóm khác mới được qua. Cầu chịu tải tối đa $W$, hỏi thời gian ngắn nhất để tất cả qua cầu.
     
-    $100\le W \le 400$，$1\le n\le 16$，$1\le t_i\le 50$，$10\le w_i\le 100$.
+    $100\le W \le 400$, $1\le n\le 16$, $1\le t_i\le 50$, $10\le w_i\le 100$.
 
-### 解释
+### Giải thích
 
-我们用 $S$ 表示所有人构成集合的一个子集，设 $t(S)$ 表示 $S$ 中人的最长过桥时间，$w(S)$ 表示 $S$ 中所有人的总重量，$f(S)$ 表示 $S$ 中所有人全部过桥的最短时间，则：
+Dùng $S$ để biểu diễn một tập con người, $t(S)$ là thời gian lâu nhất của nhóm $S$, $w(S)$ là tổng trọng lượng nhóm $S$, $f(S)$ là thời gian ngắn nhất để tất cả $S$ qua cầu:
 
 $$
 \begin{cases}
@@ -54,17 +54,17 @@ $$
 \end{cases}
 $$
 
-需要注意的是这里不能直接枚举集合再判断是否为子集，而应使用 [子集枚举](../math/binary-set.md#遍历所有掩码的子掩码)，从而使时间复杂度为 $O(3^n)$.
+Lưu ý không nên liệt kê tập con rồi kiểm tra, mà nên dùng [liệt kê tập con](../math/binary-set.md#遍历所有掩码的子掩码), độ phức tạp $O(3^n)$.
 
-### 实现
+### Cài đặt
 
-??? note "参考代码"
+??? note "Mã tham khảo"
     ```cpp
     --8<-- "docs/dp/code/state/state_2.cpp"
     ```
 
-## 习题
+## Bài tập
 
--   [「NOI2001」炮兵阵地](https://loj.ac/problem/10173)
--   [「USACO06NOV」玉米田 Corn Fields](https://www.luogu.com.cn/problem/P1879)
--   [「九省联考 2018」一双木棋](https://loj.ac/problem/2471)
+-   [「NOI2001」Trận địa pháo binh](https://loj.ac/problem/10173)
+-   [「USACO06NOV」Cánh đồng ngô Corn Fields](https://www.luogu.com.cn/problem/P1879)
+-   [「Kỳ thi 9 tỉnh 2018」Một ván cờ gỗ](https://loj.ac/problem/2471)

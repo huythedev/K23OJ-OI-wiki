@@ -1,15 +1,15 @@
-AVL 树，是一种平衡的二叉搜索树．由于各种算法教材上对 AVL 的介绍十分冗长，造成了很多人对 AVL 树复杂、不实用的印象．但实际上，AVL 树的原理简单，实现也并不复杂．
+Cây AVL là một loại cây tìm kiếm nhị phân cân bằng. Do cách giới thiệu về AVL trong nhiều giáo trình thuật toán thường rất dài dòng, khiến nhiều người có ấn tượng rằng cây AVL phức tạp và không thực dụng. Tuy nhiên, trên thực tế, nguyên lý của cây AVL rất đơn giản và việc cài đặt cũng không hề phức tạp.
 
-## 性质
+## Tính chất
 
-1.  空二叉树是一个 AVL 树
-2.  如果 T 是一棵 AVL 树，那么其左右子树也是 AVL 树，并且 $|h(ls) - h(rs)| \leq 1$，h 是其左右子树的高度
-3.  树高为 $O(\log n)$
+1.  Cây nhị phân rỗng là một cây AVL.
+2.  Nếu T là một cây AVL, thì các cây con bên trái và bên phải của nó cũng là cây AVL, và $|h(ls) - h(rs)| \leq 1$, trong đó $h$ là chiều cao của các cây con.
+3.  Chiều cao của cây là $O(\log n)$.
 
-平衡因子：右子树高度 - 左子树高度
+Hệ số cân bằng: Chiều cao cây con bên phải - Chiều cao cây con bên trái.
 
-???+ note "树高的证明"
-    设 $f_n$ 为高度为 $n$ 的 AVL 树所包含的最少节点数，则有
+???+ note "Chứng minh chiều cao cây"
+    Gọi $f_n$ là số nút tối thiểu mà một cây AVL có chiều cao $n$ chứa, ta có:
     
     $$
     f_n=
@@ -20,41 +20,41 @@ AVL 树，是一种平衡的二叉搜索树．由于各种算法教材上对 AVL
     \end{cases}
     $$
     
-    根据常系数非齐次线性差分方程的解法，$\{f_n+1\}$ 是一个斐波那契数列．这里 $f_n$ 的通项为：
+    Theo cách giải phương trình sai phân tuyến tính không thuần nhất với hệ số hằng, $\{f_n+1\}$ là một dãy Fibonacci. Công thức tổng quát của $f_n$ là:
     
     $$
     f_n=\frac{5+2\sqrt{5}}{5}\left(\frac{1+\sqrt{5}}{2}\right)^n+\frac{5-2\sqrt{5}}{5}\left(\frac{1-\sqrt{5}}{2}\right)^n-1
     $$
     
-    斐波那契数列以指数的速度增长，对于树高 $n$ 有：
+    Dãy Fibonacci tăng trưởng theo tốc độ hàm mũ, đối với chiều cao cây $n$ ta có:
     
     $$
     n<\log_{\frac{1+\sqrt{5}}{2}} (f_n+1)<\frac{3}{2}\log_2 (f_n+1)
     $$
     
-    因此 AVL 树的高度为 $O(\log f_n)$，这里的 $f_n$ 为结点数．
+    Do đó chiều cao của cây AVL là $O(\log f_n)$, với $f_n$ là số lượng nút.
 
-## 过程
+## Quá trình
 
-### 插入结点
+### Chèn nút
 
-与 BST（二叉搜索树）中类似，先进行一次失败的查找来确定插入的位置，插入节点后根据平衡因子来决定是否需要调整．
+Tương tự như trong BST (Cây tìm kiếm nhị phân), trước tiên thực hiện một lần tìm kiếm thất bại để xác định vị trí chèn. Sau khi chèn nút, dựa vào hệ số cân bằng để quyết định có cần điều chỉnh hay không.
 
-### 删除结点
+### Xóa nút
 
-删除和 BST 类似，将结点与后继交换后再删除．
+Xóa nút tương tự như BST, đổi chỗ nút cần xóa với nút kế nhiệm (successor) rồi tiến hành xóa.
 
-删除会导致树高以及平衡因子变化，这时需要沿着被删除结点到根的路径来调整这种变化．
+Việc xóa có thể dẫn đến thay đổi chiều cao cây và hệ số cân bằng, lúc này cần điều chỉnh dọc theo con đường từ nút bị xóa lên đến gốc.
 
-### 平衡的维护
+### Duy trì sự cân bằng
 
-插入或删除节点后，可能会造成 AVL 树的性质 2 被破坏．因此，需要沿着从被插入/删除的节点到根的路径对树进行维护．如果对于某一个节点，性质 2 不再满足，由于我们只插入/删除了一个节点，对树高的影响不超过 1，因此该节点的平衡因子的绝对值至多为 2．由于对称性，我们在此只讨论左子树的高度比右子树大 2 的情况，即下图中 $h(B)-h(E)=2$．此时，还需要根据 $h(A)$ 和 $h(C)$ 的大小关系分两种情况讨论．需要注意的是，由于我们是自底向上维护平衡的，因此对节点 D 的所有后代来说，性质 2 仍然是被满足的．
+Sau khi chèn hoặc xóa nút, tính chất 2 của cây AVL có thể bị phá vỡ. Do đó, cần duy trì cây dọc theo con đường từ nút vừa chèn/xóa đến gốc. Nếu tại một nút nào đó tính chất 2 không còn được thỏa mãn, vì chúng ta chỉ chèn/xóa một nút nên ảnh hưởng đến chiều cao cây không quá 1, do đó giá trị tuyệt đối của hệ số cân bằng tại nút đó tối đa là 2. Do tính đối xứng, ở đây chúng ta chỉ thảo luận trường hợp chiều cao cây con bên trái lớn hơn cây con bên phải là 2, tức là trong hình dưới đây $h(B)-h(E)=2$. Lúc này, cần thảo luận hai trường hợp dựa trên mối quan hệ giữa $h(A)$ và $h(C)$. Cần lưu ý rằng, vì chúng ta duy trì sự cân bằng từ dưới lên trên, nên đối với tất cả các hậu duệ của nút D, tính chất 2 vẫn được thỏa mãn.
 
 ![](./images/avl1.svg)
 
-#### 情况一：A 点树高不小于 C 点树高
+#### Trường hợp 1: Chiều cao nút A không nhỏ hơn chiều cao nút C
 
-设 $h(E)=x$，则有
+Gọi $h(E)=x$, ta có:
 
 $$
 \begin{cases}
@@ -64,25 +64,25 @@ $$
 \end{cases}
 $$
 
-其中 $h(C)\geq x$ 是由于节点 B 满足性质 2，因此 $h(C)$ 和 $h(A)$ 的差不会超过 1．此时我们对节点 D 进行一次右旋操作（旋转操作与其它类型的平衡二叉搜索树相同），如下图所示．
+Trong đó $h(C)\geq x$ là vì nút B thỏa mãn tính chất 2, nên chênh lệch giữa $h(C)$ và $h(A)$ không quá 1. Lúc này chúng ta thực hiện một thao tác xoay phải tại nút D (thao tác xoay giống như các loại cây tìm kiếm nhị phân cân bằng khác), như hình dưới đây.
 
 ![](./images/avl2.svg)
 
-显然节点 A、C、E 的高度不发生变化，并且有
+Rõ ràng chiều cao các nút A, C, E không thay đổi, và ta có:
 
 $$
 \begin{cases}
     0\leq h(C)-h(E)\leq 1\\
     x+1\leq h'(D)=\max(h(C),h(E))+1=h(C)+1\leq x+2\\
     0\leq h'(D)-h(A)\leq 1
-\end{cases}
+end{cases}
 $$
 
-因此旋转后的节点 B 和 D 也满足性质 2．
+Vì vậy sau khi xoay, các nút B và D cũng thỏa mãn tính chất 2.
 
-#### 情况二：A 点树高小于 C 点树高
+#### Trường hợp 2: Chiều cao nút A nhỏ hơn chiều cao nút C
 
-设 $h(E)=x$，则与刚才同理，有
+Gọi $h(E)=x$, tương tự như trên, ta có:
 
 $$
 \begin{cases}
@@ -92,11 +92,11 @@ $$
 \end{cases}
 $$
 
-此时我们先对节点 B 进行一次左旋操作，再对节点 D 进行一次右旋操作，如下图所示．
+Lúc này trước tiên thực hiện một thao tác xoay trái tại nút B, sau đó thực hiện một thao tác xoay phải tại nút D, như hình dưới đây.
 
 ![](./images/avl3.svg)
 
-显然节点 A、E 的高度不发生变化，并且 B 的新右儿子和 D 的新左儿子分别为 C 原来的左右儿子，则有
+Rõ ràng chiều cao các nút A, E không thay đổi, và con bên phải mới của B cùng con bên trái mới của D lần lượt là con trái và con phải ban đầu của C, ta có:
 
 $$
 \begin{cases}
@@ -109,9 +109,9 @@ $$
 \end{cases}
 $$
 
-因此旋转后的节点 B、C、D 也满足性质 2．
+Vì vậy sau khi xoay, các nút B, C, D cũng thỏa mãn tính chất 2.
 
-???+ note "维护平衡操作：伪代码"
+???+ note "Thao tác duy trì cân bằng: Mã giả"
     $$
     \begin{array}{ll}
     1 &  \textbf{function } \mathrm{MaintainBalance}(p) \\
@@ -131,23 +131,23 @@ $$
     \end{array}
     $$
 
-与其他平衡二叉搜索树相同，AVL 树中节点的高度、子树大小等信息需要在旋转时进行维护．
+Giống như các cây tìm kiếm nhị phân cân bằng khác, các thông tin như chiều cao nút, kích thước cây con của cây AVL cần được duy trì khi xoay.
 
-## 其他操作
+## Các thao tác khác
 
-AVL 树的其他操作（Predecessor、Successor、Select、Rank 等）与普通的二叉搜索树相同．
+Các thao tác khác của cây AVL (Predecessor, Successor, Select, Rank, v.v.) giống như cây tìm kiếm nhị phân thông thường.
 
-## 参考代码
+## Mã tham khảo
 
-下面的代码是用 AVL 树实现的 `Map`，即有序不可重映射：
+Mã dưới đây là một `Map` được cài đặt bằng cây AVL (ánh xạ có thứ tự không lặp lại):
 
-??? note "参考代码"
+??? note "Mã tham khảo"
     ```cpp
     --8<-- "docs/ds/code/avl-tree/AvlTreeMap.hpp"
     ```
 
-## 其他资料
+## Tài liệu khác
 
-在 [AVL Tree Visualization](https://www.cs.usfca.edu/~galles/visualization/AVLtree.html) 可以观察 AVL 树维护平衡的过程．
+Tại [AVL Tree Visualization](https://www.cs.usfca.edu/~galles/visualization/AVLtree.html) có thể quan sát quá trình duy trì sự cân bằng của cây AVL.
 
-[维基百科 -- AVL 树](https://en.wikipedia.org/wiki/AVL_tree)
+[Wikipedia -- AVL Tree](https://en.wikipedia.org/wiki/AVL_tree)

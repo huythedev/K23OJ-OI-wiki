@@ -1,35 +1,35 @@
-## 定义
+## Định nghĩa
 
-通过图中所有顶点一次且仅一次的通路称为哈密顿通路．
+Đường đi qua tất cả các đỉnh của đồ thị đúng một lần được gọi là **đường đi Hamilton**.
 
-通过图中所有顶点一次且仅一次的回路称为哈密顿回路．
+Chu trình qua tất cả các đỉnh của đồ thị đúng một lần được gọi là **chu trình Hamilton**.
 
-具有哈密顿回路的图称为哈密顿图．
+Đồ thị có chu trình Hamilton được gọi là **đồ thị Hamilton**.
 
-具有哈密顿通路而不具有哈密顿回路的图称为半哈密顿图．
+Đồ thị có đường đi Hamilton nhưng không có chu trình Hamilton được gọi là **đồ thị nửa Hamilton**.
 
-## 性质
+## Tính chất
 
-设 $G=\langle V, E\rangle$ 是哈密顿图，则对于 $V$ 的任意非空真子集 $V_1$，均有 $p(G-V_1) \leq |V_1|$．其中 $p(x)$ 为 $x$ 的连通分支数．
+Cho $G=\langle V, E\rangle$ là đồ thị Hamilton, khi đó với mọi tập con thực sự khác rỗng $V_1$ của $V$, đều có $p(G-V_1) \leq |V_1|$, trong đó $p(x)$ là số thành phần liên thông của $x$.
 
-推论：设 $G=\langle V, E\rangle$ 是半哈密顿图，则对于 $V$ 的任意非空真子集 $V_1$，均有 $p(G-V_1) \leq |V_1|+1$．其中 $p(x)$ 为 $x$ 的连通分支数．
+Hệ quả: Cho $G=\langle V, E\rangle$ là đồ thị nửa Hamilton, khi đó với mọi tập con thực sự khác rỗng $V_1$ của $V$, đều có $p(G-V_1) \leq |V_1|+1$, trong đó $p(x)$ là số thành phần liên thông của $x$.
 
-完全图 $K_{2k+1} (k \geq 1)$ 中含 $k$ 条边不重的哈密顿回路，且这 $k$ 条边不重的哈密顿回路含 $K_{2k+1}$ 中的所有边．
+Trong đồ thị đầy đủ $K_{2k+1} (k \geq 1)$ chứa $k$ chu trình Hamilton cạnh-disjoint, và $k$ chu trình này chứa toàn bộ cạnh của $K_{2k+1}$.
 
-完全图 $K_{2k} (k \geq 2)$ 中含 $k-1$ 条边不重的哈密顿回路，从 $K_{2k}$ 中删除这 $k-1$ 条边不重的哈密顿回路后所得图含 $k$ 条互不相邻的边．
+Trong đồ thị đầy đủ $K_{2k} (k \geq 2)$ chứa $k-1$ chu trình Hamilton cạnh-disjoint, sau khi xóa $k-1$ chu trình này khỏi $K_{2k}$ thì đồ thị thu được chứa $k$ cạnh đôi một không kề nhau.
 
-## 充分条件
+## Điều kiện đủ
 
-设 $G$ 是 $n(n \geq 2)$ 的无向简单图，若对于 $G$ 中任意不相邻的顶点 $v_i, v_j$，均有 $d(v_i)+ d(v_j) \geq n - 1$，则 $G$ 中存在哈密顿通路．
+Cho $G$ là đồ thị vô hướng đơn có $n(n \geq 2)$ đỉnh, nếu với mọi cặp đỉnh không kề $v_i, v_j$ trong $G$ đều có $d(v_i)+ d(v_j) \geq n - 1$ thì trong $G$ tồn tại đường đi Hamilton.
 
-推论 1：设 $G$ 是 $n(n \geq 3)$ 的无向简单图，若对于 $G$ 中任意不相邻的顶点 $v_i, v_j$，均有 $d(v_i)+ d(v_j) \geq n$，则 $G$ 中存在哈密顿回路，从而 $G$ 为哈密顿图．
+Hệ quả 1: Cho $G$ là đồ thị vô hướng đơn có $n(n \geq 3)$ đỉnh, nếu với mọi cặp đỉnh không kề $v_i, v_j$ trong $G$ đều có $d(v_i)+ d(v_j) \geq n$ thì trong $G$ tồn tại chu trình Hamilton, do đó $G$ là đồ thị Hamilton.
 
-推论 2：设 $G$ 是 $n(n \geq 3)$ 的无向简单图，若对于 $G$ 中任意顶点 $v_i$，均有 $d(v_i) \geq \frac{n}{2}$，则 $G$ 中存在哈密顿回路，从而 $G$ 为哈密顿图．
+Hệ quả 2: Cho $G$ là đồ thị vô hướng đơn có $n(n \geq 3)$ đỉnh, nếu với mọi đỉnh $v_i$ trong $G$ đều có $d(v_i) \geq \frac{n}{2}$ thì trong $G$ tồn tại chu trình Hamilton, do đó $G$ là đồ thị Hamilton.
 
-设 $D$ 为 $n(n \geq 2)$ 阶竞赛图，则 $D$ 具有哈密顿通路．
+Cho $D$ là đồ thị thi đấu (tournament) bậc $n(n \geq 2)$, khi đó $D$ có đường đi Hamilton.
 
-若 $D$ 含 $n(n \geq 2)$ 阶竞赛图作为子图，则 $D$ 具有哈密顿通路．
+Nếu $D$ chứa đồ thị thi đấu bậc $n(n \geq 2)$ làm đồ thị con, khi đó $D$ có đường đi Hamilton.
 
-强连通的竞赛图为哈密顿图．
+Đồ thị thi đấu liên thông mạnh là đồ thị Hamilton.
 
-若 $D$ 含 $n(n \geq 2)$ 阶强连通的竞赛图作为子图，则 $D$ 具有哈密顿回路．
+Nếu $D$ chứa đồ thị thi đấu liên thông mạnh bậc $n(n \geq 2)$ làm đồ thị con, khi đó $D$ có chu trình Hamilton.

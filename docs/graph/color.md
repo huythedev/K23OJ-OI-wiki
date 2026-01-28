@@ -1,221 +1,217 @@
-## 点着色
+## Tô màu đỉnh
 
-（讨论的是无自环无向图）
+(Chỉ xét đồ thị vô hướng không có khuyên)
 
-对无向图顶点着色，且相邻顶点不能同色．若 G 是 $k$- 可着色的，但不是 $(k-1)$- 可着色的，则称 k 是 G 的色数，记为 $\chi(G)$．
+Tô màu các đỉnh của đồ thị vô hướng sao cho hai đỉnh kề nhau không cùng màu. Nếu $G$ là $k$-tô màu được, nhưng không $(k-1)$-tô màu được, thì $k$ gọi là số sắc của $G$, ký hiệu $\chi(G)$.
 
-对任意图 G，有 $\chi(G) \leq \Delta(G) + 1$，其中 $\Delta(G)$ 为最大度．
+Với mọi đồ thị $G$, ta có $\chi(G) \leq \Delta(G) + 1$, trong đó $\Delta(G)$ là bậc lớn nhất.
 
-### Brooks 定理
+### Định lý Brooks
 
-设连通图不是完全图也不是奇圈，则 $\chi(G) \leq \Delta(G)$．
+Giả sử đồ thị liên thông không phải là đồ thị đầy đủ cũng không phải chu trình lẻ, khi đó $\chi(G) \leq \Delta(G)$.
 
-#### 证明
+#### Chứng minh
 
-???+ note "证明"
-    设 $|V(G)|=n$，考虑数学归纳法．
+???+ note "Chứng minh"
+    Gọi $|V(G)|=n$, xét quy nạp theo $n$.
     
-    首先，$n\leq 3$ 时，命题显然成立．
+    Với $n\leq 3$, mệnh đề hiển nhiên đúng.
     
-    接下来，假设对于 $n-1$ 时的命题成立，下面我们要逐步强化命题．
+    Giả sử mệnh đề đúng với $n-1$, ta sẽ tăng cường mệnh đề.
     
-    不妨只考虑 $\Delta(G)$- 正则图，因为对于非正则图来说，可以看作在正则图里删去一些边构成的，而这一过程并不会影响结论．
+    Chỉ cần xét $\Delta(G)$-chính quy, vì với đồ thị không chính quy, có thể coi là xóa cạnh từ đồ thị chính quy, điều này không ảnh hưởng kết luận.
     
-    对于任意不是完全图也不是奇圈的正则图 G，任取其中一点 v，考虑子图 $H:=G-v$，由归纳假设知 $\chi(H)\leq\Delta(H)=\Delta(G)$，接下来我们只需证明在 H 中插入 v 不会影响结论即可．
+    Với đồ thị chính quy không phải đầy đủ cũng không phải chu trình lẻ, chọn một đỉnh $v$, xét đồ thị con $H:=G-v$. Theo giả thiết quy nạp, $\chi(H)\leq\Delta(H)=\Delta(G)$. Ta chỉ cần chứng minh thêm $v$ vào $H$ không làm tăng số sắc vượt quá $\Delta(G)$.
     
-    令 $\Delta:=\Delta(G)$，设 H 染的 $\Delta$ 种颜色分别为 $c_1,c_2,\dots,c_{\Delta}$，v 的 $\Delta$ 个邻接点为 $v_1,v_1,\dots,v_{\Delta}$．不妨假设 v 的这些邻接点颜色两两不同，否则命题得证．
+    Gọi $\Delta:=\Delta(G)$, giả sử $H$ đã được tô $\Delta$ màu $c_1,c_2,\dots,c_{\Delta}$, các đỉnh kề $v$ là $v_1,v_2,\dots,v_{\Delta}$. Giả sử các đỉnh này có màu khác nhau, nếu không thì đã xong.
     
-    接下来我们设所有在 H 中染成 $c_i$ 或 $c_j$ 的点以及它们之间的所有边构成子图 $H_{i,j}$．不妨假设任意 2 个不同的点 $v_i$，$v_j$ 一定在 $H_{i,j}$ 的同一个连通分量中，否则若在两个连通分量中的话，可以交换其中一个连通分量所有点的颜色，从而 $v_i$，$v_j$ 颜色相同．
+    Xét các đồ thị con $H_{i,j}$ gồm các đỉnh tô màu $c_i$ hoặc $c_j$ và các cạnh giữa chúng. Giả sử với mọi cặp $v_i,v_j$, chúng nằm trong cùng một thành phần liên thông của $H_{i,j}$, nếu không, có thể đổi màu một thành phần để $v_i,v_j$ cùng màu.
     
-    > 这里的交换颜色指的是若图中只有两种颜色 a，b，那么把图中原来染成颜色 a 的点全部染成颜色 b，把图中原来染成颜色 b 的点全部染成颜色 a．
+    > Đổi màu ở đây nghĩa là nếu chỉ có hai màu $a,b$, thì đổi tất cả đỉnh màu $a$ thành $b$ và ngược lại.
     
-    我们设上述连通分量为 $C_{i,j}$，那么 $C_{i,j}$ 一定只能是 $v_i$ 到 $v_j$ 的路．因为 $v_i$ 在 H 中的度为 $\Delta-1$，所以 $v_i$ 在 H 中的邻接点颜色一定两两不同，否则可以给 $v_i$ 染别的颜色，从而和 v 的其他邻接点颜色重复，所以 $v_i$ 在 $C_{i,j}$ 中邻接点数量为 1，$v_j$ 同理．然后我们在 $C_{i,j}$ 中取一条 $v_i$ 到 $v_j$ 的路，令其为 P，若 $C_{i,j}\ne P$，那么我们沿着 P 顺次给路上的点染色，设遇到的第一个度数大于 2 的点为 u，注意到 u 的邻接点最多只用了 $\Delta-2$ 种颜色，所以 u 可以重新染色，从而使 $v_i$，$v_j$ 不连通．
+    Gọi thành phần liên thông đó là $C_{i,j}$, $C_{i,j}$ chỉ có thể là đường đi từ $v_i$ đến $v_j$. Vì $v_i$ trong $H$ có bậc $\Delta-1$, các đỉnh kề $v_i$ trong $H$ có màu khác nhau, nên trong $C_{i,j}$, $v_i$ chỉ kề một đỉnh, $v_j$ tương tự. Lấy đường đi $P$ từ $v_i$ đến $v_j$ trong $C_{i,j}$, nếu $C_{i,j}\ne P$, trên $P$ gặp đỉnh $u$ bậc $>2$, $u$ kề tối đa $\Delta-2$ màu, nên có thể đổi màu $u$ để tách $v_i,v_j$.
     
-    然后我们不难发现，对任意 3 个不同的点 $v_i$，$v_j$，$v_k$，$V(C_{i,j})\cap V(C_{j,k})=\{v_j\}$．
+    Với mọi ba đỉnh $v_i,v_j,v_k$, ta có $V(C_{i,j})\cap V(C_{j,k})=\{v_j\}$.
     
-    到这里我们对命题的强化工作就已经做完了．
+    Đến đây đã tăng cường xong.
     
-    接下来就很简单．首先，如果 v 的邻接点两两相邻，那么命题得证．不妨设 $v_1$，$v_2$ 不相邻，在 $C_{1,2}$ 中取 $v_1$ 的邻接点 w，交换 $C_{1,3}$ 中的颜色．得到的新图中，$w\in V(C_{1,2})\cap V(C_{2,3})$，矛盾．
+    Nếu các đỉnh kề $v$ đều kề nhau, mệnh đề đúng. Giả sử $v_1,v_2$ không kề, lấy $w$ là đỉnh kề $v_1$ trên $C_{1,2}$, đổi màu $C_{1,3}$, khi đó $w\in V(C_{1,2})\cap V(C_{2,3})$, mâu thuẫn.
     
-    至此命题证明完毕．
+    Vậy mệnh đề được chứng minh.
 
-### Welsh–Powell 算法
+### Thuật toán Welsh–Powell
 
-Welsh–Powell 算法是一种在 **不限制最大着色数** 时寻找着色方案的贪心算法．
+Thuật toán Welsh–Powell là một thuật toán tham lam tìm phương án tô màu **không giới hạn số màu tối đa**.
 
-对于无自环无向图 G，设 $V(G):=\{v_1,v_2,\dots,v_n\}$ 满足．
+Với đồ thị vô hướng không khuyên $G$, giả sử $V(G):=\{v_1,v_2,\dots,v_n\}$ thỏa mãn
 
 $\deg(v_i)\geq\deg(v_{i+1}),~\forall 1\leq i\leq n-1$
 
-按 Welsh–Powell 算法着色后的颜色数至多为 $\max_{i=1}^n\min\{\deg(v_i)+1,i\}$, 该算法的时间复杂度为 $O\left(n\max_{i=1}^n\min\{\deg(v_i)+1,i\}\right)=O(n^2)$．
+Sau khi tô màu theo Welsh–Powell, số màu tối đa là $\max_{i=1}^n\min\{\deg(v_i)+1,i\}$, độ phức tạp $O\left(n\max_{i=1}^n\min\{\deg(v_i)+1,i\}\right)=O(n^2)$.
 
-#### 过程
+#### Quy trình
 
-1.  将当前未着色的点按度数降序排列．
-2.  将第一个点染成一个未被使用的颜色．
-3.  顺次遍历接下来的点，若当前点和所有与第一个点颜色 **相同** 的点 **不相邻**，则将该点染成与第一个点相同的颜色．
-4.  若仍有未着色的点，则回到步骤 1, 否则结束．
+1.  Sắp xếp các đỉnh chưa tô màu theo thứ tự giảm dần bậc.
+2.  Tô màu đỉnh đầu tiên bằng màu chưa dùng.
+3.  Duyệt các đỉnh tiếp theo, nếu đỉnh hiện tại không kề với bất kỳ đỉnh nào đã tô cùng màu, thì tô cùng màu với đỉnh đầu.
+4.  Nếu còn đỉnh chưa tô, lặp lại bước 1, ngược lại kết thúc.
 
-示例如下：
+Ví dụ:
 
 ![Orignal](images/color1.png)
 
-（由 [Graph Editor](https://csacademy.com/app/graph_editor/) 生成）
+(Được tạo bởi [Graph Editor](https://csacademy.com/app/graph_editor/))
 
-我们先对点按度数降序排序，得：
+Sắp xếp các đỉnh theo bậc giảm dần:
 
-| 次序                      | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9  | 10 | 11 | 12 | 13 |
+| Thứ tự                    | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9  | 10 | 11 | 12 | 13 |
 | ----------------------- | - | - | - | - | - | - | - | - | -- | -- | -- | -- | -- |
-| 点的编号                    | 4 | 5 | 0 | 2 | 9 | 1 | 3 | 6 | 10 | 12 | 7  | 8  | 11 |
-| 度数                      | 5 | 5 | 4 | 4 | 4 | 3 | 3 | 3 | 3  | 3  | 2  | 2  | 1  |
+| Số hiệu đỉnh                | 4 | 5 | 0 | 2 | 9 | 1 | 3 | 6 | 10 | 12 | 7  | 8  | 11 |
+| Bậc                        | 5 | 5 | 4 | 4 | 4 | 3 | 3 | 3 | 3  | 3  | 2  | 2  | 1  |
 | $\min\{\deg(v_i)+1,i\}$ | 1 | 2 | 3 | 4 | 5 | 4 | 4 | 4 | 4  | 4  | 3  | 3  | 2  |
 
-所以 Welsh–Powell 算法着色后的颜色数最多为 5．
+Vậy số màu tối đa theo Welsh–Powell là 5.
 
-另外因为该图有子图 $C_3$, 所以色数一定大于等于 3．
+Ngoài ra, vì đồ thị có chu trình $C_3$, nên số sắc tối thiểu phải lớn hơn hoặc bằng 3.
 
--   第一次染色：
+-   Lần tô màu thứ nhất:
 
     ![Colored 1](images/color2.png)
 
-    染 `4 9 3 11` 号点．
--   第二次染色：
+    Tô màu các đỉnh `4 9 3 11`.
+-   Lần tô màu thứ hai:
 
     ![Colored 2](images/color3.png)
 
-    染 `5 2 6 7 8` 号点．
--   第三次染色：
+    Tô màu các đỉnh `5 2 6 7 8`.
+-   Lần tô màu thứ ba:
 
     ![Colored 3](images/color4.png)
 
-    染 `0 1 10 12` 号点．
+    Tô màu các đỉnh `0 1 10 12`.
 
-#### 证明
+#### Chứng minh
 
-???+ note "证明"
-    对于无自环无向图 G，设 $V(G):=\{v_1,v_2,\dots,v_n\}$ 满足
+???+ note "Chứng minh"
+    Với đồ thị vô hướng không khuyên $G$, giả sử $V(G):=\{v_1,v_2,\dots,v_n\}$ thỏa mãn
     
     $\deg(v_i)\geq\deg(v_{i+1}),~\forall 1\leq i\leq n-1$
     
-    令 $V_0=\varnothing$, 我们取 $V(G)\setminus\bigcup_{i=0}^{m-1} V_i$ 中的子集 $V_m$, 其中的元素满足
+    Đặt $V_0=\varnothing$, chọn dãy tập con $V_m$ của $V(G)\setminus\bigcup_{i=0}^{m-1} V_i$ sao cho:
     
-    1.  $v_{k_m}\in V_m$, 其中 $k_m=\min\{k:v_k\notin\bigcup_{i=0}^{m-1} V_i\}$
-    2.  若
+    1.  $v_{k_m}\in V_m$, với $k_m=\min\{k:v_k\notin\bigcup_{i=0}^{m-1} V_i\}$
+    2.  Nếu
     
         $\{v_{i_{m,1}},v_{i_{m,2}},\dots,v_{i_{m,l_m}}\}\subset V_m,~i_{m,1}<i_{m,2}<\dots<i_{m,l_m}$
     
-        则 $v_j\in V_m$ 当且仅当
+        thì $v_j\in V_m$ khi và chỉ khi
     
         1.  $j>i_{m,l_m}$
-        2.  $v_j$ 与 $v_{i_{m,1}},v_{i_{m,2}},\dots,v_{i_{m,l_m}}$ 均不相邻
+        2.  $v_j$ không kề với bất kỳ $v_{i_{m,1}},v_{i_{m,2}},\dots,v_{i_{m,l_m}}$
     
-    显然若将 $V_i$ 中的点染成第 i 种颜色，则该染色方案即为 Welsh–Powell 算法给出的方案，显然有
+    Nếu tô màu mỗi $V_i$ bằng màu thứ $i$, đây chính là phương án của Welsh–Powell. Rõ ràng:
     
     -   $V_1\neq\varnothing$
     -   $V_i\cap V_j=\varnothing\iff i\neq j$
-    -   $\exists \alpha(G)\in\Bbb{N}^*,\forall i>\alpha(G),~s.t.~ V_i=\varnothing$
+    -   Tồn tại $\alpha(G)\in\Bbb{N}^*,\forall i>\alpha(G),~ V_i=\varnothing$
     
-    我们只需要证明：
+    Cần chứng minh:
     
     $\bigcup_{i=1}^{\alpha(G)} V_i=V(G)$
     
-    其中
+    Trong đó
     
     $\chi(G)\leq\alpha(G)\leq\max_{i=1}^n\min\{\deg(v_i)+1,i\}$
     
-    上式左边的不等号显然成立，我们考虑右边．
+    Bất đẳng thức trái hiển nhiên, xét phải.
     
-    首先我们不难得出：
+    Nếu $v\notin\bigcup_{i=1}^mV_i$, thì $v$ kề với ít nhất một đỉnh trong mỗi $V_1,V_2,\dots,V_m$, nên $\deg(v)\geq m$
     
-    若 $v\notin\bigcup_{i=1}^mV_i$，则 v 与 $V_1,V_2,\dots,V_m$ 中分别至少有一个点相邻，从而有 $\deg(v)\geq m$
-    
-    进而
+    Do đó
     
     $v_j\in\bigcup_{i=1}^{\deg(v_j)+1}V_i$
     
-    另一方面，基于序列 $\{V_i\}$ 的构造方法，我们不难发现
+    Mặt khác, theo cách xây dựng, $v_j\in\bigcup_{i=1}^j V_i$
     
-    $v_j\in\bigcup_{i=1}^j V_i$
-    
-    两式结合即得证．
+    Kết hợp hai điều trên là xong.
 
-## 边着色
+## Tô màu cạnh
 
-对无向图的边着色，要求相邻的边涂不同种颜色．若 G 是 k- 边可着色的，但不是 $(k-1)$- 边可着色的，则称 k 是 G 的边色数，记为 $\chi'(G)$．
+Tô màu các cạnh của đồ thị vô hướng sao cho hai cạnh kề nhau không cùng màu. Nếu $G$ là $k$-tô màu cạnh được, nhưng không $(k-1)$-tô màu cạnh được, thì $k$ gọi là số sắc cạnh của $G$, ký hiệu $\chi'(G)$.
 
-### Vizing 定理
+### Định lý Vizing
 
-设 G 是简单图，则 $\Delta(G) \leq \chi'(G) \leq \Delta(G) + 1$
+Với đồ thị đơn $G$, ta có $\Delta(G) \leq \chi'(G) \leq \Delta(G) + 1$
 
-若 G 是二部图，则 $\chi'(G)=\Delta(G)$
+Nếu $G$ là đồ thị hai phía (bipartite), thì $\chi'(G)=\Delta(G)$
 
-当 $n$ 为奇数（$n \neq 1$）时，$\chi'(K_n)=n$; 当 $n$ 为偶数时，$\chi'(K_n)=n-1$
+Với $n$ lẻ ($n \neq 1$), $\chi'(K_n)=n$; với $n$ chẵn, $\chi'(K_n)=n-1$
 
-### 二分图 Vizing 定理的构造性证明
+### Chứng minh mang tính xây dựng của định lý Vizing cho đồ thị hai phía
 
-???+ note "证明"
-    按照顺序在二分图中加边．
+???+ note "Chứng minh"
+    Thêm cạnh vào đồ thị hai phía theo thứ tự.
     
-    我们在尝试加入边 $(x,y)$ 的时候，我们尝试寻找对于 $x$ 和 $y$ 的编号最小的尚未被使用过的颜色，假设分别为 $l_x$ 和 $l_y$．
+    Khi thêm cạnh $(x,y)$, tìm màu nhỏ nhất chưa dùng ở $x$ và $y$, gọi là $l_x$ và $l_y$.
     
-    如果 $l_x=l_y$ 此时我们可以直接将这条边的颜色设置为 $l_x$．
+    Nếu $l_x=l_y$ thì tô màu cạnh này bằng $l_x$.
     
-    否则假设 $l_x<l_y$, 我们可以尝试将节点 $y$ 连出去的颜色为 $l_x$ 的边的颜色修改为 $l_y$．
+    Nếu $l_x<l_y$, thử đổi màu các cạnh nối từ $y$ có màu $l_x$ thành $l_y$.
     
-    修改的过程可以被近似的看成是一条从 $y$ 出发，依次经过颜色为 $l_x,l_y,\cdots$ 的边的有限唯一增广路．
+    Quá trình đổi màu này là một đường tăng duy nhất bắt đầu từ $y$ qua các cạnh màu $l_x,l_y,\cdots$.
     
-    因为增广路有限所以我们可以将增广路上所有的边反色，即原来颜色为 $l_x$ 的修改为 $l_y$，原来颜色为 $l_y$ 的修改为 $l_x$．
+    Đường tăng hữu hạn nên có thể đảo màu trên đường tăng: màu $l_x$ thành $l_y$, màu $l_y$ thành $l_x$.
     
-    根据二分图的性质，节点 $x$ 不可能为增广路节点，否则与最小未使用颜色为 $l_x$ 矛盾．
+    Theo tính chất đồ thị hai phía, $x$ không thể nằm trên đường tăng, nếu không mâu thuẫn với việc $l_x$ là màu nhỏ nhất chưa dùng ở $x$.
     
-    所以我们可以在增广之后直接将连接 $x$ 和 $y$ 的边的颜色设为 $l_x$．
+    Sau khi đảo màu, tô cạnh $(x,y)$ bằng $l_x$.
     
-    总构造时间复杂度为 $O(nm)$．
+    Độ phức tạp tổng $O(nm)$.
 
-???+ note "示例代码 [UVa10615 Rooks](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=18&page=show_problem&problem=1556)"
+???+ note "Code mẫu [UVa10615 Rooks](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=18&page=show_problem&problem=1556)"
     ```cpp
     --8<-- "docs/graph/code/color/color_1.cpp"
     ```
 
-??? note "一道很不简单的例题 [uoj 444 二分图](https://uoj.ac/problem/444)"
-    本题为笔者于 2018 年命制的集训队第一轮作业题．
+??? note "Một ví dụ không đơn giản [uoj 444 Đồ thị hai phía](https://uoj.ac/problem/444)"
+    Đây là bài tập vòng 1 đội tuyển năm 2018 do tác giả biên soạn.
     
-    首先我们可以发现答案下界为度数不为 k 倍数的点的个数．
+    Nhận thấy đáp án nhỏ nhất là số đỉnh có bậc không chia hết cho $k$.
     
-    下界的构造方法是对二分图进行拆点．
+    Cách xây dựng: tách đỉnh của đồ thị hai phía.
     
-    若 $degree \bmod k \neq 0$, 我们将其拆为 $degree/k$ 个度数为 k 的节点和一个度数为 $degree \bmod k$ 的节点．
+    Nếu $degree \bmod k \neq 0$, tách thành $\lfloor degree/k \rfloor$ đỉnh bậc $k$ và một đỉnh bậc $degree \bmod k$.
     
-    若 $degree \bmod k = 0$, 我们将其拆为 $degree/k$ 个度数为 k 的节点．
+    Nếu $degree \bmod k = 0$, tách thành $degree/k$ đỉnh bậc $k$.
     
-    拆出来的点在原图中的意义相同，也就是说，在满足度数限制的情况下，一条边端点可以连接任意一个拆出来的点．
+    Các đỉnh tách ra vẫn giữ ý nghĩa như cũ, tức là mỗi cạnh có thể nối với bất kỳ đỉnh nào được tách ra từ đỉnh gốc.
     
-    根据 Vizing 定理，我们显然可以构造出该图的一种 k 染色方案．
+    Theo định lý Vizing, có thể tô màu cạnh với $k$ màu.
     
-    删边部分由于和 Vizing 定理关系不大这里不再展开．
+    Phần xóa cạnh không liên quan trực tiếp đến định lý Vizing nên không trình bày ở đây.
     
-    有兴趣的读者可以自行阅读笔者当时写的题解．
+    Bạn đọc có thể tham khảo lời giải chi tiết của tác giả.
 
-## 色多项式
+## Đa thức tô màu
 
-$P(G,k)$ 表示 G 的不同 k 着色方式的总数．
+$P(G,k)$ là số cách tô màu $k$ màu khác nhau cho $G$.
 
 $P(K_n, k) = k(k-1)\cdots(k-n+1)$
 
 $P(N_n, k) = k^n$
 
-在无向无环图 G 中，
+Với đồ thị vô hướng không chu trình,
 
-1.  $e=(v_i, v_j) \notin E(G)$，则 $P(G, k) = P(G \cup e, k)+P(G\setminus e, k)$
-2.  $e=(v_i, v_j) \in E(G)$，则 $P(G,k)=P(G-e,k)-P(G\setminus e,k)$
+1.  Nếu $e=(v_i, v_j) \notin E(G)$, thì $P(G, k) = P(G \cup e, k)+P(G\setminus e, k)$
+2.  Nếu $e=(v_i, v_j) \in E(G)$, thì $P(G,k)=P(G-e,k)-P(G\setminus e,k)$
 
-定理：设 $V_1$ 是 G 的点割集，且 $G[V_1]$ 是 G 的 $|V_1|$ 阶完全子图，$G-V_1$ 有 $p(p \geq 2)$ 个连通分支，则：
+Định lý: Gọi $V_1$ là tập cắt đỉnh của $G$, $G[V_1]$ là đồ thị đầy đủ bậc $|V_1|$, $G-V_1$ có $p(p \geq 2)$ thành phần liên thông, khi đó:
 
 $P(G,k)=\frac{\Pi_{i=1}^{p}{(P(H_i, k))}}{P(G[V_1], k)^{p-1}}$
 
-其中 $H_i=G[V_1 \cup V(G_i)]$
+trong đó $H_i=G[V_1 \cup V(G_i)]$
 
-## 参考资料
+## Tài liệu tham khảo
 
 1.  [Graph coloring - Wikipedia](https://en.wikipedia.org/wiki/Graph_coloring)
 2.  Welsh, D. J. A.; Powell, M. B. (1967), "[An upper bound for the chromatic number of a graph and its application to timetabling problems](https://doi.org/10.1093%2Fcomjnl%2F10.1.85)", The Computer Journal, 10 (1): 85–86

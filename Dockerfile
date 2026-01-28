@@ -14,7 +14,7 @@ RUN apt-get update \
     && curl -LsSf https://astral.sh/uv/install.sh | sh
 
 # If you can't connect to GitHub, set WIKI_REPO to any mirror repo.
-RUN git clone ${WIKI_REPO:-https://github.com/OI-wiki/OI-wiki.git} --depth=1 \
+RUN git clone ${WIKI_REPO:-https://github.com/huythedev/K23OJ-OI-wiki.git} OI-wiki --depth=1 \
     && cd OI-wiki \
     && uv sync --index-url ${PYPI_MIRROR:-https://pypi.org/simple/} \
     && yarn --frozen-lockfile

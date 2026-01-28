@@ -1,82 +1,82 @@
 author: Ir1d, sshwy, GavinZhengOI, Planet6174, ouuan, Marcythm, ylxmf2005, 0xis-cn
 
-相关阅读：[双连通分量](./bcc.md)
+Đọc thêm: [Thành phần hai phía liên thông](./bcc.md)
 
-割点和桥更严谨的定义参见 [图论相关概念](./concept.md)．
+Định nghĩa chính xác về điểm cắt và cầu xem tại [Các khái niệm liên quan đến lý thuyết đồ thị](./concept.md).
 
-## 割点
+## Điểm cắt
 
-> 对于一个无向图，如果把一个点删除后这个图的极大连通分量数增加了，那么这个点就是这个图的割点（又称割顶）．
+> Trên một đồ thị vô hướng, nếu khi xóa một đỉnh mà số lượng thành phần liên thông cực đại của đồ thị tăng lên, thì đỉnh đó gọi là điểm cắt (hay còn gọi là điểm khớp).
 
-### 过程
+### Quy trình
 
-如果我们尝试删除每个点，并且判断这个图的连通性，那么复杂度会特别的高．所以要介绍一个常用的算法：Tarjan．
+Nếu thử xóa từng đỉnh rồi kiểm tra liên thông, độ phức tạp sẽ rất cao. Vì vậy, ta dùng một thuật toán phổ biến: Tarjan.
 
-首先，我们上一个图：
+Trước hết, xét một đồ thị:
 
 ![](./images/cut1.svg)
 
-很容易的看出割点是 2，而且这个图仅有这一个割点．
+Dễ thấy điểm cắt là đỉnh 2, và đồ thị này chỉ có một điểm cắt.
 
-首先，我们按照 DFS 序给他打上时间戳（访问的顺序）．
+Đánh số thứ tự truy cập (DFS order) cho các đỉnh:
 
 ![](./images/cut2.svg)
 
-这些信息被我们保存在一个叫做 `dfn` 的数组中．
+Thông tin này lưu trong mảng `dfn`.
 
-还需要另外一个数组 `low`，用它来存储不经过其父亲能到达的最小的时间戳．
+Cần thêm mảng `low`, dùng để lưu thời điểm truy cập nhỏ nhất mà đỉnh đó có thể đến được mà không qua cha.
 
-例如 `low[2]` 是 1，`low[5]` 和 `low[6]` 是 3．
+Ví dụ: `low[2] = 1`, `low[5]` và `low[6] = 3`.
 
-然后我们开始 DFS，我们判断某个点是否是割点的根据是：对于某个顶点 $u$，如果存在至少一个顶点 $v$（$u$ 的儿子），使得 $low_v \geq dfn_u$，即不能回到祖先，那么 $u$ 点为割点．
+Khi DFS, điều kiện để một đỉnh $u$ là điểm cắt: tồn tại ít nhất một đỉnh con $v$ của $u$ sao cho $low_v \geq dfn_u$, tức là không thể quay lại tổ tiên, khi đó $u$ là điểm cắt.
 
-此根据惟独不适用于搜索的起始点，其需要特殊考虑：若该点不是割点，则其他路径亦能到达全部结点，因此从起始点只「向下搜了一次」，即在搜索树内仅有一个子结点．如果在搜索树内有两个及以上的儿子，那么他一定是割点了（设想上图从 2 开始搜索，搜索树内应有两个子结点：3 或 4 及 5 或 6）．如果只有一个儿子，那么把它删掉，不会有任何的影响．比如下面这个图，此处形成了一个环．
+Trường hợp đặc biệt với đỉnh gốc: nếu không phải điểm cắt thì mọi đường đi đều có thể đến mọi đỉnh, tức là trong cây DFS chỉ có một con. Nếu có từ hai con trở lên thì chắc chắn là điểm cắt (ví dụ, nếu bắt đầu DFS từ 2, cây sẽ có hai con: 3 hoặc 4 và 5 hoặc 6). Nếu chỉ có một con thì xóa đi không ảnh hưởng gì. Ví dụ dưới đây tạo thành một chu trình.
 
 ![](./images/cut3.svg)
 
-我们在访问 1 的儿子时候，假设先 DFS 到了 2，然后标记用过，然后递归往下，来到了 4，4 又来到了 3，当递归回溯的时候，会发现 3 已经被访问过了，所以不是割点．
+Khi duyệt con của 1, giả sử DFS đến 2 trước, đánh dấu đã truy cập, rồi đệ quy xuống 4, 4 lại đến 3, khi quay lại sẽ thấy 3 đã truy cập, nên không phải điểm cắt.
 
-更新 `low` 的伪代码如下：
+Cập nhật mảng `low` theo giả mã sau:
 
 $$
 \begin{array}{ll}
-1 & \textbf{if } v \text{ is a son of } u \\
+1 & \textbf{if } v \text{ là con của } u \\
 2 & \qquad \text{low}_u = \min(\text{low}_u, \text{low}_v) \\
 3 & \textbf{else} \\
 4 & \qquad \text{low}_u = \min(\text{low}_u, \text{dfn}_v) \\
 \end{array}
 $$
 
-### 例题
+### Bài mẫu
 
-[洛谷 P3388【模板】割点（割顶）](https://www.luogu.com.cn/problem/P3388)
+[Luogu P3388【Mẫu】Điểm cắt (điểm khớp)](https://www.luogu.com.cn/problem/P3388)
 
-??? note "例题代码"
+??? note "Mã nguồn mẫu"
     ```cpp
     --8<-- "docs/graph/code/cut/cut_1.cpp"
     ```
 
-## 割边（无重边时）
+## Cầu (trường hợp không có cạnh lặp)
 
-和割点差不多，叫做桥．
+Tương tự điểm cắt, cầu còn gọi là cạnh cắt.
 
-> 对于一个无向图，如果删掉一条边后图中的连通分量数增加了，则称这条边为桥或者割边．严谨来说，就是：假设有连通图 $G=\{V,E\}$，$e$ 是其中一条边（即 $e \in E$），如果 $G-e$ 是不连通的，则边 $e$ 是图 $G$ 的一条割边（桥）．
+> Trên một đồ thị vô hướng, nếu khi xóa một cạnh mà số lượng thành phần liên thông tăng lên, thì cạnh đó gọi là cầu (cạnh cắt). Chính xác: với đồ thị liên thông $G=\{V,E\}$, $e$ là một cạnh ($e \in E$), nếu $G-e$ không liên thông thì $e$ là cầu của $G$.
 
-比如说，下图中，
+Ví dụ:
 
-![割边示例图](./images/bridge1.svg)
+![Ví dụ cầu](./images/bridge1.svg)
 
-红色的边就是割边．
+Các cạnh đỏ là cầu.
 
-### 过程
+### Quy trình
 
-和割点差不多，只要改一处：$low_v>dfn_u$ 就可以了，而且不需要考虑根节点的问题．
+Tương tự điểm cắt, chỉ cần thay điều kiện: $low_v > dfn_u$, không cần xét trường hợp gốc.
 
-割边是和是不是根节点没关系的，原来我们求割点的时候是指点 $v$ 是不可能不经过父节点 $u$ 为回到祖先节点（包括父节点），所以顶点 $u$ 是割点．如果 $low_v=dfn_u$ 表示还可以回到父节点，如果顶点 $v$ 不能回到祖先也没有另外一条回到父亲的路，那么 $u-v$ 这条边就是割边．
+Cầu không liên quan đến gốc, khi tìm điểm cắt thì $v$ không thể quay lại tổ tiên (kể cả cha), nên $u$ là điểm cắt. Nếu $low_v = dfn_u$ thì vẫn có thể quay lại cha. Nếu $v$ không thể quay lại tổ tiên và không có đường nào về cha, thì cạnh $u-v$ là cầu.
 
-### 实现
+### Cài đặt
 
-下面代码实现了对 **无重边** 的无向图求割边，其中，当 `isbridge[x]` 为真时，`(father[x],x)` 为一条割边．
+Đoạn mã dưới đây tìm cầu trên đồ thị vô hướng **không có cạnh lặp**, khi `isbridge[x]` đúng thì cạnh `(father[x],x)` là cầu.
 
 === "C++"
     ```cpp
@@ -87,6 +87,7 @@ $$
     int father[MAXN];
     
     void tarjan(int u, int fa) {
+      bool flag = false;
       father[u] = fa;
       low[u] = dfn[u] = ++idx;
       for (const auto &v : G[u]) {
@@ -97,8 +98,11 @@ $$
             isbridge[v] = true;
             ++cnt_bridge;
           }
-        } else if (v != fa) {
-          low[u] = min(low[u], dfn[v]);
+        } else {
+          if (v != fa || flag)
+            low[u] = min(low[u], dfn[v]);
+          else
+            flag = true;
         }
       }
     }
@@ -131,19 +135,19 @@ $$
                 low[u] = min(low[u], dfn[v])
     ```
 
-## 割边（有重边时）
+## Cầu (trường hợp có cạnh lặp)
 
-然而，上述无重边时的做法在有重边的无向图上是有问题的．
+Cách trên không áp dụng cho đồ thị có cạnh lặp.
 
-因为两节点间可能不止有一条边，此时它们都不会是桥．
+Vì giữa hai đỉnh có thể có nhiều cạnh, khi đó không cạnh nào là cầu.
 
-### 过程
+### Quy trình
 
-一种思路是将参数 `fa` 改为刚刚走过的边的编号（每条边的编号一致）即可，即将「不用父节点更新」改为「不用来时的边更新」．
+Một cách là thay tham số `fa` bằng chỉ số cạnh vừa đi qua (mỗi cạnh có chỉ số riêng), tức là "không dùng cạnh vừa đi qua để cập nhật".
 
-另一种更简单的思路是设立一个标记判断是否已有一条边抵达父节点，标记后再访问到父节点时正常更新．
+Cách khác là đặt một biến đánh dấu đã từng đi qua cha, lần sau gặp lại cha thì cập nhật bình thường.
 
-下面代码实现了对可能 **有重边** 的无向图求割边．
+Đoạn mã dưới đây tìm cầu trên đồ thị vô hướng **có thể có cạnh lặp**.
 
 === "C++"
     ```cpp
@@ -175,12 +179,12 @@ $$
     }
     ```
 
-## 练习
+## Bài tập
 
--   [P3388【模板】割点（割顶）](https://www.luogu.com.cn/problem/P3388)
+-   [P3388【Mẫu】Điểm cắt (điểm khớp)](https://www.luogu.com.cn/problem/P3388)
 -   [POJ2117 Electricity](http://poj.org/problem?id=2117)
 -   [HDU4738 Caocao's Bridges](https://acm.hdu.edu.cn/showproblem.php?pid=4738)
 -   [HDU2460 Network](https://acm.hdu.edu.cn/showproblem.php?pid=2460)
 -   [POJ1523 SPF](http://poj.org/problem?id=1523)
 
-Tarjan 算法还有许多用途，常用的例如求强连通分量，缩点，还有求 2-SAT 的用途等．
+Thuật toán Tarjan còn có nhiều ứng dụng khác, như tìm thành phần liên thông mạnh, thu gọn đồ thị, giải 2-SAT, v.v.

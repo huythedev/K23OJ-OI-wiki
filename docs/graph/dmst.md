@@ -1,15 +1,15 @@
-## 定义
+## Định nghĩa
 
-有向图上的最小生成树（Directed Minimum Spanning Tree）称为最小树形图．
+Cây khung nhỏ nhất trên đồ thị có hướng (Directed Minimum Spanning Tree) được gọi là **cây khung có hướng nhỏ nhất** (hay "Minimum Arborescence").
 
-常用的算法是朱刘算法（也称 Edmonds 算法），可以在 $O(nm)$ 时间内解决最小树形图问题．
+Thuật toán thường dùng là thuật toán Chu-Liu/Edmonds, có thể giải bài toán cây khung có hướng nhỏ nhất trong thời gian $O(nm)$.
 
-## 过程
+## Quy trình
 
-1.  对于每个点，选择指向它的边权最小的那条边．
-2.  如果没有环，算法终止；否则进行缩环并更新其他点到环的距离．
+1.  Với mỗi đỉnh, chọn cạnh có trọng số nhỏ nhất đi vào nó.
+2.  Nếu không có chu trình, thuật toán kết thúc; nếu có chu trình thì tiến hành thu gọn chu trình và cập nhật lại khoảng cách từ các đỉnh khác tới chu trình.
 
-## 实现
+## Cài đặt
 
 ```cpp
 bool solve() {
@@ -58,37 +58,36 @@ bool solve() {
 }
 ```
 
-## Tarjan 的 DMST 算法
+## Thuật toán DMST của Tarjan
 
-Tarjan 提出了一种能够在 $O(m+n\log n)$ 时间内解决最小树形图问题的算法．
+Tarjan đã đề xuất một thuật toán có thể giải bài toán cây khung có hướng nhỏ nhất trong thời gian $O(m+n\log n)$.
 
-这里的算法描述以及参考代码基于 Uri Zwick 教授的课堂讲义，更多的细节可以参考原文．
+Phần mô tả thuật toán và mã tham khảo dưới đây dựa trên bài giảng của Giáo sư Uri Zwick, bạn có thể tham khảo chi tiết trong tài liệu gốc.
 
-### 过程
+### Quy trình
 
-Tarjan 的算法分为 **收缩** 与 **伸展** 两个过程．接下来先介绍 **收缩** 的过程．
+Thuật toán Tarjan gồm hai bước: **thu gọn** và **mở rộng**. Trước tiên, ta sẽ trình bày quá trình **thu gọn**.
 
-我们需要假设输入的图是满足强连通的，如果不满足那么就加入 $O(n)$ 条边使其满足，并且这些边的边权是无穷大的．
+Giả sử đồ thị đầu vào là đồ thị mạnh liên thông; nếu không, hãy thêm $O(n)$ cạnh với trọng số vô cùng lớn để đảm bảo điều kiện này.
 
-我们需要一个堆存储结点的入边编号，入边权值，结点总代价等相关信息，由于后续过程中会有堆的合并操作，这里采用 [左偏树](../ds/leftist-tree.md) 与 [并查集](../ds/dsu.md) 实现．算法的每一步都选择一个任意结点 $v$，需要保证 $v$ 不是根节点，并且在堆中没有它的入边．再将 $v$ 的最小入边加入到堆中，如果新加入的这条边使堆中的边形成了环，那么将构成环的那些结点收缩，我们不妨将这些已经收缩的结点命名为 **超级结点**，再继续这个过程，如果所有的顶点都缩成了一个超级结点，那么收缩过程就结束了．整个收缩过程结束后会得到一棵收缩树，之后将对它进行伸展操作．
+Ta cần một cấu trúc heap để lưu thông tin về các cạnh đi vào mỗi đỉnh: chỉ số cạnh, trọng số cạnh, tổng chi phí của đỉnh,... Do quá trình sau sẽ có thao tác trộn heap, nên sử dụng [cây trái lệch (Leftist Tree)](../ds/leftist-tree.md) và [DSU (Disjoint Set Union)](../ds/dsu.md). Mỗi bước, chọn một đỉnh $v$ bất kỳ (không phải gốc, và heap của nó không rỗng), thêm cạnh nhỏ nhất đi vào $v$ vào heap. Nếu cạnh mới thêm tạo thành chu trình, thu gọn các đỉnh trong chu trình thành một "siêu đỉnh", tiếp tục quá trình này. Khi tất cả các đỉnh đã được thu gọn thành một siêu đỉnh, quá trình thu gọn kết thúc và ta thu được một cây thu gọn, sau đó tiến hành mở rộng.
 
-堆中的边总是会形成一条路径 $v_0\leftarrow v_1\leftarrow \dots\leftarrow v_k$，由于图是强连通的，这个路径必然存在，并且其中的 $v_i$ 可能是最初的单一结点，也可能是压缩后的超级结点．
+Các cạnh trong heap luôn tạo thành một đường đi $v_0\leftarrow v_1\leftarrow \dots\leftarrow v_k$, do đồ thị mạnh liên thông nên đường đi này luôn tồn tại, và mỗi $v_i$ có thể là đỉnh ban đầu hoặc siêu đỉnh sau khi thu gọn.
 
-最初有 $v_o=a$，其中 $a$ 是图中任意的一个结点，每一次选择一条最小入边 $v_k\leftarrow u$，如果 $u$ 不是 $v_0,v_1,\dots,v_k$ 中的一个结点，那么就将结点扩展到 $v_{k+1}=u$．如果 $u$ 是他们其中的一个结点 $v_i$，那么就找到了一个关于 $v_i\leftarrow\dots\leftarrow v_k\leftarrow v_i$ 的环，再将他们收缩为一个超级结点 $c$．
+Ban đầu $v_0=a$, với $a$ là một đỉnh bất kỳ. Mỗi lần chọn cạnh nhỏ nhất đi vào $v_k$ từ $u$, nếu $u$ không thuộc $v_0,v_1,\dots,v_k$ thì mở rộng đường đi tới $v_{k+1}=u$. Nếu $u$ thuộc tập đó, đã tìm được chu trình $v_i\leftarrow\dots\leftarrow v_k\leftarrow v_i$, thu gọn thành siêu đỉnh $c$.
 
-向队列 $P$ 中放入所有的结点或超级结点，并初始选择任意一节点 $a$，只要队列不为空，就进行以下步骤：
+Đưa tất cả các đỉnh hoặc siêu đỉnh vào hàng đợi $P$, chọn một đỉnh bất kỳ $a$ làm điểm bắt đầu, khi hàng đợi còn phần tử thì thực hiện:
 
-1.  选择 $a$ 的最小入边，保证不存在自环，并找到另一头的结点 $b$．如果结点 $b$ 没有被记录过说明未形成环，令 $a\leftarrow b$，继续当前操作寻找环．
-
-2.  如果 $b$ 被记录过了，就说明出现了环．总结点数加一，并将环上的所有结点重新编号，对堆进行合并，以及结点/超级结点的总权值的更新．更新权值操作就是将环上所有结点的入边都收集起来，并减去环上入边的边权．
+1.  Chọn cạnh nhỏ nhất đi vào $a$, đảm bảo không phải cạnh tự nối, tìm đỉnh đầu còn lại là $b$. Nếu $b$ chưa được ghi nhận, tức là chưa tạo chu trình, gán $a\leftarrow b$ và tiếp tục tìm chu trình.
+2.  Nếu $b$ đã được ghi nhận, tức là đã tạo chu trình. Tăng số lượng đỉnh, đánh số lại các đỉnh trong chu trình, trộn heap, cập nhật tổng chi phí của các đỉnh/siêu đỉnh. Việc cập nhật chi phí là gom tất cả các cạnh đi vào chu trình và trừ đi trọng số các cạnh trong chu trình.
 
 ![dmst1](./images/dmst1.png)
 
-以图片为例，左边的强连通图在收缩后就形成了右边的一棵收缩树，其中 $a$ 是结点 1 与结点 2 收缩后的超级结点，$b$ 是结点 3，结点 4，结点 5 收缩后的超级结点，$A$ 是两个超级结点 $a$ 与 $b$ 收缩后形成的．
+Ví dụ: đồ thị mạnh liên thông bên trái sau khi thu gọn sẽ thành cây thu gọn bên phải, trong đó $a$ là siêu đỉnh gồm đỉnh 1 và 2, $b$ là siêu đỉnh gồm đỉnh 3, 4, 5, $A$ là siêu đỉnh gồm $a$ và $b$.
 
-伸展过程是相对简单的，以原先要求的根节点 $r$ 为起始点，对 $r$ 到收缩树的根上的每一个环进行伸展．再以 $r$ 的祖先结点 $f_r$ 为起始点，将其到根的环展开，直到遍历完所有的结点．
+Quá trình mở rộng khá đơn giản: bắt đầu từ đỉnh gốc $r$, mở rộng các chu trình trên đường từ $r$ tới gốc của cây thu gọn. Sau đó, bắt đầu từ tổ tiên của $r$ là $f_r$, tiếp tục mở rộng các chu trình trên đường tới gốc, cho tới khi duyệt hết tất cả các đỉnh.
 
-### 实现
+### Cài đặt
 
 ```cpp
 #include <cstdio>
@@ -238,8 +237,8 @@ int main() {
 }
 ```
 
-## 参考文献
+## Tài liệu tham khảo
 
-Uri Zwick. (2013),[Directed Minimum Spanning Trees](http://www.cs.tau.ac.il/~zwick/grad-algo-13/directed-mst.pdf), Lecture notes on "Analysis of Algorithms"
+Uri Zwick. (2013), [Directed Minimum Spanning Trees](http://www.cs.tau.ac.il/~zwick/grad-algo-13/directed-mst.pdf), Lecture notes on "Analysis of Algorithms"
 
 <https://riteme.site/blog/2018-6-18/mdst.html#_3>

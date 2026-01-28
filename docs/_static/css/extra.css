@@ -104,3 +104,28 @@ mjx-container > img {
 div.md-typeset__scrollwrap:has(table[data-review-enabled]) {
   overflow: visible;
 }
+
+/* Enable horizontal scrollbar for navigation tabs */
+.md-tabs__list {
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.md-tabs__list::-webkit-scrollbar {
+  display: block;
+  height: 6px;
+}
+
+.md-tabs__list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.md-tabs__list::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 20px;
+}
+
+.md-tabs__list::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.6);
+}
+

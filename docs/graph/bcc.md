@@ -1,36 +1,36 @@
-## 简介
+## Giới thiệu
 
-在阅读下列内容之前，请务必了解 [图论相关概念](./concept.md) 部分．
+Trước khi đọc nội dung dưới đây, bạn cần nắm vững phần [Các khái niệm liên quan đến lý thuyết đồ thị](./concept.md).
 
-相关阅读：[割点和桥](./cut.md)
+Đọc thêm: [Điểm cắt và cầu](./cut.md)
 
-## 定义
+## Định nghĩa
 
-割点和桥更严谨的定义参见 [图论相关概念](./concept.md)．
+Định nghĩa chính xác về điểm cắt và cầu xem tại [Các khái niệm liên quan đến lý thuyết đồ thị](./concept.md).
 
-在一张连通的无向图中，对于两个点 $u$ 和 $v$，如果无论删去哪条边（只能删去一条）都不能使它们不连通，我们就说 $u$ 和 $v$  **边双连通**．
+Trên một đồ thị vô hướng liên thông, với hai đỉnh $u$ và $v$, nếu bất kể xóa cạnh nào (chỉ được xóa một cạnh) cũng không thể làm chúng bị ngắt kết nối, ta nói $u$ và $v$ **cạnh hai phía liên thông** (edge-biconnected).
 
-在一张连通的无向图中，对于两个点 $u$ 和 $v$，如果无论删去哪个点（只能删去一个，且不能删 $u$ 和 $v$ 自己）都不能使它们不连通，我们就说 $u$ 和 $v$  **点双连通**．
+Trên một đồ thị vô hướng liên thông, với hai đỉnh $u$ và $v$, nếu bất kể xóa đỉnh nào (chỉ được xóa một đỉnh, không xóa chính $u$ hoặc $v$) cũng không thể làm chúng bị ngắt kết nối, ta nói $u$ và $v$ **đỉnh hai phía liên thông** (vertex-biconnected).
 
-边双连通具有传递性，即，若 $x,y$ 边双连通，$y,z$ 边双连通，则 $x,z$ 边双连通．
+Tính chất truyền: cạnh hai phía liên thông có tính chất truyền, tức là nếu $x,y$ cạnh hai phía liên thông, $y,z$ cạnh hai phía liên thông thì $x,z$ cũng cạnh hai phía liên thông.
 
-点双连通 **不** 具有传递性，反例如下图，$A,B$ 点双连通，$B,C$ 点双连通，而 $A,C$  **不** 点双连通．
+Đỉnh hai phía liên thông **không** có tính chất truyền. Ví dụ dưới đây: $A,B$ đỉnh hai phía liên thông, $B,C$ đỉnh hai phía liên thông, nhưng $A,C$ **không** đỉnh hai phía liên thông.
 
 ![bcc-counterexample.png](./images/bcc-0.svg)
 
-对于一个无向图中的 **极大** 边双连通的子图，我们称这个子图为一个 **边双连通分量**．
+Một tiểu đồ thị **cạnh hai phía liên thông cực đại** gọi là **thành phần cạnh hai phía liên thông**.
 
-对于一个无向图中的 **极大** 点双连通的子图，我们称这个子图为一个 **点双连通分量**．
+Một tiểu đồ thị **đỉnh hai phía liên thông cực đại** gọi là **thành phần đỉnh hai phía liên thông**.
 
-## DFS 生成树
+## Cây DFS
 
-对于一张连通的无向图，我们可以从任意一点开始 DFS，得到原图的一棵 DFS 生成树（以开始 DFS 的那个点为根），这棵生成树上的边称作 **树边**，不在生成树上的边称作 **非树边**．
+Với một đồ thị vô hướng liên thông, ta có thể bắt đầu DFS từ bất kỳ đỉnh nào để thu được một cây DFS (gốc là đỉnh bắt đầu), các cạnh thuộc cây này gọi là **cạnh cây**, các cạnh không thuộc cây gọi là **cạnh ngoài cây**.
 
-由于 DFS 的性质，我们可以保证所有非树边连接的两个点在生成树上都满足其中一个是另一个的祖先．
+Do tính chất của DFS, mọi cạnh ngoài cây đều nối hai đỉnh mà một đỉnh là tổ tiên của đỉnh còn lại trên cây.
 
-DFS 的代码如下：
+Mã nguồn DFS như sau:
 
-???+ note "实现"
+???+ note "Cài đặt"
     === "C++"
         ```cpp
         void DFS(int p) {
@@ -49,119 +49,119 @@ DFS 的代码如下：
                     DFS(to)
         ```
 
-## 边双连通分量
+## Thành phần cạnh hai phía liên thông
 
-???+ note "[例题：洛谷 P8436【模版】边双连通分量](https://www.luogu.com.cn/problem/P8436)"
-    对于一个 $n$ 个节点 $m$ 条无向边的图，请输出其边双连通分量的个数，并且输出每个边双连通分量．
+???+ note "[Bài mẫu: LuoGu P8436【Mẫu】Thành phần cạnh hai phía liên thông](https://www.luogu.com.cn/problem/P8436)"
+    Cho một đồ thị vô hướng $n$ đỉnh $m$ cạnh, hãy xuất số lượng thành phần cạnh hai phía liên thông và liệt kê từng thành phần.
 
-### Tarjan 算法 1
+### Thuật toán Tarjan 1
 
-用 Tarjan 求双连通分量过程与求强连通分量类似，可以先阅读 [强连通分量](./scc.md) 的 Tarjan 算法．
+Dùng Tarjan để tìm thành phần hai phía liên thông tương tự như tìm thành phần liên thông mạnh, có thể xem trước [Thành phần liên thông mạnh](./scc.md) với thuật toán Tarjan.
 
-我们考虑先求出所有的桥，再 DFS 求出边双连通分量．
+Ta sẽ tìm tất cả các cầu trước, sau đó DFS để tìm thành phần cạnh hai phía liên thông.
 
-求桥可参见 [割点和桥](./cut.md) 的桥部分．
+Cách tìm cầu xem tại [Điểm cắt và cầu](./cut.md).
 
-时间复杂度 $O(n+m)$．
+Độ phức tạp $O(n+m)$.
 
-??? note "示例代码"
+??? note "Mã nguồn mẫu"
     ```cpp
     --8<-- "docs/graph/code/bcc/bcc_1.cpp"
     ```
 
-### Tarjan 算法 2
+### Thuật toán Tarjan 2
 
-我们先总结出一个重要的性质，在无向图中，DFS 生成树上的边不是树边就只有非树边．
+Tổng kết một tính chất quan trọng: trên đồ thị vô hướng, cạnh cây và cạnh ngoài cây là hai loại duy nhất.
 
-我们联系一下求强连通分量的方法，在无向图中只要一个分量没有桥，那么在 DFS 生成树上，它的所有点都在同一个强连通分量中．
+Liên hệ với cách tìm thành phần liên thông mạnh: trên đồ thị vô hướng, nếu một thành phần không có cầu, thì trên cây DFS, tất cả các đỉnh thuộc cùng một thành phần liên thông mạnh.
 
-反过来，在 DFS 生成树上的一个强连通分量，在原无向图中是边双连通分量．
+Ngược lại, một thành phần liên thông mạnh trên cây DFS chính là một thành phần cạnh hai phía liên thông trên đồ thị gốc.
 
-可以发现，求边双连通分量的过程实际上就是求强连通分量的过程．
+Vậy quá trình tìm thành phần cạnh hai phía liên thông thực chất là quá trình tìm thành phần liên thông mạnh.
 
-时间复杂度 $O(n+m)$．
+Độ phức tạp $O(n+m)$.
 
-??? note "示例代码"
+??? note "Mã nguồn mẫu"
     ```cpp
     --8<-- "docs/graph/code/bcc/bcc_2.cpp"
     ```
 
-### 差分算法
+### Thuật toán hiệu ứng chênh lệch (difference)
 
-和 Tarjan 算法 1 类似，我们先求出所有的桥，再差分求出边双连通分量．
+Tương tự Tarjan 1, ta tìm tất cả các cầu trước, sau đó dùng hiệu ứng chênh lệch để tìm thành phần cạnh hai phía liên thông.
 
-首先，对原图进行 DFS．
+Đầu tiên, thực hiện DFS trên đồ thị gốc.
 
 ![bcc-1.png](./images/bcc-1.svg)
 
-如上图所示，黑色与绿色边为树边，红色边为非树边．每一条非树边的两个端点都唯一对应了树上的一条由树边构成的简单路径，我们说这条非树边 **覆盖** 了这条简单路径上所有的边．
+Trong hình, cạnh đen và xanh lá là cạnh cây, cạnh đỏ là cạnh ngoài cây. Mỗi cạnh ngoài cây nối hai đỉnh, tương ứng duy nhất với một đường đi đơn giản trên cây gồm các cạnh cây, ta nói cạnh ngoài cây **phủ** lên tất cả các cạnh cây trên đường đi đó.
 
-在图中，绿色的树边 **至少** 被一条非树边覆盖，黑色的树边不被 **任何** 非树边覆盖．
+Trong hình, cạnh cây xanh lá **ít nhất** được một cạnh ngoài cây phủ, cạnh cây đen không được **bất kỳ** cạnh ngoài cây nào phủ.
 
-显然，**非树边** 和 **绿色的树边** 一定不是桥，**黑色的树边** 一定是桥．
+Rõ ràng, **cạnh ngoài cây** và **cạnh cây xanh lá** chắc chắn không phải cầu, **cạnh cây đen** chắc chắn là cầu.
 
-首先考虑一个暴力的做法，对于每一条非树边，都逐个地将它覆盖的每一条树边置成绿色，时间复杂度为 $O(nm)$．
+Xét một cách vét cạn: với mỗi cạnh ngoài cây, duyệt từng cạnh cây trên đường đi và đánh dấu là xanh lá, độ phức tạp $O(nm)$.
 
-考虑用差分优化．对于每一条非树边，在其树上深度较小的端点处打上 `-1` 标记，在其树上深度较大的端点处打上 `+1` 标记，然后 $O(n)$ 求出每个点的子树内部的标记和．
+Dùng hiệu ứng chênh lệch để tối ưu: với mỗi cạnh ngoài cây, tại đỉnh sâu hơn trên cây DFS đánh dấu `+1`, tại đỉnh cạn hơn đánh dấu `-1`, sau đó $O(n)$ để tính tổng hiệu ứng trong mỗi cây con.
 
-对于一个点 $u$，其子树内部的标记之和等于覆盖了 $u$ 和 $fa_u$ 之间的树边的非树边数量．若这个值等于 $0$，则 $u$ 和 $fa_u$ 之间的树边是 **桥**．
+Với một đỉnh $u$, tổng hiệu ứng trong cây con bằng số lượng cạnh ngoài cây phủ lên cạnh cây giữa $u$ và $fa_u$. Nếu giá trị này bằng $0$, cạnh cây giữa $u$ và $fa_u$ là **cầu**.
 
-再用 DFS 求出边双连通分量．
+Sau đó DFS để tìm thành phần cạnh hai phía liên thông.
 
-时间复杂度 $O(n+m)$．
+Độ phức tạp $O(n+m)$.
 
-??? note "示例代码"
+??? note "Mã nguồn mẫu"
     ```cpp
     --8<-- "docs/graph/code/bcc/bcc_4.cpp"
     ```
 
-???+ note "[#2788.「CEOI2015 Day1」管道](https://loj.ac/p/2788)"
-    给出一个 $N$ 点 $M$ 边的无向图，不保证连通．将每个联通块视为子图，请求出每一个子图中的桥．**你只有 16 MB 的内存空间．**
+???+ note "[#2788.「CEOI2015 Day1」Ống dẫn](https://loj.ac/p/2788)"
+    Cho một đồ thị vô hướng $N$ đỉnh $M$ cạnh, không đảm bảo liên thông. Xem mỗi thành phần liên thông là một đồ thị con, hãy tìm các cầu trong từng đồ thị con. **Chỉ có 16 MB bộ nhớ.**
 
-??? note "题解"
-    此题最大的特征在于，你存不下所有的边．
-    
-    考虑优化存边，若一条非树边被另一条非树边完全覆盖，则这条边无用．
-    
-    用并查集维护即可．
+??? note "Phân tích"
+    Đặc điểm lớn nhất của bài này là không đủ bộ nhớ để lưu tất cả các cạnh.
 
-## 点双连通分量
+    Xét tối ưu lưu cạnh: nếu một cạnh ngoài cây bị một cạnh ngoài cây khác phủ hoàn toàn, thì cạnh đó không cần thiết.
 
-???+ note "[例题：洛谷 P8435【模板】点双连通分量](https://www.luogu.com.cn/problem/P8435)"
-    对于一个 $n$ 个节点 $m$ 条无向边的图，请输出其点双连通分量的个数，并且输出每个点双连通分量．
+    Dùng cấu trúc hợp nhất (union-find) để quản lý.
 
-### Tarjan 算法
+## Thành phần đỉnh hai phía liên thông
 
-需要先学习割点，可以先参见 [割点和桥](./cut.md) 的割点部分．
+???+ note "[Bài mẫu: LuoGu P8435【Mẫu】Thành phần đỉnh hai phía liên thông](https://www.luogu.com.cn/problem/P8435)"
+    Cho một đồ thị vô hướng $n$ đỉnh $m$ cạnh, hãy xuất số lượng thành phần đỉnh hai phía liên thông và liệt kê từng thành phần.
 
-先给出两个性质：
+### Thuật toán Tarjan
 
-1.  两个点双最多只有一个公共点，且一定是割点．
-2.  对于一个点双，它在 DFS 搜索树中 dfn 值最小的点一定是割点或者树根．
+Cần học về điểm cắt trước, xem tại [Điểm cắt và cầu](./cut.md) phần điểm cắt.
 
-我们根据第二个性质，分类讨论：
+Hai tính chất:
 
-1.  当这个点为割点时，它一定是点双连通分量的根，因为一旦包含它的父节点，他仍然是割点．
-2.  当这个点为树根时：
-    1.  有两个及以上子树，它是一个割点．
-    2.  只有一个子树，它是一个点双连通分量的根．
-    3.  它没有子树，视作一个点双．
+1.  Hai thành phần đỉnh hai phía liên thông tối đa chỉ có một đỉnh chung, và đó chắc chắn là điểm cắt.
+2.  Với một thành phần đỉnh hai phía liên thông, trên cây DFS, đỉnh có dfn nhỏ nhất chắc chắn là điểm cắt hoặc là gốc cây.
 
-??? note "示例代码"
+Theo tính chất thứ hai, phân thành các trường hợp:
+
+1.  Nếu đỉnh đó là điểm cắt, nó chắc chắn là gốc của thành phần đỉnh hai phía liên thông, vì nếu chứa cha của nó thì nó vẫn là điểm cắt.
+2.  Nếu đỉnh đó là gốc cây:
+    1.  Có từ hai cây con trở lên, nó là điểm cắt.
+    2.  Chỉ có một cây con, nó là gốc của thành phần đỉnh hai phía liên thông.
+    3.  Không có cây con, coi như một thành phần đỉnh hai phía liên thông.
+
+??? note "Mã nguồn mẫu"
     ```cpp
     --8<-- "docs/graph/code/bcc/bcc_3.cpp"
     ```
 
-### 差分算法
+### Thuật toán hiệu ứng chênh lệch
 
 ![bcc-2.png](./images/bcc-2.svg)
 
-如上图所示，黑色边为树边，红色边为非树边，每一条非树边的两个端点都唯一对应了树上由树边构成的的一条简单路径．
+Trong hình, cạnh đen là cạnh cây, cạnh đỏ là cạnh ngoài cây, mỗi cạnh ngoài cây nối hai đỉnh, tương ứng duy nhất với một đường đi đơn giản trên cây gồm các cạnh cây.
 
-考虑一张新图，新图中的每一个点对应原图中的每一条树边（在图中用蓝色点表示）．对于原图中的每一条非树边，将这条非树边对应的树上简单路径中的所有边在新图中对应的蓝点连成一个连通块（在图中用蓝色的边体现出来）．
+Xét một đồ thị mới, mỗi đỉnh trong đồ thị mới tương ứng với một cạnh cây trong đồ thị gốc (biểu diễn bằng các điểm xanh dương trong hình). Với mỗi cạnh ngoài cây, nối các điểm xanh dương tương ứng với các cạnh cây trên đường đi thành một thành phần liên thông (biểu diễn bằng các cạnh xanh dương).
 
-这样，一个点若 **不是** 割点，当且仅当与其相连的所有边在新图中对应的蓝点都 **属于** 同一个连通块．
+Như vậy, một đỉnh **không phải** là điểm cắt khi và chỉ khi các cạnh cây nối với nó trong đồ thị mới đều **thuộc** cùng một thành phần liên thông.
 
-两个点 **是** 点双连通，当且仅当它们在原图的树上路径中的所有边在新图中对应的蓝点都 **属于** 同一个连通块，即图中的每个蓝点构成的连通块都是一个点双连通分量．
+Hai đỉnh **là** đỉnh hai phía liên thông khi và chỉ khi các cạnh cây trên đường đi giữa chúng trong đồ thị mới đều **thuộc** cùng một thành phần liên thông, tức là mỗi thành phần liên thông của các điểm xanh dương là một thành phần đỉnh hai phía liên thông.
 
-蓝点间的连通关系可以用与求边双连通时用到的差分类似的方法维护，时间复杂度 $O(n+m)$．
+Quan hệ liên thông giữa các điểm xanh dương có thể quản lý bằng hiệu ứng chênh lệch như khi tìm thành phần cạnh hai phía liên thông, độ phức tạp $O(n+m)$

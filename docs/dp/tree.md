@@ -1,30 +1,30 @@
 author: aaron20100919
 
-树形 DP，即在树上进行的 DP．由于树固有的递归性质，树形 DP 一般都是递归进行的．
+DP trên cây, tức là thực hiện DP trên cấu trúc cây. Do cây có tính chất đệ quy vốn có, DP trên cây thường được thực hiện bằng đệ quy.
 
-## 基础
+## Cơ bản
 
-以下面这道题为例，介绍一下树形 DP 的一般过程．
+Lấy ví dụ sau để giới thiệu quá trình DP trên cây thông thường.
 
-???+ note "例题 [洛谷 P1352 没有上司的舞会](https://www.luogu.com.cn/problem/P1352)"
-    某大学有 $n$ 个职员，编号为 $1 \sim N$．他们之间有从属关系，也就是说他们的关系就像一棵以校长为根的树，父结点就是子结点的直接上司．现在有个周年庆宴会，宴会每邀请来一个职员都会增加一定的快乐指数 $a_i$，但是呢，如果某个职员的直接上司来参加舞会了，那么这个职员就无论如何也不肯来参加舞会了．所以，请你编程计算，邀请哪些职员可以使快乐指数最大，求最大的快乐指数．
+???+ note "Bài mẫu [LuoGu P1352 Bữa tiệc không có sếp](https://www.luogu.com.cn/problem/P1352)"
+    Một trường đại học có $n$ nhân viên, được đánh số từ $1 \sim N$. Giữa họ có quan hệ cấp trên - cấp dưới, tức là quan hệ của họ giống như một cây với hiệu trưởng là gốc, nút cha là cấp trên trực tiếp của nút con. Hiện tại có một bữa tiệc kỷ niệm, mỗi khi mời một nhân viên sẽ tăng chỉ số hạnh phúc $a_i$, tuy nhiên, nếu cấp trên trực tiếp của một nhân viên đã tham dự, thì nhân viên đó nhất quyết không tham dự. Hãy lập trình tính toán, mời những nhân viên nào để tổng chỉ số hạnh phúc là lớn nhất, và cho biết chỉ số hạnh phúc lớn nhất đó.
 
-我们设 $f(i,0/1)$ 代表以 $i$ 为根的子树的最优解（第二维的值为 0 代表 $i$ 不参加舞会的情况，1 代表 $i$ 参加舞会的情况）．
+Ta đặt $f(i,0/1)$ là đáp án tối ưu của cây con gốc tại $i$ (giá trị thứ hai là 0 nghĩa là $i$ không tham dự, 1 nghĩa là $i$ tham dự).
 
-对于每个状态，都存在两种决策（其中下面的 $x$ 都是 $i$ 的儿子）：
+Với mỗi trạng thái, tồn tại hai quyết định (trong đó $x$ là con của $i$):
 
--   上司不参加舞会时，下属可以参加，也可以不参加，此时有 $f(i,0) = \sum\max \{f(x,1),f(x,0)\}$；
--   上司参加舞会时，下属都不会参加，此时有 $f(i,1) = \sum{f(x,0)} + a_i$．
+-   Nếu cấp trên không tham dự, cấp dưới có thể tham dự hoặc không, khi đó $f(i,0) = \sum\max \{f(x,1),f(x,0)\}$;
+-   Nếu cấp trên tham dự, cấp dưới đều không tham dự, khi đó $f(i,1) = \sum{f(x,0)} + a_i$.
 
-我们可以通过 DFS，在返回上一层时更新当前结点的最优解．
+Ta có thể dùng DFS, khi quay về cha thì cập nhật đáp án tối ưu của nút hiện tại.
 
 ```cpp
 --8<-- "docs/dp/code/tree/tree_1.cpp"
 ```
 
-通常，树形 DP 状态一般都为当前节点的最优解．先 DFS 遍历子树的所有最优解，然后向上传递给子树的父节点来转移，最终根节点的值即为所求的最优解．
+Thông thường, trạng thái DP trên cây là đáp án tối ưu tại nút hiện tại. Trước tiên DFS qua các cây con để lấy đáp án tối ưu, sau đó truyền lên cha để chuyển trạng thái, cuối cùng giá trị tại gốc là đáp án tối ưu cần tìm.
 
-### 习题
+### Bài tập
 
 -   [HDU 2196 Computer](https://acm.hdu.edu.cn/showproblem.php?pid=2196)
 
@@ -32,83 +32,79 @@ author: aaron20100919
 
 -   [\[POI2014\]FAR-FarmCraft](https://www.luogu.com.cn/problem/P3574)
 
-## 树上背包
+## Balo trên cây
 
-树上的背包问题，简单来说就是背包问题与树形 DP 的结合．
+Bài toán balo trên cây, nói đơn giản là sự kết hợp giữa bài toán balo và DP trên cây.
 
-???+ note "例题 [洛谷 P2014 CTSC1997 选课](https://www.luogu.com.cn/problem/P2014)"
-    现在有 $n$ 门课程，第 $i$ 门课程的学分为 $a_i$，每门课程有零门或一门先修课，有先修课的课程需要先学完其先修课，才能学习该课程．
+???+ note "Bài mẫu [LuoGu P2014 CTSC1997 Chọn môn học](https://www.luogu.com.cn/problem/P2014)"
+    Hiện có $n$ môn học, môn thứ $i$ có số tín chỉ là $a_i$, mỗi môn có thể có hoặc không có một môn tiên quyết, nếu có thì phải học xong môn tiên quyết mới được học môn đó.
     
-    一位学生要学习 $m$ 门课程，求其能获得的最多学分数．
+    Một học sinh cần học $m$ môn, hỏi tổng số tín chỉ lớn nhất có thể đạt được là bao nhiêu.
     
     $n,m \leq 300$
 
-每门课最多只有一门先修课的特点，与有根树中一个点最多只有一个父亲结点的特点类似．
+Đặc điểm mỗi môn chỉ có tối đa một môn tiên quyết, giống như trong cây có gốc, mỗi nút chỉ có một cha.
 
-因此可以想到根据这一性质建树，从而所有课程组成了一个森林的结构．为了方便起见，我们可以新增一门 $0$ 学分的课程（设这个课程的编号为 $0$），作为所有无先修课课程的先修课，这样我们就将森林变成了一棵以 $0$ 号课程为根的树．
+Do đó, có thể xây dựng cây dựa trên đặc điểm này, toàn bộ các môn tạo thành một rừng. Để thuận tiện, ta thêm một môn số $0$ có $0$ tín chỉ (đánh số là $0$), làm tiên quyết cho tất cả các môn không có tiên quyết, như vậy biến rừng thành một cây gốc $0$.
 
-我们设 $f(u,i,j)$ 表示以 $u$ 号点为根的子树中，已经遍历了 $u$ 号点的前 $i$ 棵子树，选了 $j$ 门课程的最大学分．
+Đặt $f(u,i,j)$ là đáp án tối ưu khi xét cây con gốc $u$, đã duyệt qua $i$ cây con đầu tiên của $u$, chọn $j$ môn.
 
-转移的过程结合了树形 DP 和 [背包 DP](./knapsack.md) 的特点，我们枚举 $u$ 点的每个子结点 $v$，同时枚举以 $v$ 为根的子树选了几门课程，将子树的结果合并到 $u$ 上．
+Quá trình chuyển trạng thái kết hợp DP trên cây và [DP balo](./knapsack.md), ta liệt kê từng con $v$ của $u$, đồng thời liệt kê số môn chọn trong cây con $v$, rồi gộp kết quả cây con vào $u$.
 
-记点 $x$ 的儿子个数为 $s_x$，以 $x$ 为根的子树大小为 $\textit{siz}_x$，可以写出下面的状态转移方程：
+Gọi số con của $x$ là $s_x$, kích thước cây con gốc $x$ là $\textit{siz}_x$, có thể viết phương trình chuyển trạng thái:
 
 $$
 f(u,i,j)=\max_{v,k \leq j,k \leq \textit{siz}_v} f(u,i-1,j-k)+f(v,s_v,k)
 $$
 
-注意上面状态转移方程中的几个限制条件，这些限制条件确保了一些无意义的状态不会被访问到．
+Lưu ý các điều kiện giới hạn trong phương trình trên, đảm bảo không truy cập các trạng thái vô nghĩa.
 
-$f$ 的第二维可以很轻松地用滚动数组的方式省略掉，注意这时需要倒序枚举 $j$ 的值．
+Chiều thứ hai của $f$ có thể dễ dàng loại bỏ bằng mảng cuộn, lưu ý khi đó cần liệt kê $j$ ngược lại.
 
-可以证明，该做法的时间复杂度为 $O(nm)$[^note1]．
+Có thể chứng minh độ phức tạp là $O(nm)$[^note1].
 
-??? note "参考代码"
+??? note "Mã tham khảo"
     ```cpp
     --8<-- "docs/dp/code/tree/tree_2.cpp"
     ```
 
-### 习题
+### Bài tập
 
--   [「CTSC1997」选课](https://www.luogu.com.cn/problem/P2014)
+-   [「CTSC1997」Chọn môn học](https://www.luogu.com.cn/problem/P2014)
 
--   [「JSOI2018」潜入行动](https://loj.ac/problem/2546)
+-   [「JSOI2018」Hành động thâm nhập](https://loj.ac/problem/2546)
 
--   [「SDOI2017」苹果树](https://loj.ac/problem/2268)
+-   [「SDOI2017」Cây táo](https://loj.ac/problem/2268)
 
 -   [「Codeforces Round 875 Div. 1」Problem D. Mex Tree](https://codeforces.com/contest/1830/problem/D)
 
-## 换根 DP
+## DP đổi gốc trên cây
 
-树形 DP 中的换根 DP 问题又被称为二次扫描，通常不会指定根结点，并且根结点的变化会对一些值，例如子结点深度和、点权和等产生影响．
+DP đổi gốc trên cây còn gọi là quét hai lần, thường không chỉ định gốc, và việc thay đổi gốc sẽ ảnh hưởng đến các giá trị như tổng độ sâu con, tổng trọng số, v.v.
 
-通常需要两次 DFS，第一次 DFS 预处理诸如深度，点权和之类的信息，在第二次 DFS 开始运行换根动态规划．
+Thường cần hai lần DFS, lần đầu để tiền xử lý các thông tin như độ sâu, tổng trọng số, lần hai để chạy DP đổi gốc.
 
-接下来以一些例题来带大家熟悉这个内容．
+Sau đây là một số ví dụ để làm quen với nội dung này.
 
-???+ note "例题 [\[POI2008\]STA-Station](https://www.luogu.com.cn/problem/P3478)"
-    给定一个 $n$ 个点的树，请求出一个结点，使得以这个结点为根时，所有结点的深度之和最大．
+???+ note "Bài mẫu [\[POI2008\]STA-Station](https://www.luogu.com.cn/problem/P3478)"
+    Cho một cây $n$ đỉnh, hãy tìm một nút làm gốc sao cho tổng độ sâu các nút là lớn nhất.
 
-不妨令 $u$ 为当前结点，$v$ 为当前结点的子结点．首先需要用 $s_i$ 来表示以 $i$ 为根的子树中的结点个数，并且有 $s_u=1+\sum s_v$．显然需要一次 DFS 来计算所有的 $s_i$，这次的 DFS 就是预处理，我们得到了以某个结点为根时其子树中的结点总数．
+Giả sử $u$ là nút hiện tại, $v$ là con của $u$. Đầu tiên cần dùng $s_i$ để biểu diễn số nút trong cây con gốc $i$, có $s_u=1+\sum s_v$. Rõ ràng cần một lần DFS để tính tất cả $s_i$, đây là bước tiền xử lý, ta có tổng số nút trong cây con gốc mỗi nút.
 
-考虑状态转移，这里就是体现＂换根＂的地方了．令 $f_u$ 为以 $u$ 为根时，所有结点的深度之和．
+Xét chuyển trạng thái, đây là lúc "đổi gốc". Gọi $f_u$ là tổng độ sâu các nút khi gốc là $u$.
 
-$f_v\leftarrow f_u$ 可以体现换根，即以 $u$ 为根转移到以 $v$ 为根．显然在换根的转移过程中，以 $v$ 为根或以 $u$ 为根会导致其子树中的结点的深度产生改变．具体表现为：
+Chuyển từ $f_u$ sang $f_v$ thể hiện đổi gốc, tức là chuyển từ gốc $u$ sang gốc $v$. Khi đổi gốc, các nút trong cây con $v$ giảm độ sâu đi 1, tổng độ sâu giảm $s_v$; các nút không thuộc cây con $v$ tăng độ sâu lên 1, tổng độ sâu tăng $n-s_v$.
 
--   所有在 $v$ 的子树上的结点深度都减少了一，那么总深度和就减少了 $s_v$；
+Từ đó có phương trình chuyển trạng thái $f_v = f_u - s_v + n - s_v=f_u + n - 2 \times s_v$.
 
--   所有不在 $v$ 的子树上的结点深度都增加了一，那么总深度和就增加了 $n-s_v$；
+Lần DFS thứ hai duyệt toàn bộ cây và chuyển trạng thái $f_v=f_u + n - 2 \times s_v$, như vậy có thể tính tổng độ sâu với mỗi nút làm gốc. Cuối cùng duyệt qua tất cả các tổng độ sâu để lấy đáp án.
 
-根据这两个条件就可以推出状态转移方程 $f_v = f_u - s_v + n - s_v=f_u + n - 2 \times s_v$．
-
-于是在第二次 DFS 遍历整棵树并状态转移 $f_v=f_u + n - 2 \times s_v$，那么就能求出以每个结点为根时的深度和了．最后只需要遍历一次所有根结点深度和就可以求出答案．
-
-??? note "参考代码"
+??? note "Mã tham khảo"
     ```cpp
     --8<-- "docs/dp/code/tree/tree_3.cpp"
     ```
 
-### 习题
+### Bài tập
 
 -   [Atcoder Educational DP Contest, Problem V, Subtree](https://atcoder.jp/contests/dp/tasks/dp_v)
 
@@ -120,6 +116,6 @@ $f_v\leftarrow f_u$ 可以体现换根，即以 $u$ 为根转移到以 $v$ 为�
 
 -   [CodeForce 708C Centroids](http://codeforces.com/problemset/problem/708/C)
 
-## 参考资料与注释
+## Tài liệu tham khảo & chú thích
 
-[^note1]: [子树合并背包类型的 dp 的复杂度证明 - LYD729 的 CSDN 博客](https://blog.csdn.net/lyd_7_29/article/details/79854245)
+[^note1]: [Chứng minh độ phức tạp DP balo hợp nhất cây con - Blog CSDN của LYD729](https://blog.csdn.net/lyd_7_29/article/details/79854245)

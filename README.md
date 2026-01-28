@@ -14,7 +14,7 @@ In order to help friends who love competitive programming get started more easil
 
 Currently, we are working on translating and improving the content. There might be imperfections. The **K23OJ - OI Wiki** team and contributing friends are actively improving this content.
 
-Regarding original content improvements, please refer to **OI Wiki**'s [Issues](https://github.com/OI-wiki/OI-wiki/issues). For translation issues, please open an issue in this repository.
+Regarding original content improvements, please refer to **OI Wiki**'s [Issues](https://github.com/OI-wiki/OI-wiki/issues). For translation issues, please open an issue in [this repository](https://github.com/huythedev/K23OJ-OI-wiki/issues).
 
 At the same time, **OI Wiki** (and this translation) originates from the community, advocates for **Freedom of Knowledge**, will never be commercialized in the future, and will always maintain its independent and free nature.
 

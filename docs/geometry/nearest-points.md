@@ -1,14 +1,14 @@
-## 引入
+## Dẫn nhập
 
-给定 $n$ 个二维平面上的点，求一组欧几里得距离最近的点对．
+Cho $n$ điểm trên mặt phẳng hai chiều, hãy tìm một cặp điểm có khoảng cách Euclid nhỏ nhất.
 
-下面我们介绍一种时间复杂度为 $O(n\log n)$ 的分治算法来解决这个问题．该算法在 1975 年由 [Franco P. Preparata](https://en.wikipedia.org/wiki/Franco_P._Preparata) 提出，Preparata 和 [Michael Ian Shamos](https://en.wikipedia.org/wiki/Michael_Ian_Shamos) 证明了该算法在决策树模型下是最优的．
+Dưới đây, chúng ta sẽ giới thiệu một thuật toán chia để trị có độ phức tạp $O(n\log n)$ để giải quyết bài toán này. Thuật toán này được đề xuất năm 1975 bởi [Franco P. Preparata](https://en.wikipedia.org/wiki/Franco_P._Preparata), và Preparata cùng [Michael Ian Shamos](https://en.wikipedia.org/wiki/Michael_Ian_Shamos) đã chứng minh rằng đây là thuật toán tối ưu trong mô hình cây quyết định.
 
-## 过程
+## Quy trình
 
-与常规的分治算法一样，我们将这个有 $n$ 个点的集合拆分成两个大小相同的集合 $S_1, S_2$，并不断递归下去．但是我们遇到了一个难题：如何合并？即如何求出一个点在 $S_1$ 中，另一个点在 $S_2$ 中的最近点对？这里我们先假设合并操作的时间复杂度为 $O(n)$，可知算法总复杂度为 $T(n) = 2T(\frac{n}{2}) + O(n) = O(n\log n)$．
+Tương tự các thuật toán chia để trị thông thường, ta chia tập $n$ điểm thành hai tập con $S_1, S_2$ có kích thước xấp xỉ nhau, và đệ quy tiếp tục. Tuy nhiên, vấn đề là: Làm sao để hợp lời giải? Tức là làm sao tìm được một cặp điểm gần nhất mà mỗi điểm thuộc một tập khác nhau? Ở đây, giả sử thao tác hợp có độ phức tạp $O(n)$, thì tổng độ phức tạp là $T(n) = 2T(\frac{n}{2}) + O(n) = O(n\log n)$.
 
-我们先将所有点按照 $x_i$ 为第一关键字、$y_i$ 为第二关键字排序，并以点 $p_m (m = \lfloor \frac{n}{2} \rfloor)$ 为分界点，拆分点集为 $A_1,A_2$：
+Đầu tiên, ta sắp xếp tất cả các điểm theo $x_i$ (ưu tiên 1), $y_i$ (ưu tiên 2), và chọn điểm $p_m$ ($m = \lfloor \frac{n}{2} \rfloor$) làm điểm chia, tách tập thành $A_1, A_2$:
 
 $$
 \begin{aligned}
@@ -17,102 +17,100 @@ A_2 &= \{p_i \ \big | \ i = m + 1 \ldots n-1 \}
 \end{aligned}
 $$
 
-并递归下去，求出两点集各自内部的最近点对，设距离为 $h_1,h_2$，取较小值设为 $h$．
+Tiếp tục đệ quy, tìm cặp điểm gần nhất trong từng tập con, gọi khoảng cách là $h_1, h_2$, lấy $h = \min(h_1, h_2)$.
 
-现在该合并了！我们试图找到这样的一组点对，其中一个属于 $A_1$，另一个属于 $A_2$，且二者距离小于 $h$．因此我们将所有横坐标与 $x_m$ 的差小于 $h$ 的点放入集合 $B$：
+Bây giờ đến bước hợp! Ta cần tìm một cặp điểm, mỗi điểm thuộc một tập khác nhau, sao cho khoảng cách nhỏ hơn $h$. Do đó, ta gom tất cả các điểm có hoành độ cách $x_m$ nhỏ hơn $h$ vào tập $B$:
 
 $$
 B = \{ p_i \ \big | \ \lvert x_i - x_m \rvert < h \}
 $$
 
-结合图像，直线 $m$ 将点分成了两部分．$m$ 左侧为 $A_1$ 点集，右侧为为 $A_2$ 点集．
+Trên hình, đường thẳng $m$ chia các điểm thành hai phần. Bên trái là $A_1$, bên phải là $A_2$.
 
-再根据 $B = \{ p_i \ \big | \ \lvert x_i - x_m \rvert < h \}$ 规则，得到绿色点组成的 $B$ 点集．![nearest-points1](./images/nearest-points1.png)
+Theo quy tắc $B = \{ p_i \ \big | \ \lvert x_i - x_m \rvert < h \}$, ta được tập $B$ gồm các điểm màu xanh lá. ![nearest-points1](./images/nearest-points1.png)
 
-对于 $B$ 中的每个点 $p_i$，我们当前目标是找到一个同样在 $B$ 中、且到其距离小于 $h$ 的点．为了避免两个点之间互相考虑，我们只考虑那些纵坐标小于 $y_i$ 的点．显然对于一个合法的点 $p_j$，$y_i - y_j$ 必须小于 $h$．于是我们获得了一个集合 $C(p_i)$：
+Với mỗi điểm $p_i$ trong $B$, mục tiêu là tìm một điểm khác trong $B$ có khoảng cách nhỏ hơn $h$. Để tránh xét trùng, chỉ xét các điểm có tung độ nhỏ hơn $y_i$. Rõ ràng, với một điểm hợp lệ $p_j$, $y_i - y_j < h$. Ta định nghĩa tập $C(p_i)$:
 
 $$
 C(p_i) = \{ p_j\ \big |\ p_j \in B,\ y_i - h < y_j \le y_i \}
 $$
 
-在点集 $B$ 中选一点 $p_i$，根据 $C(p_i) = \{ p_j\ \big |\ p_j \in B,\ y_i - h < y_j \le y_i \}$ 的规则，得到了由红色方框内的黄色点组成的 $C$ 点集．
+Chọn một điểm $p_i$ trong $B$, theo quy tắc $C(p_i) = \{ p_j\ \big |\ p_j \in B,\ y_i - h < y_j \le y_i \}$, ta được tập $C$ gồm các điểm màu vàng trong khung đỏ.
 
 ![nearest-points2](./images/nearest-points2.png)
 
-如果我们将 $B$ 中的点按照 $y_i$ 排序，$C(p_i)$ 将很容易得到，即紧邻 $p_i$ 的连续几个点．
+Nếu sắp xếp $B$ theo $y_i$, thì $C(p_i)$ chỉ là một đoạn liên tiếp các điểm gần $p_i$.
 
-由此我们得到了合并的步骤：
+Tóm lại, các bước hợp là:
 
-1.  构建集合 $B$．
-2.  将 $B$ 中的点按照 $y_i$ 排序．通常做法是 $O(n\log n)$，但是我们可以改变策略优化到 $O(n)$（下文讲解）．
-3.  对于每个 $p_i \in B$ 考虑 $p_j \in C(p_i)$，对于每对 $(p_i,p_j)$ 计算距离并更新答案（当前所处集合的最近点对）．
+1.  Xây dựng tập $B$.
+2.  Sắp xếp $B$ theo $y_i$. Thông thường là $O(n\log n)$, nhưng có thể tối ưu xuống $O(n)$ (giải thích bên dưới).
+3.  Với mỗi $p_i \in B$, xét các $p_j \in C(p_i)$, tính khoảng cách và cập nhật đáp án.
 
-注意到我们上文提到了两次排序，因为点坐标全程不变，第一次排序可以只在分治开始前进行一次．我们令每次递归返回当前点集按 $y_i$ 排序的结果，对于第二次排序，上层直接使用下层的两个分别排序过的点集归并即可．
+Lưu ý, việc sắp xếp hai lần ở trên có thể tối ưu: vì tọa độ các điểm không đổi, lần sắp xếp đầu chỉ cần làm một lần trước khi chia để trị. Mỗi lần đệ quy trả về tập điểm đã sắp xếp theo $y_i$, khi hợp chỉ cần trộn hai tập con đã sắp xếp.
 
-似乎这个算法仍然不优，$|C(p_i)|$ 将处于 $O(n)$ 数量级，导致总复杂度不对．其实不然，其最大大小为 $7$，我们给出它的证明：
+Có vẻ như thuật toán vẫn chưa tối ưu, vì $|C(p_i)|$ có thể là $O(n)$, làm tăng độ phức tạp. Thực ra, $|C(p_i)|$ tối đa chỉ là $7$, chứng minh như sau:
 
-## 复杂度证明
+## Chứng minh độ phức tạp
 
-我们已经了解到，$C(p_i)$ 中的所有点的纵坐标都在 $(y_i-h,y_i]$ 范围内；且 $C(p_i)$ 中的所有点，和 $p_i$ 本身，横坐标都在 $(x_m-h,x_m+h)$ 范围内．这构成了一个 $2h \times h$ 的矩形．
+Ta biết rằng, tất cả các điểm trong $C(p_i)$ có tung độ thuộc $(y_i-h, y_i]$; và cùng với $p_i$, hoành độ thuộc $(x_m-h, x_m+h)$. Như vậy, chúng nằm trong một hình chữ nhật $2h \times h$.
 
-我们再将这个矩形拆分为两个 $h \times h$ 的正方形，不考虑 $p_i$，其中一个正方形中的点为 $C(p_i) \cap A_1$，另一个为 $C(p_i) \cap A_2$，且两个正方形内的任意两点间距离大于 $h$．（因为它们来自同一下层递归）
+Chia hình chữ nhật này thành hai hình vuông $h \times h$, bỏ qua $p_i$, mỗi hình vuông chứa các điểm thuộc $C(p_i) \cap A_1$ và $C(p_i) \cap A_2$, và trong mỗi hình vuông, mọi cặp điểm đều cách nhau hơn $h$ (vì chúng thuộc cùng một nhánh đệ quy).
 
-我们将一个 $h \times h$ 的正方形拆分为四个 $\frac{h}{2} \times \frac{h}{2}$ 的小正方形．可以发现，每个小正方形中最多有 $1$ 个点：因为该小正方形中任意两点最大距离是对角线的长度，即 $\frac{h}{\sqrt 2}$，该数小于 $h$．
+Chia tiếp mỗi hình vuông $h \times h$ thành bốn hình vuông nhỏ $\frac{h}{2} \times \frac{h}{2}$. Mỗi hình vuông nhỏ chỉ chứa tối đa $1$ điểm: vì đường chéo của nó là $\frac{h}{\sqrt 2}$, nhỏ hơn $h$.
 
 ![nearest-points3](./images/nearest-points3.png)
 
-由此，每个正方形中最多有 $4$ 个点，矩形中最多有 $8$ 个点，去掉 $p_i$ 本身，$\max(C(p_i))=7$．
+Vậy, mỗi hình vuông lớn chứa tối đa $4$ điểm, cả hình chữ nhật tối đa $8$ điểm, trừ $p_i$ ra thì $\max(C(p_i))=7$.
 
-???+ example "参考实现"
+???+ example "Mã mẫu tham khảo"
     ```cpp
     --8<-- "docs/geometry/code/nearest-points/nearest-points_1.cpp"
     ```
 
-## 推广：平面最小周长三角形
+## Mở rộng: Tam giác có chu vi nhỏ nhất trên mặt phẳng
 
-上述算法有趣地推广到这个问题：在给定的一组点中，选择三个点，使得它们两两的距离之和最小．
+Thuật toán trên có thể mở rộng cho bài toán: Chọn ba điểm trong tập, sao cho tổng khoảng cách giữa các cặp là nhỏ nhất.
 
-算法大体保持不变，每次尝试找到一个比当前答案周长 $d$ 更小的三角形，将所有横坐标与 $x_m$ 的差小于 $\frac{d}{2}$ 的点放入集合 $B$，尝试更新答案．（周长为 $d$ 的三角形的最长边小于 $\frac{d}{2}$）
+Thuật toán về cơ bản không đổi, mỗi lần thử tìm một tam giác có chu vi nhỏ hơn $d$ hiện tại, đưa các điểm có hoành độ cách $x_m$ nhỏ hơn $\frac{d}{2}$ vào tập $B$, rồi thử cập nhật đáp án. (Vì cạnh lớn nhất của tam giác chu vi $d$ nhỏ hơn $\frac{d}{2}$)
 
-## 非分治算法
+## Thuật toán không chia để trị
 
-其实，除了上面提到的分治算法，还有另一种时间复杂度同样是 $O(n \log n)$ 的非分治算法．
+Ngoài thuật toán chia để trị ở trên, còn có một thuật toán khác cũng có độ phức tạp $O(n \log n)$ mà không dùng chia để trị.
 
-我们可以考虑一种常见的统计序列的思想：对于每一个元素，将它和它的左边所有元素的贡献加入到答案中．平面最近点对问题同样可以使用这种思想．
+Ý tưởng là: với mỗi điểm, cộng dồn đóng góp của nó với tất cả các điểm bên trái.
 
-具体地，我们把所有点按照 $x_i$ 为第一关键字、$y_i$ 为第二关键字排序，并建立一个以 $y_i$ 为关键字的 multiset．对于每一个位置 $i$，我们执行以下操作：
+Cụ thể, sắp xếp các điểm theo $x_i$ (ưu tiên 1), $y_i$ (ưu tiên 2), và duy trì một multiset theo $y_i$. Với mỗi vị trí $i$, thực hiện:
 
-1.  将所有满足 $x_i - x_j \ge d$ 的点从集合中删除．它们不会再对答案有贡献．
-2.  对于集合内满足 $\lvert y_i - y_j \rvert < d$ 的所有点，统计它们和 $p_i$ 的距离．
-3.  将 $p_i$ 插入到集合中．
+1.  Xóa khỏi multiset các điểm có $x_i - x_j \ge d$ (không còn đóng góp cho đáp án).
+2.  Với các điểm còn lại có $|y_i - y_j| < d$, tính khoảng cách với $p_i$.
+3.  Thêm $p_i$ vào multiset.
 
-由于每个点最多会被插入和删除一次，所以插入和删除点的时间复杂度为 $O(n \log n)$，而统计答案部分的时间复杂度证明与分治算法的时间复杂度证明方法类似，读者不妨一试．
+Mỗi điểm chỉ bị thêm/xóa một lần nên tổng thời gian là $O(n \log n)$. Phần thống kê đáp án cũng có thể chứng minh tương tự như thuật toán chia để trị.
 
-??? example "参考实现"
+??? example "Mã mẫu tham khảo"
     ```cpp
     --8<-- "docs/geometry/code/nearest-points/nearest-points_2.cpp"
     ```
 
-## 期望线性做法
+## Thuật toán kỳ vọng tuyến tính
 
-其实，除了上面提到的时间复杂度为 $O(n \log n)$ 的做法，还有一种 **期望** 复杂度为 $O(n)$ 的算法．
+Ngoài các thuật toán $O(n \log n)$ ở trên, còn có một thuật toán **kỳ vọng** $O(n)$.
 
-首先将点对 [随机打乱](../misc/random.md#shuffle)，我们将维护前缀点集的答案．考虑从前 $i - 1$ 个点求出第 $i$ 个点的答案．
+Trước tiên, trộn ngẫu nhiên các điểm ([shuffle](../misc/random.md#shuffle)), duy trì đáp án cho tập tiền tố. Khi thêm điểm thứ $i$, giả sử khoảng cách gần nhất hiện tại là $s$, chia mặt phẳng thành các ô lưới cạnh $s$, lưu các điểm trong từng ô (dùng [bảng băm](../ds/hash.md)), rồi kiểm tra các điểm trong 9 ô lân cận điểm thứ $i$ để cập nhật đáp án. Số điểm cần kiểm tra là $O(1)$, vì mỗi ô không chứa quá $4$ điểm (do khoảng cách gần nhất là $s$).
 
-记前 $i - 1$ 个点的最近点对距离为 $s$，我们将平面以 $s$ 为边长划分为若干个网格，并存下每个网格内的点（使用 [哈希表](../ds/hash.md)），然后检查第 $i$ 个点所在网格的周围九个网格中的所有点，并更新答案．注意到需检查的点的个数是 $O(1)$ 的，因为前 $i - 1$ 个点的最近点对距离为 $s$，从而每个网格不超过 $4$ 个点．
+Nếu đáp án được cập nhật, ta xây lại lưới; nếu không thì không cần. Xác suất điểm thứ $i$ thuộc cặp gần nhất là $O\left(\frac{1}{i}\right)$, chi phí xây lại lưới là $O(i)$, nên chi phí kỳ vọng cho mỗi điểm là $O(1)$. Tổng cộng với $n$ điểm, thuật toán có kỳ vọng $O(n)$.
 
-如果这一过程中，答案被更新，我们就重构网格图，否则不重构．在前 $i$ 个点中，最近点对包含 $i$ 的概率为 $O\left(\frac{1}{i}\right)$，而重构网格的代价为 $O(i)$，从而第 $i$ 个点的期望代价为 $O(1)$．于是对于 $n$ 个点，该算法期望为 $O(n)$．
+## Bài tập
 
-## 习题
+-   [UVa 10245 "The Closest Pair Problem"\[Dễ\]](https://uva.onlinejudge.org/index.php?option=onlinejudge&page=show_problem&problem=1186)
+-   [SPOJ #8725 CLOPPAIR "Closest Point Pair"\[Dễ\]](https://www.spoj.com/problems/CLOPPAIR/)
+-   [CODEFORCES Team Olympiad Saratov - 2011 "Minimum amount"\[Trung bình\]](http://codeforces.com/contest/120/problem/J)
+-   [SPOJ #7029 CLOSEST "Closest Triple"\[Trung bình\]](https://www.spoj.com/problems/CLOSEST/)
+-   [Google Code Jam 2009 Final "Min Perimeter"\[Trung bình\]](https://github.com/google/coding-competitions-archive/blob/main/codejam/2009/world_finals/min_perimeter/statement.pdf)
 
--   [UVa 10245 "The Closest Pair Problem"\[难度：低\]](https://uva.onlinejudge.org/index.php?option=onlinejudge&page=show_problem&problem=1186)
--   [SPOJ #8725 CLOPPAIR "Closest Point Pair"\[难度：低\]](https://www.spoj.com/problems/CLOPPAIR/)
--   [CODEFORCES Team Olympiad Saratov - 2011 "Minimum amount"\[难度：中\]](http://codeforces.com/contest/120/problem/J)
--   [SPOJ #7029 CLOSEST "Closest Triple"\[难度：中\]](https://www.spoj.com/problems/CLOSEST/)
--   [Google Code Jam 2009 Final "Min Perimeter"\[难度：中\]](https://github.com/google/coding-competitions-archive/blob/main/codejam/2009/world_finals/min_perimeter/statement.pdf)
+## Tài liệu tham khảo & Đọc thêm
 
-## 参考资料与拓展阅读
+**Phần thuật toán chia để trị trong trang này chủ yếu dịch từ bài [Нахождение пары ближайших точек](http://e-maxx.ru/algo/nearest_points) và bản tiếng Anh [Finding the nearest pair of points](https://github.com/e-maxx-eng/e-maxx-eng/blob/master/src/geometry/nearest_points.md). Bản tiếng Nga: Public Domain + Leave a Link; bản tiếng Anh: CC-BY-SA 4.0.**
 
-**本页面中的分治算法部分主要译自博文 [Нахождение пары ближайших точек](http://e-maxx.ru/algo/nearest_points) 与其英文翻译版 [Finding the nearest pair of points](https://github.com/e-maxx-eng/e-maxx-eng/blob/master/src/geometry/nearest_points.md)．其中俄文版版权协议为 Public Domain + Leave a Link；英文版版权协议为 CC-BY-SA 4.0．**
-
-[知乎专栏：计算几何 - 最近点对问题](https://zhuanlan.zhihu.com/p/74905629)
+[Chuyên mục Zhihu: Tính toán hình học - Bài toán cặp điểm gần nhất](https://zhuanlan.zhihu.com/p/74905629)

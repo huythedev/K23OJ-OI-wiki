@@ -1,42 +1,42 @@
 author: hyp1231, 383494
 
-## 引入
+## Dẫn nhập
 
-反演变换适用于题目中存在多个圆/直线之间的相切关系的情况．利用反演变换的性质，在反演空间求解问题，可以大幅简化计算．
+Phép nghịch đảo (phép phản hình tròn) rất hữu ích trong các bài toán có nhiều quan hệ tiếp xúc giữa các đường tròn/đường thẳng. Bằng cách sử dụng các tính chất của phép nghịch đảo, ta có thể chuyển bài toán sang không gian nghịch đảo để giải quyết, giúp đơn giản hóa đáng kể các phép tính.
 
-## 定义
+## Định nghĩa
 
-给定反演中心点 $O$ 和反演半径 $R$．若平面上点 $P$ 和 $P'$ 满足：
+Cho tâm nghịch đảo $O$ và bán kính nghịch đảo $R$. Với điểm $P$ trên mặt phẳng, điểm $P'$ được gọi là ảnh nghịch đảo của $P$ nếu:
 
--   点 $P'$ 在射线 $\overrightarrow{OP}$ 上
+-   $P'$ nằm trên tia $\overrightarrow{OP}$
 -   $|OP| \cdot |OP'| = R^2$
 
-则称点 $P$ 和点 $P'$ 互为反演点．
+Khi đó, $P$ và $P'$ gọi là hai điểm nghịch đảo của nhau.
 
-## 解释
+## Giải thích
 
-下图所示即为平面上一点 $P$ 的反演：
+Hình dưới minh họa ảnh nghịch đảo của một điểm $P$ trên mặt phẳng:
 
 ![Inv1](./images/inverse1.png)
 
-## 性质
+## Tính chất
 
-1.  圆 $O$ 外的点的反演点在圆 $O$ 内，反之亦然；圆 $O$ 上的点的反演点为其自身．
+1.  Ảnh nghịch đảo của điểm nằm ngoài đường tròn $O$ sẽ nằm trong đường tròn $O$ và ngược lại; điểm nằm trên đường tròn $O$ là điểm bất biến (ảnh nghịch đảo là chính nó).
 
-2.  不过点 $O$ 的圆 $A$，其反演图形也是不过点 $O$ 的圆．
+2.  Đường tròn $A$ không đi qua $O$, ảnh nghịch đảo của nó cũng là một đường tròn không đi qua $O$.
 
     ![Inv2](./images/inverse2.png)
 
-    -   记圆 $A$ 半径为 $r_1$，其反演图形圆 $B$ 半径为 $r_2$，则有：
+    -   Gọi bán kính đường tròn $A$ là $r_1$, bán kính ảnh nghịch đảo $B$ là $r_2$, ta có:
 
         $$
         r_2 = \frac{1}{2}\left(\frac{1}{|OA| - r_1} - \frac{1}{|OA| + r_1}\right) R^2
         $$
 
-    ???+ note "证明"
+    ???+ note "Chứng minh"
         ![Inv3](./images/inverse3.png)
         
-        根据反演变换定义：
+        Theo định nghĩa phép nghịch đảo:
         
         $$
         \begin{aligned}
@@ -45,9 +45,9 @@ author: hyp1231, 383494
         \end{aligned}
         $$
         
-        消掉 $|OB|$，解方程即可．
+        Khử $|OB|$, giải hệ phương trình là ra.
 
-    -   记点 $O$ 坐标为 $(x_0, y_0)$，点 $A$ 坐标为 $x_1, y_1$，点 $B$ 坐标为 $x_2, y_2$，则有：
+    -   Gọi tọa độ $O$ là $(x_0, y_0)$, $A$ là $(x_1, y_1)$, $B$ là $(x_2, y_2)$, ta có:
 
         $$
         \begin{aligned}
@@ -56,33 +56,33 @@ author: hyp1231, 383494
         \end{aligned}
         $$
 
-        其中 $|OB|$ 可在上述求 $r_2$ 的过程中计算得到．
+        Trong đó $|OB|$ được tính trong quá trình tìm $r_2$ ở trên.
 
-3.  过点 $O$ 的圆 $A$，其反演图形是不过点 $O$ 的直线．因为圆 $A$ 上无限接近点 $O$ 的一点，其反演点离点 $O$ 无限远．
+3.  Đường tròn $A$ đi qua $O$, ảnh nghịch đảo của nó là một đường thẳng không đi qua $O$. Vì điểm trên $A$ càng gần $O$ thì ảnh nghịch đảo càng xa $O$ vô hạn.
 
     ![Inv4](./images/inverse4.png)
 
-4.  两个图形相切且存在不为点 $O$ 的切点，则他们的反演图形也相切．
+4.  Nếu hai hình tiếp xúc tại một điểm khác $O$, thì ảnh nghịch đảo của chúng cũng tiếp xúc.
 
-## 例题
+## Bài tập ví dụ
 
-### [「ICPC 2013 杭州赛区」Problem of Apollonius](https://acm.hdu.edu.cn/showproblem.php?pid=4773)
+### [「ICPC 2013 Hàng Châu」Problem of Apollonius](https://acm.hdu.edu.cn/showproblem.php?pid=4773)
 
-#### 题目大意
+#### Đề bài tóm tắt
 
-求过两圆外一点，且与两圆相切的所有的圆．
+Tìm tất cả các đường tròn đi qua một điểm ngoài hai đường tròn cho trước và tiếp xúc với cả hai đường tròn đó.
 
-#### 解法
+#### Hướng giải
 
-首先考虑解析几何解法，似乎很难求解．
+Nếu giải bằng hình học giải tích thì khá phức tạp.
 
-考虑以需要经过的点为反演中心进行反演（反演半径任意），所求的圆的反演图形是一条直线（应用性质 $3$），且与题目给出两圆的反演图形（性质 $2$）相切（性质 $4$）．
+Hãy lấy điểm cần đi qua làm tâm nghịch đảo (bán kính tùy ý). Khi đó, ảnh nghịch đảo của đường tròn cần tìm là một đường thẳng (theo tính chất 3), và ảnh nghịch đảo của hai đường tròn cho trước (theo tính chất 2) cũng là hai đường tròn. Theo tính chất 4, các tiếp xúc được bảo toàn.
 
-于是题目经过反演变换后转变为：求两圆的所有公切线．
+Vậy bài toán chuyển thành: Tìm tất cả các tiếp tuyến chung của hai đường tròn.
 
-求出公切线后，反演回原平面即可．
+Sau khi tìm được các tiếp tuyến chung, thực hiện phép nghịch đảo ngược để thu được các đường tròn cần tìm trên mặt phẳng gốc.
 
-??? note "示例代码"
+??? note "Mã mẫu tham khảo"
     ```cpp
     #include <algorithm>
     #include <cmath>
@@ -253,14 +253,14 @@ author: hyp1231, 383494
     }
     ```
 
-## 练习
+## Bài tập luyện tập
 
-[「ICPC 2017 南宁赛区网络赛」Finding the Radius for an Inserted Circle](https://vjudge.net/problem/%E8%AE%A1%E8%92%9C%E5%AE%A2-A1283)
+[「ICPC 2017 Nam Ninh Online」Finding the Radius for an Inserted Circle](https://vjudge.net/problem/%E8%AE%A1%E8%92%9C%E5%AE%A2-A1283)
 
-[「CCPC 2017 网络赛」The Designer](https://acm.hdu.edu.cn/showproblem.php?pid=6158)
+[「CCPC 2017 Online」The Designer](https://acm.hdu.edu.cn/showproblem.php?pid=6158)
 
-## 参考资料与拓展阅读
+## Tài liệu tham khảo & Đọc thêm
 
 -   [Inversive geometry - Wikipedia](https://en.wikipedia.org/wiki/Inversive_geometry)
 
--   [圆的反演变换 - ACdreamers 的博客](https://blog.csdn.net/acdreamers/article/details/16966369)
+-   [Phép nghịch đảo đường tròn - Blog ACdreamers](https://blog.csdn.net/acdreamers/article/details/16966369)

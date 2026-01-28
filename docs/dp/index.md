@@ -1,11 +1,11 @@
-本章将介绍介绍动态规划（Dynamic Programming, DP）及其解决的问题、根据其设计的算法及优化．
+Chương này sẽ giới thiệu về Quy hoạch động (Dynamic Programming, DP) cùng các bài toán mà nó giải quyết, các thuật toán được thiết kế dựa trên nó và các kỹ thuật tối ưu hóa liên quan.
 
-动态规划是一种通过把原问题分解为相对简单的子问题的方式求解复杂问题的方法．
+Quy hoạch động là một phương pháp giải quyết các bài toán phức tạp bằng cách chia bài toán gốc thành các bài toán con tương đối đơn giản hơn.
 
-由于动态规划并不是某种具体的算法，而是一种解决特定问题的方法，因此它会出现在各式各样的数据结构中，与之相关的题目种类也更为繁杂．
+Vì quy hoạch động không phải là một thuật toán cụ thể nào đó mà là một phương pháp để giải quyết các loại bài toán đặc thù, nên nó xuất hiện trong rất nhiều loại cấu trúc dữ liệu khác nhau, và các dạng bài tập liên quan cũng vô cùng đa dạng.
 
-在 OI 中，计数等非最优化问题的递推解法也常被不规范地称作 DP，因此本章将它们一并列出．事实上，动态规划与其它类型的递推的确有很多相似之处，学习时可以注意它们之间的异同．
+Trong OI (Tin học trẻ/Olympic Tin học), các phương pháp giải bằng đệ quy/truy hồi cho các bài toán không phải tối ưu hóa (như bài toán đếm) cũng thường được gọi là DP một cách không chính thống. Do đó, chương này sẽ liệt kê cả những nội dung đó. Trên thực tế, quy hoạch động và các loại công thức truy hồi khác thực sự có nhiều điểm tương đồng, khi học bạn có thể chú ý đến sự giống và khác nhau giữa chúng.
 
-## 参考资料
+## Tài liệu tham khảo
 
-[动态规划 - 维基百科，自由的百科全书](https://zh.wikipedia.org/wiki/动态规划)
+[Quy hoạch động - Wikipedia, bách khoa toàn thư mở](https://vi.wikipedia.org/wiki/Quy_hoạch_động)

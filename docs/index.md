@@ -2,17 +2,17 @@ disqus:
 pagetime:
 title: OI Wiki
 
-## 欢迎来到 **OI Wiki**！[![GitHub watchers](https://img.shields.io/github/watchers/OI-wiki/OI-wiki.svg?style=social&label=Watch)](https://github.com/OI-wiki/OI-wiki)  [![GitHub stars](https://img.shields.io/github/stars/OI-wiki/OI-wiki.svg?style=social&label=Stars)](https://github.com/OI-wiki/OI-wiki)
+## Chào mừng đến với **OI Wiki**！[![GitHub watchers](https://img.shields.io/github/watchers/huythedev/K23OJ-OI-wiki.svg?style=social&label=Watch)](https://github.com/huythedev/K23OJ-OI-wiki)  [![GitHub stars](https://img.shields.io/github/stars/huythedev/K23OJ-OI-wiki.svg?style=social&label=Stars)](https://github.com/huythedev/K23OJ-OI-wiki)
 
-[![Word Art](images/wordArt.webp)](https://github.com/OI-wiki/OI-wiki)
+[![Word Art](images/wordArt.webp)](https://github.com/huythedev/K23OJ-OI-wiki)
 
-**OI**（Olympiad in Informatics，信息学奥林匹克竞赛）在中国起源于 1984 年，是五大高中学科竞赛之一．
+**OI** (Olympiad in Informatics, Olympic Tin học) khởi nguồn tại Trung Quốc từ năm 1984, là một trong năm kỳ thi học sinh giỏi môn văn hóa cấp trung học phổ thông.
 
-**ICPC**（International Collegiate Programming Contest，国际大学生程序设计竞赛）由 ICPC 基金会（ICPC Foundation）举办，是最具影响力的大学生计算机竞赛．由于以前 ACM 赞助这个竞赛，也有很多人习惯叫它 ACM 竞赛．
+**ICPC** (International Collegiate Programming Contest, Kỳ thi Lập trình Sinh viên Quốc tế) được tổ chức bởi ICPC Foundation, là kỳ thi lập trình dành cho sinh viên đại học có ảnh hưởng lớn nhất. Do trước đây được ACM tài trợ, nhiều người vẫn quen gọi là kỳ thi ACM.
 
-**OI Wiki** 致力于成为一个免费开放且持续更新的 **编程竞赛（competitive programming）** 知识整合站点，大家可以在这里获取与竞赛相关的、有趣又实用的知识．我们为大家准备了竞赛中的基础知识、常见题型、解题思路以及常用工具等内容，帮助大家更快速深入地学习编程竞赛中涉及到的知识．
+**OI Wiki** nỗ lực trở thành một kho tri thức trọn vẹn về **Lập trình thi đấu (competitive programming)** miễn phí, mở và được cập nhật liên tục. Tại đây, mọi người có thể tiếp cận những kiến thức thú vị và hữu ích liên quan đến các kỳ thi. Chúng tôi cung cấp các nội dung từ kiến thức cơ bản, các dạng bài thường gặp, tư duy giải thuật đến các công cụ hữu dụng, giúp bạn đọc nắm bắt kiến thức lập trình thi đấu một cách nhanh chóng và sâu sắc hơn.
 
-本项目受 [CTF Wiki](https://ctf-wiki.org/) 的启发，在编写过程中参考了诸多资料，在此一并致谢．
+Dự án này được lấy cảm hứng từ [CTF Wiki](https://ctf-wiki.org/), trong quá trình biên soạn đã tham khảo nhiều tài liệu, xin gửi lời cảm ơn chân thành đến các tác giả.
 
 <div align="center">
 <a href="https://www.netlify.com/" target="_blank" style="margin-left: 60px;"><img style="height: 40px; " src="images/netlify.png"></a>

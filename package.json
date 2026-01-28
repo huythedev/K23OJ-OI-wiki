@@ -16,7 +16,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/OI-wiki/OI-wiki.git"
+    "url": "git+https://github.com/huythedev/K23OJ-OI-wiki.git"
   },
   "keywords": [
     "OI",
@@ -26,9 +26,9 @@
   "author": "OI Wiki Team",
   "license": "UNLICENSED",
   "bugs": {
-    "url": "https://github.com/OI-wiki/OI-wiki/issues"
+    "url": "https://github.com/huythedev/K23OJ-OI-wiki/issues"
   },
-  "homepage": "https://github.com/OI-wiki/OI-wiki#readme",
+  "homepage": "https://github.com/huythedev/K23OJ-OI-wiki#readme",
   "dependencies": {
     "@mathjax/src": "^4.0.0",
     "@swc/core": "^1.2.210",

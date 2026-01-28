@@ -1,135 +1,139 @@
-## 引入
+## Dẫn nhập
 
-扫描线一般运用在图形上面，它和它的字面意思十分相似，就是一条线在整个图上扫来扫去，它一般被用来解决图形面积，周长，以及二维数点等问题．
+Thuật toán quét (scanning line, hay còn gọi là "quét đường thẳng" hoặc "scanline") thường được sử dụng trong các bài toán hình học. Đúng như tên gọi, ý tưởng là dùng một đường thẳng "quét" qua toàn bộ hình, thường để giải các bài toán về diện tích, chu vi, hoặc đếm số điểm trong hình hai chiều.
 
-## 二维矩形面积并问题
+## Bài toán hợp diện tích hình chữ nhật trong mặt phẳng
 
-在二维坐标系上，给出多个矩形的左下以及右上坐标，求出所有矩形构成的图形的面积．
+Trên hệ tọa độ hai chiều, cho nhiều hình chữ nhật với tọa độ góc dưới trái và góc trên phải, hãy tính tổng diện tích hợp của tất cả các hình chữ nhật này.
 
-### 过程
+### Quy trình
 
-根据图片可知总面积可以直接暴力即可求出面积，如果数据大了怎么办？这时就需要讲到 **扫描线** 算法．
+Quan sát hình vẽ, tổng diện tích có thể tính vét cạn, nhưng nếu dữ liệu lớn thì cần dùng thuật toán **quét**.
 
-现在假设我们有一根线，从下往上开始扫描：
+Giả sử ta có một đường thẳng quét từ dưới lên trên:
 
 ![](./images/scanning.svg)
 
-如图所示，把整个矩形分成如图各个颜色不同的小矩形，小矩形的高是扫过的距离，然而矩形的水平宽一直在变化．
+Như hình, mỗi lần quét, ta chia mặt phẳng thành các dải màu khác nhau, mỗi dải có chiều cao là khoảng cách quét, còn chiều rộng thay đổi liên tục.
 
-给每一个矩形的上下边进行标记，下面的边标记为 1，上面的边标记为 -1．每遇到一个水平边时，让这条边（在横轴投影区间）的权值加上这条边的标记．
+Gán nhãn cho mỗi cạnh ngang của hình chữ nhật: cạnh dưới gán $+1$, cạnh trên gán $-1$. Mỗi khi gặp một cạnh ngang, ta cộng/trừ giá trị này vào đoạn tương ứng trên trục hoành.
 
-???+ note "Note"
-    这个操作类似遍历括号序列：开括号加 1，闭括号减 1，「权值」对应当前位置的深度，「权值」是否大于 0，对应当前在不在括号里，也就是这段区间是否记入小矩形的宽度．
+???+ note "Lưu ý"
+    Thao tác này giống như duyệt một chuỗi ngoặc: mở ngoặc cộng 1, đóng ngoặc trừ 1, "giá trị" tại mỗi vị trí chính là độ sâu hiện tại, kiểm tra giá trị lớn hơn 0 tương đương với việc đang nằm trong một cặp ngoặc, tức là đoạn này thuộc về hình chữ nhật.
 
-小矩形（不一定只有一个）的宽度就是整个数轴上权值大于 0 的区间总长度．
+Chiều rộng của các dải nhỏ (có thể có nhiều dải) chính là tổng độ dài các đoạn trên trục hoành có giá trị lớn hơn 0.
 
-### 实现
+### Cài đặt
 
-用线段树维护矩形的长，也就是整个数轴上覆盖次数大于 0 的点．需求列举如下：
+Dùng cây đoạn (segment tree) để duy trì tổng độ dài các đoạn trên trục hoành có số lần phủ lớn hơn 0.
 
--   一段区间权值加 1、减 1．
--   统计整个数轴上，区间权值大于 0 的「区间长度和」．
+Yêu cầu:
 
-如果你尝试直接用普通线段树模板来实现的话，也许会遇到些挫折．具体地，由于在区间加时，即使修改区间和节点管理区间重合，我们还是不能常数时间知道覆盖次数如何变化．这是因为我们不能直接知道：管理范围里有多长的区间会从 1 变成 0（从 0 变成 1）．
+-   Cộng/trừ 1 cho một đoạn.
+-   Tính tổng độ dài các đoạn có giá trị lớn hơn 0 trên toàn trục.
 
-这道题只需要朴素的分治就能实现：维护每个节点管理区间中「完全覆盖区间的次数 `v[]`」（类似不用下放的懒惰标记）和「已覆盖的长度 `w[]`」两个信息．
+Nếu bạn thử dùng cây đoạn thông thường, có thể gặp khó khăn: khi cập nhật một đoạn, dù biết đoạn đó trùng với nút quản lý, ta vẫn không thể biết ngay số đoạn chuyển từ 1 về 0 (hoặc ngược lại).
 
-需要 [离散化](../misc/discrete.md)．
+Giải pháp là: với mỗi nút, duy trì số lần phủ hoàn toàn (`v[]`, giống như lazy tag không cần đẩy xuống) và tổng độ dài đã phủ (`w[]`).
 
-??? note "[洛谷 P5490【模板】扫描线 & 矩形面积并](https://www.luogu.com.cn/problem/P5490) 参考代码"
+Cần [rời rạc hóa](../misc/discrete.md).
+
+??? note "[LuoGu P5490【Mẫu】Quét & Hợp diện tích hình chữ nhật](https://www.luogu.com.cn/problem/P5490) - Mã mẫu"
     ```cpp
     --8<-- "docs/geometry/code/scanning/scanning_1.cpp"
     ```
 
-??? note "[「POJ 1151」Atlantis](http://poj.org/problem?id=1151) 参考代码"
+??? note "[POJ 1151 Atlantis] (http://poj.org/problem?id=1151) - Mã mẫu"
     ```cpp
     --8<-- "docs/geometry/code/scanning/scanning_2.cpp"
     ```
 
-### 练习
+### Bài tập luyện tập
 
--   [「POJ1177」Picture](http://poj.org/problem?id=1177)
--   [「POJ3832」Posters](http://poj.org/problem?id=3832)
--   [洛谷 P1856 \[IOI1998\] \[USACO5.5\] 矩形周长 Picture](https://www.luogu.com.cn/problem/P1856)
-    -   横边贡献就是覆盖长度变化量．
-    -   两个方向分别算一次可以避免竖直边的讨论．
-    -   操作排序时注意考虑两个矩形边重合的情况．
-    -   数据范围允许不用线段树，直接平方时间模拟．
+-   [POJ1177 Picture](http://poj.org/problem?id=1177)
+-   [POJ3832 Posters](http://poj.org/problem?id=3832)
+-   [LuoGu P1856 [IOI1998][USACO5.5] Chu vi hình chữ nhật Picture](https://www.luogu.com.cn/problem/P1856)
+    -   Độ dài cạnh ngang là biến thiên độ dài phủ.
+    -   Tính hai chiều riêng biệt để tránh phải xét cạnh dọc.
+    -   Khi sắp xếp các cạnh, chú ý trường hợp trùng cạnh.
+    -   Nếu dữ liệu nhỏ, có thể mô phỏng vét cạn $O(n^2)$.
 
-## B 维正交范围
+## Hình hộp trực giao B chiều
 
-B 维正交范围指在一个 B 维直角坐标系下，第 $i$ 维坐标在一个整数范围 $[l_i,r_i]$ 间，内部的点集．
+Hình hộp trực giao B chiều là tập các điểm trong không gian $B$ chiều, với mỗi chiều $i$ có tọa độ nằm trong đoạn $[l_i, r_i]$.
 
-一般来说，一维正交范围简称区间，二维正交范围简称矩形，三维正交范围简称立方体（我们常说的二维数点就是二维正交范围）．
+Thông thường, đoạn 1 chiều gọi là "đoạn", 2 chiều gọi là "hình chữ nhật", 3 chiều gọi là "hình hộp" (bài toán đếm điểm trong hình chữ nhật 2D là bài toán hình hộp trực giao 2 chiều).
 
-对于一个静态的二维问题，我们可以使用扫描线扫一维，数据结构维护另一维．
-在扫描线从左到右扫的过程中，会在数据结构维护的那一维上产生一些修改与查询．
-如果查询的信息可差分的话直接使用差分，否则需要使用分治．差分一般用树状数组和线段树维护，但因为树状数组好写而且常数小，所以大部分人会选择用树状数组来维护．分治一般是 CDQ 分治（但是这里不涉及分治）．
+Với bài toán tĩnh hai chiều, ta có thể dùng quét một chiều, cấu trúc dữ liệu duy trì chiều còn lại. Khi quét từ trái sang phải, các thao tác cập nhật và truy vấn sẽ diễn ra trên chiều còn lại.
 
-另一种比较容易理解的看待问题的角度是站在序列角度，而不站在二维平面角度．如果我们这样看待问题，则扫描线实际上是枚举了右端点 $r=1\cdots n$，维护一个数据结构，支持查询对于当前的 $r$，给定一个值 $l$，$l$ 到 $r$ 的答案是什么．即扫描线扫询问右端点，数据结构维护所有左端点的答案，或者说遍历一维，数据结果维护另一维．
+Nếu truy vấn có thể hiệu (dạng prefix sum), dùng cây Fenwick (BIT) hoặc segment tree; nếu không, dùng phân chia và chinh phục (CDQ divide and conquer, nhưng ở đây không đề cập).
 
-复杂度一般为 $O((n+m)\log n)$．
+Một cách khác là nhìn bài toán dưới góc độ dãy số: quét theo điểm kết thúc $r=1\cdots n$, duy trì cấu trúc dữ liệu cho các điểm bắt đầu $l$, tức là quét một chiều, cấu trúc dữ liệu duy trì chiều còn lại.
 
-## 二维数点
+Độ phức tạp thường là $O((n+m)\log n)$.
 
-给一个长为 $n$ 的序列，有 $m$ 次查询，每次查区间 $[l,r]$ 中值在 $[x,y]$ 内的元素个数．
+## Đếm điểm trong hình chữ nhật 2D
 
-这个问题就叫做二维数点．我们可以发现等价于我们要查询一个二维平面上矩形内的点的数量和．这里讲一下这个问题最简单的处理方法，扫描线 + 树状数组．
+Cho một dãy số độ dài $n$, có $m$ truy vấn, mỗi truy vấn hỏi có bao nhiêu phần tử trong đoạn $[l,r]$ có giá trị thuộc $[x,y]$.
 
-很显然，这个问题是一个静态的二维问题，我们通过扫描线可以将静态的二维问题转换为动态的一维问题．维护动态的一维问题就使用数据结构维护序列，这里可以使用树状数组．
+Bài toán này gọi là "đếm điểm trong hình chữ nhật 2D". Thực chất là đếm số điểm trong một hình chữ nhật trên mặt phẳng.
 
-先将所有的询问离散化，用树状数组维护权值，对于每次询问的 $l$ 和 $r$，我们在枚举到 $l-1$ 时统计当前位于区间 $[x,y]$ 内的数的数量 $a$，继续向后枚举，枚举到 $r$ 时统计当前位于区间 $[x,y]$ 内的数的数量 $b$，$b-a$ 即为该次询问的答案．
+Cách đơn giản nhất là dùng quét + cây Fenwick (BIT).
 
-### 例题
+Vì đây là bài toán tĩnh 2D, ta dùng quét để chuyển thành bài toán động 1D, rồi dùng cấu trúc dữ liệu cho dãy số.
 
-???+ note "[洛谷 P2163 \[SHOI2007\] 园丁的烦恼](https://www.luogu.com.cn/problem/P2163)"
-    首先离散化．设一个左下角为 $(0, 0)$，右上角为 $(x, y)$ 的矩形内包含 $ans_{x, y}$ 个点．则询问的答案答案可以被差分为 $ans_{c, d} - ans_{a - 1, d} - ans_{c, b - 1} + ans_{a - 1, b - 1}$．
+Trước hết, rời rạc hóa các truy vấn, dùng BIT duy trì số lượng phần tử theo giá trị. Với mỗi truy vấn $l, r$, khi quét đến $l-1$ thì đếm số phần tử trong $[x,y]$ là $a$, khi quét đến $r$ thì đếm được $b$, đáp án là $b-a$.
+
+### Bài tập ví dụ
+
+???+ note "[LuoGu P2163 [SHOI2007] Nỗi phiền của người làm vườn](https://www.luogu.com.cn/problem/P2163)"
+    Đầu tiên rời rạc hóa. Gọi $ans_{x, y}$ là số điểm trong hình chữ nhật có góc dưới trái $(0,0)$, góc trên phải $(x,y)$. Đáp án truy vấn là $ans_{c, d} - ans_{a - 1, d} - ans_{c, b - 1} + ans_{a - 1, b - 1}$.
     
-    ??? note "代码"
+    ??? note "Mã mẫu"
         ```cpp
         --8<-- "docs/geometry/code/scanning/scanning_3.cpp"
         ```
 
-???+ note "[洛谷 P1908 逆序对](https://www.luogu.com.cn/problem/P1908)"
-    没错，逆序对也可以用扫描线的思维来做．考虑将求逆序对的个数转化为从后向前枚举每个位置 $i$，求在区间 $[i+1,n]$ 中，大小在区间 $[0,a_i]$ 中的点的个数．题目中数据范围为 $10^9$，很显然要先进行离散化，我们可以考虑从后向前遍历数组，每次遍历到一个数时更新树状数组（线段树），之后统计当前一共有多少个数小于当前枚举的数，因为我们是从后向前遍历的，所以比当前值小的数的个数就是他的逆序对的个数，可以用树状数组或线段树进行单点修改和区间查询．
+???+ note "[LuoGu P1908 Đếm số nghịch thế](https://www.luogu.com.cn/problem/P1908)"
+    Đúng vậy, đếm số nghịch thế cũng có thể dùng tư tưởng quét. Chuyển bài toán thành: duyệt từ cuối về đầu, với mỗi vị trí $i$, đếm số phần tử trong $[i+1,n]$ nhỏ hơn $a_i$. Vì giá trị có thể lớn, cần rời rạc hóa. Duyệt từ cuối về đầu, mỗi lần cập nhật BIT, rồi đếm số phần tử nhỏ hơn $a_i$ (tức là số nghịch thế của $a_i$). Có thể dùng BIT hoặc segment tree để cập nhật và truy vấn.
     
-    ??? note "代码"
+    ??? note "Mã mẫu"
         ```cpp
         --8<-- "docs/geometry/code/scanning/scanning_4.cpp"
         ```
 
-???+ note "[洛谷 P1972 \[SDOI2009\] HH 的项链](https://www.luogu.com.cn/problem/P1972)"
-    简要题意：给定一个序列，多次询问区间 $[l,r]$ 中有多少种不同的数．
-    
-    这类问题我们可以考虑推导性质，之后使用扫描线枚举所有右端点，数据结构维护每个左端点的答案的方法来实现，我们也可以将问题转换到二维平面上，变为一个矩形查询信息的问题．
-    
-    在本题中，我们设序列中 $a_i$ 上一次出现的位置为 $pre_i$，如果 $a_i$ 没有出现过，则 $pre_i = 0$．根据题意，如果一种数在区间中出现多次，只会产生一次贡献．不妨认为每种数产生贡献的位置是区间中第一次出现的位置，这时可以发现，产生的总贡献即为 $pre_x \le l - 1$ 的个数，反证法易证．
-    
-    现在问题即为：给定一个序列 $pre$，多次查询区间 $[l,r]$ 中有多少个 $pre_i \le l - 1$．
-    
-    我们可以把 $pre_i$ 看成二维平面的点：$i$ 是横坐标，$pre_i$ 是纵坐标，问题就转化为了二维数点问题：每次询问左下角为 $(l,0)$，右上角为 $(r,l - 1)$ 的矩形中有几个点．
-    
-    注意到这个询问是可差分的，我们可以将询问差分为左下角为 $(0,0)$，右上角为 $(r,l - 1)$ 的矩形减去左下角为 $(0,0)$，右上角为 $(l - 1,l - 1)$ 的矩形有几个点，这样方便我们使用扫描线思想．
-    
-    单次操作复杂度 $O(\log n)$，共有 $n$ 次加点操作和 $2m$ 次查询操作，总时间复杂度 $O((n + m) \log n)$．
-    
-    ??? note "代码"
+???+ note "[LuoGu P1972 [SDOI2009] Chuỗi hạt của HH](https://www.luogu.com.cn/problem/P1972)"
+    Tóm tắt: Cho một dãy số, nhiều truy vấn hỏi trong đoạn $[l,r]$ có bao nhiêu số khác nhau.
+
+    Có thể suy luận tính chất, rồi dùng quét theo điểm kết thúc, cấu trúc dữ liệu duy trì điểm bắt đầu, hoặc chuyển về bài toán đếm điểm trong hình chữ nhật 2D.
+
+    Với mỗi $a_i$, gọi $pre_i$ là vị trí xuất hiện trước đó của $a_i$ (nếu chưa từng xuất hiện thì $pre_i=0$). Theo đề, mỗi số chỉ tính một lần trong đoạn, nên chỉ cần đếm số $pre_x \le l-1$ trong đoạn $[l,r]$.
+
+    Bài toán trở thành: cho dãy $pre$, nhiều truy vấn hỏi trong đoạn $[l,r]$ có bao nhiêu $pre_i \le l-1$.
+
+    Xem $pre_i$ là điểm trên mặt phẳng: hoành độ $i$, tung độ $pre_i$, mỗi truy vấn là đếm số điểm trong hình chữ nhật có góc dưới trái $(l,0)$, góc trên phải $(r,l-1)$.
+
+    Vì truy vấn có thể hiệu, ta tách thành hai hình chữ nhật: $(0,0)-(r,l-1)$ trừ $(0,0)-(l-1,l-1)$. Như vậy dễ dùng quét.
+
+    Mỗi thao tác $O(\log n)$, tổng $O((n+m)\log n)$.
+
+    ??? note "Mã mẫu"
         ```cpp
         --8<-- "docs/geometry/code/scanning/scanning_5.cpp"
         ```
 
-### 练习
+### Bài tập luyện tập
 
--   [洛谷 P8593「KDOI-02」一个弹的投](https://www.luogu.com.cn/problem/P8593) 逆序对的应用．
--   [AcWing 4709. 三元组](https://www.acwing.com/problem/content/4712/) 上题的弱化版，同样为逆序对的应用．
--   [洛谷 P8773 \[蓝桥杯 2022 省 A\] 选数异或](https://www.luogu.com.cn/problem/P8773) HH 的项链魔改版．
--   [洛谷 P8844 \[传智杯 #4 初赛\] 小卡与落叶](https://www.luogu.com.cn/problem/P8844) 树上问题转序列问题然后进行二维数点．
+-   [LuoGu P8593「KDOI-02」Một phát bắn](https://www.luogu.com.cn/problem/P8593) - ứng dụng đếm nghịch thế.
+-   [AcWing 4709. Bộ ba](https://www.acwing.com/problem/content/4712/) - phiên bản đơn giản hóa, cũng là ứng dụng đếm nghịch thế.
+-   [LuoGu P8773 [Blue Bridge Cup 2022 Prov A] Chọn số XOR](https://www.luogu.com.cn/problem/P8773) - biến thể của chuỗi hạt HH.
+-   [LuoGu P8844 [Trí Tuệ Cup #4 Sơ loại] Tiểu Kha và lá rụng](https://www.luogu.com.cn/problem/P8844) - bài toán trên cây chuyển về dãy số rồi đếm điểm 2D.
 
-总而言之，二维数点的主要思路就是数据结构维护一维，然后枚举另一维．
+Tóm lại, tư tưởng chính của đếm điểm trong hình chữ nhật 2D là: dùng cấu trúc dữ liệu duy trì một chiều, quét qua chiều còn lại.
 
-## 参考资料
+## Tài liệu tham khảo
 
--   [cnblogs/Yang1208：扫描线讲解，动态开点版线段树](https://www.cnblogs.com/yangsongyi/p/8378629.html)
--   [csdn/riba2534：POJ1151 Atlantis 题解](https://blog.csdn.net/riba2534/article/details/76851233)
--   [csdn/刀刀狗 0102：POJ1151 Atlantis 题解](https://blog.csdn.net/winddreams/article/details/38495093)
--   [浅谈扫描线](https://www.luogu.com.cn/article/f8q5bmnz)
+-   [cnblogs/Yang1208: Giải thích scanline, segment tree mở động](https://www.cnblogs.com/yangsongyi/p/8378629.html)
+-   [csdn/riba2534: POJ1151 Atlantis giải chi tiết](https://blog.csdn.net/riba2534/article/details/76851233)
+-   [csdn/刀刀狗 0102: POJ1151 Atlantis giải chi tiết](https://blog.csdn.net/winddreams/article/details/38495093)
+-   [Bàn về scanline](https://www.luogu.com.cn/article/f8q5bmnz)

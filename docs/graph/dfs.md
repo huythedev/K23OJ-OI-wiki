@@ -1,49 +1,49 @@
 author: Ir1d, greyqz, yjl9903, partychicken, ChungZH, qq1010903229, Marcythm, Acfboy, shenshuaijie, Craneplayz
 
-## 引入
+## Giới thiệu
 
-DFS 全称是 [Depth First Search](https://en.wikipedia.org/wiki/Depth-first_search)，中文名是深度优先搜索，是一种用于遍历或搜索树或图的算法．所谓深度优先，就是说每次都尝试向更深的节点走．
+DFS là viết tắt của [Depth First Search](https://en.wikipedia.org/wiki/Depth-first_search), tiếng Việt là "Tìm kiếm theo chiều sâu" (hay "Duyệt theo chiều sâu"), là một thuật toán dùng để duyệt hoặc tìm kiếm trên cây hoặc đồ thị. "Theo chiều sâu" nghĩa là mỗi lần đều cố gắng đi sâu hơn vào các đỉnh kế tiếp.
 
-该算法讲解时常常与 BFS 并列，但两者除了都能遍历图的连通块以外，用途完全不同，很少有能混用两种算法的情况．
+Thuật toán này thường được trình bày cùng với BFS, nhưng ngoài việc cả hai đều có thể duyệt các thành phần liên thông của đồ thị, mục đích sử dụng của chúng hoàn toàn khác nhau, rất hiếm khi có thể thay thế lẫn nhau.
 
-DFS 常常用来指代用递归函数实现的搜索，但实际上两者并不一样．有关该类搜索思想请参阅 [DFS（搜索）](../search/dfs.md).
+DFS thường dùng để chỉ phương pháp tìm kiếm sử dụng hàm đệ quy, nhưng thực chất hai khái niệm này không hoàn toàn giống nhau. Để tìm hiểu thêm về tư duy tìm kiếm này, hãy tham khảo [DFS (tìm kiếm)](../search/dfs.md).
 
-## 过程
+## Quy trình
 
-DFS 最显著的特征在于其 **递归调用自身**．同时与 BFS 类似，DFS 会对其访问过的点打上访问标记，在遍历图时跳过已打过标记的点，以确保 **每个点仅访问一次**．符合以上两条规则的函数，便是广义上的 DFS．
+Đặc điểm nổi bật nhất của DFS là **gọi đệ quy chính nó**. Tương tự như BFS, DFS sẽ đánh dấu các đỉnh đã được thăm, khi duyệt đồ thị sẽ bỏ qua các đỉnh đã đánh dấu, đảm bảo **mỗi đỉnh chỉ được thăm một lần**. Hàm tuân thủ hai quy tắc trên được gọi là DFS theo nghĩa rộng.
 
-具体地说，DFS 大致结构如下：
+Cấu trúc cơ bản của DFS như sau:
 
-    DFS(v) // v 可以是图中的一个顶点，也可以是抽象的概念，如 dp 状态等．
-      在 v 上打访问标记
-      for u in v 的相邻节点
-        if u 没有打过访问标记 then
+    DFS(v) // v có thể là một đỉnh trong đồ thị, hoặc là một khái niệm trừu tượng như trạng thái dp.
+      Đánh dấu đã thăm v
+      for u trong các đỉnh kề với v
+        if u chưa được đánh dấu thì
           DFS(u)
         end
       end
     end
 
-以上代码只包含了 DFS 必需的主要结构．实际的 DFS 会在以上代码基础上加入一些代码，利用 DFS 性质进行其他操作．
+Đoạn mã trên chỉ thể hiện cấu trúc tối thiểu của DFS. Trong thực tế, DFS thường được bổ sung thêm các thao tác khác để tận dụng đặc tính của DFS.
 
-## 性质
+## Tính chất
 
-该算法通常的时间复杂度为 $O(n+m)$，空间复杂度为 $O(n)$，其中 $n$ 表示点数，$m$ 表示边数．注意空间复杂度包含了栈空间，栈空间的空间复杂度是 $O(n)$ 的．在平均 $O(1)$ 遍历一条边的条件下才能达到此时间复杂度，例如用前向星或邻接表存储图；如果用邻接矩阵则不一定能达到此复杂度．
+Thuật toán này thường có độ phức tạp thời gian là $O(n+m)$, độ phức tạp không gian là $O(n)$, với $n$ là số đỉnh, $m$ là số cạnh. Lưu ý rằng độ phức tạp không gian bao gồm cả không gian ngăn xếp, vốn cũng là $O(n)$. Để đạt được độ phức tạp thời gian này, cần đảm bảo việc duyệt mỗi cạnh trung bình $O(1)$, ví dụ như sử dụng danh sách kề hoặc forward star; nếu dùng ma trận kề thì không đảm bảo được độ phức tạp này.
 
-> 备注：目前大部分算法竞赛（包括 NOIP、大部分省选以及 CCF 举办的各项赛事）都支持 **无限栈空间**，即：栈空间不单独限制，但总内存空间仍然受题面限制．但大部分操作系统会对栈空间做额外的限制，因此在本地调试时需要一些方式来取消栈空间限制．
+> Lưu ý: Hiện nay hầu hết các kỳ thi lập trình (bao gồm NOIP, đa số kỳ thi cấp tỉnh và các cuộc thi do CCF tổ chức) đều **không giới hạn không gian ngăn xếp**, tức là: không gian ngăn xếp không bị giới hạn riêng, nhưng tổng bộ nhớ vẫn bị giới hạn theo đề bài. Tuy nhiên, đa số hệ điều hành sẽ giới hạn thêm không gian ngăn xếp, nên khi chạy thử trên máy cá nhân cần thiết lập lại giới hạn này.
 >
-> -   在 Windows 上，通常的方法是在 **编译选项** 中加入 `-Wl,--stack=1000000000`，表示将栈空间限制设置为 1000000000 字节．
-> -   在 Linux 上，通常的方法是在运行程序前 **在终端内** 执行 `ulimit -s unlimited`，表示栈空间无限．每个终端只需执行一次，对之后每次程序运行都有效．
+> -   Trên Windows, thường thêm tùy chọn biên dịch `-Wl,--stack=1000000000` để đặt giới hạn ngăn xếp thành 1000000000 byte.
+> -   Trên Linux, thường chạy lệnh `ulimit -s unlimited` trong terminal trước khi chạy chương trình để bỏ giới hạn ngăn xếp. Mỗi terminal chỉ cần thực hiện một lần, có hiệu lực cho mọi lần chạy sau đó.
 
-## 实现
+## Cài đặt
 
-### 栈实现
+### Cài đặt bằng ngăn xếp
 
-DFS 可以使用 [栈（Stack）](../ds/stack.md) 为遍历中节点的暂存容器来实现；这与用 [队列（Queue）](../ds/queue.md) 实现的 BFS 形成高度对应．
+DFS có thể sử dụng [ngăn xếp (Stack)](../ds/stack.md) để lưu tạm các đỉnh trong quá trình duyệt; điều này tương ứng với việc BFS sử dụng [hàng đợi (Queue)](../ds/queue.md).
 
 === "C++"
     ```cpp
-    vector<vector<int>> adj;  // 邻接表
-    vector<bool> vis;         // 记录节点是否已经遍历
+    vector<vector<int>> adj;  // Danh sách kề
+    vector<bool> vis;         // Đánh dấu các đỉnh đã được duyệt
     
     void dfs(int s) {
       stack<int> st;
@@ -56,7 +56,7 @@ DFS 可以使用 [栈（Stack）](../ds/stack.md) 为遍历中节点的暂存容
     
         for (int v : adj[u]) {
           if (!vis[v]) {
-            vis[v] = true;  // 确保栈里没有重复元素
+            vis[v] = true;  // Đảm bảo không có phần tử trùng trong ngăn xếp
             st.push(v);
           }
         }
@@ -66,35 +66,35 @@ DFS 可以使用 [栈（Stack）](../ds/stack.md) 为遍历中节点的暂存容
 
 === "Python"
     ```python
-    # adj : List[List[int]] 邻接表
-    # vis : List[bool] 记录节点是否已经遍历
+    # adj : List[List[int]] danh sách kề
+    # vis : List[bool] đánh dấu các đỉnh đã được duyệt
     
     
     def dfs(s: int) -> None:
-        stack = [s]  # 用列表来模拟栈，把起点加入栈中
-        vis[s] = True  # 起点被遍历
+        stack = [s]  # Dùng list để mô phỏng ngăn xếp, thêm điểm bắt đầu vào ngăn xếp
+        vis[s] = True  # Đánh dấu điểm bắt đầu đã được duyệt
     
-        while stack:  # 当栈非空时继续执行
+        while stack:  # Khi ngăn xếp còn phần tử thì tiếp tục
             u = (
                 stack.pop()
-            )  # 拿取并丢弃掉最后一个元素（栈顶的元素），可以理解为走到u这个元素
+            )  # Lấy và loại bỏ phần tử cuối cùng (đỉnh ngăn xếp), tức là đi tới u
     
-            for v in adj[u]:  # 对于与u相邻的每个元素v
-                if not vis[v]:  # 如果v在此前没有走过
-                    vis[v] = True  # 确保栈里没有重复元素
-                    stack.append(v)  # 把v加入栈中
+            for v in adj[u]:  # Với mỗi đỉnh kề v của u
+                if not vis[v]:  # Nếu v chưa được duyệt
+                    vis[v] = True  # Đảm bảo không có phần tử trùng trong ngăn xếp
+                    stack.append(v)  # Thêm v vào ngăn xếp
     ```
 
-### 递归实现
+### Cài đặt bằng đệ quy
 
-函数在递归调用时的求值如同对栈的添加和删除元素的顺序，故函数调用所占据的虚拟地址被称为函数调用栈（Call Stack），DFS 可用递归的方式实现．
+Khi gọi hàm đệ quy, thứ tự thêm và loại bỏ phần tử trên ngăn xếp giống như thao tác trên ngăn xếp thực tế, do đó vùng nhớ dùng cho gọi hàm đệ quy được gọi là "ngăn xếp gọi hàm" (Call Stack). DFS có thể cài đặt bằng phương pháp đệ quy.
 
-以 [邻接表（Adjacency List）](./save.md#邻接表) 作为图的存储方式：
+Ví dụ với [danh sách kề (Adjacency List)](./save.md#邻接表):
 
 === "C++"
     ```cpp
-    vector<vector<int>> adj;  // 邻接表
-    vector<bool> vis;         // 记录节点是否已经遍历
+    vector<vector<int>> adj;  // Danh sách kề
+    vector<bool> vis;         // Đánh dấu các đỉnh đã được duyệt
     
     void dfs(const int u) {
       vis[u] = true;
@@ -105,8 +105,8 @@ DFS 可以使用 [栈（Stack）](../ds/stack.md) 为遍历中节点的暂存容
 
 === "Python"
     ```python
-    # adj : List[List[int]] 邻接表
-    # vis : List[bool] 记录节点是否已经遍历
+    # adj : List[List[int]] danh sách kề
+    # vis : List[bool] đánh dấu các đỉnh đã được duyệt
     
     
     def dfs(u: int) -> None:
@@ -116,7 +116,7 @@ DFS 可以使用 [栈（Stack）](../ds/stack.md) 为遍历中节点的暂存容
                 dfs(v)
     ```
 
-以 [链式前向星](./save.md#链式前向星) 为例：
+Ví dụ với [forward star dạng liên kết](./save.md#链式前向星):
 
 === "C++"
     ```cpp
@@ -153,26 +153,26 @@ DFS 可以使用 [栈（Stack）](../ds/stack.md) 为遍历中节点的暂存容
             i = e[i].x
     ```
 
-### DFS 序列
+### Dãy DFS
 
-DFS 序列是指 DFS 调用过程中访问的节点编号的序列．
+Dãy DFS là thứ tự các đỉnh được truy cập trong quá trình gọi DFS.
 
-我们发现，每个子树都对应 DFS 序列中的连续一段（一段区间）．
+Ta nhận thấy, mỗi cây con đều tương ứng với một đoạn liên tiếp (một đoạn chỉ số) trong dãy DFS.
 
-### 括号序列
+### Dãy dấu ngoặc
 
-DFS 进入某个节点的时候记录一个左括号 `(`，退出某个节点的时候记录一个右括号 `)`．
+Khi DFS đi vào một đỉnh thì ghi lại một dấu ngoặc trái `(`, khi thoát khỏi một đỉnh thì ghi lại một dấu ngoặc phải `)`.
 
-每个节点会出现两次．相邻两个节点的深度相差 1．
+Mỗi đỉnh sẽ xuất hiện hai lần. Hai đỉnh liên tiếp trong dãy có độ sâu chênh lệch 1.
 
-### 一般图上 DFS
+### DFS trên đồ thị tổng quát
 
-对于非连通图，只能访问到起点所在的连通分量．
+Với đồ thị không liên thông, chỉ có thể truy cập thành phần liên thông chứa điểm xuất phát.
 
-对于连通图，DFS 序列通常不唯一．
+Với đồ thị liên thông, dãy DFS thường không duy nhất.
 
-注：树的 DFS 序列也是不唯一的．
+Lưu ý: Dãy DFS của cây cũng không duy nhất.
 
-在 DFS 过程中，通过记录每个节点从哪个点访问而来，可以建立一个树结构，称为 DFS 树．DFS 树是原图的一个生成树．
+Trong quá trình DFS, nếu ghi lại mỗi đỉnh được truy cập từ đâu, ta có thể xây dựng một cấu trúc cây, gọi là cây DFS. Cây DFS là một cây khung của đồ thị gốc.
 
-[DFS 树](./scc.md#dfs-生成树) 有很多性质，比如可以用来求 [强连通分量](./scc.md)．
+[Cây DFS](./scc.md#dfs-生成树) có nhiều tính chất, ví dụ có thể dùng để tìm [thành phần liên thông mạnh](./scc.md).

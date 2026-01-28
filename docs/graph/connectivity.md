@@ -1,55 +1,55 @@
 author: jifbt, Mayuri0v0
 
-## 定义
+## Định nghĩa
 
-以下内容的定义，请参见 [图论相关概念](./concept.md)：
+Các khái niệm dưới đây, xem tại [Các khái niệm liên quan đến lý thuyết đồ thị](./concept.md):
 
--   边连通度、边割集；
--   点连通度、点割集；
--   团．
+-   Bậc liên thông cạnh, tập cắt cạnh;
+-   Bậc liên thông đỉnh, tập cắt đỉnh;
+-   Cực đại (clique).
 
-## 性质
+## Tính chất
 
-### Whitney 不等式
+### Bất đẳng thức Whitney
 
-**Whitney 不等式**（1932）给出了点连通度 $\kappa$、边连通度 $\lambda$ 和最小度 $\delta$ 之间的关系：
+**Bất đẳng thức Whitney** (1932) mô tả mối quan hệ giữa bậc liên thông đỉnh $\kappa$, bậc liên thông cạnh $\lambda$ và bậc nhỏ nhất $\delta$:
 
 $$
 \kappa \le \lambda \le \delta
 $$
 
-???+ note "证明"
-    直觉上，如果有一个大小为 $\lambda$ 的边割集，其中每一条边任选一个端点，就可以得到一个大小为 $\lambda$ 的点割集，所以第一个不等式成立．
-    
-    与度最小的结点（如有多个，任选一个）相邻的所有边构成大小为 $\delta$ 的边割集，所以第二个不等式也成立．
+???+ note "Chứng minh"
+    Trực giác: nếu có một tập cắt cạnh kích thước $\lambda$, mỗi cạnh chọn một đầu mút sẽ tạo thành một tập cắt đỉnh kích thước $\lambda$, nên bất đẳng thức đầu tiên đúng.
 
-这个不等式不能改进；换言之，对每个满足它的三元组，均可以找出满足这个三元组的图．
+    Các cạnh kề với đỉnh có bậc nhỏ nhất (chọn một đỉnh bất kỳ nếu có nhiều) tạo thành tập cắt cạnh kích thước $\delta$, nên bất đẳng thức thứ hai cũng đúng.
 
-???+ note "构造"
-    把两个大小为 $\delta + 1$ 的团用 $\lambda$ 条边连起来，使两个团分别有 $\lambda$ 和 $\kappa$ 个不同的结点被连在这些边上．
+Bất đẳng thức này là chặt; tức là, với mỗi bộ ba số thỏa mãn, đều có thể xây dựng được đồ thị tương ứng.
 
-### Menger 定理
+???+ note "Cấu trúc"
+    Nối hai cực đại kích thước $\delta + 1$ bằng $\lambda$ cạnh, sao cho mỗi cực đại có $\lambda$ và $\kappa$ đỉnh khác nhau được nối bởi các cạnh này.
 
-由 [最大流最小割定理](./flow/min-cut.md)（又名 Ford–Fulkerson 定理）可推出，两点间的不相交（指两两没有公共边）路径的最大数量等于割集的最小大小（这个推论又叫 **Menger 定理**——译者注）．
+### Định lý Menger
 
-## 计算
+Từ [Định lý max-flow min-cut](./flow/min-cut.md) (hay còn gọi là định lý Ford–Fulkerson), ta có thể suy ra: số lượng đường đi không giao nhau (không chung cạnh) lớn nhất giữa hai đỉnh bằng kích thước nhỏ nhất của tập cắt (kết quả này còn gọi là **Định lý Menger**).
 
-以下图的边权均为 $1$．
+## Tính toán
 
-### 用最大流计算边连通度
+Giả sử các cạnh của đồ thị đều có trọng số $1$.
 
-枚举点对 $(s, t)$，以 $s$ 为源点，$t$ 为汇点跑边权为 $1$ 的最大流．需要 $O(n^2)$ 次最大流，如果使用 Edmonds–Karp 算法，复杂度为 $O(|V|^3 |E|^2)$．使用 Dinic 算法可以更优，复杂度为 $O(|V|^2 |E| \min(|V|^{2/3}, |E|^{1/2}))$．
+### Tính bậc liên thông cạnh bằng max-flow
 
-### 全局最小割
+Duyệt qua tất cả các cặp đỉnh $(s, t)$, lấy $s$ làm nguồn, $t$ làm đích, chạy max-flow với trọng số cạnh bằng $1$. Cần $O(n^2)$ lần max-flow, nếu dùng thuật toán Edmonds–Karp thì độ phức tạp $O(|V|^3 |E|^2)$. Dùng thuật toán Dinic sẽ tốt hơn, độ phức tạp $O(|V|^2 |E| \min(|V|^{2/3}, |E|^{1/2}))$.
 
-使用 [Stoer–Wagner 算法](./stoer-wagner.md) 只需跑一次无源汇最小割即可．复杂度为 $O(|V||E| + |V|^{2}\log|V|)$，一般可近似看作 $O(|V|^3)$．
+### Cắt nhỏ toàn cục
 
-### 点连通度
+Dùng [Thuật toán Stoer–Wagner](./stoer-wagner.md) chỉ cần chạy một lần min-cut không nguồn đích. Độ phức tạp $O(|V||E| + |V|^{2}\log|V|)$, thường coi xấp xỉ $O(|V|^3)$.
 
-仍然枚举点对，这次把每个非源汇的点 $x$ 拆成两个点 $x_1$ 和 $x_2$，并连边 $(x_1, x_2)$．把原图中所有边 $(u, v)$ 换成两条边 $(u_2, v_1)$ 和 $(v_2, u_1)$．此时最大流等于 $s$、$t$ 之间的最小点割集大小（又称局部点连通度）．复杂度与用最大流计算边连通度相同．
+### Bậc liên thông đỉnh
 
-**本页面译自博文 [Рёберная связность. Свойства и нахождение](http://e-maxx.ru/algo/rib_connectivity)、[Вершинная связность. Свойства и нахождение](http://e-maxx.ru/algo/vertex_connectivity) 与其英文翻译版 [Edge connectivity/Vertex connectivity](https://cp-algorithms.com/graph/edge_vertex_connectivity.html)．其中俄文版版权协议为 Public Domain + Leave a Link；英文版版权协议为 CC-BY-SA 4.0．**
+Tiếp tục duyệt cặp đỉnh, lần này với mỗi đỉnh không phải nguồn/đích $x$, tách thành hai đỉnh $x_1$ và $x_2$, nối cạnh $(x_1, x_2)$. Các cạnh $(u, v)$ trong đồ thị gốc chuyển thành hai cạnh $(u_2, v_1)$ và $(v_2, u_1)$. Khi đó, max-flow giữa $s$ và $t$ bằng kích thước tập cắt đỉnh nhỏ nhất giữa $s$ và $t$ (còn gọi là bậc liên thông đỉnh cục bộ). Độ phức tạp như tính bậc liên thông cạnh bằng max-flow.
 
-## 延伸阅读
+**Trang này dịch từ các bài viết [Рёберная связность. Свойства и нахождение](http://e-maxx.ru/algo/rib_connectivity)、[Вершинная связность. Свойства и нахождение](http://e-maxx.ru/algo/vertex_connectivity) và bản tiếng Anh [Edge connectivity/Vertex connectivity](https://cp-algorithms.com/graph/edge_vertex_connectivity.html). Bản tiếng Nga: Public Domain + Leave a Link; bản tiếng Anh: CC-BY-SA 4.0.**
 
--   论文 [*Connectivity Algorithms*](https://www.cse.msu.edu/~cse835/Papers/Graph_connectivity_revised.pdf) 介绍了近年来连通度计算算法的进展．感兴趣的读者可以自行浏览．
+## Đọc thêm
+
+-   Bài báo [*Connectivity Algorithms*](https://www.cse.msu.edu/~cse835/Papers/Graph_connectivity_revised.pdf) giới thiệu các tiến bộ gần đây về thuật toán tính liên thông. Bạn đọc quan tâm có thể tham khảo thêm.

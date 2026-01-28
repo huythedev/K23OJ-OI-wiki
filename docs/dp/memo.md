@@ -1,21 +1,21 @@
-## 定义
+## Định nghĩa
 
-记忆化搜索是一种通过记录已经遍历过的状态的信息，从而避免对同一状态重复遍历的搜索实现方式．
+Tìm kiếm ghi nhớ (Memoization Search) là một cách hiện thực tìm kiếm bằng cách ghi lại thông tin của các trạng thái đã duyệt qua, từ đó tránh việc duyệt lặp lại cùng một trạng thái.
 
-因为记忆化搜索确保了每个状态只访问一次，它也是一种常见的动态规划实现方式．
+Vì tìm kiếm ghi nhớ đảm bảo mỗi trạng thái chỉ được truy cập một lần, nó cũng là một cách hiện thực quy hoạch động rất phổ biến.
 
-## 引入
+## Giới thiệu
 
-???+ note "[\[NOIP2005\] 采药](https://www.luogu.com.cn/problem/P1048)"
-    山洞里有 $M$ 株不同的草药，采每一株都需要一些时间 $t_i$，每一株也有它自身的价值 $v_i$．给你一段时间 $T$，在这段时间里，你可以采到一些草药．让采到的草药的总价值最大．
+???+ note "[\[NOIP2005\] Hái thuốc](https://www.luogu.com.cn/problem/P1048)"
+    Trong một hang động có $M$ loại thảo dược khác nhau, việc hái mỗi loại cần một thời gian $t_i$, và mỗi loại có giá trị riêng $v_i$. Cho bạn một khoảng thời gian $T$, trong thời gian này bạn có thể hái một số loại thảo dược. Hãy làm cho tổng giá trị thảo dược hái được là lớn nhất.
     
-    $1 \leq T \leq 10^3$，$1 \leq t_i,v_i,M \leq 100$
+    $1 \leq T \leq 10^3$, $1 \leq t_i, v_i, M \leq 100$
 
-### 朴素的 [DFS](../search/dfs.md) 做法
+### Cách làm [DFS](../search/dfs.md) thuần túy
 
-很容易实现这样一个朴素的搜索做法：在搜索时记录下当前准备选第几个物品、剩余的时间是多少、已经获得的价值是多少这三个参数，然后枚举当前物品是否被选，转移到相应的状态．
+Rất dễ để hiện thực một cách tìm kiếm thuần túy: trong khi tìm kiếm, ghi lại ba tham số: đang chuẩn bị chọn vật phẩm thứ mấy, thời gian còn lại là bao nhiêu, và giá trị đã đạt được là bao nhiêu. Sau đó duyệt xem vật phẩm hiện tại có được chọn hay không để chuyển sang trạng thái tương ứng.
 
-???+ note "实现"
+???+ note "Hiện thực"
     === "C++"
         ```cpp
         int n, t;
@@ -47,7 +47,6 @@
         mget = [0] * 103
         ans = 0
         
-        
         def dfs(pos, tleft, tans):
             global ans
             if tleft < 0:
@@ -58,7 +57,6 @@
             dfs(pos + 1, tleft, tans)
             dfs(pos + 1, tleft - tcost[pos], tans + mget[pos])
         
-        
         t, n = map(lambda x: int(x), input().split())
         for i in range(1, n + 1):
             tcost[i], mget[i] = map(lambda x: int(x), input().split())
@@ -66,19 +64,19 @@
         print(ans)
         ```
 
-这种做法的时间复杂度是指数级别的，并不能通过本题．
+Độ phức tạp thời gian của cách làm này là hàm mũ, không thể vượt qua bài này.
 
-### 优化
+### Tối ưu hóa
 
-上面的做法为什么效率低下呢？因为同一个状态会被访问多次．
+Tại sao cách làm trên lại hiệu suất thấp? Bởi vì cùng một trạng thái bị truy cập nhiều lần.
 
-如果我们每查询完一个状态后将该状态的信息存储下来，再次需要访问这个状态就可以直接使用之前计算得到的信息，从而避免重复计算．这充分利用了动态规划中很多问题具有大量重叠子问题的特点，属于用空间换时间的「记忆化」思想．
+Nếu sau mỗi lần truy vấn xong một trạng thái, chúng ta lưu trữ thông tin của trạng thái đó lại, lần sau cần truy cập trạng thái này có thể sử dụng trực tiếp thông tin đã tính toán trước đó, từ đó tránh tính toán lặp lại. Điều này tận dụng đặc điểm của quy hoạch động là có nhiều bài toán con chồng lấn, thuộc về tư tưởng "ghi nhớ" dùng không gian đổi thời gian.
 
-具体到本题上，我们在朴素的 DFS 的基础上，增加一个数组 `mem` 来记录每个 `dfs(pos,tleft)` 的返回值．刚开始把 `mem` 中每个值都设成 `-1`（代表没求解过）．每次需要访问一个状态时，如果相应状态的值在 `mem` 中为 `-1`，则递归访问该状态．否则我们直接使用 `mem` 中已经存储过的值即可．
+Cụ thể trong bài này, trên cơ sở DFS thuần túy, chúng ta thêm một mảng `mem` để ghi lại giá trị trả về của mỗi `dfs(pos, tleft)`. Ban đầu đặt mọi giá trị trong `mem` thành `-1` (đại diện cho chưa giải). Mỗi khi cần truy cập một trạng thái, nếu giá trị tương ứng trong `mem` là `-1`, ta sẽ truy cập đệ quy trạng thái đó. Ngược lại, chúng ta sử dụng trực tiếp giá trị đã lưu trong `mem`.
 
-通过这样的处理，我们确保了每个状态只会被访问一次，因此该算法的的时间复杂度为 $O(TM)$．
+Thông qua xử lý này, chúng ta đảm bảo mỗi trạng thái chỉ được truy cập tối đa một lần, do đó độ phức tạp thời gian của thuật toán là $O(TM)$.
 
-???+ note "实现"
+???+ note "Hiện thực"
     === "C++"
         ```cpp
         int n, t;
@@ -87,13 +85,13 @@
         
         int dfs(int pos, int tleft) {
           if (mem[pos][tleft] != -1)
-            return mem[pos][tleft];  // 已经访问过的状态，直接返回之前记录的值
+            return mem[pos][tleft];  // Trạng thái đã truy cập, trả về giá trị đã ghi
           if (pos == n + 1) return mem[pos][tleft] = 0;
           int dfs1, dfs2 = -INF;
           dfs1 = dfs(pos + 1, tleft);
           if (tleft >= tcost[pos])
-            dfs2 = dfs(pos + 1, tleft - tcost[pos]) + mget[pos];  // 状态转移
-          return mem[pos][tleft] = max(dfs1, dfs2);  // 最后将当前状态的值存下来
+            dfs2 = dfs(pos + 1, tleft - tcost[pos]) + mget[pos];  // Chuyển trạng thái
+          return mem[pos][tleft] = max(dfs1, dfs2);  // Lưu lại giá trị trạng thái hiện tại
         }
         
         int main() {
@@ -104,113 +102,25 @@
           return 0;
         }
         ```
-    
-    === "Python"
-        ```python
-        tcost = [0] * 103
-        mget = [0] * 103
-        mem = [[-1 for i in range(1003)] for j in range(103)]
-        
-        
-        def dfs(pos, tleft):
-            if mem[pos][tleft] != -1:
-                return mem[pos][tleft]
-            if pos == n + 1:
-                mem[pos][tleft] = 0
-                return mem[pos][tleft]
-            dfs1 = dfs2 = -INF
-            dfs1 = dfs(pos + 1, tleft)
-            if tleft >= tcost[pos]:
-                dfs2 = dfs(pos + 1, tleft - tcost[pos]) + mget[pos]
-            mem[pos][tleft] = max(dfs1, dfs2)
-            return mem[pos][tleft]
-        
-        
-        t, n = map(lambda x: int(x), input().split())
-        for i in range(1, n + 1):
-            tcost[i], mget[i] = map(lambda x: int(x), input().split())
-        print(dfs(1, t))
-        ```
 
-## 与递推的联系与区别
+## Liên hệ và khác biệt với cách tiếp cận khử đệ quy (truy hồi)
 
-在求解动态规划的问题时，记忆化搜索与递推的代码，在形式上是高度类似的．这是由于它们使用了相同的状态表示方式和类似的状态转移．也正因为如此，一般来说两种实现的时间复杂度是一样的．
+Khi giải quyết các bài toán quy hoạch động, mã nguồn của tìm kiếm ghi nhớ và cách tiếp cận khử đệ quy (vòng lặp) có hình thức rất giống nhau. Điều này là do chúng sử dụng cùng một cách biểu diễn trạng thái và các bước chuyển trạng thái tương tự. Cũng chính vì thế, thông thường độ phức tạp thời gian của hai cách hiện thực là như nhau.
 
-下面给出的是递推实现的代码（为了方便对比，没有添加滚动数组优化），通过对比可以发现二者在形式上的类似性．
+Trong việc giải quyết các bài toán quy hoạch động, cả tìm kiếm ghi nhớ và khử đệ quy đều đảm bảo rằng cùng một trạng thái chỉ được giải tối đa một lần. Cách chúng đạt được điều này hơi khác nhau: khử đệ quy tránh truy cập lặp lại bằng cách thiết lập một thứ tự truy cập rõ ràng, trong khi tìm kiếm ghi nhớ mặc dù không quy định rõ thứ tự truy cập, nhưng thông qua việc đánh dấu các trạng thái đã truy cập cũng đạt được mục đích tương tự.
 
-```cpp
-int n, t, w[105], v[105], f[105][1005];
+So với khử đệ quy, tìm kiếm ghi nhớ vì không cần quy định rõ thứ tự truy cập nên đôi khi có độ khó hiện thực thấp hơn, và có thể xử lý các trường hợp biên một cách tiện lợi, đây là một ưu điểm lớn. Tuy nhiên, tìm kiếm ghi nhớ khó sử dụng các tối ưu hóa như mảng cuốn (rolling array), và do có đệ quy nên hiệu suất vận hành sẽ thấp hơn khử đệ quy. Do đó nên căn cứ vào đề bài để chọn cách hiện thực phù hợp nhất.
 
-int main() {
-  cin >> n >> t;
-  for (int i = 1; i <= n; i++) cin >> w[i] >> v[i];
-  for (int i = 1; i <= n; i++)
-    for (int j = 0; j <= t; j++) {
-      f[i][j] = f[i - 1][j];
-      if (j >= w[i])
-        f[i][j] = max(f[i][j], f[i - 1][j - w[i]] + v[i]);  // 状态转移方程
-    }
-  cout << f[n][t];
-  return 0;
-}
-```
+## Cách viết tìm kiếm ghi nhớ
 
-在求解动态规划的问题时，记忆化搜索和递推，都确保了同一状态至多只被求解一次．而它们实现这一点的方式则略有不同：递推通过设置明确的访问顺序来避免重复访问，记忆化搜索虽然没有明确规定访问顺序，但通过给已经访问过的状态打标记的方式，也达到了同样的目的．
+### Phương pháp 1
 
-与递推相比，记忆化搜索因为不用明确规定访问顺序，在实现难度上有时低于递推，且能比较方便地处理边界情况，这是记忆化搜索的一大优势．但与此同时，记忆化搜索难以使用滚动数组等优化，且由于存在递归，运行效率会低于递推．因此应该视题目选择更适合的实现方式．
+1. Viết trạng thái và phương trình DP của bài toán.
+2. Viết hàm DFS dựa trên chúng.
+3. Thêm mảng ghi nhớ.
 
-## 如何写记忆化搜索
+### Phương pháp 2
 
-### 方法一
-
-1.  把这道题的 dp 状态和方程写出来
-2.  根据它们写出 dfs 函数
-3.  添加记忆化数组
-
-举例：
-
-$dp_{i} = \max\{dp_{j}+1\}\quad (1 \leq j < i \land a_{j}<a_{i})$（最长上升子序列）
-
-转为
-
-=== "C++"
-    ```cpp
-    int dfs(int i) {
-      if (mem[i] != -1) return mem[i];
-      int ret = 1;
-      for (int j = 1; j < i; j++)
-        if (a[j] < a[i]) ret = max(ret, dfs(j) + 1);
-      return mem[i] = ret;
-    }
-    
-    int main() {
-      memset(mem, -1, sizeof(mem));
-      // 读入部分略去
-      int ret = 0;
-      for (int j = 1; j <= n; j++) {
-        ret = max(ret, dfs(j));
-      }
-      cout << ret << endl;
-    }
-    ```
-
-=== "Python"
-    ```python
-    def dfs(i):
-        if mem[i] != -1:
-            return mem[i]
-        ret = 1
-        for j in range(1, i):
-            if a[j] < a[i]:
-                ret = max(ret, dfs(j) + 1)
-        mem[i] = ret
-        return mem[i]
-    ```
-
-### 方法二
-
-1.  写出这道题的暴搜程序（最好是 [dfs](../search/dfs.md)）
-2.  将这个 dfs 改成「无需外部变量」的 dfs
-3.  添加记忆化数组
-
-举例：本文中「采药」的例子
+1. Viết chương trình vét cạn cho bài toán (tốt nhất là [DFS](../search/dfs.md)).
+2. Sửa DFS này thành một hàm DFS "không dùng biến bên ngoài".
+3. Thêm mảng ghi nhớ.

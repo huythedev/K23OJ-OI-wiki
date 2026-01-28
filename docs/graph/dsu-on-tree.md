@@ -1,12 +1,12 @@
 author: abc1763613206, cesonic, Ir1d, MingqiHuang, xinchengo, xiaofu-15191, hsefz-ChenJunJie
 
-## 引入
+## Giới thiệu
 
-启发式算法是什么呢？
+Thuật toán "heuristic" là gì?
 
-启发式算法是基于人类的经验和直观感觉，对一些算法的优化．
+Thuật toán heuristic là các kỹ thuật tối ưu hóa dựa trên kinh nghiệm và trực giác của con người.
 
-举个例子，最常见的就是并查集的启发式合并了，代码是这样的：
+Ví dụ điển hình nhất là kỹ thuật hợp nhất theo heuristic trong cấu trúc dữ liệu hợp nhất tập hợp (DSU), mã như sau:
 
 ```cpp
 void merge(int x, int y) {
@@ -17,120 +17,120 @@ void merge(int x, int y) {
 }
 ```
 
-在这里，对于两个大小不一样的集合，我们将小的集合合并到大的集合中，而不是将大的集合合并到小的集合中．
+Ở đây, với hai tập hợp có kích thước khác nhau, ta sẽ hợp tập nhỏ vào tập lớn, thay vì ngược lại.
 
-为什么呢？这个集合的大小可以认为是集合的高度（在正常情况下），而我们将集合高度小的并到高度大的显然有助于我们找到父亲．
+Tại sao lại như vậy? Kích thước tập hợp có thể coi là chiều cao của cây (trong trường hợp thông thường), và việc hợp cây thấp vào cây cao sẽ giúp việc tìm cha nhanh hơn.
 
-让高度小的树成为高度较大的树的子树，这个优化可以称为启发式合并算法．
+Việc cho cây thấp làm con của cây cao là một tối ưu gọi là hợp nhất theo heuristic.
 
-## 算法内容
+## Nội dung thuật toán
 
-树上启发式合并（dsu on tree）对于某些树上离线问题可以速度大于等于大部分算法且更易于理解和实现的算法．
+Thuật toán "dsu on tree" (hợp nhất theo heuristic trên cây) là một kỹ thuật mạnh để giải các bài toán truy vấn offline trên cây, vừa dễ hiểu vừa dễ cài đặt, tốc độ ngang hoặc vượt nhiều thuật toán khác.
 
-考虑下面的问题：[树上数颜色](https://www.luogu.com.cn/problem/U41492)．
+Xét bài toán sau: [Đếm số màu trên cây](https://www.luogu.com.cn/problem/U41492).
 
-???+ note "例题引入"
-    给出一棵 $n$ 个节点以 $1$ 为根的树，节点 $u$ 的颜色为 $c_u$，现在对于每个结点 $u$ 询问以 $u$ 为根的子树里一共出现了多少种不同的颜色．
-    
-    $n\le 2\times 10^5$．
+???+ note "Ví dụ dẫn nhập"
+    Cho một cây $n$ đỉnh gốc tại $1$, mỗi đỉnh $u$ có màu $c_u$. Với mỗi đỉnh $u$, hỏi trong cây con gốc $u$ có bao nhiêu màu khác nhau.
+
+    $n\le 2\times 10^5$.
 
 ![dsu-on-tree-1.png](./images/dsu-on-tree-1.svg)
 
-对于这种问题解决方式大多是运用大量的数据结构（树套树等），如果可以离线，是不是有更简单的方法？
+Với dạng bài này, thường phải dùng các cấu trúc dữ liệu phức tạp (như cây phân đoạn lồng nhau), nhưng nếu cho phép truy vấn offline, liệu có cách đơn giản hơn?
 
-## 过程
+## Quy trình
 
-既然支持离线，考虑预处理后 $O(1)$ 输出答案．
+Vì cho phép truy vấn offline, ta có thể tiền xử lý để trả lời truy vấn trong $O(1)$.
 
-直接暴力预处理的时间复杂度为 $O(n^2)$，即对每一个子节点进行一次遍历，每次遍历的复杂度显然与 $n$ 同阶，有 $n$ 个节点，故复杂度为 $O(n^2)$．
+Nếu duyệt brute-force, độ phức tạp là $O(n^2)$: với mỗi đỉnh, duyệt toàn bộ cây con, mỗi lần $O(n)$, tổng $O(n^2)$.
 
-可以发现，每个节点的答案由其子树和其本身得到，考虑利用这个性质处理问题．
+Nhận thấy đáp án của mỗi đỉnh phụ thuộc vào cây con của nó và chính nó, ta có thể tận dụng tính chất này.
 
-我们可以先预处理出每个节点子树的大小和它的重儿子，重儿子同树链剖分一样，是拥有节点最多子树的儿子，这个过程显然可以 $O(n)$ 完成．
+Trước tiên, tiền xử lý kích thước cây con và xác định "con nặng" (giống như trong phân tích chuỗi nặng nhẹ - HLD), con nặng là con có cây con lớn nhất, quá trình này $O(n)$.
 
-我们用 $cnt_i$ 表示颜色 $i$ 的出现次数，$ans_u$ 表示结点 $u$ 的答案．
+Gọi $cnt_i$ là số lần màu $i$ xuất hiện, $ans_u$ là đáp án của đỉnh $u$.
 
-遍历一个节点 $u$，我们按以下的步骤进行遍历：
+Duyệt một đỉnh $u$ theo các bước sau:
 
-1.  先遍历 $u$ 的轻（非重）儿子，并计算答案，但 **不保留遍历后它对 $cnt$ 数组的影响**；
-2.  遍历它的重儿子，**保留它对 $cnt$ 数组的影响**；
-3.  再次遍历 $u$ 的轻儿子的子树结点，加入这些结点的贡献，以得到 $u$ 的答案．
+1.  Duyệt các con nhẹ (không phải con nặng), tính đáp án nhưng **không giữ lại ảnh hưởng lên mảng $cnt$**;
+2.  Duyệt con nặng, **giữ lại ảnh hưởng lên mảng $cnt$**;
+3.  Duyệt lại cây con của các con nhẹ, cộng thêm ảnh hưởng để tính đáp án cho $u$.
 
 ![dsu-on-tree-2.png](./images/dsu-on-tree-2.svg)
 
-上图是一个例子．
+Hình trên minh họa quy trình.
 
-这样，对于一个节点，我们遍历了一次重子树，两次非重子树，显然是最划算的．
+Như vậy, mỗi đỉnh chỉ duyệt cây con nặng một lần, cây con nhẹ hai lần, rất tối ưu.
 
-通过执行这个过程，我们获得了这个节点所有子树的答案．
+Sau khi thực hiện, ta có đáp án cho mọi cây con.
 
-为什么不合并第一步和第三步呢？因为 $cnt$ 数组不能重复使用，否则空间会太大，需要在 $O(n)$ 的空间内完成．
+Tại sao không gộp bước 1 và 3? Vì mảng $cnt$ không thể dùng lại, nếu không sẽ tốn quá nhiều bộ nhớ, cần đảm bảo dùng $O(n)$ không gian.
 
-显然若一个节点 $u$ 被遍历了 $x$ 次，则其重儿子会被遍历 $x$ 次，轻儿子（如果有的话）会被遍历 $2x$ 次．
+Rõ ràng, nếu một đỉnh $u$ bị duyệt $x$ lần, thì con nặng bị duyệt $x$ lần, con nhẹ (nếu có) bị duyệt $2x$ lần.
 
-注意除了重儿子，每次遍历完 $cnt$ 要清零．
+Lưu ý: sau khi duyệt xong con nhẹ, phải reset mảng $cnt$.
 
-## 证明
+## Chứng minh
 
-我们像树链剖分一样定义重边和轻边（连向重儿子的为重边，其余为轻边）．关于重儿子和重边的定义，可以见下图，对于一棵有 $n$ 个节点的树：
+Giống như phân tích chuỗi nặng nhẹ, định nghĩa cạnh nặng và nhẹ (cạnh nối tới con nặng là cạnh nặng, còn lại là cạnh nhẹ). Xem hình dưới, với cây $n$ đỉnh:
 
-根节点到树上任意节点的轻边数不超过 $\log n$ 条．我们设根到该节点有 $x$ 条轻边该节点的子树大小为 $y$，显然轻边连接的子节点的子树大小小于父亲的一半（若大于一半就不是轻边了），则 $y<n/2^x$，显然 $n>2^x$，所以 $x<\log n$．
+Số cạnh nhẹ từ gốc tới bất kỳ đỉnh không quá $\log n$. Gọi số cạnh nhẹ là $x$, kích thước cây con là $y$, rõ ràng cây con nối qua cạnh nhẹ nhỏ hơn một nửa cha (nếu lớn hơn thì là con nặng), nên $y<n/2^x$, tức $n>2^x$, nên $x<\log n$.
 
-又因为如果一个节点是其父亲的重儿子，则它的子树必定在它的兄弟之中最多，所以任意节点到根的路径上所有重边连接的父节点在计算答案时必定不会遍历到这个节点，所以一个节点的被遍历的次数等于它到根节点路径上的轻边数 $+1$（之所以要 $+1$ 是因为它本身要被遍历到），所以一个节点的被遍历次数 $=\log n+1$, 总时间复杂度则为 $O(n(\log n+1))=O(n\log n)$，输出答案花费 $O(m)$．
+Nếu một đỉnh là con nặng của cha, thì cây con của nó lớn nhất trong các anh em, nên trên đường từ gốc tới nó, các cha nối qua cạnh nặng sẽ không duyệt lại nó, nên số lần bị duyệt là số cạnh nhẹ trên đường + 1 (vì chính nó cũng bị duyệt), tổng số lần bị duyệt là $\log n+1$, tổng thời gian $O(n(\log n+1))=O(n\log n)$, trả lời truy vấn $O(m)$.
 
 ![dsu-on-tree-3.png](./images/dsu-on-tree-3.svg)
 
-*图中标粗的即为重边，重边连向的子节点为重儿子*
+*Các cạnh tô đậm là cạnh nặng, con nối qua cạnh nặng là con nặng*
 
-## 优化
+## Tối ưu
 
-在证明过程中提到，dsu on tree 利用了重链剖分中的轻重儿子概念加速合并．既然如此，我们也可以直接利用重链剖分得到的 dfs 序，化递归为迭代，进一步优化 dsu on tree 的常数．
+Như đã nói, dsu on tree tận dụng khái niệm con nặng/nhẹ để tăng tốc. Ta cũng có thể dùng luôn thứ tự dfs từ phân tích chuỗi nặng nhẹ để chuyển đệ quy thành lặp, tối ưu thêm hằng số.
 
-dfs 序本身就有如下的性质：一个节点的子树在 dfs 序上一定连续．因此，可以倒序遍历 dfs 序数组．这样保证了在遍历到一个节点时，它的子树中的其他节点一定已经得到了处理．
+Thứ tự dfs có tính chất: cây con của một đỉnh là một đoạn liên tiếp trên thứ tự dfs. Do đó, có thể duyệt ngược thứ tự dfs, đảm bảo khi duyệt một đỉnh, cây con của nó đã được xử lý.
 
-重链剖分得到的 dfs 序有着如下优良的性质：一条重链在 dfs 序上一定是连续的．因此，当按照 dfs 序倒序遍历节点时，对于一条重链顶端的节点，要遍历的下一个节点一定不是该节点的父亲，所以要清空它的影响；除此之外，对于不在重链顶端的节点，遍历的前一个节点要么是自己的重儿子，要么是已经清除了影响的其他分支的节点，所以可以直接继承其影响．在此基础上，再利用 dfs 序快速统计所有轻儿子的影响，记录答案．
+Thứ tự dfs từ phân tích chuỗi nặng nhẹ còn có tính chất: một chuỗi nặng là một đoạn liên tiếp trên thứ tự dfs. Khi duyệt ngược, nếu đỉnh là đầu chuỗi nặng, thì đỉnh tiếp theo không phải cha nó, nên phải reset ảnh hưởng; nếu không phải đầu chuỗi nặng, thì đỉnh trước là con nặng hoặc đã reset, nên có thể kế thừa ảnh hưởng. Dựa vào đó, dùng thứ tự dfs để cộng nhanh ảnh hưởng của các con nhẹ, ghi lại đáp án.
 
-以上过程称为 dsu on tree 的非递归/迭代实现（也被称为 dsu on tree 的 dfs 序实现）．相较于原本递归实现，它减小了递归调用函数的时空开销，获得了不小的常数优化，**尤其在处理包含大量链状结构的树时，拥有显著的栈空间优势．**
+Quy trình này gọi là dsu on tree không đệ quy/lặp (hay dsu on tree theo thứ tự dfs). So với bản đệ quy, nó giảm chi phí gọi hàm và bộ nhớ, đặc biệt hiệu quả với cây nhiều chuỗi, tiết kiệm stack.
 
-## 实现
+## Cài đặt
 
-??? example "参考实现"
-    === "递归实现"
+??? example "Mã tham khảo"
+    === "Cài đặt đệ quy"
         ```cpp
         --8<-- "docs/graph/code/dsu-on-tree/dsu-on-tree_1.cpp"
         ```
     
-    === "非递归实现"
+    === "Cài đặt không đệ quy"
         ```cpp
         --8<-- "docs/graph/code/dsu-on-tree/dsu-on-tree_2.cpp"
         ```
 
-## 运用
+## Ứng dụng
 
-1.  某些出题人设置的正解是 dsu on tree 的题
+1.  Một số bài chính xác yêu cầu dùng dsu on tree
 
-    如 [CF741D](http://codeforces.com/problemset/problem/741/D)．给一棵树，每个节点的权值是'a' 到'v' 的字母，每次询问要求在一个子树找一条路径，使该路径包含的字符排序后成为回文串．
+    Ví dụ [CF741D](http://codeforces.com/problemset/problem/741/D): Cho một cây, mỗi đỉnh mang ký tự từ 'a' đến 'v', mỗi truy vấn hỏi trong cây con có đường đi nào mà các ký tự trên đường đi (sắp xếp lại) tạo thành chuỗi đối xứng.
 
-    因为是排列后成为回文串，所以一个字符出现了两次相当于没出现，也就是说，这条路径满足 **最多有一个字符出现奇数次**．
+    Vì chuỗi đối xứng nên mỗi ký tự xuất hiện hai lần coi như không xuất hiện, tức là đường đi thỏa mãn **tối đa một ký tự xuất hiện lẻ**.
 
-    正常做法是对每一个节点 dfs，每到一个节点就强行枚举所有字母找到和它异或后结果为 1 的个数大于 1 的路径，再取最长值，这样是 $O(n^2\log n)$ 的，可以用 dsu on tree 优化到 $O(n\log^2n)$．关于具体做法，可以参考下面的扩展阅读．
+    Cách thường là dfs từng đỉnh, mỗi lần duyệt liệt kê mọi ký tự, kiểm tra số ký tự lẻ lớn hơn 1 thì loại, lấy đường đi dài nhất, độ phức tạp $O(n^2\log n)$, dùng dsu on tree tối ưu xuống $O(n\log^2n)$. Chi tiết xem phần mở rộng bên dưới.
 
-2.  可以用 dsu 乱搞的题
+2.  Một số bài có thể dùng dsu để "ăn gian"
 
-    可以水一些树套树的部分分（没有修改操作），而且 dsu 的复杂度优于树上莫队的 $O(n\sqrt{m})$．
+    Có thể dùng dsu để giải một số bài cây phân đoạn (không có truy vấn cập nhật), dsu có độ phức tạp tốt hơn Mo's trên cây $O(n\sqrt{m})$.
 
-## 练习题
+## Bài tập
 
 [CF600E Lomsat gelral](http://codeforces.com/problemset/problem/600/E)
 
-题意翻译：树的节点有颜色，一种颜色占领了一个子树，当且仅当没有其他颜色在这个子树中出现得比它多．求占领每个子树的所有颜色之和．
+Dịch đề: Mỗi đỉnh trên cây có màu, một màu chiếm cây con khi không có màu nào xuất hiện nhiều hơn nó trong cây con. Tính tổng các màu chiếm mỗi cây con.
 
-[UOJ284 快乐游戏鸡](https://uoj.ac/problem/284)
+[UOJ284 Gà chơi game vui vẻ](https://uoj.ac/problem/284)
 
 [CF1709E XOR Tree](https://codeforces.com/contest/1709/problem/E)
 
-## 参考资料/扩展阅读
+## Tài liệu tham khảo/mở rộng
 
-[CF741D 作者介绍的 dsu on tree](http://codeforces.com/blog/entry/44351)
+[Blog tác giả CF741D về dsu on tree](http://codeforces.com/blog/entry/44351)
 
-[这位作者的题解](http://codeforces.com/blog/entry/48871)
+[Blog giải thích chi tiết](http://codeforces.com/blog/entry/48871)
