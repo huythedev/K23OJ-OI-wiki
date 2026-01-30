@@ -1,22 +1,22 @@
-## 引入
+## Giới thiệu
 
-可持久化 Trie 的方式和可持久化线段树的方式是相似的，即每次只修改被添加或值被修改的节点，而保留没有被改动的节点，在上一个版本的基础上连边，使最后每个版本的 Trie 树的根遍历所能分离出的 Trie 树都是完整且包含全部信息的．
+Phương pháp Trie bền vững tương tự như Cây phân đoạn bền vững, tức là mỗi lần chỉ sửa đổi các nút được thêm hoặc giá trị bị thay đổi, trong khi giữ lại các nút không thay đổi, nối các cạnh dựa trên phiên bản trước đó, sao cho cuối cùng mỗi phiên bản của Trie gốc đều hoàn chỉnh và chứa đầy đủ thông tin.
 
-大部分的可持久化 Trie 题中，Trie 都是以 [01-Trie](../string/trie.md#维护异或极值) 的形式出现的．
+Trong hầu hết các bài toán Trie bền vững, Trie xuất hiện dưới dạng [01-Trie](../string/trie.md#maintaining-xor-extremum).
 
-??? note "例题 [最大异或和](https://www.luogu.com.cn/problem/P4735)"
-    对一个长度为 $n$ 的数组 $a$ 维护以下操作：
+??? note "Ví dụ [Maximum XOR Sum](https://www.luogu.com.cn/problem/P4735)"
+    Cho một mảng $a$ có độ dài $n$, thực hiện các thao tác sau:
     
-    1.  在数组的末尾添加一个数 $x$，数组的长度 $n$ 自增 $1$．
-    2.  给出查询区间 $[l,r]$ 和一个值 $k$，求当 $l\le p\le r$ 时，$k \oplus \bigoplus^{n}_{i=p} a_i$ 的最大值．
+    1.  Thêm một số $x$ vào cuối mảng, độ dài mảng $n$ tăng thêm $1$.
+    2.  Cho khoảng truy vấn $[l,r]$ và một giá trị $k$, tìm giá trị lớn nhất của $k \oplus \bigoplus^{n}_{i=p} a_i$ với $l\le p\le r$.
 
-## 过程
+## Quá trình
 
-这个求的值可能有些麻烦，利用常用的处理连续异或的方法，记 $s_x=\bigoplus_{i=1}^x a_i$，则原式等价于 $s_{p-1}\oplus s_n\oplus k$，观察到 $s_n \oplus k$ 在查询的过程中是固定的，题目的查询变化为查询在区间 $[l-1,r-1]$ 中异或定值（$s_n\oplus k$）的最大值．
+Giá trị cần tìm có vẻ hơi phức tạp, sử dụng phương pháp xử lý XOR liên tiếp thường dùng, ký hiệu $s_x=\bigoplus_{i=1}^x a_i$, thì biểu thức ban đầu tương đương với $s_{p-1}\oplus s_n\oplus k$. Nhận thấy rằng $s_n \oplus k$ là cố định trong quá trình truy vấn, bài toán truy vấn chuyển thành tìm giá trị lớn nhất khi XOR với một giá trị cố định ($s_n\oplus k$) trong khoảng $[l-1,r-1]$.
 
-继续按类似于可持久化线段树的思路，考虑每次的查询都查询整个区间．我们只需把这个区间建一棵 Trie 树，将这个区间中的每个树都加入这棵 Trie 中，查询的时候，尽量往与当前位不相同的地方跳．
+Tiếp tục theo ý tưởng tương tự như Cây phân đoạn bền vững, hãy xem xét mỗi lần truy vấn là truy vấn trên toàn bộ khoảng. Chúng ta chỉ cần xây dựng một Trie cho khoảng này, thêm mỗi số trong khoảng này vào Trie, khi truy vấn thì cố gắng nhảy đến nhánh có bit khác với bit hiện tại.
 
-查询区间，只需要利用前缀和和差分的思想，用两棵前缀 Trie 树（也就是按顺序添加数的两个历史版本）相减即得到该区间的 Trie 树．再利用动态开点的思想，不添加没有计算过的点，以减少空间占用．
+Để truy vấn khoảng, chỉ cần sử dụng ý tưởng tổng tiền tố và hiệu, dùng hai cây Trie tiền tố (tức là hai phiên bản lịch sử thêm số theo thứ tự) trừ đi nhau để có được cây Trie của khoảng đó. Sử dụng ý tưởng cấp phát động, không thêm các điểm chưa tính toán để giảm dung lượng bộ nhớ.
 
 ```cpp
 --8<-- "docs/ds/code/persistent-trie/persistent-trie_1.cpp"

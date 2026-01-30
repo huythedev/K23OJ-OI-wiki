@@ -1,29 +1,29 @@
-本页面将简要介绍链表．
+Trang này sẽ giới thiệu tóm tắt về danh sách liên kết.
 
-## 引入
+## Giới thiệu
 
-链表是一种用于存储数据的数据结构，通过如链条一般的指针来连接元素．它的特点是插入与删除数据十分方便，但寻找与读取数据的表现欠佳．
+Danh sách liên kết (Linked List) là một cấu trúc dữ liệu dùng để lưu trữ dữ liệu, kết nối các phần tử thông qua các con trỏ giống như một sợi dây xích. Đặc điểm của nó là việc chèn và xóa dữ liệu rất thuận tiện, nhưng hiệu suất tìm kiếm và đọc dữ liệu lại kém.
 
-## 与数组的区别
+## So sánh với mảng
 
-链表和数组都可用于存储数据．与链表不同，数组将所有元素按次序依次存储．不同的存储结构令它们有了不同的优势：
+Cả danh sách liên kết và mảng (Array) đều có thể dùng để lưu trữ dữ liệu. Khác với danh sách liên kết, mảng lưu trữ tất cả các phần tử theo thứ tự liên tiếp. Các cấu trúc lưu trữ khác nhau mang lại những ưu thế khác nhau cho chúng:
 
-链表因其链状的结构，能方便地删除、插入数据，操作次数是 $O(1)$．但也因为这样，寻找、读取数据的效率不如数组高，在随机访问数据中的操作次数是 $O(n)$．
+Danh sách liên kết nhờ cấu trúc dạng chuỗi nên có thể dễ dàng xóa, chèn dữ liệu, độ phức tạp thao tác là $O(1)$. Nhưng cũng chính vì vậy, hiệu quả tìm kiếm, đọc dữ liệu không cao bằng mảng, độ phức tạp thao tác truy cập ngẫu nhiên là $O(n)$.
 
-数组可以方便地寻找并读取数据，在随机访问中操作次数是 $O(1)$．但删除、插入的操作次数是 $O(n)$ 次．
+Mảng có thể thuận tiện tìm kiếm và đọc dữ liệu, độ phức tạp thao tác truy cập ngẫu nhiên là $O(1)$. Nhưng độ phức tạp thao tác xóa, chèn là $O(n)$.
 
-## 构建链表
+## Xây dựng danh sách liên kết
 
-???+ tip "Tip"
-    构建链表时，使用指针的部分比较抽象，光靠文字描述和代码可能难以理解，建议配合作图来理解．
+???+ tip "Mẹo"
+    Khi xây dựng danh sách liên kết, phần sử dụng con trỏ khá trừu tượng. Chỉ dựa vào văn bản và code có thể khó hiểu, khuyến khích kết hợp với hình vẽ để hiểu rõ hơn.
 
-### 单向链表
+### Danh sách liên kết đơn
 
-单向链表中包含数据域和指针域，其中数据域用于存放数据，指针域用来连接当前结点和下一节点．
+Danh sách liên kết đơn bao gồm trường dữ liệu và trường con trỏ, trong đó trường dữ liệu dùng để chứa dữ liệu, trường con trỏ dùng để kết nối nút hiện tại và nút tiếp theo.
 
 ![](images/list.svg)
 
-???+ note "实现"
+???+ note "Hiện thực"
     === "C++"
         ```cpp
         struct Node {
@@ -40,13 +40,13 @@
                 self.next = next
         ```
 
-### 双向链表
+### Danh sách liên kết đôi
 
-双向链表中同样有数据域和指针域．不同之处在于，指针域有左右（或上一个、下一个）之分，用来连接上一个结点、当前结点、下一个结点．
+Danh sách liên kết đôi cũng có trường dữ liệu và trường con trỏ. Điểm khác biệt là trường con trỏ có phân biệt trái phải (hoặc trước, sau), dùng để kết nối nút phía trước, nút hiện tại và nút phía sau.
 
 ![](images/double-list.svg)
 
-???+ note "实现"
+???+ note "Hiện thực"
     === "C++"
         ```cpp
         struct Node {
@@ -65,25 +65,25 @@
                 self.right = right
         ```
 
-## 向链表中插入（写入）数据
+## Chèn dữ liệu vào danh sách liên kết
 
-### 单向链表
+### Danh sách liên kết đơn
 
-流程大致如下：
+Quy trình đại khái như sau:
 
-1.  初始化待插入的数据 `node`；
-2.  将 `node` 的 `next` 指针指向 `p` 的下一个结点；
-3.  将 `p` 的 `next` 指针指向 `node`．
+1.  Khởi tạo dữ liệu `node` cần chèn;
+2.  Trỏ con trỏ `next` của `node` vào nút tiếp theo của `p`;
+3.  Trỏ con trỏ `next` của `p` vào `node`.
 
-具体过程可参考下图：
+Quá trình cụ thể có thể tham khảo hình dưới đây:
 
 1.  ![](./images/list-insert-1.svg)
 2.  ![](./images/list-insert-2.svg)
 3.  ![](./images/list-insert-3.svg)
 
-代码实现如下：
+Code hiện thực như sau:
 
-???+ note "实现"
+???+ note "Hiện thực"
     === "C++"
         ```cpp
         void insertNode(int i, Node *p) {
@@ -103,27 +103,27 @@
             p.next = node
         ```
 
-### 单向循环链表
+### Danh sách liên kết vòng đơn
 
-将链表的头尾连接起来，链表就变成了循环链表．由于链表首尾相连，在插入数据时需要判断原链表是否为空：为空则自身循环，不为空则正常插入数据．
+Nối đầu và đuôi danh sách lại, danh sách liên kết trở thành danh sách liên kết vòng (Circular Linked List). Do danh sách nối đầu đuôi, khi chèn dữ liệu cần kiểm tra danh sách gốc có rỗng không: nếu rỗng thì tự vòng lại chính nó, nếu không rỗng thì chèn dữ liệu bình thường.
 
-大致流程如下：
+Quy trình đại khái như sau:
 
-1.  初始化待插入的数据 `node`；
-2.  判断给定链表 `p` 是否为空；
-3.  若为空，则将 `node` 的 `next` 指针和 `p` 都指向自己；
-4.  否则，将 `node` 的 `next` 指针指向 `p` 的下一个结点；
-5.  将 `p` 的 `next` 指针指向 `node`．
+1.  Khởi tạo dữ liệu `node` cần chèn;
+2.  Kiểm tra danh sách `p` đã cho có rỗng không;
+3.  Nếu rỗng, trỏ con trỏ `next` của `node` và cả `p` vào chính `node`;
+4.  Nếu không, trỏ con trỏ `next` của `node` vào nút tiếp theo của `p`;
+5.  Trỏ con trỏ `next` của `p` vào `node`.
 
-具体过程可参考下图：
+Quá trình cụ thể có thể tham khảo hình dưới đây:
 
 1.  ![](./images/list-insert-cyclic-1.svg)
 2.  ![](./images/list-insert-cyclic-2.svg)
 3.  ![](./images/list-insert-cyclic-3.svg)
 
-代码实现如下：
+Code hiện thực như sau:
 
-???+ note "实现"
+???+ note "Hiện thực"
     === "C++"
         ```cpp
         void insertNode(int i, Node *p) {
@@ -154,23 +154,23 @@
                 p.next = node
         ```
 
-### 双向循环链表
+### Danh sách liên kết vòng đôi
 
-在向双向循环链表插入数据时，除了要判断给定链表是否为空外，还要同时修改左、右两个指针．
+Khi chèn dữ liệu vào danh sách liên kết vòng đôi, ngoài việc kiểm tra danh sách đã cho có rỗng không, còn cần sửa đổi đồng thời hai con trỏ trái, phải.
 
-大致流程如下：
+Quy trình đại khái như sau:
 
-1.  初始化待插入的数据 `node`；
-2.  判断给定链表 `p` 是否为空；
-3.  若为空，则将 `node` 的 `left` 和 `right` 指针，以及 `p` 都指向自己；
-4.  否则，将 `node` 的 `left` 指针指向 `p`;
-5.  将 `node` 的 `right` 指针指向 `p` 的右结点；
-6.  将 `p` 右结点的 `left` 指针指向 `node`；
-7.  将 `p` 的 `right` 指针指向 `node`．
+1.  Khởi tạo dữ liệu `node` cần chèn;
+2.  Kiểm tra danh sách `p` đã cho có rỗng không;
+3.  Nếu rỗng, trỏ cả con trỏ `left` và `right` của `node`, cũng như `p` vào chính `node`;
+4.  Nếu không, trỏ con trỏ `left` của `node` vào `p`;
+5.  Trỏ con trỏ `right` của `node` vào nút bên phải của `p`;
+6.  Trỏ con trỏ `left` của nút bên phải `p` vào `node`;
+7.  Trỏ con trỏ `right` của `p` vào `node`.
 
-代码实现如下：
+Code hiện thực như sau:
 
-???+ note "实现"
+???+ note "Hiện thực"
     === "C++"
         ```cpp
         void insertNode(int i, Node *p) {
@@ -205,28 +205,28 @@
                 p.right = node
         ```
 
-## 从链表中删除数据
+## Xóa dữ liệu khỏi danh sách liên kết
 
-### 单向（循环）链表
+### Danh sách liên kết đơn (vòng)
 
-设待删除结点为 `p`，从链表中删除它时，将 `p` 的下一个结点 `p->next` 的值覆盖给 `p` 即可，与此同时更新 `p` 的下下个结点．
+Giả sử nút cần xóa là `p`, khi xóa nó khỏi danh sách, chỉ cần ghi đè giá trị của nút tiếp theo `p->next` lên `p`, đồng thời cập nhật nút sau của nút tiếp theo. (Lưu ý: Cách này giả định `p` không phải là nút cuối cùng hoặc danh sách là vòng).
 
-流程大致如下：
+Quy trình đại khái như sau:
 
-1.  将 `p` 下一个结点的值赋给 `p`，以抹掉 `p->value`；
-2.  新建一个临时结点 `t` 存放 `p->next` 的地址；
-3.  将 `p` 的 `next` 指针指向 `p` 的下下个结点，以抹掉 `p->next`；
-4.  删除 `t`．此时虽然原结点 `p` 的地址还在使用，删除的是原结点 `p->next` 的地址，但 `p` 的数据被 `p->next` 覆盖，`p` 名存实亡．
+1.  Gán giá trị của nút tiếp theo cho `p`, để xóa bỏ `p->value` cũ;
+2.  Tạo một nút tạm `t` để lưu địa chỉ của `p->next`;
+3.  Trỏ con trỏ `next` của `p` vào nút sau của nút tiếp theo (tức là `p->next->next`), để xóa bỏ liên kết tới `p->next` cũ;
+4.  Xóa `t`. Lúc này tuy địa chỉ của nút `p` gốc vẫn đang được sử dụng, cái bị xóa thực chất là nút `p->next` gốc, nhưng do dữ liệu của `p` đã bị `p->next` ghi đè, `p` cũ coi như đã biến mất.
 
-具体过程可参考下图：
+Quá trình cụ thể có thể tham khảo hình dưới đây:
 
 1.  ![](./images/list-delete-1.svg)
 2.  ![](./images/list-delete-2.svg)
 3.  ![](./images/list-delete-3.svg)
 
-代码实现如下：
+Code hiện thực như sau:
 
-???+ note "实现"
+???+ note "Hiện thực"
     === "C++"
         ```cpp
         void deleteNode(Node *p) {
@@ -244,19 +244,19 @@
             p.next = p.next.next
         ```
 
-### 双向循环链表
+### Danh sách liên kết vòng đôi
 
-流程大致如下：
+Quy trình đại khái như sau:
 
-1.  将 `p` 左结点的右指针指向 `p` 的右节点；
-2.  将 `p` 右结点的左指针指向 `p` 的左节点；
-3.  新建一个临时结点 `t` 存放 `p` 的地址；
-4.  将 `p` 的右节点地址赋给 `p`，以避免 `p` 变成悬垂指针；
-5.  删除 `t`．
+1.  Trỏ con trỏ phải của nút bên trái `p` vào nút bên phải `p`;
+2.  Trỏ con trỏ trái của nút bên phải `p` vào nút bên trái `p`;
+3.  Tạo một nút tạm `t` lưu địa chỉ của `p`;
+4.  Gán địa chỉ nút bên phải `p` cho `p`, để tránh `p` trở thành con trỏ lơ lửng (dangling pointer);
+5.  Xóa `t`.
 
-代码实现如下：
+Code hiện thực như sau:
 
-???+ note "实现"
+???+ note "Hiện thực"
     === "C++"
         ```cpp
         void deleteNode(Node *&p) {
@@ -276,12 +276,11 @@
             p = p.right
         ```
 
-## 技巧
+## Kỹ thuật
 
-### 异或链表
+### Danh sách liên kết XOR
 
-异或链表（XOR Linked List）本质上还是 **双向链表**，但它利用按位异或的值，仅使用一个指针的内存大小便可以实现双向链表的功能．
+Danh sách liên kết XOR (XOR Linked List) về bản chất vẫn là **danh sách liên kết đôi**, nhưng nó tận dụng giá trị phép XOR bit để chỉ sử dụng bộ nhớ của một con trỏ mà vẫn thực hiện được chức năng của danh sách liên kết đôi.
 
-我们在结构 `Node` 中定义 `lr = left ^ right`，即前后两个元素地址的 **按位异或值**．正向遍历时用前一个元素的地址异
-或当前节点的 `lr` 可得到后一个元素的地址，反向遍历时用后一个元素的地址异或当前节点的 `lr` 又可得到前一个的元素地址．
-这样一来，便可以用一半的内存实现双向链表同样的功能．
+Chúng ta định nghĩa `lr = left ^ right` trong cấu trúc `Node`, tức là **giá trị XOR bit** của địa chỉ hai phần tử trước và sau. Khi duyệt xuôi, dùng địa chỉ phần tử trước XOR với `lr` của nút hiện tại sẽ được địa chỉ phần tử sau; khi duyệt ngược, dùng địa chỉ phần tử sau XOR với `lr` của nút hiện tại sẽ được địa chỉ phần tử trước.
+Như vậy, có thể thực hiện chức năng tương tự danh sách liên kết đôi với một nửa lượng bộ nhớ dành cho con trỏ.

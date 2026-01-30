@@ -1,10 +1,10 @@
-## 建立块状数组
+## Xây dựng mảng khối (Block Array)
 
-块状数组，即把一个数组分为几个块，块内信息整体保存，若查询时遇到两边不完整的块直接暴力查询．一般情况下，块的长度为 $O(\sqrt{n})$．详细分析可以阅读 2017 年国家集训队论文中徐明宽的《非常规大小分块算法初探》．
+Mảng khối, tức là chia một mảng thành nhiều khối, thông tin trong khối được lưu trữ tổng thể, nếu khi truy vấn gặp khối hai bên không hoàn chỉnh thì trực tiếp dùng phương pháp vét cạn (brute force) để truy vấn. Thông thường, độ dài của khối là $O(\sqrt{n})$. Phân tích chi tiết có thể tham khảo bài viết "Sơ bộ về thuật toán phân khối với kích thước phi tiêu chuẩn" của Từ Minh Khoan trong tuyển tập bài viết của Đội tuyển quốc gia năm 2017.
 
-下面直接给出一种建立块状数组的代码．
+Dưới đây là đoạn mã trực tiếp cho việc xây dựng mảng khối.
 
-???+ note "实现"
+???+ note "Thực hiện"
     ```cpp
     num = sqrt(n);
     for (int i = 1; i <= num; i++)
@@ -18,22 +18,22 @@
     }
     ```
 
-其中 `st[i]` 和 `ed[i]` 为块的起点和终点，`size[i]` 为块的大小．
+Trong đó `st[i]` và `ed[i]` là điểm bắt đầu và điểm kết thúc của khối, `size[i]` là kích thước của khối.
 
-## 保存与修改块内信息
+## Lưu trữ và sửa đổi thông tin trong khối
 
-### 例题 1：[教主的魔法](https://www.luogu.com.cn/problem/P2801)
+### Ví dụ 1: [Phép thuật của Giáo chủ (Jiaozhu de Mofa)](https://www.luogu.com.cn/problem/P2801)
 
-两种操作：
+Hai loại thao tác:
 
-1.  区间 $[x,y]$ 每个数都加上 $z$；
-2.  查询区间 $[x,y]$ 内大于等于 $z$ 的数的个数．
+1.  Mỗi số trong đoạn $[x,y]$ đều được cộng thêm $z$;
+2.  Truy vấn số lượng số trong đoạn $[x,y]$ lớn hơn hoặc bằng $z$.
 
-我们要询问一个块内大于等于一个数的数的个数，所以需要一个 `t` 数组对块内排序，`a` 为原来的（未被排序的）数组．对于整块的修改，使用类似于标记永久化的方式，用 `delta` 数组记录现在块内整体加上的值．设 $q$ 为查询和修改的操作次数总和，则时间复杂度 $O(q\sqrt{n}\log n)$．
+Vì ta cần đếm số lượng số lớn hơn hoặc bằng một giá trị nào đó trong một khối, nên cần một mảng `t` để sắp xếp các phần tử trong khối, mảng `a` là mảng gốc (chưa sắp xếp). Đối với thao tác sửa đổi trên các khối hoàn chỉnh, ta sử dụng cách thức tương tự như đánh dấu duy trì (lazy propagation), dùng mảng `delta` để ghi lại giá trị cộng thêm tổng thể hiện tại trong khối. Giả sử tổng số lần truy vấn và sửa đổi là $q$, thì độ phức tạp thời gian là $O(q\sqrt{n}\log n)$.
 
-用 `delta` 数组记录每个块的整体赋值情况．
+Sử dụng mảng `delta` để ghi lại tình trạng gán giá trị tổng thể của từng khối.
 
-???+ note "实现"
+???+ note "Thực hiện"
     ```cpp
     void Sort(int k) {
       for (int i = st[k]; i <= ed[k]; i++) t[i] = a[i];
@@ -42,15 +42,15 @@
     
     void Modify(int l, int r, int c) {
       int x = belong[l], y = belong[r];
-      if (x == y)  // 区间在一个块内就直接修改
+      if (x == y)  // Nếu đoạn nằm trong một khối thì sửa trực tiếp
       {
         for (int i = l; i <= r; i++) a[i] += c;
         Sort(x);
         return;
       }
-      for (int i = l; i <= ed[x]; i++) a[i] += c;     // 直接修改起始段
-      for (int i = st[y]; i <= r; i++) a[i] += c;     // 直接修改结束段
-      for (int i = x + 1; i < y; i++) delta[i] += c;  // 中间的块整体打上标记
+      for (int i = l; i <= ed[x]; i++) a[i] += c;     // Sửa trực tiếp đoạn đầu
+      for (int i = st[y]; i <= r; i++) a[i] += c;     // Sửa trực tiếp đoạn cuối
+      for (int i = x + 1; i < y; i++) delta[i] += c;  // Đánh dấu cộng dồn cho các khối ở giữa
       Sort(x);
       Sort(y);
     }
@@ -69,21 +69,21 @@
       for (int i = x + 1; i <= y - 1; i++)
         ans +=
             ed[i] - (lower_bound(t + st[i], t + ed[i] + 1, c - delta[i]) - t) + 1;
-      // 用 lower_bound 找出中间每一个整块中第一个大于等于 c 的数的位置
+      // Dùng lower_bound để tìm vị trí của phần tử đầu tiên lớn hơn hoặc bằng c trong mỗi khối ở giữa
       return ans;
     }
     ```
 
-### 例题 2：寒夜方舟
+### Ví dụ 2: Thuyền cứu sinh đêm đông (Hanye Fangzhou)
 
-两种操作：
+Hai loại thao tác:
 
-1.  区间 $[x,y]$ 每个数都变成 $z$；
-2.  查询区间 $[x,y]$ 内小于等于 $z$ 的数的个数．
+1.  Mỗi số trong đoạn $[x,y]$ đều được gán bằng $z$;
+2.  Truy vấn số lượng số trong đoạn $[x,y]$ nhỏ hơn hoặc bằng $z$.
 
-用 `delta` 数组记录现在块内被整体赋值为何值．当该块未被整体赋值时，用一个特殊值（如 `0x3f3f3f3f3f3f3f3fll`）加以表示．对于边角块，查询前要 `pushdown`，把块内存的信息下放到每一个数上．赋值之后记得重新 `sort` 一遍．其他方面同上题．
+Dùng mảng `delta` để ghi lại giá trị được gán tổng thể hiện tại trong khối. Khi khối chưa được gán tổng thể, dùng một giá trị đặc biệt (ví dụ: `0x3f3f3f3f3f3f3f3fll`) để biểu thị. Đối với các khối ở biên, trước khi truy vấn cần `pushdown`, đưa thông tin của khối xuống từng phần tử. Sau khi gán giá trị, nhớ sắp xếp lại (`sort`) một lần nữa. Các mặt khác tương tự như ví dụ trên.
 
-???+ note "实现"
+???+ note "Thực hiện"
     ```cpp
     void Sort(int k) {
       for (int i = st[k]; i <= ed[k]; i++) t[i] = a[i];
@@ -91,7 +91,7 @@
     }
     
     void PushDown(int x) {
-      if (delta[x] != 0x3f3f3f3f3f3f3f3fll)  // 用该值标记块内没有被整体赋值
+      if (delta[x] != 0x3f3f3f3f3f3f3f3fll)  // Dùng giá trị này để đánh dấu khối chưa bị gán tổng thể
         for (int i = st[x]; i <= ed[x]; i++) a[i] = t[i] = delta[x];
       delta[x] = 0x3f3f3f3f3f3f3f3fll;
     }
@@ -147,11 +147,11 @@
     }
     ```
 
-## 练习
+## Luyện tập
 
-1.  [单点修改，区间查询](https://loj.ac/problem/130)
-2.  [区间修改，区间查询](https://loj.ac/problem/132)
-3.  [【模板】线段树 2](https://www.luogu.com.cn/problem/P3373)
-4.  [「Ynoi2019 模拟赛」Yuno loves sqrt technology III](https://www.luogu.com.cn/problem/P5048)
-5.  [「Violet」蒲公英](https://www.luogu.com.cn/problem/P4168)
-6.  [作诗](https://www.luogu.com.cn/problem/P4135)
+1.  [Sửa đổi điểm đơn, truy vấn đoạn](https://loj.ac/problem/130)
+2.  [Sửa đổi đoạn, truy vấn đoạn](https://loj.ac/problem/132)
+3.  [【Template】Segment Tree 2 (Cây phân đoạn 2)](https://www.luogu.com.cn/problem/P3373)
+4.  [「Ynoi2019 模拟赛」Yuno thích công nghệ căn bậc hai III (Yuno loves sqrt technology III)](https://www.luogu.com.cn/problem/P5048)
+5.  [「Violet」Bồ công anh (Pugongying)](https://www.luogu.com.cn/problem/P4168)
+6.  [Làm thơ (Zuoshi)](https://www.luogu.com.cn/problem/P4135)

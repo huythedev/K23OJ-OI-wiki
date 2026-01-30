@@ -1,171 +1,161 @@
-## 引入
+## Dẫn nhập
 
-图论中的树和现实生活中的树长得一样，只不过我们习惯于处理问题的时候把树根放到上方来考虑．这种数据结构看起来像是一个倒挂的树，因此得名．
+Cây trong lý thuyết đồ thị có hình dạng giống cây trong thực tế, chỉ khác là khi xử lý bài toán, ta thường đặt gốc cây ở phía trên. Cấu trúc dữ liệu này trông như một cái cây lộn ngược, nên được gọi là "cây".
 
-## 定义
+## Định nghĩa
 
-一个没有固定根结点的树称为 **无根树**（unrooted tree）．无根树有几种等价的形式化定义：
+Một cây **vô gốc** (unrooted tree) là cây không có đỉnh gốc cố định. Có một số định nghĩa tương đương:
 
--   有 $n$ 个结点，$n-1$ 条边的连通无向图
+-   Đồ thị vô hướng liên thông có $n$ đỉnh, $n-1$ cạnh.
+-   Đồ thị vô hướng liên thông không có chu trình.
+-   Đồ thị vô hướng mà giữa mọi cặp đỉnh chỉ có đúng một đường đi đơn giản.
+-   Đồ thị liên thông mà mọi cạnh đều là cầu.
+-   Đồ thị không có chu trình, và nếu thêm một cạnh giữa hai đỉnh bất kỳ thì đồ thị thu được có đúng một chu trình.
 
--   无向无环的连通图
+Từ cây vô gốc, nếu chỉ định một đỉnh làm **gốc** thì thu được **cây có gốc** (rooted tree). Cây có gốc thường vẫn biểu diễn bằng đồ thị vô hướng, chỉ khác là quy ước quan hệ cha-con, xem chi tiết bên dưới.
 
--   任意两个结点之间有且仅有一条简单路径的无向图
+## Một số khái niệm về cây
 
--   任何边均为桥的连通图
+### Áp dụng cho cả cây vô gốc và cây có gốc
 
--   没有圈，且在任意不同两点间添加一条边之后所得图含唯一的一个圈的图
+-   **Rừng (forest)**: Đồ thị mà mỗi thành phần liên thông là một cây. Theo định nghĩa này, một cây cũng là một rừng.
+-   **Cây khung (spanning tree)**: Một cây con liên thông của đồ thị vô hướng, đồng thời là cây. Tức là chọn $n-1$ cạnh trong đồ thị để nối tất cả các đỉnh.
+-   **Lá (leaf node) của cây vô gốc**: Đỉnh có bậc không quá $1$.
 
-在无根树的基础上，指定一个结点称为 **根**，则形成一棵 **有根树**（rooted tree）．有根树在很多时候仍以无向图表示，只是规定了结点之间的上下级关系，详见下文．
+    ???+ question "Tại sao không phải là bậc đúng bằng $1$?"
+        Xét trường hợp $n = 1$.
 
-## 有关树的定义
+-   **Lá (leaf node) của cây có gốc**: Đỉnh không có con.
 
-### 适用于无根树和有根树
+### Chỉ áp dụng cho cây có gốc
 
--   **森林（forest）**：每个连通分量（连通块）都是树的图．按照定义，一棵树也是森林．
-
--   **生成树（spanning tree）**：一个连通无向图的生成子图，同时要求是树．也即在图的边集中选择 $n - 1$ 条，将所有顶点连通．
-
--   **无根树的叶结点（leaf node）**：度数不超过 $1$ 的结点．
-
-    ???+ question "为什么不是度数恰为 $1$？"
-        考虑 $n = 1$．
-
--   **有根树的叶结点（leaf node）**：没有子结点的结点．
-
-### 只适用于有根树
-
--   **父亲（parent node）**：对于除根以外的每个结点，定义为从该结点到根路径上的第二个结点．  
-    根结点没有父结点．
--   **祖先（ancestor）**：一个结点到根结点的路径上，除了它本身外的结点．  
-    根结点的祖先集合为空．
--   **子结点（child node）**：如果 $u$ 是 $v$ 的父亲，那么 $v$ 是 $u$ 的子结点．  
-    子结点的顺序一般不加以区分，二叉树是一个例外．
--   **结点的深度（depth）**：到根结点的路径上的边数．
--   **树的高度（height）**：所有结点的深度的最大值．
--   **兄弟（sibling）**：同一个父亲的多个子结点互为兄弟．
--   **后代（descendant）**：子结点和子结点的后代．  
-    或者理解成：如果 $u$ 是 $v$ 的祖先，那么 $v$ 是 $u$ 的后代．
+-   **Cha (parent node)**: Với mỗi đỉnh (trừ gốc), cha là đỉnh thứ hai trên đường đi từ đỉnh đó đến gốc.  
+    Đỉnh gốc không có cha.
+-   **Tổ tiên (ancestor)**: Các đỉnh trên đường từ một đỉnh đến gốc, trừ chính nó.  
+    Gốc không có tổ tiên.
+-   **Con (child node)**: Nếu $u$ là cha của $v$, thì $v$ là con của $u$.  
+    Thứ tự các con thường không quan trọng, trừ cây nhị phân.
+-   **Độ sâu (depth)**: Số cạnh trên đường từ đỉnh đến gốc.
+-   **Chiều cao cây (height)**: Độ sâu lớn nhất trong các đỉnh.
+-   **Anh em (sibling)**: Các đỉnh cùng cha là anh em.
+-   **Hậu duệ (descendant)**: Con và hậu duệ của con.  
+    Hoặc: nếu $u$ là tổ tiên của $v$, thì $v$ là hậu duệ của $u$.
 
 ![tree-definition.svg](images/tree-definition.svg)
 
--   **子树（subtree）**：删掉与父亲相连的边后，该结点所在的子图．
+-   **Cây con (subtree)**: Xóa cạnh nối với cha, phần còn lại là cây con gốc tại đỉnh đó.
 
     ![tree-definition-subtree.svg](images/tree-definition-subtree.svg)
 
-## 特殊的树
+## Một số loại cây đặc biệt
 
--   **链（chain/path graph）**：满足与任一结点相连的边不超过 $2$ 条的树称为链．
-
--   **菊花/星星（star）**：满足存在 $u$ 使得所有除 $u$ 以外结点均与 $u$ 相连的树称为菊花．
-
--   **有根二叉树（rooted binary tree）**：每个结点最多只有两个儿子（子结点）的有根树称为二叉树．常常对两个子结点的顺序加以区分，分别称之为左子结点和右子结点．  
-    大多数情况下，**二叉树** 一词均指有根二叉树．
-
--   **完整二叉树（full/proper binary tree）**：每个结点的子结点数量均为 0 或者 2 的二叉树．换言之，每个结点或者是树叶，或者左右子树均非空．
-
+-   **Chuỗi (chain/path graph)**: Cây mà mọi đỉnh đều có bậc không quá $2$.
+-   **Cây sao (star)**: Có một đỉnh $u$ mà mọi đỉnh còn lại đều nối trực tiếp với $u$.
+-   **Cây nhị phân có gốc (rooted binary tree)**: Cây có gốc mà mỗi đỉnh có tối đa hai con. Thứ tự hai con thường được phân biệt là trái/phải.  
+    Thông thường, "cây nhị phân" ngầm hiểu là cây nhị phân có gốc.
+-   **Cây nhị phân đầy đủ (full/proper binary tree)**: Mỗi đỉnh hoặc là lá, hoặc có đúng hai con.  
     ![](images/tree-binary-proper.svg)
-
--   **完全二叉树（complete binary tree）**：只有最下面两层结点的度数可以小于 2，且最下面一层的结点都集中在该层最左边的连续位置上．
-
+-   **Cây nhị phân hoàn chỉnh (complete binary tree)**: Chỉ hai tầng dưới cùng có thể có đỉnh bậc nhỏ hơn 2, và các đỉnh tầng dưới cùng phải nằm liên tiếp bên trái.  
     ![](images/tree-binary-complete.svg)
-
--   **完美二叉树（perfect binary tree）**：所有叶结点的深度均相同，且所有非叶节点的子节点数量均为 2 的二叉树称为完美二叉树．
-
+-   **Cây nhị phân hoàn hảo (perfect binary tree)**: Mọi lá có cùng độ sâu, mọi đỉnh không phải lá đều có đúng hai con.  
     ![](images/tree-binary-perfect.svg)
 
-???+ warning "Warning"
-    Proper binary tree 的汉译名称不固定，且完全二叉树和满二叉树的定义在不同教材中定义不同，遇到的时候需根据上下文加以判断．
+???+ warning "Cảnh báo"
+    Tên tiếng Việt của Proper binary tree không thống nhất, và định nghĩa về cây nhị phân hoàn chỉnh/hoàn hảo có thể khác nhau giữa các tài liệu. Khi gặp cần đọc kỹ ngữ cảnh.
 
-OIers 所说的「满二叉树」多指完美二叉树．
+Trong cộng đồng OI, "cây nhị phân đầy đủ" thường chỉ cây nhị phân hoàn hảo.
 
-## 存储
+## Lưu trữ cây
 
-### 只记录父结点
+### Chỉ lưu cha
 
-用一个数组 `parent[N]` 记录每个结点的父亲结点．
+Dùng mảng `parent[N]` lưu cha của mỗi đỉnh.
 
-这种方式可以获得的信息较少，不便于进行自顶向下的遍历．常用于自底向上的递推问题中．
+Cách này chỉ lấy được ít thông tin, không tiện cho các truy vấn từ trên xuống. Thường dùng cho các bài toán quy hoạch động từ dưới lên.
 
-### 邻接表
+### Danh sách kề
 
--   对于无根树：为每个结点开辟一个线性列表，记录所有与之相连的结点．
+-   Với cây vô gốc: mỗi đỉnh có một danh sách các đỉnh kề.
     ```cpp
     std::vector<int> adj[N];
     ```
--   对于有根树：
-    -   方法一：若给定的是无向图，则仍可以上述形式存储．下文将介绍如何区分结点的上下关系．
-    -   方法二：若输入数据能够确保结点的上下关系，则可以利用这个信息．为每个结点开辟一个线性列表，记录其所有子结点；若有需要，还可在另一个数组中记录其父结点．
+-   Với cây có gốc:
+    -   Cách 1: Nếu đầu vào là đồ thị vô hướng, vẫn lưu như trên. Sẽ hướng dẫn cách xác định quan hệ cha-con bên dưới.
+    -   Cách 2: Nếu đầu vào đã xác định rõ quan hệ cha-con, mỗi đỉnh lưu danh sách con, và có thể lưu thêm cha.
         ```cpp
         std::vector<int> children[N];
         int parent[N];
         ```
-        当然也可以用其他方式（如链表）替代 `std::vector`．
+        Có thể dùng các cấu trúc khác thay cho `std::vector`.
 
-### 左孩子右兄弟表示法
+### Biểu diễn con trái - anh phải
 
-#### 过程
+#### Quy trình
 
-对于有根树，存在一种简单的表示方法．
+Với cây có gốc, có thể dùng cách này:
 
-首先，给每个结点的所有子结点任意确定一个顺序．
+Đầu tiên, gán thứ tự cho các con của mỗi đỉnh.
 
-此后为每个结点记录两个值：其 **第一个子结点**  `child[u]` 和其 **下一个兄弟结点**  `sib[u]`．若没有子结点，则 `child[u]` 为空；若该结点是其父结点的最后一个子结点，则 `sib[u]` 为空．
+Sau đó, với mỗi đỉnh lưu hai giá trị: **con đầu tiên** `child[u]` và **anh em kế tiếp** `sib[u]`. Nếu không có con thì `child[u]` rỗng; nếu là con cuối cùng thì `sib[u]` rỗng.
 
-#### 实现
+#### Cài đặt
 
-遍历一个结点的所有子结点可由如下方式实现．
+Duyệt các con của một đỉnh như sau:
 
 ```cpp
-int v = child[u];  // 从第一个子结点开始
+// filepath: /home/ubuntu/K23OJ-OI-wiki/docs/graph/tree-basic.md
+int v = child[u];  // Bắt đầu từ con đầu tiên
 while (v != EMPTY_NODE) {
   // ...
-  // 处理子结点 v
+  // Xử lý con v
   // ...
-  v = sib[v];  // 转至下一个子结点，即 v 的一个兄弟
+  v = sib[v];  // Sang con tiếp theo (anh em)
 }
 ```
 
-也可简写为以下形式．
+Hoặc viết gọn:
 
 ```cpp
+// filepath: /home/ubuntu/K23OJ-OI-wiki/docs/graph/tree-basic.md
 for (int v = child[u]; v != EMPTY_NODE; v = sib[v]) {
   // ...
-  // 处理子结点 v
+  // Xử lý con v
   // ...
 }
 ```
 
-### 二叉树
+### Cây nhị phân
 
-需要记录每个结点的左右子结点．
+Cần lưu hai con trái/phải của mỗi đỉnh.
 
-???+ note "实现"
+???+ note "Cài đặt"
     ```cpp
+    // filepath: /home/ubuntu/K23OJ-OI-wiki/docs/graph/tree-basic.md
     int parent[N];
     int lch[N], rch[N];
-    // -- or --
+    // -- hoặc --
     int child[N][2];
     ```
 
-## 树的遍历
+## Duyệt cây
 
-### 树上 DFS
+### DFS trên cây
 
-在树上 DFS 是这样的一个过程：先访问根节点，然后分别访问根节点每个儿子的子树．
+DFS trên cây là: thăm gốc, rồi lần lượt thăm từng cây con của các con.
 
-可以用来求出每个节点的深度、父亲等信息．
+Có thể dùng để tính độ sâu, cha của mỗi đỉnh, v.v.
 
-### 二叉树 DFS 遍历
+### Duyệt cây nhị phân bằng DFS
 
-#### 先序遍历
+#### Duyệt tiền thứ tự (preorder)
 
 ![preorder](images/tree-basic-preorder.svg)
 
-按照 **根，左，右** 的顺序遍历二叉树．
+Duyệt theo thứ tự **gốc, trái, phải**.
 
-???+ note "实现"
+???+ note "Cài đặt"
     ```cpp
+    // filepath: /home/ubuntu/K23OJ-OI-wiki/docs/graph/tree-basic.md
     void preorder(BiTree* root) {
       if (root) {
         cout << root->key << " ";
@@ -175,14 +165,15 @@ for (int v = child[u]; v != EMPTY_NODE; v = sib[v]) {
     }
     ```
 
-#### 中序遍历
+#### Duyệt trung thứ tự (inorder)
 
 ![inorder](images/tree-basic-inorder.svg)
 
-按照 **左，根，右** 的顺序遍历二叉树．
+Duyệt theo thứ tự **trái, gốc, phải**.
 
-???+ note "实现"
+???+ note "Cài đặt"
     ```cpp
+    // filepath: /home/ubuntu/K23OJ-OI-wiki/docs/graph/tree-basic.md
     void inorder(BiTree* root) {
       if (root) {
         inorder(root->left);
@@ -192,14 +183,15 @@ for (int v = child[u]; v != EMPTY_NODE; v = sib[v]) {
     }
     ```
 
-#### 后序遍历
+#### Duyệt hậu thứ tự (postorder)
 
 ![postorder](images/tree-basic-postorder.svg)
 
-按照 **左，右，根** 的顺序遍历二叉树．
+Duyệt theo thứ tự **trái, phải, gốc**.
 
-???+ note "实现"
+???+ note "Cài đặt"
     ```cpp
+    // filepath: /home/ubuntu/K23OJ-OI-wiki/docs/graph/tree-basic.md
     void postorder(BiTree* root) {
       if (root) {
         postorder(root->left);
@@ -209,32 +201,33 @@ for (int v = child[u]; v != EMPTY_NODE; v = sib[v]) {
     }
     ```
 
-#### 反推
+#### Suy luận ngược
 
-已知中序遍历序列和另外一个序列可以求第三个序列．
+Biết hai trong ba thứ tự duyệt (trung thứ tự và một thứ tự khác) có thể xác định thứ tự còn lại.
 
 ![reverse](images/tree-basic-reverse.svg)
 
-1.  前序的第一个是 `root`，后序的最后一个是 `root`．
-2.  先确定根节点，然后根据中序遍历，在根左边的为左子树，根右边的为右子树．
-3.  对于每一个子树可以看成一个全新的树，仍然遵循上面的规律．
+1.  Phần tử đầu của tiền thứ tự là `root`, phần tử cuối của hậu thứ tự là `root`.
+2.  Xác định gốc, rồi dựa vào trung thứ tự, các phần bên trái là cây con trái, bên phải là cây con phải.
+3.  Với mỗi cây con, lặp lại quy tắc trên.
 
-### 树上 BFS
+### BFS trên cây
 
-从树根开始，严格按照层次来访问节点．
+Bắt đầu từ gốc, thăm các đỉnh theo từng tầng.
 
-BFS 过程中也可以顺便求出各个节点的深度和父亲节点．
+Có thể đồng thời tính độ sâu, cha của mỗi đỉnh.
 
-#### 树的层序遍历
+#### Duyệt theo tầng (level order)
 
-树层序遍历是指按照从根节点到叶子节点的层次关系，一层一层的横向遍历各个节点．根据 BFS 的定义可以知道，BFS 所得到的遍历顺序就是一种层序遍历．但层序遍历要求将不同的层次区分开来，所以其结果通常以二维数组的形式表示．
+Duyệt cây theo từng tầng từ gốc đến lá, mỗi tầng từ trái sang phải. BFS chính là một cách duyệt theo tầng, nhưng duyệt theo tầng thường yêu cầu phân biệt các tầng, nên thường trả về mảng hai chiều.
 
-例如，下图的树的层序遍历的结果是 `[[1], [2, 3, 4], [5, 6]]`（每一层从左向右）．
+Ví dụ, cây dưới đây có kết quả duyệt theo tầng là `[[1], [2, 3, 4], [5, 6]]`.
 
 ![tree-basic-levelOrder](images/tree-basic-levelOrder.svg)
 
-???+ note "实现"
+???+ note "Cài đặt"
     ```cpp
+    // filepath: /home/ubuntu/K23OJ-OI-wiki/docs/graph/tree-basic.md
     vector<vector<int>> levelOrder(Node* root) {
       if (!root) {
         return {};
@@ -243,13 +236,13 @@ BFS 过程中也可以顺便求出各个节点的深度和父亲节点．
       queue<Node*> q;
       q.push(root);
       while (!q.empty()) {
-        int currentLevelSize = q.size();  // 当前层的节点个数
+        int currentLevelSize = q.size();  // Số đỉnh ở tầng hiện tại
         res.push_back(vector<int>());
         for (int i = 0; i < currentLevelSize; ++i) {
           Node* cur = q.front();
           q.pop();
           res.back().push_back(cur->val);
-          for (Node* child : cur->children) {  // 把子节点都加入
+          for (Node* child : cur->children) {  // Thêm các con vào hàng đợi
             q.push(child);
           }
         }
@@ -258,58 +251,59 @@ BFS 过程中也可以顺便求出各个节点的深度和父亲节点．
     }
     ```
 
-### 二叉树 Morris 遍历
+### Duyệt cây nhị phân kiểu Morris
 
-二叉树遍历的核心问题是，当遍历当前节点的子节点后，如何返回当前节点并继续遍历．遍历二叉树的递归方法和非递归方法都使用了栈结构，记录返回路径，来实现从下层到上层的移动．其空间复杂度最好时为 $O(\log n)$，最坏时为 $O(n)$（二叉树呈线性）．
+Vấn đề cốt lõi khi duyệt cây nhị phân là: sau khi duyệt xong con, làm sao quay lại cha để tiếp tục duyệt. Cách đệ quy và không đệ quy đều dùng stack để lưu đường quay lại, nên độ phức tạp bộ nhớ tốt nhất là $O(\log n)$, xấu nhất $O(n)$ (cây là chuỗi).
 
-Morris 遍历的实质是避免使用栈，利用底层节点空闲的 `right` 指针指回上层的某个节点，从而完成下层到上层的移动．
+Morris traversal tránh dùng stack, tận dụng con trỏ phải còn trống ở các đỉnh lá để trỏ ngược lên cha, giúp quay lại cha.
 
-#### Morris 遍历的过程
+#### Quy trình Morris
 
-假设来到当前节点 `cur`，开始时来到根节点位置．
+Giả sử đang ở đỉnh `cur`, ban đầu là gốc.
 
-1.  如果 `cur` 为空时遍历停止，否则进行以下过程．
-2.  如果 `cur` 没有左子树，`cur` 向右移动（`cur = cur->right`）．
-3.  如果 `cur` 有左子树，找到左子树上最右的节点，记为 `mostRight`．
-    -   如果 `mostRight` 的 `right` 指针指向空，让其指向 `cur`，然后 `cur` 向左移动（`cur = cur->left`）．
-    -   如果 `mostRight` 的 `right` 指针指向 `cur`，将其修改为 `null`，然后 `cur` 向右移动（`cur = cur->right`）．
+1.  Nếu `cur` rỗng thì dừng, ngược lại tiếp tục.
+2.  Nếu `cur` không có con trái, chuyển sang phải (`cur = cur->right`).
+3.  Nếu `cur` có con trái, tìm đỉnh phải nhất trong cây con trái, gọi là `mostRight`.
+    -   Nếu `mostRight->right` rỗng, gán nó trỏ về `cur`, rồi sang trái (`cur = cur->left`).
+    -   Nếu `mostRight->right` trỏ về `cur`, gán lại thành `nullptr`, rồi sang phải (`cur = cur->right`).
 
-例如，`cur` 从节点 1 开始访问．
+Ví dụ, bắt đầu từ đỉnh 1.
 
 ![tree-basic-morris-1](images/tree-basic-morris-1.svg)
 
-`cur` 第一次访问节点 2 时，找到左子树上最右的节点 4，将 4 的 `right` 指针指向 `cur`（节点 2)．
+Lần đầu đến đỉnh 2, tìm con phải nhất là 4, gán 4 trỏ về 2.
 
 ![tree-basic-morris-2](images/tree-basic-morris-2.svg)
 
-`cur` 通过 4 的 `right` 指针返回上层，第二次访问节点 2 时，找到左子树上最右节点 4，将 4 的 `right` 指针修改为 `null`，然后继续访问右子树．之后的过程省略．
+Sau đó, qua 4 quay lại 2, lần hai đến 2, lại tìm 4, gán lại trỏ về nullptr, rồi sang phải. Quá trình tiếp theo tương tự.
 
 ![tree-basic-morris-1](images/tree-basic-morris-1.svg)
 
-整棵树的访问顺序是 `1242513637`．可以发现有左子树的节点访问两次，没有左子树的节点只访问一次．
+Thứ tự thăm: `1242513637`. Đỉnh có con trái được thăm hai lần, không có thì một lần.
 
-???+ note "实现"
+???+ note "Cài đặt"
     ```cpp
+    // filepath: /home/ubuntu/K23OJ-OI-wiki/docs/graph/tree-basic.md
     void morris(TreeNode* root) {
       TreeNode* cur = root;
       while (cur) {
         if (!cur->left) {
-          // 如果当前节点没有左子节点，则输出当前节点的值并进入右子树
+          // Nếu không có con trái, in giá trị rồi sang phải
           std::cout << cur->val << " ";
           cur = cur->right;
           continue;
         }
-        // 找到当前节点的左子树的最右节点
+        // Tìm con phải nhất của cây con trái
         TreeNode* mostRight = cur->left;
         while (mostRight->right && mostRight->right != cur) {
           mostRight = mostRight->right;
         }
         if (!mostRight->right) {
-          // 如果最右节点的right指针为空，将其指向当前节点，并进入左子树
+          // Nếu con phải nhất chưa trỏ về cur, gán rồi sang trái
           mostRight->right = cur;
           cur = cur->left;
         } else {
-          // 如果最右节点的right指针指向当前节点，说明左子树已经遍历完毕，输出当前节点的值并进入右子树
+          // Nếu đã trỏ về cur, gán lại nullptr, in giá trị rồi sang phải
           mostRight->right = nullptr;
           std::cout << cur->val << " ";
           cur = cur->right;
@@ -318,37 +312,38 @@ Morris 遍历的实质是避免使用栈，利用底层节点空闲的 `right` �
     }
     ```
 
-### 无根树
+### Cây vô gốc
 
-#### 过程
+#### Quy trình
 
-树的遍历一般为深度优先遍历，这个过程中最需要注意的是避免重复访问结点．
+Duyệt cây thường là DFS, cần tránh thăm lại đỉnh đã đi qua.
 
-由于树是无环图，因此只需记录当前结点是由哪个结点访问而来，此后进入除该结点外的所有相邻结点，即可避免重复访问．
+Vì cây không có chu trình, chỉ cần nhớ đỉnh đến từ đâu, khi duyệt thì bỏ qua đỉnh đó.
 
-???+ note "实现"
+???+ note "Cài đặt"
     ```cpp
+    // filepath: /home/ubuntu/K23OJ-OI-wiki/docs/graph/tree-basic.md
     void dfs(int u, int from) {
-      // 递归进入除了 from 之外的所有子结点
-      // 对于出发结点，from 为空，故会访问所有相邻结点，这与期望一致
+      // Đệ quy vào tất cả các đỉnh kề trừ from
+      // Với đỉnh xuất phát, from rỗng nên sẽ duyệt hết các đỉnh kề
       for (int v : adj[u])
         if (v != from) {
           dfs(v, u);
         }
     }
     
-    // 开始遍历时
-    int EMPTY_NODE = -1;  // 一个不存在的编号
-    int root = 0;         // 任取一个结点作为出发点
+    // Bắt đầu duyệt
+    int EMPTY_NODE = -1;  // Giá trị không tồn tại
+    int root = 0;         // Chọn một đỉnh bất kỳ làm gốc
     dfs(root, EMPTY_NODE);
     ```
 
-### 有根树
+### Cây có gốc
 
-对于有根树，需要区分结点的上下关系．
+Với cây có gốc, cần xác định quan hệ cha-con.
 
-考察上面的遍历过程，若从根开始遍历，则访问到一个结点时 `from` 的值，就是其父结点的编号．
+Như trên, khi duyệt từ gốc, mỗi lần đến một đỉnh, biến `from` chính là cha của đỉnh đó.
 
-通过这个方式，可以对于无向的输入求出所有结点的父结点，以及子结点列表．
+Nhờ vậy, từ đầu vào là đồ thị vô hướng, ta có thể xác định cha và danh sách con của từng đỉnh.
 
-**本页面部分内容引用自博文 [二叉树：前序遍历、中序遍历、后续遍历](https://blog.csdn.net/weixin_43357638/article/details/99730284)，遵循 CC 4.0 BY-SA 版权协议．**
+**Một phần nội dung trang này tham khảo bài viết [二叉树：前序遍历、中序遍历、后续遍历](https://blog.csdn.net/weixin_43357638/article/details/99730284), tuân thủ giấy phép CC 4.0 BY-SA.**

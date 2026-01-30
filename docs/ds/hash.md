@@ -1,37 +1,36 @@
-## 引入
+## Giới thiệu
 
 ![](images/hashtable.svg)
 
-哈希表又称散列表，一种以「key-value」形式存储数据的数据结构．所谓以「key-value」形式存储数据，是指任意的键值 key 都唯一对应到内存中的某个位置．只需要输入查找的键值，就可以快速地找到其对应的 value．可以把哈希表理解为一种高级的数组，这种数组的下标可以是很大的整数，浮点数，字符串甚至结构体．
+Bảng băm (Hash Table), hay còn gọi là Bảng phân tán (Hash List), là một cấu trúc dữ liệu lưu trữ dữ liệu dưới dạng cặp **"khóa-giá trị"** (key-value). Lưu trữ dữ liệu dưới dạng "khóa-giá trị" có nghĩa là bất kỳ khóa (key) nào cũng được ánh xạ duy nhất tới một vị trí cụ thể trong bộ nhớ. Chỉ cần nhập khóa cần tìm, ta có thể nhanh chóng tìm được giá trị tương ứng. Có thể hiểu bảng băm như một kiểu mảng nâng cao, trong đó chỉ số mảng có thể là số nguyên rất lớn, số thực, chuỗi, hoặc thậm chí là cấu trúc (struct).
 
-## 哈希函数
+## Hàm Băm
 
-要让键值对应到内存中的位置，就要为键值计算索引，也就是计算这个数据应该放到哪里．这个根据键值计算索引的函数就叫做哈希函数，也称散列函数．举个例子，如果键值是一个人的身份证号码，哈希函数就可以是号码的后四位，当然也可以是号码的前四位．生活中常用的「手机尾号」也是一种哈希函数．在实际的应用中，键值可能是更复杂的东西，比如浮点数、字符串、结构体等，这时候就要根据具体情况设计合适的哈希函数．哈希函数应当易于计算，并且尽量使计算出来的索引均匀分布．
+Để ánh xạ khóa tới một vị trí trong bộ nhớ, ta cần tính toán một chỉ số (index) từ khóa, hàm tính chỉ số này được gọi là **hàm băm** (hash function), hay hàm phân tán. Ví dụ, nếu khóa là số căn cước công dân của một người, hàm băm có thể là bốn chữ số cuối của số đó, hoặc bốn chữ số đầu. "Số đuôi điện thoại di động" thường dùng trong đời sống cũng là một dạng hàm băm. Trong các ứng dụng thực tế, khóa có thể phức tạp hơn, ví dụ như số thực, chuỗi, cấu trúc, lúc này cần thiết kế hàm băm phù hợp với từng trường hợp cụ thể. Hàm băm phải dễ tính toán và cố gắng phân bố các chỉ số tính được một cách đồng đều.
 
-能为 key 计算索引之后，我们就可以知道每个键值对应的值 value 应该放在哪里了．假设我们用数组 a 存放数据，哈希函数是 f，那键值对 `(key, value)` 就应该放在 `a[f(key)]` 上．不论键值是什么类型，范围有多大，`f(key)` 都是在可接受范围内的整数，可以作为数组的下标．
+Sau khi có thể tính chỉ số cho khóa, ta biết được giá trị `value` tương ứng với cặp `(key, value)` nên được đặt ở đâu. Giả sử ta dùng mảng `a` để lưu trữ dữ liệu, và hàm băm là $f$, thì cặp `(key, value)` sẽ được đặt tại `a[f(key)]`. Bất kể khóa thuộc kiểu gì, phạm vi bao nhiêu, $f(key)$ luôn là một số nguyên trong phạm vi chấp nhận được, có thể dùng làm chỉ số mảng.
 
-在 OI 中，最常见的情况应该是键值为整数的情况．当键值的范围比较小的时候，可以直接把键值作为数组的下标，但当键值的范围比较大，比如以 $10^9$ 范围内的整数作为键值的时候，就需要用到哈希表．一般把键值模一个较大的质数作为索引，也就是取 $f(x)=x \bmod M$ 作为哈希函数．
+Trong lập trình thi đấu (OI), trường hợp phổ biến nhất là khóa là số nguyên. Khi phạm vi khóa nhỏ, ta có thể dùng trực tiếp khóa làm chỉ số mảng. Nhưng khi phạm vi khóa lớn, ví dụ số nguyên trong phạm vi $10^9$, ta cần dùng bảng băm. Thông thường, ta lấy khóa modulo một số nguyên tố lớn làm chỉ số, tức là lấy $f(x) = x \bmod M$ làm hàm băm.
 
-另一种比较常见的情况是 key 为字符串的情况，由于不支持以字符串作为数组下标，并且将字符串转化成数字存储也可以避免多次进行字符串比较．所以在 OI 中，一般不直接把字符串作为键值，而是先算出字符串的哈希值，再把其哈希值作为键值插入到哈希表里．关于字符串的哈希值，我们一般采用进制的思想，将字符串想象成一个 $127$ 进制的数．那么，对于每一个长度为 $n$ 的字符串 $s$，就有：
+Một trường hợp phổ biến khác là khóa là chuỗi (string). Do không thể dùng chuỗi làm chỉ số mảng, và việc chuyển đổi chuỗi thành số để lưu trữ cũng tránh được việc so sánh chuỗi nhiều lần. Trong OI, người ta thường không dùng chuỗi làm khóa trực tiếp, mà tính **giá trị băm** của chuỗi, sau đó dùng giá trị băm này làm khóa để chèn vào bảng băm. Về giá trị băm chuỗi, ta thường dùng ý tưởng cơ số, coi chuỗi như một số trong hệ cơ số $127$. Với chuỗi $s$ có độ dài $n$:
 
-$x = s_0 \cdot 127^0 + s_1 \cdot 127^1 + s_2 \cdot 127^2 + \dots + s_n \cdot 127^n$
+$$x = s_0 \cdot 127^0 + s_1 \cdot 127^1 + s_2 \cdot 127^2 + \dots + s_n \cdot 127^n$$
 
-我们可以将得到的 $x$ 对 $2^{64}$（即 `unsigned long long` 的最大值）取模．这样 `unsigned long long` 的自然溢出就等价于取模操作了．可以使操作更加方便．
+Ta có thể lấy $x$ modulo $2^{64}$ (giá trị lớn nhất của `unsigned long long`). Khi đó, sự tràn tự nhiên của `unsigned long long` tương đương với phép toán modulo. Điều này làm cho thao tác tiện lợi hơn.
 
-这种方法虽然简单，但并不是完美的．可以构造数据使这种方法发生冲突（即两个字符串的 $x$ 对 $2^{64}$ 取模后的结果相同）．  
-我们可以使用双哈希的方法：选取两个大质数 $a,b$．当且仅当两个字符串的哈希值对 $a$ 和对 $b$ 取模都相等时，我们才认为这两个字符串相等．这样可以大大降低哈希冲突的概率．
+Phương pháp này tuy đơn giản nhưng không hoàn hảo. Có thể xây dựng dữ liệu khiến phương pháp này xảy ra **xung đột** (collision) (tức là hai chuỗi khác nhau có kết quả $x$ modulo $2^{64}$ bằng nhau). Ta có thể sử dụng **băm kép** (double hashing): chọn hai số nguyên tố lớn $a, b$. Chỉ khi giá trị băm của hai chuỗi modulo $a$ và modulo $b$ đều bằng nhau, ta mới coi hai chuỗi đó là bằng nhau. Điều này làm giảm đáng kể xác suất xảy ra xung đột băm.
 
-## 冲突
+## Xung đột (Collision)
 
-如果对于任意的键值，哈希函数计算出来的索引都不相同，那只用根据索引把 `(key, value)` 放到对应的位置就行了．但实际上，常常会出现两个不同的键值，他们用哈希函数计算出来的索引是相同的．这时候就需要一些方法来处理冲突．在 OI 中，最常用的方法是拉链法．
+Nếu hàm băm tính ra chỉ số khác nhau cho mọi khóa, ta chỉ cần đặt cặp `(key, value)` vào vị trí tương ứng với chỉ số đó. Tuy nhiên, trong thực tế, thường xảy ra trường hợp hai khóa khác nhau lại có cùng chỉ số tính được từ hàm băm. Khi đó, cần có phương pháp để xử lý xung đột. Trong OI, phương pháp phổ biến nhất là **phương pháp mảng liên kết** (Chaining method).
 
-### 拉链法
+### Phương pháp mảng liên kết (Chaining)
 
-拉链法也称开散列法（open hashing）．
+Phương pháp mảng liên kết còn gọi là **băm mở** (open hashing).
 
-拉链法是在每个存放数据的地方开一个链表，如果有多个键值索引到同一个地方，只用把他们都放到那个位置的链表里就行了．查询的时候需要把对应位置的链表整个扫一遍，对其中的每个数据比较其键值与查询的键值是否一致．如果索引的范围是 $1\ldots M$，哈希表的大小为 $N$，那么一次插入/查询需要进行期望 $O(\frac{N}{M})$ 次比较．
+Phương pháp mảng liên kết là mở một danh sách liên kết tại mỗi vị trí lưu trữ dữ liệu. Nếu có nhiều khóa có cùng chỉ số, ta chỉ cần đưa tất cả chúng vào danh sách liên kết tại vị trí đó. Khi truy vấn, ta phải duyệt toàn bộ danh sách liên kết tại vị trí tương ứng, so sánh khóa của từng phần tử với khóa truy vấn. Nếu phạm vi chỉ số là $1\ldots M$, và kích thước bảng băm là $N$, thì một lần chèn/truy vấn cần trung bình $O(\frac{N}{M})$ lần so sánh.
 
-#### 实现
+#### Triển khai
 
 === "C++"
     ```cpp
@@ -116,26 +115,26 @@ $x = s_0 \cdot 127^0 + s_1 \cdot 127^1 + s_2 \cdot 127^2 + \dots + s_n \cdot 127
         return value
     ```
 
-这里再提供一个封装过的模板，可以像 map 一样用，并且较短
+Ở đây cung cấp thêm một mẫu được đóng gói, có thể sử dụng giống như `map`, và ngắn hơn:
 
 ```cpp
-struct hash_map {  // 哈希表模板
+struct hash_map {  // Mẫu bảng băm
 
   struct data {
     long long u;
     int v, nex;
-  };  // 前向星结构
+  };  // Cấu trúc chuỗi tiến (forward star)
 
-  data e[SZ << 1];  // SZ 是 const int 表示大小
+  data e[SZ << 1];  // SZ là const int biểu thị kích thước
   int h[SZ], cnt;
 
   int hash(long long u) { return (u % SZ + SZ) % SZ; }
 
-  // 这里使用 (u % SZ + SZ) % SZ 而非 u % SZ 的原因是
-  // C++ 中的 % 运算无法将负数转为正数
+  // Ở đây sử dụng (u % SZ + SZ) % SZ thay vì u % SZ là vì
+  // Phép toán % trong C++ không thể chuyển số âm thành số dương
 
   int& operator[](long long u) {
-    int hu = hash(u);  // 获取头指针
+    int hu = hash(u);  // Lấy con trỏ đầu chuỗi
     for (int i = h[hu]; i; i = e[i].nex)
       if (e[i].u == u) return e[i].v;
     return e[++cnt] = data{u, -1, h[hu]}, h[hu] = cnt, e[cnt].v;
@@ -148,18 +147,18 @@ struct hash_map {  // 哈希表模板
 };
 ```
 
-在这里，hash 函数是针对键值的类型设计的，并且返回一个链表头指针用于查询．在这个模板中我们写了一个键值对类型为 `(long long, int)` 的 hash 表，并且在查询不存在的键值时返回 -1．函数 `hash_map()` 用于在定义时初始化．
+Ở đây, hàm băm được thiết kế cho kiểu khóa, và trả về một con trỏ đầu danh sách liên kết để truy vấn. Trong mẫu này, ta viết bảng băm với cặp khóa-giá trị kiểu `(long long, int)`, và trả về -1 khi khóa không tồn tại. Hàm `hash_map()` được dùng để khởi tạo khi khai báo.
 
-### 闭散列法
+### Phương pháp băm kín (Closed Hashing)
 
-闭散列方法把所有记录直接存储在散列表中，如果发生冲突则根据某种方式继续进行探查．
+Phương pháp băm kín lưu trữ tất cả các bản ghi trực tiếp trong bảng băm, nếu xảy ra xung đột thì tiếp tục thăm dò theo một quy tắc nào đó.
 
-比如线性探查法：如果在 `d` 处发生冲突，就依次检查 `d + 1`，`d + 2`……
+Ví dụ: Phương pháp thăm dò tuyến tính (Linear Probing): Nếu xảy ra xung đột tại vị trí `d`, ta lần lượt kiểm tra `d + 1`, `d + 2`, ...
 
-#### 实现
+#### Triển khai
 
 ```cpp
-constexpr int N = 360007;  // N 是最大可以存储的元素数量
+constexpr int N = 360007;  // N là số lượng phần tử tối đa có thể lưu trữ
 
 class Hash {
  private:
@@ -170,8 +169,8 @@ class Hash {
   Hash() { memset(values, 0, sizeof(values)); }
 
   int& operator[](int n) {
-    // 返回一个指向对应 Hash[Key] 的引用
-    // 修改成不为 0 的值 0 时候视为空
+    // Trả về một tham chiếu tới Hash[Key] tương ứng
+    // Giá trị 0 được coi là rỗng (trừ khi giá trị thực sự cần lưu là 0)
     int idx = (n % N + N) % N, cnt = 1;
     while (keys[idx] != n && values[idx] != 0) {
       idx = (idx + cnt * cnt) % N;
@@ -183,6 +182,6 @@ class Hash {
 };
 ```
 
-## 例题
+## Bài toán ví dụ
 
-[「JLOI2011」不重复数字](https://www.luogu.com.cn/problem/P4305)
+[“JLOI2011” Số không lặp lại](https://www.luogu.com.cn/problem/P4305)

@@ -1,40 +1,40 @@
-可持久化可并堆一般用于求解 $k$ 短路问题．
+Heap hợp nhất bền vững (Persistent Mergeable Heap) thường được sử dụng để giải quyết bài toán đường đi ngắn thứ $k$.
 
-如果一种可并堆的时间复杂度不是均摊的，那么它在可持久化后单次操作的时间复杂度就保证是 $O(\log n)$ 的，即不会因为特殊数据而使复杂度退化．
+Nếu độ phức tạp thời gian của một loại heap hợp nhất không phải là khấu hao (amortized), thì sau khi bền vững hóa, độ phức tạp thời gian của một thao tác đơn lẻ sẽ được đảm bảo là $O(\log n)$, nghĩa là độ phức tạp sẽ không bị suy giảm do dữ liệu đặc biệt.
 
-## 可持久化左偏树
+## Cây lệch trái bền vững (Persistent Leftist Tree)
 
-在学习本内容前，请先了解 [左偏树](./leftist-tree.md) 的相关内容．
+Trước khi tìm hiểu nội dung này, vui lòng tham khảo các nội dung liên quan đến [Cây lệch trái](./leftist-tree.md).
 
-### 过程
+### Quá trình
 
-回顾左偏树的合并过程，假设我们要合并分别以 $x,y$ 为根节点的两棵左偏树，且维护的左偏树满足小根堆的性质：
+Xem xét lại quá trình hợp nhất của cây lệch trái, giả sử chúng ta muốn hợp nhất hai cây lệch trái có gốc lần lượt là $x, y$ và cây lệch trái được duy trì thỏa mãn tính chất min-heap:
 
-1.  如果 $x,y$ 中有结点为空，返回 $x+y$．
+1.  Nếu một trong hai nút $x, y$ là rỗng, trả về $x+y$.
 
-2.  选择 $x,y$ 两结点中权值更小的结点，作为合并后左偏树的根．
+2.  Chọn nút có trọng số nhỏ hơn trong hai nút $x, y$ làm gốc của cây lệch trái sau khi hợp nhất.
 
-3.  递归合并 $x$ 的右子树与 $y$，将合并后的根节点作为 $x$ 的右儿子．
+3.  Đệ quy hợp nhất cây con phải của $x$ với $y$, và đặt gốc của cây sau khi hợp nhất làm con phải của $x$.
 
-4.  维护当前合并后左偏树的左偏性质，维护 `dist` 值，返回选择的根节点．
+4.  Duy trì tính chất lệch trái của cây lệch trái hiện tại sau khi hợp nhất, cập nhật giá trị `dist`, trả về nút gốc đã chọn.
 
-由于每次递归都会使 `dist[x]+dist[y]` 减少一，而 `dist[x]` 是 $O(\log n)$ 的，一次最多只会修改 $O(\log n)$ 个结点，所以这样做的时间复杂度是 $O(\log n)$ 的．
+Vì mỗi lần đệ quy đều làm giảm `dist[x] + dist[y]` đi 1, mà `dist[x]` là $O(\log n)$, nên mỗi lần hợp nhất chỉ sửa đổi tối đa $O(\log n)$ nút, do đó độ phức tạp thời gian là $O(\log n)$.
 
-可持久化要求保留历史信息，使得之后能够访问之前的版本．要将左偏树可持久化，就要将其沿途修改的路径复制一遍．
+Tính bền vững yêu cầu lưu giữ thông tin lịch sử để có thể truy cập các phiên bản trước đó. Để làm cho cây lệch trái bền vững, chúng ta cần sao chép các đường dẫn bị sửa đổi dọc theo quá trình hợp nhất.
 
-所以可持久化左偏树的合并过程是这样的：
+Vì vậy, quá trình hợp nhất của cây lệch trái bền vững như sau:
 
-1.  如果 $x,y$ 中有结点为空，返回 $x+y$．
+1.  Nếu một trong hai nút $x, y$ là rỗng, trả về $x+y$.
 
-2.  选择 $x,y$ 两结点中权值更小的结点，新建该结点的一个复制 $p$，作为合并后左偏树的根．
+2.  Chọn nút có trọng số nhỏ hơn trong hai nút $x, y$, tạo một bản sao $p$ của nút đó, làm gốc của cây lệch trái sau khi hợp nhất.
 
-3.  递归合并 $p$ 的右子树与 $y$，将合并后的根节点作为 $p$ 的右儿子．
+3.  Đệ quy hợp nhất cây con phải của $p$ với $y$, và đặt gốc của cây sau khi hợp nhất làm con phải của $p$.
 
-4.  维护以 $p$ 为根的左偏树的左偏性质，维护其 `dist` 值，返回 $p$．
+4.  Duy trì tính chất lệch trái của cây lệch trái có gốc là $p$, cập nhật giá trị `dist` của nó, trả về $p$.
 
-由于左偏树一次最多只会修改并新建 $O(\log n)$ 个结点，设操作次数为 $m$，则可持久化左偏树的时间复杂度和空间复杂度均为 $O(m\log n)$．
+Vì mỗi lần hợp nhất cây lệch trái chỉ sửa đổi và tạo mới tối đa $O(\log n)$ nút, giả sử số lần thao tác là $m$, thì độ phức tạp thời gian và không gian của cây lệch trái bền vững đều là $O(m\log n)$.
 
-### 参考实现
+### Cài đặt tham khảo
 
 ```cpp
 int merge(int x, int y) {

@@ -1,98 +1,98 @@
-当出现形如「给定 $n$ 个整数，求这 $n$ 个整数能拼凑出多少的其他整数（$n$ 个整数可以重复取）」，以及「给定 $n$ 个整数，求这 $n$ 个整数不能拼凑出的最小（最大）的整数」，或者「至少要拼几次才能拼出模 $K$ 余 $p$ 的数」的问题时可以使用同余最短路的方法．
+Khi gặp các bài toán dạng như "Cho $n$ số nguyên, hỏi có thể ghép được bao nhiêu số nguyên khác từ $n$ số này (mỗi số có thể lấy nhiều lần)", hoặc "Cho $n$ số nguyên, hỏi số nguyên nhỏ nhất (lớn nhất) không thể ghép được từ $n$ số này", hoặc "Ít nhất cần ghép mấy lần để được số có phần dư $p$ khi chia cho $K$" thì có thể sử dụng phương pháp "đường đi ngắn nhất theo đồng dư" (modulo shortest path).
 
-同余最短路利用同余来构造一些状态，可以达到优化空间复杂度的目的．
+Phương pháp này tận dụng việc xây dựng trạng thái dựa trên đồng dư để tối ưu hóa độ phức tạp không gian.
 
-类比 [差分约束](./diff-constraints.md) 方法，利用同余构造的这些状态可以看作单源最短路中的点．同余最短路的状态转移通常是这样的 $f(i+y) = f(i) + y$，类似单源最短路中 $f(v) = f(u) +edge(u,v)$．
+Tương tự như [ràng buộc hiệu (difference constraints)](./diff-constraints.md), các trạng thái xây dựng dựa trên đồng dư có thể coi như các đỉnh trong bài toán đường đi ngắn nhất một nguồn. Chuyển trạng thái thường có dạng $f(i+y) = f(i) + y$, tương tự như trong đường đi ngắn nhất $f(v) = f(u) +edge(u,v)$.
 
-## 例题
+## Bài toán mẫu
 
-### 例题一
+### Ví dụ 1
 
-???+ note "[P3403 跳楼机](https://www.luogu.com.cn/problem/P3403)"
-    题目大意：给定 $x，y，z，h$，对于 $k \in [1,h]$，有多少个 $k$ 能够满足 $ax+by+cz=k$．（$0\leq a,b,c$，$1\le x,y,z\le 10^5$，$h\le 2^{63}-1$）
+???+ note "[P3403 Thang máy nhảy tầng](https://www.luogu.com.cn/problem/P3403)"
+    Đề bài: Cho $x, y, z, h$, với mỗi $k \in [1,h]$, có bao nhiêu $k$ thỏa mãn $ax+by+cz=k$ ($0\leq a,b,c$, $1\le x,y,z\le 10^5$, $h\le 2^{63}-1$).
 
-不妨假设 $x < y < z$．
+Giả sử $x < y < z$.
 
-令 $d_i$ 为只通过 **操作 2** 和 **操作 3**，需满足 $p\bmod x = i$ 能够达到的最低楼层 $p$，即 **操作 2** 和 **操作 3** 操作后能得到的模 $x$ 下与 $i$ 同余的最小数，用来计算该同余类满足条件的数个数．
+Gọi $d_i$ là tầng thấp nhất $p$ có $p \bmod x = i$ chỉ sử dụng **phép cộng $y$** và **phép cộng $z$** (tức là chỉ dùng thao tác 2 và 3), tức là số nhỏ nhất đồng dư $i$ modulo $x$ có thể đạt được bằng các thao tác này, dùng để tính số lượng số thỏa mãn trong mỗi lớp đồng dư.
 
-可以得到两个状态：
+Có hai trạng thái chuyển:
 
 -   $i \xrightarrow{y} (i+y) \bmod x$
 
 -   $i \xrightarrow{z} (i+z) \bmod x$
 
-注意通常选取一组 $a_i$ 中最小的那个数对它取模，也就是此处的 $x$，这样可以尽量减小空间复杂度（剩余系最小）．
+Thông thường, ta chọn số nhỏ nhất trong dãy $a_i$ để làm modulo (ở đây là $x$) nhằm giảm số trạng thái cần xét (hệ dư nhỏ nhất).
 
-那么实际上相当于执行了最短路中的建边操作：
+Thực chất, thao tác này tương đương với việc xây dựng cạnh trong bài toán đường đi ngắn nhất:
 
 `add(i, (i+y) % x, y)`
 
 `add(i, (i+z) % x, z)`
 
-接下来只需要求出 $d_0, d_1, d_2, \dots, d_{x-1}$，只需要跑一次最短路就可求出相应的 $d_i$．
+Tiếp theo, chỉ cần tính $d_0, d_1, d_2, \dots, d_{x-1}$, tức là chạy một lần thuật toán đường đi ngắn nhất là đủ.
 
-??? example "基于最短路的实现"
+??? example "Cài đặt dựa trên đường đi ngắn nhất"
     ```cpp
     --8<-- "docs/graph/code/mod-shortest-path/mod-shortest-path_1.cpp"
     ```
 
-但是事实上也不需要进行正常的最短路求解，注意到有两个特殊的性质：
+Tuy nhiên, thực tế không cần chạy thuật toán đường đi ngắn nhất thông thường, vì có hai tính chất đặc biệt:
 
-首先，只有两种边权，且对于每一条路径，由于加法交换律，走两种边权的顺序是无影响的．因此可以考虑做两次最短路，每次只建出一类边权的边；
+Thứ nhất, chỉ có hai loại trọng số cạnh, và với mỗi đường đi, do tính chất giao hoán của phép cộng, thứ tự đi các loại cạnh không ảnh hưởng kết quả. Do đó, có thể thực hiện hai lần đường đi ngắn nhất, mỗi lần chỉ xây dựng một loại cạnh.
 
-其次，对于只有一类边权的图，每个点 $u$ 都有一个入度（来自 $(u-y) \bmod x$）和一个出度（来自 $(u+y) \bmod x$），因此整个图必然由若干个环构成．并且可以证明共有 $\gcd(x,y)$ 个等长的环．
+Thứ hai, với đồ thị chỉ có một loại trọng số, mỗi đỉnh $u$ có một cạnh vào (từ $(u-y) \bmod x$) và một cạnh ra (tới $(u+y) \bmod x$), nên toàn bộ đồ thị là hợp của một số vòng. Có thể chứng minh có đúng $\gcd(x, y)$ vòng, mỗi vòng có độ dài bằng nhau.
 
-???+ note "证明"
-    设 $d=\gcd(x,y)$，设 $x=da,y=db$，有 $\gcd(a,b)=1$．
-    
-    考虑从 $u$ 出发走 $k$ 步，到达 $(u+ky) \bmod x$．若成环，则 $ky \equiv 0 \pmod x$，即有 $kb \equiv 0 \pmod a$．
-    
-    由于 $\gcd(a,b)=1$，最小的 $k=a$，即环长为 $a = \dfrac{x}{d}$．由于是从任意点开始，故每个可能的环长相等，环的数量为 $d$．
+???+ note "Chứng minh"
+    Gọi $d=\gcd(x,y)$, $x=da, y=db$, với $\gcd(a,b)=1$.
 
-并且，边权为正，绕环两圈后，一定不能继续松弛．直接循环更新一遍就行了．这样处理就不会受限于最短路的复杂度，可以做到 $O(x)$．
+    Xét đi từ $u$ qua $k$ bước, đến $(u+ky) \bmod x$. Nếu tạo thành vòng, thì $ky \equiv 0 \pmod x$, tức là $kb \equiv 0 \pmod a$.
 
-与差分约束问题相同，当存在一组解 $\{a_1,a_2,\cdots,a_n\}$ 时，$\{a_1+d,a_2+d,\cdots,a_n+d\}$ 同样为一组解，因此在该题让 $i=1$ 作为源点，此时源点处的 $dis_{1}=1$ 在已知范围内最小，因此得到的也是一组最小的解．
+    Do $\gcd(a,b)=1$, giá trị nhỏ nhất của $k$ là $a$, tức là độ dài vòng là $a = \dfrac{x}{d}$. Vì có thể bắt đầu từ bất kỳ đỉnh nào, nên số vòng là $d$.
 
-答案即为：
+Hơn nữa, trọng số cạnh dương, nên sau hai vòng chắc chắn không thể tiếp tục nới lỏng. Chỉ cần cập nhật một vòng là đủ. Nhờ đó, độ phức tạp không bị giới hạn bởi thuật toán đường đi ngắn nhất, có thể đạt $O(x)$.
+
+Tương tự như bài toán ràng buộc hiệu, nếu tồn tại một bộ nghiệm $\{a_1,a_2,\cdots,a_n\}$ thì $\{a_1+d,a_2+d,\cdots,a_n+d\}$ cũng là nghiệm. Do đó, chọn $i=1$ làm đỉnh nguồn, khi đó $dis_{1}=1$ là nhỏ nhất trong phạm vi đã biết, nên nghiệm thu được cũng là nhỏ nhất.
+
+Đáp án là:
 
 $$
 \sum_{i=0}^{x-1}\left(\frac{h-d_i}{x} + 1\right)
 $$
 
-加 1 是由于 $d_i$ 所在楼层也算一次．
+Cộng thêm 1 vì tầng $d_i$ cũng được tính.
 
-代码实现上注意到 $h$ 的范围是 $h \leq 2^{63}-1$，所以在求解最短路之前 $d_i$ 的初始值应至少设为 $2^{63}$，这超过了 C++ 中 `long long` 的最大值．所以可以使用 `unsigned long long` 或者先把 $h \gets h - 1$，然后把最低楼层设为 $0$ 层，其他代码无异．
+Lưu ý: $h$ có thể rất lớn ($h \leq 2^{63}-1$), nên trước khi chạy đường đi ngắn nhất, giá trị khởi tạo của $d_i$ phải ít nhất là $2^{63}$, vượt quá giá trị lớn nhất của `long long` trong C++. Có thể dùng `unsigned long long` hoặc giảm $h \gets h - 1$, đặt tầng thấp nhất là $0$, các phần còn lại không đổi.
 
-??? example "基于环优化的实现"
+??? example "Cài đặt tối ưu dựa trên vòng"
     ```cpp
     --8<-- "docs/graph/code/mod-shortest-path/mod-shortest-path_2.cpp"
     ```
 
-### 例题二
+### Ví dụ 2
 
 ???+ note "[ARC084B Small Multiple](https://atcoder.jp/contests/arc084/tasks/arc084_b)"
-    题目大意：给定 $n$，求 $n$ 的倍数中，数位和最小的那一个的数位和．（$1\le n\le 10^5$）
+    Đề bài: Cho $n$, tìm số nhỏ nhất là bội của $n$ có tổng các chữ số nhỏ nhất. ($1\le n\le 10^5$)
 
-本题可以使用循环卷积优化完全背包在 $O(n\log^2 n)$ 的时间内解决，但我们希望得到线性的算法．
+Bài này có thể dùng tích chập tuần hoàn để tối ưu bài toán ba lô đầy đủ trong $O(n\log^2 n)$, nhưng ta mong muốn thuật toán tuyến tính.
 
-观察到任意一个正整数都可以从 $1$ 开始，按照某种顺序执行乘 $10$、加 $1$ 的操作，最终得到，而其中加 $1$ 操作的次数就是这个数的数位和．这提示我们使用最短路．
+Nhận thấy mọi số nguyên dương đều có thể bắt đầu từ $1$, thực hiện một chuỗi thao tác nhân $10$ và cộng $1$ để thu được, trong đó số lần cộng $1$ chính là tổng các chữ số. Điều này gợi ý sử dụng đường đi ngắn nhất.
 
-对于所有 $0\le k\le n-1$，从 $k$ 向 $10k$ 连边权为 $0$ 的边；从 $k$ 向 $k+1$ 连边权为 $1$ 的边．（点的编号均在模 $n$ 意义下）
+Với mọi $0\le k\le n-1$, từ $k$ nối cạnh trọng số $0$ tới $10k$; từ $k$ nối cạnh trọng số $1$ tới $k+1$ (tất cả tính theo modulo $n$).
 
-每个 $n$ 的倍数在这个图中都对应了 $1$ 号点到 $0$ 号点的一条路径，求出 $1$ 到 $0$ 的最短路即可．某些路径不合法（如连续走了 $10$ 条边权为 $1$ 的边），但这些路径产生的答案一定不优，不影响答案．
+Mỗi bội của $n$ tương ứng với một đường đi từ đỉnh $1$ tới đỉnh $0$ trên đồ thị này, tìm đường đi ngắn nhất từ $1$ tới $0$ là đáp án. Một số đường đi không hợp lệ (ví dụ đi liên tiếp $10$ cạnh trọng số $1$), nhưng các đường đi này không cho đáp án tốt hơn nên không ảnh hưởng kết quả.
 
-时间复杂度 $O(n)$．
+Độ phức tạp $O(n)$.
 
-## 习题
+## Bài tập
 
-[洛谷 P3403 跳楼机](https://www.luogu.com.cn/problem/P3403)
+[洛谷 P3403 Thang máy nhảy tầng](https://www.luogu.com.cn/problem/P3403)
 
-[洛谷 P2662 牛场围栏](https://www.luogu.com.cn/problem/P2662)
+[洛谷 P2662 Hàng rào chuồng bò](https://www.luogu.com.cn/problem/P2662)
 
-[\[国家集训队\] 墨墨的等式](https://www.luogu.com.cn/problem/P2371)
+[\[Đội tuyển quốc gia\] Phương trình của Momo](https://www.luogu.com.cn/problem/P2371)
 
-[「NOIP2018」货币系统](https://loj.ac/problem/2951)
+[「NOIP2018」Hệ thống tiền tệ](https://loj.ac/problem/2951)
 
 [AGC057D - Sum Avoidance](https://atcoder.jp/contests/agc057/tasks/agc057_d)
 
-[「THUPC 2023 初赛」背包](https://loj.ac/p/6872)
+[「THUPC 2023 Sơ khảo」Ba lô](https://loj.ac/p/6872)

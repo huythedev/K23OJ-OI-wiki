@@ -1,69 +1,69 @@
-判断一些树是否同构的时，我们常常把这些树转成哈希值储存起来，以降低复杂度．
+Khi cần kiểm tra hai cây có đồng cấu (isomorphic) hay không, ta thường chuyển cây thành giá trị băm (hash) để giảm độ phức tạp.
 
-树哈希是很灵活的，可以设计出各种各样的哈希方式；但是如果随意设计，很有可能是错误的，可能被卡．以下介绍一类容易实现且不易被卡的方法．
+Tree Hash rất linh hoạt, có thể thiết kế nhiều kiểu băm khác nhau; tuy nhiên nếu thiết kế tùy tiện, dễ bị "hack". Dưới đây là một phương pháp dễ cài đặt và khó bị hack.
 
-## 方法
+## Phương pháp
 
-这类方法需要一个多重集的哈希函数．以某个结点为根的子树的哈希值，就是以它的所有儿子为根的子树的哈希值构成的多重集的哈希值，即：
+Phương pháp này cần một hàm băm cho đa tập. Giá trị hash của cây con gốc tại một đỉnh là giá trị hash của đa tập các giá trị hash của các cây con gốc tại các con của nó, tức là:
 
 $$
 h_x = f(\{ h_i \mid i \in son(x) \})
 $$
 
-其中 $h_x$ 表示以 $x$ 为根的子树的哈希值，$f$ 是多重集的哈希函数．
+Trong đó $h_x$ là hash của cây con gốc $x$, $f$ là hàm băm đa tập.
 
-以代码中使用的哈希函数为例：
+Ví dụ hàm hash dùng trong code:
 
 $$
 f(S) = \left( c + \sum_{x \in S} g(x) \right) \bmod m
 $$
 
-其中 $c$ 为常数，一般使用 $1$ 即可．$m$ 为模数，一般使用 $2^{32}$ 或 $2^{64}$ 进行自然溢出，也可使用大素数．$g$ 为整数到整数的映射，代码中使用 xor shift，也可以选用其他的函数，但是不建议使用多项式．为了预防出题人对着 xor hash 卡，还可以在映射前后异或一个随机常数．
+Với $c$ là hằng số (thường lấy $1$), $m$ là modulus (thường dùng $2^{32}$ hoặc $2^{64}$ để tràn tự nhiên, hoặc số nguyên tố lớn). $g$ là ánh xạ số nguyên sang số nguyên, ví dụ dùng xor shift, hoặc các hàm khác (không nên dùng đa thức). Để tránh bị hack, có thể xor thêm một số ngẫu nhiên trước/sau khi ánh xạ.
 
-这种哈希十分好写．如果需要换根，第二次 DP 时只需把子树哈希减掉即可．
+Cách hash này rất dễ viết. Nếu cần đổi gốc, chỉ cần DP lần hai, trừ đi hash cây con là được.
 
-## 例题
+## Bài tập ví dụ
 
-### [UOJ #763. 树哈希](https://uoj.ac/problem/763)
+### [UOJ #763. Tree Hash](https://uoj.ac/problem/763)
 
-这是一道模板题．不用多说，以 $1$ 为根跑一遍 DFS 就好了．
+Bài mẫu. Chỉ cần DFS từ gốc $1$ là xong.
 
-??? note "参考代码"
+??? note "Code tham khảo"
     ```cpp
     --8<-- "docs/graph/code/tree-hash/tree-hash_1.cpp"
     ```
 
-### [\[BJOI2015\] 树的同构](https://www.luogu.com.cn/problem/P5043)
+### [\[BJOI2015\] Đồng cấu cây](https://www.luogu.com.cn/problem/P5043)
 
-这道题所说的同构是指无根树的，而上面所介绍的方法是针对有根树的．因此只有当根一样时，同构的两棵无根树哈希值才相同．由于数据范围较小，我们可以暴力求出以每个点为根时的哈希值，排序后比较．
+Ở đây đồng cấu là vô gốc, còn phương pháp trên là cho cây có gốc. Do đó, chỉ khi chọn cùng gốc thì hai cây vô gốc mới có hash giống nhau. Với dữ liệu nhỏ, có thể brute-force hash với mọi gốc, rồi sort so sánh.
 
-如果数据范围较大，我们也可以使用换根 DP，遍历树两遍，求出以每个点为根时的哈希值．我们还可以利用上面的多重集哈希函数：把以每个结点为根时的哈希值都存进多重集，再把多重集的哈希值算出来，进行比较（做法一）．
+Nếu dữ liệu lớn, có thể dùng DP đổi gốc, duyệt hai lần để tính hash với mọi gốc. Hoặc, dùng hàm hash đa tập: lưu hash của mọi gốc vào một đa tập, rồi hash đa tập này để so sánh (cách 1).
 
-还可以通过找重心的方式来优化复杂度．一棵树的重心最多只有两个，只需把以它（们）为根时的哈希值求出来即可．接下来，既可以分别比较这些哈希值（做法二），也可以在有一个重心时取它的哈希值作为整棵树的哈希值，有两个时则取其中较小（大）的．
+Cũng có thể tối ưu bằng cách tìm trọng tâm (centroid) của cây. Một cây có tối đa hai trọng tâm, chỉ cần hash với các trọng tâm làm gốc. Sau đó, so sánh từng hash (cách 2), hoặc nếu có một trọng tâm thì lấy hash đó làm hash toàn cây, nếu có hai thì lấy min/max.
 
-??? note "做法一"
+??? note "Cách 1"
     ```cpp
     --8<-- "docs/graph/code/tree-hash/tree-hash_2.cpp"
     ```
 
-??? note "做法二"
+??? note "Cách 2"
     ```cpp
     --8<-- "docs/graph/code/tree-hash/tree-hash_3.cpp"
     ```
 
 ### [HDU 6647 Bracket Sequences on Tree](https://acm.hdu.edu.cn/showproblem.php?pid=6647)
 
-题目要求遍历一棵无根树产生的本质不同括号序列方案数．
+Yêu cầu đếm số chuỗi ngoặc khác nhau sinh ra từ các cách duyệt cây vô gốc.
 
-首先可以注意到，两棵不同构的有根树一定不会生成相同的括号序列．我们先考虑遍历有根树能够产生的本质不同括号序列方案数，假设我们当前考虑的子树根节点为 $u$，记 $f(u)$ 表示这棵子树的方案数，从 $u$ 开始往下遍历，顺序可以随意选择，产生 $|son(u)|!$ 种排列，遍历每个儿子节点 $v$，$v$ 的子树内有 $f(v)$ 种方案，因此有 $f(u)=|son(u)|! \cdot \prod_{v \in son(u)} f(v)$．但是，同构的子树之间会产生重复，$f(u)$ 需要除掉每种本质不同子树出现次数阶乘的乘积，类似于多重集合的排列．
+Nhận xét: hai cây có gốc không đồng cấu sẽ không sinh ra cùng chuỗi ngoặc. Đầu tiên, với cây có gốc, gọi $f(u)$ là số cách sinh chuỗi ngoặc khác nhau từ cây con gốc $u$. Khi duyệt các con của $u$ theo mọi thứ tự, có $|son(u)|!$ cách, mỗi con $v$ có $f(v)$ cách, nên $f(u)=|son(u)|! \cdot \prod_{v \in son(u)} f(v)$. Tuy nhiên, nếu có các cây con đồng cấu, sẽ bị trùng, nên cần chia cho tích giai thừa số lần xuất hiện của mỗi loại cây con (giống đếm hoán vị đa tập).
 
-通过上述 DP，可以求出根节点的方案数．再通过换根 DP，将父亲节点的哈希值和方案信息转移给儿子，可以求出以每个节点为根时的哈希值和方案数．每种不同的子树只需要计数一次即可．
+DP như trên sẽ tính được số cách cho gốc. Dùng DP đổi gốc để tính cho mọi đỉnh.
 
-??? note "参考代码"
+??? note "Code tham khảo"
     ```cpp
     --8<-- "docs/graph/code/tree-hash/tree-hash_4.cpp"
     ```
 
-## 参考资料
+## Tài liệu tham khảo
 
-文中的哈希方法参考并拓展自博客 [一种好写且卡不掉的树哈希](https://peehs-moorhsum.blog.uoj.ac/blog/7891)．
+Phương pháp hash trong bài tham khảo và mở rộng từ blog [一种好写且卡不掉的树哈希](https://peehs-moorhsum.blog.uoj.ac/blog/7891).

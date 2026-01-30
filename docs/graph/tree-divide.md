@@ -1,108 +1,104 @@
-## 点分治
+## Điểm phân chia (Point Centroid Decomposition)
 
-点分治适合处理大规模的树上路径信息问题．
+Điểm phân chia (hay còn gọi là phân chia theo trọng tâm, centroid decomposition) rất phù hợp để xử lý các bài toán về thông tin đường đi trên cây quy mô lớn.
 
-??? note "例题 1 [Luogu P3806【模板】点分治 1](https://www.luogu.com.cn/problem/P3806)"
-    给定一棵有 $n$ 个点的带边权树，$m$ 次询问，每次询问给出 $k$，询问树上距离为 $k$ 的点对是否存在．
-    
+??? note "Ví dụ 1 [Luogu P3806【Mẫu】Điểm phân chia 1](https://www.luogu.com.cn/problem/P3806)"
+    Cho một cây có $n$ đỉnh, $m$ truy vấn, mỗi truy vấn cho một số $k$, hỏi có tồn tại một đường đi độ dài $k$ hay không.
+
     $n\le 10000,m\le 100,k\le 10000000$
 
-我们先随意选择一个节点作为根节点 $\mathit{rt}$，所有完全位于其子树中的路径可以分为两种，一种是经过当前根节点的路径，一种是不经过当前根节点的路径．对于经过当前根节点的路径，又可以分为两种，一种是以根节点为一个端点的路径，另一种是两个端点都不为根节点的路径．而后者又可以由两条属于前者链合并得到．所以，对于枚举的根节点 $rt$，我们先计算在其子树中且经过该节点的路径对答案的贡献，再递归其子树对不经过该节点的路径进行求解．
+Ta chọn một đỉnh bất kỳ làm gốc $\mathit{rt}$, mọi đường đi hoàn toàn nằm trong cây con của nó có thể chia thành hai loại: loại đi qua gốc hiện tại và loại không đi qua gốc. Với các đường đi qua gốc, lại chia thành hai loại: một đầu là gốc, hoặc cả hai đầu không phải gốc (loại sau có thể ghép từ hai đường đi loại trước). Do đó, với mỗi gốc $rt$, ta tính trước đóng góp của các đường đi qua $rt$, sau đó đệ quy xử lý các cây con cho các đường đi không qua $rt$.
 
-在本题中，对于经过根节点 $\mathit{rt}$ 的路径，我们先枚举其所有子节点 $\mathit{ch}$，以 $\mathit{ch}$ 为根计算 $\mathit{ch}$ 子树中所有节点到 $\mathit{rt}$ 的距离．记节点 $i$ 到当前根节点 $rt$ 的距离为 $\mathit{dist}_i$，$\mathit{tf}_{d}$ 表示之前处理过的子树中是否存在一个节点 $v$ 使得 $\mathit{dist}_v=d$．若一个询问的 $k$ 满足 $tf_{k-\mathit{dist}_i}=true$，则存在一条长度为 $k$ 的路径．在计算完 $\mathit{ch}$ 子树中所连的边能否成为答案后，我们将这些新的距离加入 $\mathit{tf}$ 数组中．
+Trong bài này, với các đường đi qua $rt$, ta liệt kê từng con $ch$ của $rt$, tính khoảng cách từ mọi đỉnh trong cây con $ch$ đến $rt$. Gọi $\mathit{dist}_i$ là khoảng cách từ $i$ đến $rt$, $\mathit{tf}_d$ là mảng đánh dấu xem đã có đỉnh nào ở các cây con trước có khoảng cách $d$ đến $rt$ chưa. Nếu với truy vấn $k$ có $tf_{k-\mathit{dist}_i}=true$, tức là tồn tại một đường đi độ dài $k$. Sau khi xử lý xong cây con $ch$, cập nhật các giá trị mới vào $\mathit{tf}$.
 
-注意在清空 $\mathit{tf}$ 数组的时候不能直接用 `memset`，而应将之前占用过的 $\mathit{tf}$ 位置加入一个队列中，进行清空，这样才能保证时间复杂度．
+Khi xóa mảng $\mathit{tf}$, không nên dùng `memset`, mà nên lưu lại các vị trí đã dùng vào một hàng đợi để xóa, đảm bảo đúng độ phức tạp.
 
-点分治过程中，每一层的所有递归过程合计对每个点处理一次，假设共递归 $h$ 层，则总时间复杂度为 $O(hn)$．
+Trong mỗi tầng của phân chia, tổng số lần xử lý mỗi đỉnh là $1$, nếu tổng cộng đệ quy $h$ tầng thì độ phức tạp $O(hn)$.
 
-若我们每次选择子树的 [重心](./tree-centroid.md) 作为根节点，可以保证递归层数最少，时间复杂度为 $O(n\log n)$．因此，点分治在国外竞赛圈也常称为树的 **重心分解**（centroid decomposition）．
+Nếu mỗi lần chọn trọng tâm ([centroid](./tree-centroid.md)) làm gốc, số tầng tối đa là $O(\log n)$, tổng độ phức tạp $O(n\log n)$. Vì vậy, phương pháp này còn gọi là **trọng tâm phân chia** (centroid decomposition).
 
-请注意在重新选择根节点之后一定要重新计算子树的大小，否则一点看似微小的改动就可能会使时间复杂度错误或正确性难以保证．
+Lưu ý: mỗi lần chọn lại gốc phải tính lại kích thước cây con, nếu không sẽ sai độ phức tạp hoặc sai kết quả.
 
-??? note "参考代码"
+??? note "Code tham khảo"
     ```cpp
     --8<-- "docs/graph/code/tree-divide/tree-divide_1.cpp"
     ```
 
-??? note "例题 2 [Luogu P4178 Tree](https://www.luogu.com.cn/problem/P4178)"
-    给定一棵有 $n$ 个点的带权树，给出 $k$，询问树上距离小于等于 $k$ 的点对数量．
-    
+??? note "Ví dụ 2 [Luogu P4178 Tree](https://www.luogu.com.cn/problem/P4178)"
+    Cho một cây có $n$ đỉnh, $k$, hỏi số cặp đỉnh có khoảng cách không vượt quá $k$.
+
     $n\le 40000,k\le 20000,w_i\le 1000$
 
-由于这里查询的是树上距离为 $[0,k]$ 的点对数量，所以我们用线段树来支持维护和查询．
+Vì ở đây hỏi số cặp đỉnh có khoảng cách không vượt quá $k$, ta dùng segment tree để hỗ trợ truy vấn và cập nhật.
 
-??? note "参考代码"
+??? note "Code tham khảo"
     ```cpp
     --8<-- "docs/graph/code/tree-divide/tree-divide_2.cpp"
     ```
 
-??? note "例题 3 [Luogu P2664 树上游戏](https://www.luogu.com.cn/problem/P2664)"
-    一棵每个节点都给定颜色的树，定义 $s(i,j)$ 为 $\mathit{i}$ 到 $\mathit{j}$ 的颜色数量，$\mathit{sum_{i}}=\sum_{j=1}^n s(i,j)$．对所有的 $1\leq i\leq n$，求 $sum_i$．（$1 \le n, c_i \le 10^5$）
+??? note "Ví dụ 3 [Luogu P2664 Trò chơi trên cây](https://www.luogu.com.cn/problem/P2664)"
+    Một cây mỗi đỉnh được gán một màu, định nghĩa $s(i,j)$ là số màu trên đường đi từ $i$ đến $j$, $\mathit{sum_{i}}=\sum_{j=1}^n s(i,j)$．Đối với mọi $1\leq i\leq n$，tìm $sum_i$．（$1 \le n, c_i \le 10^5$）
 
-这道题很考验对点分治思想的理解和应用，适合作为点分治的难度较高的例题和练习题．
+Bài này kiểm tra sâu về tư duy điểm phân chia, rất phù hợp luyện tập nâng cao.
 
-首先，我们需要想明白一个转化．题目定义 $\mathit{sum_i}$ 是 $i$ 到所有节点路径上的颜色数量之和，可是如果用这个方法，在点分治中是不好统计答案的，因为这样很难合并从当前根出发的两棵子树的信息．所以我们想到将 $\mathit{sum_i}$ 的意义转化．对于每个颜色 $j$, 其中一个端点为 $i$ 且含有颜色 $j$ 的路径数量记为 $\mathit{cnt_j}$，$\mathit{sum_i}$ 其实就是 $\sum \mathit{cnt_j}$．这一步转化其实就是换了个观察对象，考虑的是每个颜色对 $\mathit{sum_i}$ 的 贡献．而 $\mathit{cnt_j}$ 其实很好处理出来，只需要每遇到一个新颜色，就 $\mathit{cnt_{col_u}}+=\mathit{size_u}$ 即可，其中 $\mathit{size_u}$ 为 u 的子树大小，意味着这个子树里的所有节点都在这个颜色上对 $u$ 的答案有一个贡献．
+Trước hết, cần chuyển đổi ý nghĩa của $\mathit{sum_i}$. Nếu tính trực tiếp như đề, rất khó hợp nhất thông tin giữa các cây con. Ta chuyển sang xét đóng góp của từng màu $j$ cho $\mathit{sum_i}$, gọi $\mathit{cnt_j}$ là số đường đi qua $i$ có màu $j$, khi đó $\mathit{sum_i} = \sum \mathit{cnt_j}$. Để tính $\mathit{cnt_j}$, chỉ cần mỗi khi gặp màu mới thì $\mathit{cnt_{col_u}}+=\mathit{size_u}$, với $\mathit{size_u}$ là kích thước cây con gốc $u$.
 
-考虑到点分治过程中，我们只需要分别考虑统计：
+Trong quá trình điểm phân chia, cần thống kê:
 
-1.  子树中以当前根节点为端点的路径对根的贡献
-2.  lca 为当前根节点的路径对子树内每个点的贡献
+1.  Đường đi có một đầu là gốc, đóng góp cho gốc.
+2.  Đường đi có LCA là gốc, đóng góp cho các đỉnh trong cây con.
 
-1 部分比较好办，由于点分治中，递归层数不超过 $\log{n}$，每一层我们都可以遍历全部子树，这个时候就可以使用 $\mathit{sum_i}$ 的定义式来在遍历子树的过程中顺便统计了．
+Phần 1 dễ xử lý, vì mỗi tầng chỉ cần duyệt toàn bộ cây con, dùng định nghĩa $\mathit{sum_i}$ để cộng dồn.
 
-而针对 2 部分，设当前根节点 $u$ 的一个子节点为 $d$,$d$ 的子树里任取一个点为 $v$，那么 $v$ 的答案可以分为两部分：
+Với phần 2, giả sử gốc $u$ có con $d$, chọn $v$ trong cây con $d$. Khi đó, đáp án cho $v$ gồm:
 
-1.  $(u, v)$ 路径上出现过的颜色，数量设为 $\mathit{num}$，$u$ 除了 $d$ 以外的其他所有子树的总大小设为 $\mathit{siz1}$, 那么这些出现过的颜色对 $v$ 的答案贡献为 $\mathit{num}\times \mathit{siz1}$．
-2.  $(u, v)$ 路径上没有出现过的颜色 $j$，它们的贡献来自于 $u$ 除了 $d$ 以外的其他所有子树的 $\mathit{cnt_j}$，这部分答案为 $\sum_{j \notin (u, v)} \mathit{cnt_j}$．
+1.  Số màu xuất hiện trên đường $(u, v)$, gọi là $\mathit{num}$, nhân với tổng kích thước các cây con khác $d$ của $u$, gọi là $\mathit{siz1}$, đóng góp là $\mathit{num}\times \mathit{siz1}$.
+2.  Với màu $j$ không xuất hiện trên $(u, v)$, cộng thêm tổng $\mathit{cnt_j}$ của các cây con khác $d$.
 
-以上是全部统计思路，实现细节详见参考代码．
+Chi tiết xem code tham khảo.
 
-??? note "参考代码"
+??? note "Code tham khảo"
     ```cpp
     --8<-- "docs/graph/code/tree-divide/tree-divide_3.cpp"
     ```
 
-## 边分治
+## Phân chia theo cạnh (Edge Centroid Decomposition)
 
-与上面的点分治类似，我们选取一条边，把树尽量均匀地分成两部分（使边连接的两个子树的 $\mathit{size}$ 尽量接近）．然后递归处理左右子树，统计信息．
+Tương tự điểm phân chia, nhưng chọn một cạnh để chia cây thành hai phần có kích thước gần nhau nhất, rồi đệ quy xử lý hai phần.
 
-但是这是不行的，考虑一个菊花图：
+Tuy nhiên, cách này không hiệu quả với cây nhiều nhánh như cây sao:
 
 ![菊花图](./images/tree-divide1.svg)
 
-我们发现当一个点下有多个 $\mathit{size}$ 接近的儿子时，应用边分治的时间复杂度是无法接受的．
+Nếu một đỉnh có nhiều con kích thước gần nhau, phân chia theo cạnh sẽ rất tệ.
 
-如果这个图是个二叉树，就可以避免上面菊花图中应用边分治的弊端．因此我们考虑把一个多叉树转化成二叉树．
-
-显然，我们只需像线段树那样建树就可以了．就像这样
+Nếu cây là nhị phân, sẽ tránh được vấn đề này. Ta có thể chuyển cây đa nhánh thành cây nhị phân như xây segment tree:
 
 ![建树](./images/tree-divide2.svg)
 
-新建出来的点根据题目要求给予恰当的信息即可．例如：统计路径长度时，将原边边权赋为 $1$, 将新建的边边权赋为 $0$ 即可．
+Các đỉnh mới gán thông tin phù hợp với bài toán. Ví dụ, khi tính độ dài đường đi, gán trọng số cạnh gốc là $1$, cạnh mới là $0$.
 
-分析复杂度，发现最多会增加 $O(n)$ 个点，则总复杂度为 $O(n\log n)$
+Tổng số đỉnh tăng tối đa $O(n)$, nên độ phức tạp vẫn $O(n\log n)$.
 
-几乎所有点分治的题边分都能做（常数上有差距，但是不卡），所以就不放例题了．
+Hầu hết các bài điểm phân chia đều có thể giải bằng phân chia theo cạnh (thường hằng số lớn hơn, nhưng không bị "hack" nặng), nên không cần ví dụ riêng.
 
-## 点分树
+## Cây phân chia (Centroid Tree)
 
-点分树是通过更改原树形态使树的层数变为稳定 $\log n$ 的一种重构树．
+Cây phân chia là cây được xây lại từ cây gốc bằng cách phân chia theo trọng tâm, sao cho chiều cao cây mới là $O(\log n)$.
 
-常用于解决与树原形态无关的带修改问题．
+Thường dùng cho các bài toán có truy vấn cập nhật động, không phụ thuộc hình dạng cây gốc.
 
-### 算法分析
+### Phân tích thuật toán
 
-我们通过点分治每次找重心的方式来对原树进行重构．
+Mỗi lần tìm trọng tâm, liên kết nó với trọng tâm tầng trước thành cha-con, tạo thành cây mới có tối đa $\log n$ tầng.
 
-将每次找到的重心与上一层的重心缔结父子关系，这样就可以形成一棵 $\log n$ 层的树．
+Nhờ vậy, nhiều thuật toán brute-force trên cây gốc sẽ chạy đúng và nhanh trên cây phân chia.
 
-由于树是 $\log n$ 层的，很多原来并不对劲的暴力在点分树上均有正确的复杂度．
+### Cài đặt
 
-### 代码实现
+Một mẹo nhỏ: mỗi lần truyền tổng kích thước tầng trước trừ đi kích thước con nặng nhất, sẽ ra tổng kích thước tầng hiện tại. Như vậy chỉ cần một DFS để tìm trọng tâm.
 
-有一个小技巧：每次用递归上一层的总大小 $\mathit{tot}$ 减去上一层的点的重儿子大小，得到的就是这一层的总大小．这样求重心就只需一次 DFS 了．
-
-???+ note "参考代码"
+???+ note "Code tham khảo"
     ```cpp
     #include <algorithm>
     #include <iostream>

@@ -1,10 +1,8 @@
-author: Alex-McAvoy, lingkerio
+## Độ dài Đường đi Có Trọng số của Cây (Weighted Path Length - WPL)
 
-## 树的带权路径长度
+Giả sử cây nhị phân có $n$ nút lá có trọng số. Tổng của các tích giữa độ dài đường đi từ nút gốc đến mỗi nút lá với trọng số tương ứng của nút lá đó được gọi là **Độ dài Đường đi Có Trọng số của Cây (WPL)**.
 
-设二叉树具有 $n$ 个带权叶结点，从根结点到各叶结点的路径长度与相应叶节点权值的乘积之和称为 **树的带权路径长度（Weighted Path Length of Tree，WPL）**．
-
-设 $w_i$ 为二叉树第 $i$ 个叶结点的权值，$l_i$ 为从根结点到第 $i$ 个叶结点的路径长度，则 WPL 计算公式如下：
+Ký hiệu $w_i$ là trọng số của nút lá thứ $i$, và $l_i$ là độ dài đường đi từ nút gốc đến nút lá thứ $i$, thì công thức tính WPL là:
 
 $$
 WPL=\sum_{i=1}^nw_il_i
@@ -12,77 +10,77 @@ $$
 
 ![](./images/huffman-tree-1.svg)
 
-如上图所示，其 WPL 计算过程与结果如下：
+Trong hình trên, quá trình tính WPL và kết quả như sau:
 
 $$
 WPL=2*2+3*2+4*2+7*2=4+6+8+14=32
 $$
 
-## 结构
+## Cấu trúc
 
-对于给定一组具有确定权值的叶结点，可以构造出不同的二叉树，其中，**WPL 最小的二叉树** 称为 **霍夫曼树（Huffman Tree）**．
+Với một tập hợp các nút lá có trọng số xác định, ta có thể xây dựng nhiều cây nhị phân khác nhau. **Cây có WPL nhỏ nhất** được gọi là **Cây Huffman (Huffman Tree)**.
 
-对于霍夫曼树来说，其叶结点权值越小，离根越远，叶结点权值越大，离根越近，此外其仅有叶结点的度为 $0$，其他结点度均为 $2$．
+Đối với Cây Huffman, nút lá có trọng số càng nhỏ thì càng ở xa nút gốc, nút lá có trọng số càng lớn thì càng gần nút gốc. Ngoài ra, chỉ các nút lá có bậc (degree) bằng $0$, các nút khác có bậc đều bằng $2$.
 
-## 霍夫曼算法
+## Thuật toán Huffman
 
-霍夫曼算法用于构造一棵霍夫曼树，算法步骤如下：
+Thuật toán Huffman dùng để xây dựng một Cây Huffman, các bước của thuật toán như sau:
 
-1.  **初始化**：由给定的 $n$ 个权值构造 $n$ 棵只有一个根节点的二叉树，得到一个二叉树集合 $F$．
-2.  **选取与合并**：从二叉树集合 $F$ 中选取根节点权值 **最小的两棵** 二叉树分别作为左右子树构造一棵新的二叉树，这棵新二叉树的根节点的权值为其左、右子树根结点的权值和．
-3.  **删除与加入**：从 $F$ 中删除作为左、右子树的两棵二叉树，并将新建立的二叉树加入到 $F$ 中．
-4.  重复 2、3 步，当集合中只剩下一棵二叉树时，这棵二叉树就是霍夫曼树．
+1.  **Khởi tạo**: Từ $n$ trọng số đã cho, xây dựng $n$ cây nhị phân chỉ gồm một nút gốc, tạo thành một tập hợp các cây nhị phân $F$.
+2.  **Lựa chọn và Hợp nhất**: Từ tập hợp cây $F$, chọn **hai cây** có trọng số nút gốc **nhỏ nhất**, sử dụng chúng làm cây con trái và cây con phải để xây dựng một cây nhị phân mới. Trọng số nút gốc của cây mới này bằng tổng trọng số nút gốc của hai cây con trái và phải.
+3.  **Xóa và Thêm**: Xóa hai cây được sử dụng làm cây con trái và phải khỏi $F$, và thêm cây mới được tạo vào $F$.
+4.  Lặp lại bước 2 và 3, cho đến khi trong tập hợp chỉ còn lại một cây duy nhất, cây đó chính là Cây Huffman.
 
 ![](./images/huffman-tree-2.svg)
 
-### 正确性证明
+### Chứng minh tính đúng đắn
 
-???+ note "引理"
-    最优前缀编码树（Huffman 树）中的权值最小的两个叶结点总是最深的叶结点，并且将这两个结点调整为兄弟结点至少不会破坏编码树的最优性．
+???+ note "Bổ đề"
+    Trong cây mã tiền tố tối ưu (Cây Huffman), hai nút lá có trọng số nhỏ nhất luôn là các nút lá sâu nhất, và việc điều chỉnh hai nút này thành nút anh em ít nhất không làm phá vỡ tính tối ưu của cây mã.
 
-??? note "证明"
-    我们采用反证法来证明该命题．假设在一棵最优前缀编码树中，存在两个权值最小的叶结点，它们不是最深的叶结点．设这两个结点为 $a$ 和 $b$，且它们的深度小于某个最深的叶结点．对于这个最深的叶结点 $c$，我们可以将 $a$ 和 $c$ 交换位置，或将 $b$ 和 $c$ 交换位置．由于 Huffman 算法保证树的每一层按权值最小的叶结点合并，因此在交换后，树的带权路径长度（WPL）将减少．由此矛盾可得出假设不成立，因此权值最小的两个叶结点必须是最深的叶结点．
-    
-    接下来，假设这两个权值最小的叶结点分别为 $a$ 和 $b$，它们的深度相同．如果在一棵最优前缀编码树中这两个结点不是兄弟结点，假设存在其他结点 $c$ 和 $d$ 与 $a$ 和 $b$ 分别是兄弟结点（假设 $a$ 和 $c$ 是兄弟结点，$b$ 和 $d$ 是兄弟结点）．我们可以将 $a$ 和 $b$ 合并为一个子树．
-    
-    -   如果 $a$ 和 $b$ 合并后的权值之和小于 $c$ 或 $d$ 的权值，那么我们可以将合并后的子树与权值较大的结点（如 $c$ 或 $d$）合并，形成新的子树，WPL 会减少．
-    -   如果 $a$ 和 $b$ 的权值之和不小于 $c$ 和 $d$ 的权值，我们可以直接将 $a$ 和 $b$ 调整为兄弟结点，$c$ 和 $d$ 作为另一个兄弟结点，WPL 不会增加．
-    
-    因此，经过这样的调整，最优性不会被破坏，得证．
+??? note "Chứng minh"
+    Chúng ta sử dụng phương pháp phản chứng để chứng minh mệnh đề này. Giả sử trong một cây tiền tố tối ưu, tồn tại hai nút lá có trọng số nhỏ nhất mà không phải là các nút lá sâu nhất. Gọi hai nút đó là $a$ và $b$, và độ sâu của chúng nhỏ hơn độ sâu của một nút lá sâu nhất nào đó. Đối với nút lá sâu nhất $c$, ta có thể hoán đổi vị trí của $a$ và $c$, hoặc hoán đổi $b$ và $c$. Do thuật toán Huffman đảm bảo việc hợp nhất các nút lá có trọng số nhỏ nhất theo từng tầng, nên sau khi hoán đổi, Độ dài Đường đi Có Trọng số của Cây (WPL) sẽ giảm. Điều này mâu thuẫn với giả định ban đầu, suy ra hai nút lá có trọng số nhỏ nhất phải là các nút lá sâu nhất.
 
-???+ note "定理"
-    Huffman 算法得到的前缀编码树是最优前缀编码树．
+    Tiếp theo, giả sử hai nút lá có trọng số nhỏ nhất là $a$ và $b$, có cùng độ sâu. Nếu trong một cây tiền tố tối ưu, hai nút này không phải là anh em, giả sử tồn tại các nút khác $c$ và $d$ là anh em với $a$ và $b$ (giả sử $a$ và $c$ là anh em, $b$ và $d$ là anh em). Ta có thể hợp nhất $a$ và $b$ thành một cây con.
 
-??? note "证明"
-    我们使用数学归纳法来证明该定理．
-    
-    -   **基本情况**: 当字母数 $n = 2$ 时，显然，直接将两个字母合并成一棵树即为最优编码树．
-    -   **归纳假设**: 假设对于字母数 $n = k$（$k \geq 2$）时，Huffman 算法能够得到最优前缀编码树．
-    -   **归纳步骤**: 对于字母数 $n = k + 1$，我们从 $k+1$ 个字母中选出两个权值最小的字母，将它们合并为一棵子树，子树的根作为虚拟字母（虚拟结点）．根据引理可知，这一操作不会破坏前缀编码树的最优性．此时，虚拟字母与剩下的 $k$ 个字母一同构成 $k + 1$ 个字母，根据归纳假设，当字母数为 $k$ 时，Huffman 算法能够得到最优前缀编码树．
-    
-    因此，通过数学归纳法，Huffman 算法对于任意字母数 $n$ 都能够得到最优前缀编码树，得证．
+    -   Nếu tổng trọng số sau khi hợp nhất $a$ và $b$ nhỏ hơn trọng số của $c$ hoặc $d$, thì ta có thể hợp nhất cây con mới tạo này với nút có trọng số lớn hơn (ví dụ $c$ hoặc $d$), tạo thành một cây con mới, WPL sẽ giảm.
+    -   Nếu tổng trọng số của $a$ và $b$ không nhỏ hơn trọng số của $c$ và $d$, ta có thể trực tiếp điều chỉnh để $a$ và $b$ trở thành anh em, $c$ và $d$ là anh em của một nút khác, WPL sẽ không tăng.
 
-## 霍夫曼编码
+    Do đó, sau khi điều chỉnh như vậy, tính tối ưu sẽ không bị phá vỡ, chứng minh được mệnh đề.
 
-在进行程序设计时，通常给每一个字符标记一个单独的代码来表示一组字符，即 **编码**．
+???+ note "Định lý"
+    Cây tiền tố được tạo ra bởi thuật toán Huffman là cây tiền tố tối ưu.
 
-在进行二进制编码时，假设所有的代码都等长，那么表示 $n$ 个不同的字符需要 $\left \lceil \log_2 n \right \rceil$ 位，称为 **等长编码**．
+??? note "Chứng minh"
+    Chúng ta sử dụng phương pháp quy nạp toán học để chứng minh định lý này.
 
-如果每个字符的 **使用频率相等**，那么等长编码无疑是空间效率最高的编码方法，而如果字符出现的频率不同，则可以让频率高的字符采用尽可能短的编码，频率低的字符采用尽可能长的编码，来构造出一种 **不等长编码**，从而获得更好的空间效率．
+    -   **Trường hợp cơ sở**: Khi số lượng ký tự $n = 2$, rõ ràng việc hợp nhất trực tiếp hai ký tự thành một cây là cây mã tối ưu.
+    -   **Giả thiết quy nạp**: Giả sử khi số lượng ký tự là $n = k$ ($k \geq 2$), thuật toán Huffman có thể tạo ra cây mã tối ưu.
+    -   **Bước quy nạp**: Đối với số lượng ký tự là $n = k + 1$, ta chọn hai ký tự có trọng số nhỏ nhất và hợp nhất chúng thành một cây con, nút gốc của cây con này trở thành một ký tự ảo (nút ảo). Theo bổ đề, thao tác này không làm mất đi tính tối ưu của cây tiền tố. Lúc này, ký tự ảo cùng với $k$ ký tự còn lại tạo thành $k$ phần tử. Theo giả thiết quy nạp, khi số lượng ký tự là $k$, thuật toán Huffman có thể tạo ra cây mã tối ưu.
 
-在设计不等长编码时，要考虑解码的唯一性，如果一组编码中任一编码都不是其他任何一个编码的前缀，那么称这组编码为 **前缀编码**，其保证了编码被解码时的唯一性．
+    Do đó, thông qua quy nạp toán học, thuật toán Huffman có thể tạo ra cây mã tiền tố tối ưu cho mọi số lượng ký tự $n$, chứng minh xong.
 
-霍夫曼树可用于构造 **最短的前缀编码**，即 **霍夫曼编码（Huffman Code）**，其构造步骤如下：
+## Mã hóa Huffman
 
-1.  设需要编码的字符集为：$d_1,d_2,\dots,d_n$，他们在字符串中出现的频率为：$w_1,w_2,\dots,w_n$．
-2.  以 $d_1,d_2,\dots,d_n$ 作为叶结点，$w_1,w_2,\dots,w_n$ 作为叶结点的权值，构造一棵霍夫曼树．
-3.  规定哈夫曼编码树的左分支代表 $0$，右分支代表 $1$，则从根结点到每个叶结点所经过的路径组成的 $0$、$1$ 序列即为该叶结点对应字符的编码．
+Trong thiết kế chương trình, người ta thường đánh dấu mỗi ký tự bằng một mã riêng để biểu diễn một tập hợp ký tự, đó chính là **mã hóa** (encoding).
+
+Khi thực hiện mã hóa nhị phân, nếu tất cả các mã đều có độ dài bằng nhau, thì cần $\left \lceil \log_2 n \right \rceil$ bit để biểu diễn $n$ ký tự khác nhau, gọi là **mã hóa độ dài bằng nhau** (equal-length encoding).
+
+Nếu **tần suất xuất hiện** của các ký tự là khác nhau, ta có thể cho các ký tự có tần suất cao hơn sử dụng mã ngắn hơn, và ký tự có tần suất thấp hơn sử dụng mã dài hơn, để xây dựng một loại **mã hóa độ dài không bằng nhau** (unequal-length encoding), từ đó đạt được hiệu quả không gian tốt hơn.
+
+Khi thiết kế mã hóa độ dài không bằng nhau, cần đảm bảo tính duy nhất khi giải mã. Nếu trong một tập hợp mã, không có mã nào là tiền tố của bất kỳ mã nào khác, thì tập hợp mã này được gọi là **mã tiền tố** (prefix code), đảm bảo tính duy nhất khi giải mã.
+
+Cây Huffman có thể được sử dụng để xây dựng **mã tiền tố ngắn nhất**, tức là **Mã Huffman (Huffman Code)**. Các bước xây dựng như sau:
+
+1.  Gọi tập hợp ký tự cần mã hóa là: $d_1, d_2, \dots, d_n$, với tần suất xuất hiện tương ứng là: $w_1, w_2, \dots, w_n$.
+2.  Lấy $d_1, d_2, \dots, d_n$ làm các nút lá, và $w_1, w_2, \dots, w_n$ làm trọng số nút lá, xây dựng một Cây Huffman.
+3.  Quy ước nhánh trái của cây Huffman đại diện cho $0$, nhánh phải đại diện cho $1$. Chuỗi $0, 1$ được tạo thành từ đường đi từ nút gốc đến mỗi nút lá chính là mã hóa của ký tự tương ứng với nút lá đó.
 
 ![](./images/huffman-tree-3.svg)
 
-## 示例代码
+## Mã nguồn Ví dụ
 
-??? note "霍夫曼树的构建"
+??? note "Xây dựng Cây Huffman"
     ```cpp
     struct HNode {
       int weight;
@@ -94,7 +92,7 @@ $$
     Htree createHuffmanTree(int arr[], int n) {
       Htree forest[N];
       Htree root = NULL;
-      for (int i = 0; i < n; i++) {  // 将所有点存入森林
+      for (int i = 0; i < n; i++) {  // Đưa tất cả các nút vào rừng
         Htree temp;
         temp = (Htree)malloc(sizeof(HNode));
         temp->weight = arr[i];
@@ -102,8 +100,8 @@ $$
         forest[i] = temp;
       }
     
-      for (int i = 1; i < n; i++) {  // n-1 次循环建哈夫曼树
-        int minn = -1, minnSub;  // minn 为最小值树根下标，minnsub 为次小值树根下标
+      for (int i = 1; i < n; i++) {  // n-1 lần lặp để xây dựng cây Huffman
+        int minn = -1, minnSub;  // minn là chỉ số gốc cây có giá trị nhỏ nhất, minnSub là chỉ số gốc cây có giá trị nhỏ thứ hai
         for (int j = 0; j < n; j++) {
           if (forest[j] != NULL && minn == -1) {
             minn = j;
@@ -115,7 +113,7 @@ $$
           }
         }
     
-        for (int j = minnSub; j < n; j++) {  // 根据 minn 与 minnSub 赋值
+        for (int j = minnSub; j < n; j++) {  // Gán giá trị cho minn và minnSub dựa trên trọng số
           if (forest[j] != NULL) {
             if (forest[j]->weight < forest[minn]->weight) {
               minnSub = minn;
@@ -126,20 +124,20 @@ $$
           }
         }
     
-        // 建新树
+        // Xây dựng cây mới
         root = (Htree)malloc(sizeof(HNode));
         root->weight = forest[minn]->weight + forest[minnSub]->weight;
         root->lchild = forest[minn];
         root->rchild = forest[minnSub];
     
-        forest[minn] = root;     // 指向新树的指针赋给 minn 位置
-        forest[minnSub] = NULL;  // minnSub 位置为空
+        forest[minn] = root;     // Con trỏ tới cây mới được gán cho vị trí minn
+        forest[minnSub] = NULL;  // Vị trí minnSub đặt là NULL
       }
       return root;
     }
     ```
 
-??? note "计算构成霍夫曼树的 WPL"
+??? note "Tính WPL của Cây Huffman đã được xây dựng"
     ```cpp
     struct HNode {
       int weight;
@@ -148,11 +146,11 @@ $$
     
     using Htree = HNode *;
     
-    int getWPL(Htree root, int len) {  // 递归实现，对于已经建好的霍夫曼树，求 WPL
+    int getWPL(Htree root, int len) {  // Đệ quy để tính WPL cho cây Huffman đã xây dựng
       if (root == NULL)
         return 0;
       else {
-        if (root->lchild == NULL && root->rchild == NULL)  // 叶节点
+        if (root->lchild == NULL && root->rchild == NULL)  // Nút lá
           return root->weight * len;
         else {
           int left = getWPL(root->lchild, len + 1);
@@ -163,10 +161,10 @@ $$
     }
     ```
 
-??? note "对于未建好的霍夫曼树，直接求其 WPL"
+??? note "Tính trực tiếp WPL của cây Huffman chưa xây dựng"
     ```cpp
-    int getWPL(int arr[], int n) {  // 对于未建好的霍夫曼树，直接求其 WPL
-      priority_queue<int, vector<int>, greater<int>> huffman;  // 小根堆
+    int getWPL(int arr[], int n) {  // Tính trực tiếp WPL cho tập trọng số
+      priority_queue<int, vector<int>, greater<int>> huffman;  // Min-heap
       for (int i = 0; i < n; i++) huffman.push(arr[i]);
     
       int res = 0;
@@ -183,7 +181,7 @@ $$
     }
     ```
 
-??? note "对于给定序列，计算霍夫曼编码"
+??? note "Tính Mã Huffman cho dãy đã cho"
     ```cpp
     struct HNode {
       int weight;
@@ -192,10 +190,10 @@ $$
     
     using Htree = HNode *;
     
-    void huffmanCoding(Htree root, int len, int arr[]) {  // 计算霍夫曼编码
+    void huffmanCoding(Htree root, int len, int arr[]) {  // Tính mã Huffman
       if (root != NULL) {
         if (root->lchild == NULL && root->rchild == NULL) {
-          printf("结点为 %d 的字符的编码为: ", root->weight);
+          printf("Mã của ký tự với trọng số %d là: ", root->weight);
           for (int i = 0; i < len; i++) printf("%d", arr[i]);
           printf("\n");
         } else {

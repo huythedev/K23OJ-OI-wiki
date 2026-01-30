@@ -1,112 +1,111 @@
 author:ouuan, Backl1ght, billchenchina, CCXXXI, ChickenHu, ChungZH, cjsoft, countercurrent-time, diauweb, Early0v0, Enter-tainer, EtaoinWu, H-J-Granger, H-Shen, Henry-ZHR, HeRaNO, hsfzLZH1, huaruoji, iamtwz, imp2002, Ir1d, kenlig, Konano, Lyccrius, Marcythm, Menci, NachtgeistW, PeterlitsZo, psz2007, shuzhouliu, SkqLiao, sshwy, SukkaW, therehello, TrisolarisHD, ttzztztz, vincent-163, WAAutoMaton, Hunter19019
 
-## 定义
+## Định nghĩa
 
-最近公共祖先简称 LCA（Lowest Common Ancestor）．两个节点的最近公共祖先，就是这两个点的公共祖先里面，离根最远的那个．
-为了方便，我们记某点集 $S=\{v_1,v_2,\ldots,v_n\}$ 的最近公共祖先为 $\text{LCA}(v_1,v_2,\ldots,v_n)$ 或 $\text{LCA}(S)$．
+Tổ tiên chung gần nhất, viết tắt là LCA (Lowest Common Ancestor). Với hai đỉnh bất kỳ, tổ tiên chung gần nhất là tổ tiên chung nằm xa gốc nhất (gần hai đỉnh nhất).
+Để thuận tiện, ta ký hiệu tổ tiên chung gần nhất của tập $S=\{v_1,v_2,\ldots,v_n\}$ là $\text{LCA}(v_1,v_2,\ldots,v_n)$ hoặc $\text{LCA}(S)$.
 
-## 性质
+## Tính chất
 
-> 本节 **性质** 部分内容翻译自 [wcipeg](http://wcipeg.com/wiki/Lowest_common_ancestor)，并做过修改．
+> Phần **tính chất** này được dịch và chỉnh sửa từ [wcipeg](http://wcipeg.com/wiki/Lowest_common_ancestor).
 
-1.  $\text{LCA}(\{u\})=u$；
-2.  $u$ 是 $v$ 的祖先，当且仅当 $\text{LCA}(u,v)=u$；
-3.  如果 $u$ 不为 $v$ 的祖先并且 $v$ 不为 $u$ 的祖先，那么 $u,v$ 分别处于 $\text{LCA}(u,v)$ 的两棵不同子树中；
-4.  前序遍历中，$\text{LCA}(S)$ 出现在所有 $S$ 中元素之前，后序遍历中 $\text{LCA}(S)$ 则出现在所有 $S$ 中元素之后；
-5.  两点集并的最近公共祖先为两点集分别的最近公共祖先的最近公共祖先，即 $\text{LCA}(A\cup B)=\text{LCA}(\text{LCA}(A), \text{LCA}(B))$；
-6.  两点的最近公共祖先必定处在树上两点间的最短路上；
-7.  $d(u,v)=h(u)+h(v)-2h(\text{LCA}(u,v))$，其中 $d$ 是树上两点间的距离，$h$ 代表某点到树根的距离．
+1.  $\text{LCA}(\{u\})=u$;
+2.  $u$ là tổ tiên của $v$ khi và chỉ khi $\text{LCA}(u,v)=u$;
+3.  Nếu $u$ không là tổ tiên của $v$ và $v$ không là tổ tiên của $u$, thì $u,v$ nằm ở hai cây con khác nhau của $\text{LCA}(u,v)$;
+4.  Trong phép duyệt tiền thứ tự, $\text{LCA}(S)$ xuất hiện trước tất cả các phần tử của $S$; trong phép duyệt hậu thứ tự, $\text{LCA}(S)$ xuất hiện sau tất cả các phần tử của $S$;
+5.  Tổ tiên chung gần nhất của hợp hai tập là tổ tiên chung gần nhất của hai tổ tiên chung gần nhất của từng tập, tức là $\text{LCA}(A\cup B)=\text{LCA}(\text{LCA}(A), \text{LCA}(B))$;
+6.  Tổ tiên chung gần nhất của hai đỉnh luôn nằm trên đường đi ngắn nhất giữa hai đỉnh đó trên cây;
+7.  $d(u,v)=h(u)+h(v)-2h(\text{LCA}(u,v))$, trong đó $d$ là khoảng cách giữa hai đỉnh trên cây, $h$ là khoảng cách từ đỉnh đến gốc.
 
-## 求法
+## Các phương pháp tìm LCA
 
-### 朴素算法
+### Thuật toán đơn giản
 
-#### 过程
+#### Quy trình
 
-可以每次找深度比较大的那个点，让它向上跳．显然在树上，这两个点最后一定会相遇，相遇的位置就是想要求的 LCA．
-或者先向上调整深度较大的点，令他们深度相同，然后再共同向上跳转，最后也一定会相遇．
+Có thể mỗi lần chọn đỉnh có độ sâu lớn hơn để nhảy lên trên. Rõ ràng trên cây, hai đỉnh cuối cùng sẽ gặp nhau, vị trí gặp chính là LCA cần tìm.
+Hoặc có thể đưa hai đỉnh về cùng độ sâu trước, sau đó cùng nhảy lên, cuối cùng cũng sẽ gặp nhau.
 
-#### 性质
+#### Độ phức tạp
 
-朴素算法预处理时需要 dfs 整棵树，时间复杂度为 $O(n)$，单次查询时间复杂度为 $\Theta(n)$．如果树满足随机性质，则时间复杂度与这种随机树的期望高度有关．
+Thuật toán đơn giản cần duyệt DFS toàn bộ cây để tiền xử lý, độ phức tạp $O(n)$, mỗi truy vấn mất $\Theta(n)$. Nếu cây có tính chất ngẫu nhiên, độ phức tạp phụ thuộc vào chiều cao kỳ vọng của cây.
 
-### 倍增算法
+### Thuật toán nhảy bậc (Binary Lifting)
 
-#### 过程
+#### Quy trình
 
-倍增算法是最经典的 LCA 求法，他是朴素算法的改进算法．通过预处理 $\text{fa}_{x,i}$ 数组，游标可以快速移动，大幅减少了游标跳转次数．$\text{fa}_{x,i}$ 表示点 $x$ 的第 $2^i$ 个祖先．$\text{fa}_{x,i}$ 数组可以通过 dfs 预处理出来．
+Thuật toán nhảy bậc là phương pháp kinh điển nhất để tìm LCA, cải tiến từ thuật toán đơn giản. Bằng cách tiền xử lý mảng $\text{fa}_{x,i}$, con trỏ có thể nhảy xa hơn, giảm mạnh số lần nhảy. $\text{fa}_{x,i}$ là tổ tiên thứ $2^i$ của đỉnh $x$. Mảng này có thể tính bằng DFS.
 
-现在我们看看如何优化这些跳转：
-在调整游标的第一阶段中，我们要将 $u,v$ 两点跳转到同一深度．我们可以计算出 $u,v$ 两点的深度之差，设其为 $y$．通过将 $y$ 进行二进制拆分，我们将 $y$ 次游标跳转优化为「$y$ 的二进制表示所含 `1` 的个数」次游标跳转．
-在第二阶段中，我们从最大的 $i$ 开始循环尝试，一直尝试到 $0$（包括 $0$），如果 $\text{fa}_{u,i}\not=\text{fa}_{v,i}$，则 $u\gets\text{fa}_{u,i},v\gets\text{fa}_{v,i}$，那么最后的 LCA 为 $\text{fa}_{u,0}$．
+Cách tối ưu hóa:
+Ở giai đoạn đầu, cần đưa $u,v$ về cùng độ sâu. Tính hiệu độ sâu $y$, phân tích nhị phân $y$ để thực hiện số lần nhảy bằng số bit 1 trong $y$.
+Giai đoạn hai, từ $i$ lớn nhất về $0$, nếu $\text{fa}_{u,i}\not=\text{fa}_{v,i}$ thì cập nhật $u\gets\text{fa}_{u,i},v\gets\text{fa}_{v,i}$. Cuối cùng, LCA là $\text{fa}_{u,0}$.
 
-#### 性质
+#### Độ phức tạp
 
-倍增算法的预处理时间复杂度为 $O(n \log n)$，单次查询时间复杂度为 $O(\log n)$．
-另外倍增算法可以通过交换 `fa` 数组的两维使较小维放在前面．这样可以减少 cache miss 次数，提高程序效率．
+Tiền xử lý $O(n \log n)$, mỗi truy vấn $O(\log n)$.
+Có thể đổi thứ tự hai chiều của mảng `fa` để tối ưu cache.
 
-??? note "例题"
-    [HDU 2586 How far away?](https://acm.hdu.edu.cn/showproblem.php?pid=2586) 树上最短路查询．
+??? note "Ví dụ"
+    [HDU 2586 How far away?](https://acm.hdu.edu.cn/showproblem.php?pid=2586) - Truy vấn đường đi ngắn nhất trên cây.
 
-可先求出 LCA，再结合性质 $7$ 进行解答．也可以直接在求 LCA 时求出结果．
+Có thể tìm LCA trước rồi dùng tính chất 7 để trả lời, hoặc tính luôn khi tìm LCA.
 
-??? note "参考代码"
+??? note "Mã mẫu"
     ```cpp
     --8<-- "docs/graph/code/lca/lca_1.cpp"
     ```
 
-### Tarjan 算法
+### Thuật toán Tarjan
 
-#### 过程
+#### Quy trình
 
-Tarjan 算法是一种 **离线算法**，需要使用 [并查集](../ds/dsu.md) 记录某个结点的祖先结点．做法如下：
+Thuật toán Tarjan là **thuật toán offline**, cần dùng [DSU - cấu trúc hợp nhất-tìm đại diện](../ds/dsu.md) để lưu tổ tiên của mỗi đỉnh. Cách làm:
 
-1.  首先接受输入边（邻接链表）、查询边（存储在另一个邻接链表内）．查询边其实是虚拟加上去的边，为了方便，每次输入查询边的时候，将这个边及其反向边都加入到 `queryEdge` 数组里．
-2.  然后对其进行一次 DFS 遍历，同时使用 `visited` 数组进行记录某个结点是否被访问过、`parent` 记录当前结点的父亲结点．
-3.  其中涉及到了 **回溯思想**，我们每次遍历到某个结点的时候，认为这个结点的根结点就是它本身．让以这个结点为根节点的 DFS 全部遍历完毕了以后，再将这个结点的根节点设置为这个结点的父一级结点．
-4.  回溯的时候，如果以该节点为起点，`queryEdge` 查询边的另一个结点也恰好访问过了，则直接更新查询边的 LCA 结果．
-5.  最后输出结果．
+1.  Nhập các cạnh (dạng danh sách kề), các truy vấn (lưu ở một danh sách kề khác). Mỗi truy vấn thêm cả hai chiều vào mảng `queryEdge`.
+2.  Thực hiện DFS, dùng mảng `visited` để đánh dấu đã thăm, `parent` lưu cha hiện tại.
+3.  Áp dụng **tư duy quay lui**: khi duyệt đến một đỉnh, coi nó là gốc của chính nó. Sau khi DFS xong toàn bộ cây con, cập nhật gốc của nó là cha của nó.
+4.  Khi quay lui, nếu truy vấn xuất phát từ đỉnh này và đỉnh còn lại đã được thăm, cập nhật kết quả LCA.
+5.  In kết quả.
 
-#### 性质
+#### Độ phức tạp
 
-Tarjan 算法需要初始化并查集，所以预处理的时间复杂度为 $O(n)$．
+Cần khởi tạo DSU, tiền xử lý $O(n)$.
 
-朴素的 Tarjan 算法处理所有 $m$ 次询问的时间复杂度为 $O(m \alpha(m+n, n) + n)$，但是 Tarjan 算法的常数比倍增算法大．存在 $O(m + n)$ 的实现．
+Thuật toán Tarjan cơ bản xử lý $m$ truy vấn trong $O(m \alpha(m+n, n) + n)$, nhưng hằng số lớn hơn thuật toán nhảy bậc. Có thể đạt $O(m+n)$.
 
-???+ warning "注意"
-    并不存在「朴素 Tarjan LCA 算法中使用的并查集性质比较特殊，单次调用 `find()` 函数的时间复杂度为均摊 $O(1)$」这种说法．
-    
-    以下的朴素 Tarjan 实现复杂度为 $O(m \alpha(m+n, n) + n)$．如果需要追求严格线性，可以参考 [Gabow 和 Tarjan 于 1983 年的论文](https://dl.acm.org/doi/pdf/10.1145/800061.808753)．其中给出了一种复杂度为 $O(m + n)$ 的做法．
+???+ warning "Chú ý"
+    Không có chuyện “DSU trong Tarjan LCA có truy vấn `find()` $O(1)$”. 
+    Thuật toán Tarjan cơ bản có độ phức tạp $O(m \alpha(m+n, n) + n)$. Nếu muốn tuyến tính nghiêm ngặt, xem [bài báo của Gabow và Tarjan 1983](https://dl.acm.org/doi/pdf/10.1145/800061.808753) với cách $O(m+n)$.
 
-#### 实现
+#### Mã mẫu
 
-??? note "参考代码"
+??? note "Mã mẫu"
     ```cpp
     --8<-- "docs/graph/code/lca/lca_tarjan.cpp"
     ```
 
-### 用欧拉序列转化为 RMQ 问题
+### Dùng Euler Tour chuyển về bài toán RMQ
 
-#### 定义
+#### Định nghĩa
 
-对一棵树进行 DFS，无论是第一次访问还是回溯，每次到达一个结点时都将编号记录下来，可以得到一个长度为 $2n-1$ 的序列，这个序列被称作这棵树的欧拉序列．
+Duyệt DFS cây, mỗi lần đến một đỉnh (kể cả khi quay lui) đều ghi lại chỉ số, thu được một dãy độ dài $2n-1$, gọi là Euler Tour của cây.
 
-在下文中，把结点 $u$ 在欧拉序列中第一次出现的位置编号记为 $pos(u)$（也称作节点 $u$ 的欧拉序），把欧拉序列本身记作 $E[1..2n-1]$．
+Ký hiệu vị trí xuất hiện đầu tiên của $u$ trong Euler Tour là $pos(u)$ (Euler index), dãy Euler Tour là $E[1..2n-1]$.
 
-#### 过程
+#### Quy trình
 
-有了欧拉序列，LCA 问题可以在线性时间内转化为 RMQ 问题，即 $pos(LCA(u, v))=\min\{pos(k)|k\in E[pos(u)..pos(v)]\}$．
+Có Euler Tour, bài toán LCA chuyển thành bài toán RMQ trong thời gian tuyến tính: $pos(LCA(u, v))=\min\{pos(k)|k\in E[pos(u)..pos(v)]\}$.
 
-这个等式不难理解：从 $u$ 走到 $v$ 的过程中一定会经过 $LCA(u,v)$，但不会经过 $LCA(u,v)$ 的祖先．因此，从 $u$ 走到 $v$ 的过程中经过的欧拉序最小的结点就是 $LCA(u, v)$．
+Giải thích: từ $u$ đến $v$ luôn đi qua $LCA(u,v)$, nhưng không đi qua tổ tiên của $LCA(u,v)$. Do đó, trong đoạn từ $u$ đến $v$ trên Euler Tour, đỉnh có chỉ số nhỏ nhất chính là $LCA(u,v)$.
 
-用 DFS 计算欧拉序列的时间复杂度是 $O(n)$，且欧拉序列的长度也是 $O(n)$，所以 LCA 问题可以在 $O(n)$ 的时间内转化成等规模的 RMQ 问题．
+DFS tính Euler Tour $O(n)$, độ dài dãy cũng $O(n)$, nên chuyển bài toán LCA về RMQ cùng kích thước trong $O(n)$.
 
-#### 实现
+#### Mã mẫu
 
-???+ note "参考代码"
+???+ note "Mã mẫu"
     ```cpp
     int dfn[N << 1], pos[N], tot, st[30][(N << 1) + 2],
-        rev[30][(N << 1) + 2];  // rev表示最小深度对应的节点编号
+        rev[30][(N << 1) + 2];  // rev biểu diễn chỉ số đỉnh ứng với độ sâu nhỏ nhất
     
     void dfs(int cur, int dep) {
       dfn[++tot] = cur;
@@ -123,7 +122,7 @@ Tarjan 算法需要初始化并查集，所以预处理的时间复杂度为 $O(
     
     void init() {
       for (int i = 2; i <= tot + 1; ++i)
-        lg[i] = lg[i >> 1] + 1;  // 预处理 lg 代替库函数 log2 来优化常数
+        lg[i] = lg[i >> 1] + 1;  // Tiền xử lý log2 để tối ưu hằng số
       for (int i = 1; i <= tot; i++) st[0][i] = depth[i], rev[0][i] = dfn[i];
       for (int i = 1; i <= lg[tot]; i++)
         for (int j = 1; j + (1 << i) - 1 <= tot; j++)
@@ -141,39 +140,39 @@ Tarjan 算法需要初始化并查集，所以预处理的时间复杂度为 $O(
     }
     ```
 
-当我们需要查询某点对 $(u, v)$ 的 LCA 时，查询区间 $[\min\{pos[u], pos[v]\}, \max\{pos[u], pos[v]\}]$ 上最小值的所代表的节点即可．
+Khi cần truy vấn LCA của $(u, v)$, chỉ cần truy vấn đoạn $[\min\{pos[u], pos[v]\}, \max\{pos[u], pos[v]\}]$ để lấy đỉnh có độ sâu nhỏ nhất.
 
-若使用 ST 表来解决 RMQ 问题，那么该算法不支持在线修改，预处理的时间复杂度为 $O(n\log n)$，每次查询 LCA 的时间复杂度为 $O(1)$．
+Nếu dùng Sparse Table để giải RMQ, thuật toán không hỗ trợ cập nhật online, tiền xử lý $O(n\log n)$, mỗi truy vấn LCA $O(1)$.
 
-### 树链剖分
+### Heavy-Light Decomposition (HLD)
 
-LCA 为两个游标跳转到同一条重链上时深度较小的那个游标所指向的点．
+LCA là đỉnh có độ sâu nhỏ hơn khi hai con trỏ cùng nhảy lên một heavy chain.
 
-树链剖分的预处理时间复杂度为 $O(n)$，单次查询的时间复杂度为 $O(\log n)$，并且常数较小．
+Tiền xử lý $O(n)$, mỗi truy vấn $O(\log n)$, hằng số nhỏ.
 
 ### Link Cut Tree
 
-在 [Link Cut Tree](../ds/lct.md) 中，设连续两次 [access](../ds/lct.md#access) 操作的点分别为 `u` 和 `v`，则第二次 [access](../ds/lct.md#access) 操作返回的点即为 `u` 和 `v` 的 LCA.
+Trong [Link Cut Tree](../ds/lct.md), nếu thực hiện hai thao tác [access](../ds/lct.md#access) liên tiếp với hai đỉnh `u` và `v`, thì kết quả trả về của lần thứ hai chính là LCA của `u` và `v`.
 
-在无 link 和 cut 等操作的情况下，使用 Link Cut Tree 单次查询的时间复杂度为 $O(\log n)$．
+Nếu không có thao tác link/cut, mỗi truy vấn LCA bằng Link Cut Tree mất $O(\log n)$.
 
-### 标准 RMQ
+### Chuẩn RMQ
 
-前面讲到了借助欧拉序将 LCA 问题转化为 RMQ 问题，其瓶颈在于 RMQ．如果能做到 $O(n) \sim O(1)$ 求解 RMQ，那么也就能做到 $O(n) \sim O(1)$ 求解 LCA．
+Như đã nói, chuyển LCA về RMQ, điểm nghẽn là RMQ. Nếu giải RMQ trong $O(n)\sim O(1)$ thì LCA cũng vậy.
 
-注意到欧拉序满足相邻两数之差为 1 或者 -1，所以可以使用 $O(n) \sim O(1)$ 的 [加减 1RMQ](../topic/rmq.md#加减-1rmq) 来做．
+Chú ý Euler Tour có tính chất: hiệu hai phần tử liên tiếp là $1$ hoặc $-1$, nên có thể dùng [RMQ cộng/trừ 1](../topic/rmq.md#加减-1rmq) để giải trong $O(n)\sim O(1)$.
 
-时间复杂度 $O(n) \sim O(1)$，空间复杂度 $O(n)$，支持在线查询，常数较大．
+Độ phức tạp $O(n)\sim O(1)$, bộ nhớ $O(n)$, hỗ trợ truy vấn online, hằng số lớn.
 
-#### 例题 [Luogu P3379【模板】最近公共祖先（LCA）](https://www.luogu.com.cn/problem/P3379)
+#### Ví dụ [Luogu P3379【Mẫu】LCA](https://www.luogu.com.cn/problem/P3379)
 
-??? note "参考代码"
+??? note "Mã mẫu"
     ```cpp
     --8<-- "docs/graph/code/lca/lca_2.cpp"
     ```
 
-## 习题
+## Bài tập
 
--   [祖孙询问](https://loj.ac/problem/10135)
--   [货车运输](https://loj.ac/problem/2610)
--   [点的距离](https://loj.ac/problem/10130)
+-   [Truy vấn tổ tiên](https://loj.ac/problem/10135)
+-   [Vận chuyển hàng hóa](https://loj.ac/problem/2610)
+-   [Khoảng cách giữa hai đỉnh](https://loj.ac/problem/10130)

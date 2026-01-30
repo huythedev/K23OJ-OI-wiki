@@ -1,133 +1,126 @@
-## 普通环计数
+## Đếm số vòng (chu trình) thông thường
 
-???+ note "[例题 1：Codeforces Beta Round 11 D. A Simple Task](https://codeforces.com/problemset/problem/11/D)"
-    给定一个简单图，求图中简单环的数目．简单环是指没有重复顶点或边的环．
-    
-    结点数目 $1\leq n\leq 19$．
+???+ note "[Bài mẫu 1: Codeforces Beta Round 11 D. A Simple Task](https://codeforces.com/problemset/problem/11/D)"
+    Cho một đồ thị đơn giản, hãy đếm số vòng đơn giản trong đồ thị. Vòng đơn giản là vòng không có đỉnh hoặc cạnh lặp lại.
 
-??? note "解题思路"
-    考虑状态压缩动态规划．记 $f(s,i)$ 表示满足当前经过结点集合为 $s$，且现在在结点 $i$ 上，且第一个结点为结点集合 $s$ 中 **编号最小的那个** 的路径条数．
-    
-    对于状态 $f(s,i)$，枚举下一个结点 $u$．若 $u$ 在集合 $s$ 中且是编号最小的那个（即起点），就将答案 $A$ 加上 $f(s,i)$．若 $u$ 不在 $s$ 中，就将 $f(s,i)$ 加上 $f(s\cup\{u\},u)$．
-    
-    这样会把二元环（即重边）也算上，并且每个非二元环会被计算两次（因为固定起点可以向两个方向走），所以答案为 $\dfrac{A-m}2$，其中 $m$ 表示边数．时间复杂度 $O(2^nm)$．
+    Số đỉnh $1\leq n\leq 19$.
 
-??? note "示例代码"
+??? note "Ý tưởng giải"
+    Sử dụng quy hoạch động trạng thái (Bitmask DP). Gọi $f(s,i)$ là số đường đi mà tập các đỉnh đã đi qua là $s$, hiện tại đang ở đỉnh $i$, và đỉnh đầu tiên là đỉnh nhỏ nhất trong tập $s$.
+
+    Với trạng thái $f(s,i)$, liệt kê đỉnh tiếp theo $u$. Nếu $u$ đã nằm trong $s$ và là đỉnh nhỏ nhất (tức là về lại điểm xuất phát), cộng $f(s,i)$ vào đáp án $A$. Nếu $u$ chưa nằm trong $s$, cập nhật $f(s\cup\{u\},u)$ bằng $f(s,i)$.
+
+    Cách này sẽ đếm cả vòng độ dài $2$ (tức là cạnh song song), và mỗi vòng độ dài lớn hơn $2$ sẽ bị đếm hai lần (vì cố định điểm xuất phát, có thể đi hai chiều). Do đó, đáp án là $\dfrac{A-m}2$, với $m$ là số cạnh. Độ phức tạp $O(2^n m)$.
+
+??? note "Code mẫu"
     ```cpp
     --8<-- "docs/graph/code/rings-count/rings-count_1.cpp"
     ```
 
-## 三元环计数
+## Đếm số vòng tam giác (ba đỉnh)
 
-**三元环** 指的是一个简单图 $G$ 中的一个无序三元组 $(u,\ v,\ w)$ 满足存在三条边分别连接 $(u,\ v)$，$(v,\ w)$ 和 $(w,\ u)$．而 **三元环计数问题** 要求计算出图中所有三元环的数量．
+**Vòng tam giác** là một bộ ba đỉnh $(u, v, w)$ sao cho tồn tại ba cạnh $(u,v)$, $(v,w)$, $(w,u)$. Bài toán đếm số vòng tam giác yêu cầu đếm số lượng các vòng tam giác trong đồ thị.
 
-首先给所有边定向．我们规定从度数小的点指向度数大的点，度数相同就从编号小的点指向编号大的点．那么此时此图是一张有向无环图（DAG）．
+Đầu tiên, định hướng các cạnh: luôn hướng từ đỉnh có bậc nhỏ hơn sang đỉnh có bậc lớn hơn, nếu bậc bằng nhau thì từ đỉnh có số nhỏ hơn sang đỉnh có số lớn hơn. Khi đó, đồ thị trở thành đồ thị có hướng không chu trình (DAG).
 
-??? note "该图没有环的证明"
-    反证法，假设存在环，那么环中的点度数一个比一个大，要形成环，所有点的度数必须相等，但是编号必定不同，矛盾．
-    
-    所以定向后图肯定不存在环．
-    
-    事实上，可以根据上述定向规则构造一个 [偏序](../math/order-theory.md#二元关系)，所以按此规则构造的图（也即该偏序的 [Hasse 图](../math/order-theory.md#偏序集的可视化表示hasse-图)）一定是一个 DAG．
+??? note "Chứng minh đồ thị không có chu trình"
+    Giả sử tồn tại chu trình, thì bậc các đỉnh trên chu trình phải tăng dần, để tạo thành chu trình thì các đỉnh phải có cùng bậc, nhưng số hiệu đỉnh lại khác nhau, mâu thuẫn.
 
-枚举 $u$ 和 $u$ 指向的点 $v$，再在 $v$ 指向的点中枚举 $w$，检验 $u$ 是否与 $w$ 相连即可．
+    Thực chất, quy tắc định hướng này tạo ra một [quan hệ thứ tự bộ phận (partial order)](../math/order-theory.md#二元关系), nên đồ thị định hướng này (tức là Hasse diagram của quan hệ đó) chắc chắn là DAG.
 
-这个算法的时间复杂度为 $O(m\sqrt m)$．
+Duyệt từng đỉnh $u$, với mỗi đỉnh $v$ mà $u$ hướng tới, tiếp tục duyệt các đỉnh $w$ mà $v$ hướng tới, kiểm tra xem $u$ có nối với $w$ không.
 
-???+ note "时间复杂度证明"
-    对于定向部分，遍历了所有的边，时间复杂度 $O(n+m)$．
-    
-    对于每一对 $(v,\ w)$，$u$ 的数量都不超过 $v$ 的入度 $d^-(v)$．
-    
-    若 $d^-(v)\leq\sqrt m$，由于 $w$ 的个数至多为 $n$，所以这部分时间复杂度为 $O(n\sqrt m)$．
-    
-    若 $d^-(v) > \sqrt m$，由于 $v$ 指向 $w$，所以 $d(v) \leq d(w)$，得出 $d(w) > \sqrt m$，但是总边数只有 $m$，所以这样的 $w$ 的个数至多为 $\sqrt m$，故时间复杂度为 $O(m\sqrt m)$．
-    
-    总时间复杂度为 $O(n+m+n\sqrt m+m\sqrt m)=O(m\sqrt m)$．
-    
-    事实上，如果定向时从度数大的点指向度数小的点，复杂度也正确，只需要交换 $u,\ w$ 两个点，上述证明也成立．
+Độ phức tạp $O(m\sqrt m)$.
 
-???+ note "示例代码（[洛谷 P1989 无向图三元环计数](https://www.luogu.com.cn/problem/P1989)）"
+???+ note "Chứng minh độ phức tạp"
+    Định hướng các cạnh duyệt hết $O(n+m)$.
+
+    Với mỗi cặp $(v,w)$, số lượng $u$ không vượt quá bậc vào $d^-(v)$. Nếu $d^-(v)\leq\sqrt m$, số $w$ tối đa $n$, tổng $O(n\sqrt m)$. Nếu $d^-(v) > \sqrt m$, vì $v$ hướng tới $w$ nên $d(v)\leq d(w)$, suy ra $d(w)>\sqrt m$, mà tổng số cạnh là $m$, nên số $w$ như vậy tối đa $\sqrt m$, tổng $O(m\sqrt m)$. Tổng hợp lại là $O(n+m+n\sqrt m+m\sqrt m)=O(m\sqrt m)$.
+
+    Nếu định hướng ngược lại (từ bậc lớn sang bậc nhỏ), chỉ cần đổi vai trò $u,w$, chứng minh vẫn đúng.
+
+???+ note "Code mẫu ([洛谷 P1989 Đếm số vòng tam giác trong đồ thị vô hướng](https://www.luogu.com.cn/problem/P1989))"
     ```cpp
     --8<-- "docs/graph/code/rings-count/rings-count_2.cpp"
     ```
 
-### 例题 2
+### Bài mẫu 2
 
 ???+ note "[HDU 6184 Counting Stars](https://acm.hdu.edu.cn/showproblem.php?pid=6184)"
-    给定一张有 $n$ 个点和 $m$ 条边的无向图，求下面图形的出现次数．
-    
+    Cho một đồ thị vô hướng có $n$ đỉnh, $m$ cạnh, hãy đếm số lần xuất hiện của hình dưới đây.
+
     ![](./images/rings-count1.svg)
-    
-    $2\leq n\leq 10^5$，$1\leq m\leq\min\left\{2\times 10^5,\ \dfrac{n(n-1)}2\right\}$．
 
-??? note "解题思路"
-    这个图形是两个三元环共用了一条边形成的．所以我们先跑一遍三元环计数，统计出一条边上三元环的数量，然后枚举共用的那条边，设有 $x$ 个三元环中有此边，那么对答案的贡献就是 $\dbinom x2$．
-    
-    时间复杂度 $O(m\sqrt m)$．
+    $2\leq n\leq 10^5$, $1\leq m\leq\min\left\{2\times 10^5,\ \dfrac{n(n-1)}2\right\}$.
 
-??? note "示例代码"
+??? note "Ý tưởng giải"
+    Hình này là hai vòng tam giác chung một cạnh. Đầu tiên đếm số vòng tam giác trên mỗi cạnh, sau đó với mỗi cạnh có $x$ vòng tam giác đi qua, cộng $\dbinom x2$ vào đáp án.
+
+    Độ phức tạp $O(m\sqrt m)$.
+
+??? note "Code mẫu"
     ```cpp
     --8<-- "docs/graph/code/rings-count/rings-count_3.cpp"
     ```
 
-## 四元环计数
+## Đếm số vòng bốn đỉnh
 
-类似地，**四元环** 就是指四个点 $a,\ b,\ c,\ d$ 满足 $(a,\ b)$，$(b,\ c)$，$(c,\ d)$ 和 $(d,\ a)$ 均有边连接．
+Tương tự, **vòng bốn đỉnh** là bốn đỉnh $a, b, c, d$ sao cho $(a,b)$, $(b,c)$, $(c,d)$, $(d,a)$ đều là cạnh.
 
-考虑先对点进行排序．度数小的排在前面，度数大的排在后面．
+Sắp xếp các đỉnh theo bậc tăng dần.
 
-考虑枚举排在最后面的点 $a$，此时只需要对于每个比 $a$ 排名更前的点 $c$，都求出有多少个排名比 $a$ 前的点 $b$ 满足 $(a,\ b)$，$(b,\ c)$ 有边．然后只需要从这些 $b$ 中任取两个都能成为一个四元环．求 $b$ 的数量只需要遍历一遍 $b$ 和 $c$ 即可．
+Duyệt đỉnh cuối cùng $a$ (bậc lớn nhất), với mỗi đỉnh $c$ có bậc nhỏ hơn $a$, đếm số đỉnh $b$ (bậc nhỏ hơn $a$) sao cho $(a,b)$, $(b,c)$ đều là cạnh. Với mỗi cặp $b$ như vậy, chọn hai đỉnh bất kỳ sẽ tạo thành một vòng bốn đỉnh. Đếm số $b$ chỉ cần duyệt qua các đỉnh $b$ và $c$.
 
-注意到我们枚举的复杂度本质上与枚举三元环等价，所以时间复杂度也是 $O(m\sqrt m)$（假设 $n,\ m$ 同阶）．
+Độ phức tạp tương đương đếm vòng tam giác, tức là $O(m\sqrt m)$ (giả sử $n,m$ cùng bậc).
 
-值得注意的是，$(a,\ b,\ c,\ d)$ 和 $(a,\ c,\ b,\ d)$ 可以是两个不同的四元环．
+Lưu ý: $(a,b,c,d)$ và $(a,c,b,d)$ có thể là hai vòng bốn đỉnh khác nhau.
 
-另外，度数相同的结点的排名将不相同，并且需要注意判断 $a\neq c$．
+Ngoài ra, các đỉnh cùng bậc sẽ có thứ tự khác nhau, cần đảm bảo $a\neq c$.
 
-???+ note "示例代码（[LibreOJ P191 无向图四元环计数](https://loj.ac/p/191)）"
+???+ note "Code mẫu ([LibreOJ P191 Đếm số vòng bốn đỉnh trong đồ thị vô hướng](https://loj.ac/p/191))"
     ```cpp
     --8<-- "docs/graph/code/rings-count/rings-count_4.cpp"
     ```
 
-### 例题 3
+### Bài mẫu 3
 
 ???+ note "[Gym 102028L Connected Subgraphs](https://codeforces.com/gym/102028/problem/L)"
-    给定一张有 $n$ 个点和 $m$ 条边的无向图，求四条边的导出子图连通的情况数．
-    
-    $4\leq n\leq 10^5$，$4\leq m\leq 2\times 10^5$．
+    Cho một đồ thị vô hướng có $n$ đỉnh, $m$ cạnh, hỏi có bao nhiêu cách chọn bốn cạnh sao cho đồ thị con tạo thành là liên thông.
 
-??? note "解题思路"
-    容易把情况分为五种：菊花图、四元环、三元环上一个点连出一条边、四个点构成的链中间一个点连出一条边以及五个点构成的链．
-    
-    菊花图直接枚举点的度数，用组合数解决即可．四元环可以直接按照上述算法求得．三元环部分只需枚举三元环 $(u,\ v,\ w)$，那么对答案的贡献就是 $[d(u)-2]+[d(v)-2]+[d(w)-2]$．
-    
-    下面考虑第四种情况．考虑枚举度数为 $2$ 的点 $x$，再枚举与它相邻的一个结点 $y$ 作为度数为 $3$ 的那个点．此时对答案的贡献为 $[d(x)-1]\cdot\dbinom{d(y)-1}2$．但是注意到 $y$ 的相邻节点可能会和 $x$ 的相邻结点重合，此时的图形等价于第三种情况．但是每种多算的第三种情况都会被多算两次（因为有两个度数为 $3$ 的点），所以应该减去第三种情况数目的两倍．
-    
-    对于最后一种情况，先枚举中间的点 $x$，那么容易发现对答案的贡献是
-    
+    $4\leq n\leq 10^5$, $4\leq m\leq 2\times 10^5$.
+
+??? note "Ý tưởng giải"
+    Có năm trường hợp: đồ thị hình hoa (star), vòng bốn đỉnh, vòng tam giác với một đỉnh nối thêm một cạnh, đường bốn đỉnh với một đỉnh nối thêm một cạnh, và đường năm đỉnh.
+
+    Đồ thị hình hoa: duyệt từng đỉnh, dùng tổ hợp để đếm.
+
+    Vòng bốn đỉnh: dùng thuật toán ở trên.
+
+    Vòng tam giác: duyệt từng vòng tam giác $(u,v,w)$, cộng $[d(u)-2]+[d(v)-2]+[d(w)-2]$ vào đáp án.
+
+    Trường hợp thứ tư: duyệt từng đỉnh bậc $2$ là $x$, duyệt một đỉnh kề $y$ là đỉnh bậc $3$, cộng $[d(x)-1]\cdot\dbinom{d(y)-1}2$ vào đáp án. Tuy nhiên, các đỉnh kề của $y$ có thể trùng với đỉnh kề của $x$, khi đó sẽ trùng với trường hợp ba. Mỗi trường hợp ba bị đếm hai lần (vì có hai đỉnh bậc $3$), nên cần trừ đi hai lần số trường hợp ba.
+
+    Trường hợp cuối: duyệt đỉnh giữa $x$, đáp án cộng
     $$
     \sum_{y\in son_x}\sum_{z\in son_x}[d(y)-1]\cdot[d(z)-1].
     $$
-    
-    同样地，这其中有多算的部分．设 $y$ 的相邻结点为 $s$，$z$ 的相邻结点为 $t$，那么思考后发现多算的有如下几种情况：
-    
-    1.  $y$ 与 $t$ 重合，但是 $s$ 与 $z$ 不重合时，等价于第三种情况；
-    2.  $s$ 与 $z$ 重合，但是 $y$ 与 $t$ 不重合时，同样等价于第三种情况；
-    3.  $y$ 与 $t$，$s$ 与 $z$ 都重合时，等价于一个三元环；
-    4.  $s$ 与 $t$ 重合时，等价于一个四元环（第二种情况）．
-    
-    考虑到第三种情况中两个度数 $2$ 的点作为 $x$ 时正好分别对应上述多算情况的 1 和 2，所以要额外减去第三种情况数目的两倍．对于一个三元环，三个结点都可以作为 $x$，多算了 $3$ 次．同样的，四元环的情况被多算了 $4$ 次．
-    
-    于是我们就得出了所有情况的算法，时间复杂度为 $O(n+m\sqrt m)$．
+    Trong đó, có các trường hợp bị đếm trùng:
+    1.  $y$ trùng $t$ nhưng $s$ khác $z$, trùng với trường hợp ba;
+    2.  $s$ trùng $z$ nhưng $y$ khác $t$, cũng trùng với trường hợp ba;
+    3.  $y$ trùng $t$, $s$ trùng $z$, trùng với vòng tam giác;
+    4.  $s$ trùng $t$, trùng với vòng bốn đỉnh.
 
-??? note "示例代码"
+    Trường hợp ba có hai đỉnh bậc $2$ làm $x$, đúng bằng hai trường hợp trên, nên cần trừ hai lần số trường hợp ba. Với một vòng tam giác, ba đỉnh đều có thể làm $x$, bị đếm ba lần. Vòng bốn đỉnh bị đếm bốn lần.
+
+    Như vậy, đã liệt kê đủ các trường hợp, độ phức tạp $O(n+m\sqrt m)$.
+
+??? note "Code mẫu"
     ```cpp
     --8<-- "docs/graph/code/rings-count/rings-count_5.cpp"
     ```
 
-## 习题
+## Bài tập
 
 [洛谷 P3547 \[POI2013\] CEN-Price List](https://www.luogu.com.cn/problem/P3547)
 
-[CodeForces 985G Team Players](https://codeforces.com/contest/985/problem/G)（容斥原理）
+[CodeForces 985G Team Players](https://codeforces.com/contest/985/problem/G) (nguyên lý bao hàm loại trừ)

@@ -1,19 +1,19 @@
 author: Ir1d, sshwy, Xeonacid, partychicken, Anguei, HeRaNO
-在 OI 中，想要对图进行操作，就需要先学习图的存储方式．
+Để thao tác với đồ thị trong OI, trước tiên bạn cần nắm vững các phương pháp lưu trữ đồ thị.
 
-## 约定
+## Quy ước
 
-本文默认读者已阅读并了解了 [图论相关概念](./concept.md) 中的基础内容，如果在阅读中遇到困难，也可以在 [图论相关概念](./concept.md) 中进行查阅．
+Bài viết này giả định bạn đã đọc và hiểu các [khái niệm cơ bản về đồ thị](./concept.md). Nếu gặp khó khăn khi đọc, bạn cũng có thể tham khảo lại tại [khái niệm đồ thị](./concept.md).
 
-在本文中，用 $n$ 代指图的点数，用 $m$ 代指图的边数，用 $d^+(u)$ 代指点 $u$ 的出度，即以 $u$ 为出发点的边数．
+Trong bài này, $n$ là số đỉnh của đồ thị, $m$ là số cạnh, $d^+(u)$ là bậc ra của đỉnh $u$, tức số cạnh xuất phát từ $u$.
 
-## 直接存边
+## Lưu trực tiếp danh sách cạnh
 
-### 方法
+### Phương pháp
 
-使用一个数组来存边，数组中的每个元素都包含一条边的起点与终点（带边权的图还包含边权）．（或者使用多个数组分别存起点，终点和边权．）
+Sử dụng một mảng để lưu các cạnh, mỗi phần tử của mảng chứa thông tin đỉnh đầu và đỉnh cuối của một cạnh (nếu là đồ thị có trọng số thì lưu thêm trọng số). (Hoặc dùng nhiều mảng để lưu riêng đỉnh đầu, đỉnh cuối và trọng số.)
 
-??? note "参考代码"
+??? note "Mã mẫu"
     === "C++"
         ```cpp
         #include <iostream>
@@ -29,6 +29,7 @@ author: Ir1d, sshwy, Xeonacid, partychicken, Anguei, HeRaNO
         vector<Edge> e;
         vector<bool> vis;
         
+        // Tìm xem có cạnh từ u đến v không
         bool find_edge(int u, int v) {
           for (int i = 1; i <= m; ++i) {
             if (e[i].u == u && e[i].v == v) {
@@ -38,6 +39,7 @@ author: Ir1d, sshwy, Xeonacid, partychicken, Anguei, HeRaNO
           return false;
         }
         
+        // Duyệt DFS từ đỉnh u
         void dfs(int u) {
           if (vis[u]) return;
           vis[u] = true;
@@ -77,6 +79,7 @@ author: Ir1d, sshwy, Xeonacid, partychicken, Anguei, HeRaNO
             e[i].u, e[i].v = map(int, input().split())
         
         
+        # Tìm xem có cạnh từ u đến v không
         def find_edge(u, v):
             for i in range(m):
                 if e[i].u == u and e[i].v == v:
@@ -84,6 +87,7 @@ author: Ir1d, sshwy, Xeonacid, partychicken, Anguei, HeRaNO
             return False
         
         
+        # Duyệt DFS từ đỉnh u
         def dfs(u):
             if vis[u]:
                 return
@@ -93,31 +97,31 @@ author: Ir1d, sshwy, Xeonacid, partychicken, Anguei, HeRaNO
                     dfs(e[i].v)
         ```
 
-### 复杂度
+### Độ phức tạp
 
-查询是否存在某条边：$O(m)$．
+Truy vấn xem có cạnh nào tồn tại: $O(m)$.
 
-遍历一个点的所有出边：$O(m)$．
+Duyệt tất cả các cạnh xuất phát từ một đỉnh: $O(m)$.
 
-遍历整张图：$O(nm)$．
+Duyệt toàn bộ đồ thị: $O(nm)$.
 
-空间复杂度：$O(m)$．
+Độ phức tạp không gian: $O(m)$.
 
-### 应用
+### Ứng dụng
 
-由于直接存边的遍历效率低下，一般不用于遍历图．
+Do việc duyệt cạnh bằng cách lưu trực tiếp không hiệu quả, phương pháp này thường không dùng để duyệt đồ thị.
 
-在 [Kruskal 算法](./mst.md#kruskal-算法) 中，由于需要将边按边权排序，需要直接存边．
+Trong [thuật toán Kruskal](./mst.md#kruskal-算法), do cần sắp xếp các cạnh theo trọng số, nên thường lưu trực tiếp danh sách cạnh.
 
-在有的题目中，需要多次建图（如建一遍原图，建一遍反图），此时既可以使用多个其它数据结构来同时存储多张图，也可以将边直接存下来，需要重新建图时利用直接存下的边来建图．
+Trong một số bài toán cần xây dựng lại đồ thị nhiều lần (ví dụ vừa lưu đồ thị gốc, vừa lưu đồ thị ngược), bạn có thể dùng nhiều cấu trúc dữ liệu khác nhau để lưu đồng thời nhiều đồ thị, hoặc chỉ cần lưu danh sách cạnh, khi cần xây lại đồ thị thì dùng danh sách cạnh này.
 
-## 邻接矩阵
+## Ma trận kề
 
-### 方法
+### Phương pháp
 
-使用一个二维数组 `adj` 来存边，其中 `adj[u][v]` 为 1 表示存在 $u$ 到 $v$ 的边，为 0 表示不存在．如果是带边权的图，可以在 `adj[u][v]` 中存储 $u$ 到 $v$ 的边的边权．
+Sử dụng một mảng hai chiều `adj` để lưu cạnh, trong đó `adj[u][v]` bằng 1 nếu tồn tại cạnh từ $u$ đến $v$, bằng 0 nếu không tồn tại. Nếu là đồ thị có trọng số, có thể lưu trọng số cạnh tại `adj[u][v]`.
 
-??? note "参考代码"
+??? note "Mã mẫu"
     === "C++"
         ```cpp
         #include <iostream>
@@ -129,8 +133,10 @@ author: Ir1d, sshwy, Xeonacid, partychicken, Anguei, HeRaNO
         vector<bool> vis;
         vector<vector<bool>> adj;
         
+        // Kiểm tra có cạnh từ u đến v không
         bool find_edge(int u, int v) { return adj[u][v]; }
         
+        // Duyệt DFS từ đỉnh u
         void dfs(int u) {
           if (vis[u]) return;
           vis[u] = true;
@@ -167,10 +173,12 @@ author: Ir1d, sshwy, Xeonacid, partychicken, Anguei, HeRaNO
             adj[u][v] = True
         
         
+        # Kiểm tra có cạnh từ u đến v không
         def find_edge(u, v):
             return adj[u][v]
         
         
+        # Duyệt DFS từ đỉnh u
         def dfs(u):
             if vis[u]:
                 return
@@ -180,31 +188,31 @@ author: Ir1d, sshwy, Xeonacid, partychicken, Anguei, HeRaNO
                     dfs(v)
         ```
 
-### 复杂度
+### Độ phức tạp
 
-查询是否存在某条边：$O(1)$．
+Truy vấn xem có cạnh nào tồn tại: $O(1)$.
 
-遍历一个点的所有出边：$O(n)$．
+Duyệt tất cả các cạnh xuất phát từ một đỉnh: $O(n)$.
 
-遍历整张图：$O(n^2)$．
+Duyệt toàn bộ đồ thị: $O(n^2)$.
 
-空间复杂度：$O(n^2)$．
+Độ phức tạp không gian: $O(n^2)$.
 
-### 应用
+### Ứng dụng
 
-邻接矩阵只适用于没有重边（或重边可以忽略）的情况．
+Ma trận kề chỉ phù hợp với đồ thị không có cạnh trùng (hoặc có thể bỏ qua cạnh trùng).
 
-其最显著的优点是可以 $O(1)$ 查询一条边是否存在．
+Ưu điểm lớn nhất là có thể truy vấn cạnh tồn tại trong $O(1)$.
 
-由于邻接矩阵在稀疏图上效率很低（尤其是在点数较多的图上，空间无法承受），所以一般只会在稠密图上使用邻接矩阵．
+Vì ma trận kề rất tốn bộ nhớ với đồ thị thưa (đặc biệt khi số đỉnh lớn), nên thường chỉ dùng với đồ thị dày đặc.
 
-## 邻接表
+## Danh sách kề
 
-### 方法
+### Phương pháp
 
-使用一个支持动态增加元素的数据结构构成的数组，如 `vector<int> adj[n + 1]` 来存边，其中 `adj[u]` 存储的是点 $u$ 的所有出边的相关信息（终点、边权等）．
+Sử dụng một mảng mà mỗi phần tử là một cấu trúc dữ liệu động (như `vector<int> adj[n + 1]`) để lưu cạnh, trong đó `adj[u]` lưu thông tin tất cả các cạnh xuất phát từ $u$ (đỉnh cuối, trọng số, ...).
 
-??? note "参考代码"
+??? note "Mã mẫu"
     === "C++"
         ```cpp
         #include <iostream>
@@ -216,6 +224,7 @@ author: Ir1d, sshwy, Xeonacid, partychicken, Anguei, HeRaNO
         vector<bool> vis;
         vector<vector<int>> adj;
         
+        // Kiểm tra có cạnh từ u đến v không
         bool find_edge(int u, int v) {
           for (int i = 0; i < adj[u].size(); ++i) {
             if (adj[u][i] == v) {
@@ -225,6 +234,7 @@ author: Ir1d, sshwy, Xeonacid, partychicken, Anguei, HeRaNO
           return false;
         }
         
+        // Duyệt DFS từ đỉnh u
         void dfs(int u) {
           if (vis[u]) return;
           vis[u] = true;
@@ -257,6 +267,7 @@ author: Ir1d, sshwy, Xeonacid, partychicken, Anguei, HeRaNO
             adj[u].append(v)
         
         
+        # Kiểm tra có cạnh từ u đến v không
         def find_edge(u, v):
             for i in range(0, len(adj[u])):
                 if adj[u][i] == v:
@@ -264,6 +275,7 @@ author: Ir1d, sshwy, Xeonacid, partychicken, Anguei, HeRaNO
             return False
         
         
+        # Duyệt DFS từ đỉnh u
         def dfs(u):
             if vis[u]:
                 return
@@ -272,61 +284,61 @@ author: Ir1d, sshwy, Xeonacid, partychicken, Anguei, HeRaNO
                 dfs(adj[u][i])
         ```
 
-### 复杂度
+### Độ phức tạp
 
-查询是否存在 $u$ 到 $v$ 的边：$O(d^+(u))$（如果事先进行了排序就可以使用 [二分查找](../basic/binary.md) 做到 $O(\log(d^+(u)))$）．
+Truy vấn xem có cạnh từ $u$ đến $v$: $O(d^+(u))$ (nếu đã sắp xếp trước thì có thể dùng [tìm kiếm nhị phân](../basic/binary.md) để đạt $O(\log(d^+(u)))$).
 
-遍历点 $u$ 的所有出边：$O(d^+(u))$．
+Duyệt tất cả các cạnh xuất phát từ một đỉnh $u$: $O(d^+(u))$.
 
-遍历整张图：$O(n+m)$．
+Duyệt toàn bộ đồ thị: $O(n+m)$.
 
-空间复杂度：$O(m)$．
+Độ phức tạp không gian: $O(m)$.
 
-### 应用
+### Ứng dụng
 
-存各种图都很适合，除非有特殊需求（如需要快速查询一条边是否存在，且点数较少，可以使用邻接矩阵）．
+Phù hợp với hầu hết các loại đồ thị, trừ khi có yêu cầu đặc biệt (như cần truy vấn cạnh nhanh và số đỉnh nhỏ thì dùng ma trận kề).
 
-尤其适用于需要对一个点的所有出边进行排序的场合．
+Đặc biệt thích hợp khi cần sắp xếp các cạnh xuất phát từ một đỉnh.
 
-## 链式前向星
+## Mô hình danh sách kề dạng chuỗi (Chain Forward Star)
 
-### 方法
+### Phương pháp
 
-本质上是用链表实现的邻接表，核心代码如下：
+Bản chất là dùng danh sách liên kết để hiện thực danh sách kề, mã lõi như sau:
 
 === "C++"
     ```cpp
-    // head[u] 和 cnt 的初始值都为 -1
+    // Giá trị khởi tạo ban đầu của head[u] và cnt đều là -1
     void add(int u, int v) {
-      nxt[++cnt] = head[u];  // 当前边的后继
-      head[u] = cnt;         // 起点 u 的第一条边
-      to[cnt] = v;           // 当前边的终点
+      nxt[++cnt] = head[u];  // Cạnh tiếp theo của đỉnh u
+      head[u] = cnt;         // Cập nhật cạnh đầu tiên của u
+      to[cnt] = v;           // Đỉnh cuối của cạnh hiện tại
     }
     
-    // 遍历 u 的出边
-    for (int i = head[u]; ~i; i = nxt[i]) {  // ~i 表示 i != -1
+    // Duyệt các cạnh xuất phát từ u
+    for (int i = head[u]; ~i; i = nxt[i]) {  // ~i nghĩa là i != -1
       int v = to[i];
     }
     ```
 
 === "Python"
     ```python
-    # head[u] 和 cnt 的初始值都为 -1
+    # Giá trị khởi tạo ban đầu của head[u] và cnt đều là -1
     def add(u, v):
         cnt = cnt + 1
-        nex[cnt] = head[u]  # 当前边的后继
-        head[u] = cnt  # 起点 u 的第一条边
-        to[cnt] = v  # 当前边的终点
+        nex[cnt] = head[u]  # Cạnh tiếp theo của đỉnh u
+        head[u] = cnt  # Cập nhật cạnh đầu tiên của u
+        to[cnt] = v  # Đỉnh cuối của cạnh hiện tại
     
     
-    # 遍历 u 的出边
+    # Duyệt các cạnh xuất phát từ u
     i = head[u]
-    while ~i:  # ~i 表示 i != -1
+    while ~i:  # ~i nghĩa là i != -1
         v = to[i]
         i = nxt[i]
     ```
 
-??? note "参考代码"
+??? note "Mã mẫu"
     ```cpp
     #include <iostream>
     #include <vector>
@@ -337,14 +349,16 @@ author: Ir1d, sshwy, Xeonacid, partychicken, Anguei, HeRaNO
     vector<bool> vis;
     vector<int> head, nxt, to;
     
+    // Thêm cạnh từ u đến v
     void add(int u, int v) {
       nxt.push_back(head[u]);
       head[u] = to.size();
       to.push_back(v);
     }
     
+    // Kiểm tra có cạnh từ u đến v không
     bool find_edge(int u, int v) {
-      for (int i = head[u]; ~i; i = nxt[i]) {  // ~i 表示 i != -1
+      for (int i = head[u]; ~i; i = nxt[i]) {  // ~i nghĩa là i != -1
         if (to[i] == v) {
           return true;
         }
@@ -352,6 +366,7 @@ author: Ir1d, sshwy, Xeonacid, partychicken, Anguei, HeRaNO
       return false;
     }
     
+    // Duyệt DFS từ đỉnh u
     void dfs(int u) {
       if (vis[u]) return;
       vis[u] = true;
@@ -374,18 +389,18 @@ author: Ir1d, sshwy, Xeonacid, partychicken, Anguei, HeRaNO
     }
     ```
 
-### 复杂度
+### Độ phức tạp
 
-查询是否存在 $u$ 到 $v$ 的边：$O(d^+(u))$．
+Truy vấn xem có cạnh từ $u$ đến $v$: $O(d^+(u))$.
 
-遍历点 $u$ 的所有出边：$O(d^+(u))$．
+Duyệt tất cả các cạnh xuất phát từ một đỉnh $u$: $O(d^+(u))$.
 
-遍历整张图：$O(n+m)$．
+Duyệt toàn bộ đồ thị: $O(n+m)$.
 
-空间复杂度：$O(m)$．
+Độ phức tạp không gian: $O(m)$.
 
-### 应用
+### Ứng dụng
 
-存各种图都很适合，但不能快速查询一条边是否存在，也不能方便地对一个点的出边进行排序．
+Phù hợp với hầu hết các loại đồ thị, nhưng không thể truy vấn cạnh nhanh, cũng không dễ sắp xếp các cạnh xuất phát từ một đỉnh.
 
-优点是边是带编号的，有时会非常有用，而且如果 `cnt` 的初始值为奇数，存双向边时 `i ^ 1` 即是 `i` 的反边（常用于 [网络流](./flow.md)）．
+Ưu điểm là mỗi cạnh đều có chỉ số, đôi khi rất hữu ích. Nếu khởi tạo `cnt` là số lẻ, khi lưu cạnh hai chiều thì `i ^ 1` sẽ là cạnh ngược của `i` (thường dùng trong [mạng lưới dòng chảy](./flow.md)).

@@ -1,45 +1,43 @@
-author: 2323122, aofall, AtomAlpaca, Bocity, CoelacanthusHex, countercurrent-time, Early0v0, Enter-tainer, fearlessxjdx, Great-designer, H-J-Granger, hsfzLZH1, iamtwz, Ir1d, ksyx, Marcythm, NachtgeistW, ouuan, Persdre, shuzhouliu, StudyingFather, SukkaW, Tiphereth-A, wsyhb, Yesphet, yuhuoji, lingkerio, bililateral, q-wind
+## Định nghĩa
 
-## 定义
+Cây tìm kiếm nhị phân (Binary Search Tree - BST) là một cấu trúc dữ liệu dạng cây nhị phân, được định nghĩa như sau:
 
-二叉搜索树是一种二叉树的树形数据结构，其定义如下：
+1.  Cây rỗng là một cây tìm kiếm nhị phân.
 
-1.  空树是二叉搜索树．
+2.  Nếu cây con bên trái của cây tìm kiếm nhị phân không rỗng, thì tất cả các nút trong cây con bên trái đều có giá trị khóa nhỏ hơn giá trị của nút gốc.
 
-2.  若二叉搜索树的左子树不为空，则其左子树上所有点的附加权值均小于其根节点的值．
+3.  Nếu cây con bên phải của cây tìm kiếm nhị phân không rỗng, thì tất cả các nút trong cây con bên phải đều có giá trị khóa lớn hơn giá trị của nút gốc.
 
-3.  若二叉搜索树的右子树不为空，则其右子树上所有点的附加权值均大于其根节点的值．
+4.  Cây con bên trái và cây con bên phải của cây tìm kiếm nhị phân cũng là cây tìm kiếm nhị phân.
 
-4.  二叉搜索树的左右子树均为二叉搜索树．
+Thời gian thực hiện các thao tác cơ bản trên cây tìm kiếm nhị phân tỷ lệ với chiều cao của cây. Đối với cây tìm kiếm nhị phân có $n$ nút, độ phức tạp thời gian tốt nhất cho các thao tác này là $O(\log n)$, và tệ nhất là $O(n)$. Chiều cao kỳ vọng của một cây tìm kiếm nhị phân được xây dựng ngẫu nhiên là $O(\log n)$.
 
-二叉搜索树上的基本操作所花费的时间与这棵树的高度成正比．对于一个有 $n$ 个结点的二叉搜索树中，这些操作的最优时间复杂度为 $O(\log n)$，最坏为 $O(n)$．随机构造这样一棵二叉搜索树的期望高度为 $O(\log n)$．
+## Quá trình
 
-## 过程
+### Định nghĩa nút của cây tìm kiếm nhị phân
 
-### 二叉搜索树节点的定义
-
-???+ note "实现"
+???+ note "Thực hiện"
     ```cpp
     struct TreeNode {
       int key;
       TreeNode* left;
       TreeNode* right;
-      // 维护其他信息，如高度，节点数量等
-      int size;   // 当前节点为根的子树大小
-      int count;  // 当前节点的重复数量
+      // Duy trì các thông tin khác, ví dụ: chiều cao, số lượng nút
+      int size;   // Kích thước cây con với nút hiện tại là gốc
+      int count;  // Số lần lặp lại của giá trị khóa hiện tại
     
       TreeNode(int value)
           : key(value), size(1), count(1), left(nullptr), right(nullptr) {}
     };
     ```
 
-### 遍历二叉搜索树
+### Duyệt cây tìm kiếm nhị phân
 
-由二叉搜索树的递归定义可得，二叉搜索树的中序遍历权值的序列为非降的序列．时间复杂度为 $O(n)$．
+Do định nghĩa đệ quy của cây tìm kiếm nhị phân, thứ tự duyệt trung thứ tự (inorder traversal) của các giá trị khóa là một dãy không giảm. Độ phức tạp thời gian là $O(n)$.
 
-遍历一棵二叉搜索树的代码如下：
+Dưới đây là đoạn mã duyệt cây tìm kiếm nhị phân:
 
-???+ note "实现"
+???+ note "Thực hiện"
     ```cpp
     void inorderTraversal(TreeNode* root) {
       if (root == nullptr) {
@@ -51,11 +49,11 @@ author: 2323122, aofall, AtomAlpaca, Bocity, CoelacanthusHex, countercurrent-tim
     }
     ```
 
-### 查找最小/最大值
+### Tìm giá trị nhỏ nhất/lớn nhất
 
-由二叉搜索树的性质可得，二叉搜索树上的最小值为二叉搜索树左链的顶点，最大值为二叉搜索树右链的顶点．时间复杂度为 $O(h)$．
+Do tính chất của cây tìm kiếm nhị phân, giá trị nhỏ nhất là đỉnh của chuỗi bên trái, giá trị lớn nhất là đỉnh của chuỗi bên phải. Độ phức tạp thời gian là $O(h)$.
 
-???+ note "实现"
+???+ note "Thực hiện"
     ```cpp
     int findMin(TreeNode* root) {
       if (root == nullptr) {
@@ -78,20 +76,20 @@ author: 2323122, aofall, AtomAlpaca, Bocity, CoelacanthusHex, countercurrent-tim
     }
     ```
 
-### 搜索元素
+### Tìm kiếm phần tử
 
-在以 `root` 为根节点的二叉搜索树中搜索一个值为 `value` 的节点．
+Tìm kiếm một nút có giá trị `value` trong cây tìm kiếm nhị phân có gốc là `root`.
 
-分类讨论如下：
+Thảo luận theo trường hợp:
 
--   若 `root` 为空，返回 `false`．
--   若 `root` 的权值等于 `value`，返回 `true`．
--   若 `root` 的权值大于 `value`，在 `root` 的左子树中继续搜索．
--   若 `root` 的权值小于 `value`，在 `root` 的右子树中继续搜索．
+-   Nếu `root` là rỗng, trả về `false`.
+-   Nếu khóa của `root` bằng `value`, trả về `true`.
+-   Nếu khóa của `root` lớn hơn `value`, tiếp tục tìm kiếm trong cây con bên trái của `root`.
+-   Nếu khóa của `root` nhỏ hơn `value`, tiếp tục tìm kiếm trong cây con bên phải của `root`.
 
-时间复杂度为 $O(h)$．
+Độ phức tạp thời gian là $O(h)$.
 
-???+ note "实现"
+???+ note "Thực hiện"
     ```cpp
     bool search(TreeNode* root, int target) {
       if (root == nullptr) {
@@ -107,25 +105,25 @@ author: 2323122, aofall, AtomAlpaca, Bocity, CoelacanthusHex, countercurrent-tim
     }
     ```
 
-插入，删除，修改都需要先在二叉搜索树中进行搜索．
+Chèn, xóa, sửa đổi đều cần tìm kiếm trước trong cây tìm kiếm nhị phân.
 
-### 插入一个元素
+### Chèn một phần tử
 
-在以 `root` 为根节点的二叉搜索树中插入一个值为 `value` 的节点．
+Chèn một nút có giá trị `value` vào cây tìm kiếm nhị phân có gốc là `root`.
 
-分类讨论如下：
+Thảo luận theo trường hợp:
 
--   若 `root` 为空，直接返回一个值为 `value` 的新节点．
+-   Nếu `root` là rỗng, trực tiếp trả về một nút mới có giá trị `value`.
 
--   若 `root` 的权值等于 `value`，该节点的附加域该值出现的次数自增 $1$．
+-   Nếu khóa của `root` bằng `value`, số lần xuất hiện của giá trị bổ sung của nút này tăng thêm $1$.
 
--   若 `root` 的权值大于 `value`，在 `root` 的左子树中插入权值为 `value` 的节点．
+-   Nếu khóa của `root` lớn hơn `value`, chèn nút có khóa `value` vào cây con bên trái của `root`.
 
--   若 `root` 的权值小于 `value`，在 `root` 的右子树中插入权值为 `value` 的节点．
+-   Nếu khóa của `root` nhỏ hơn `value`, chèn nút có khóa `value` vào cây con bên phải của `root`.
 
-时间复杂度为 $O(h)$．
+Độ phức tạp thời gian là $O(h)$.
 
-???+ note "实现"
+???+ note "Thực hiện"
     ```cpp
     TreeNode* insert(TreeNode* root, int value) {
       if (root == nullptr) {
@@ -136,37 +134,37 @@ author: 2323122, aofall, AtomAlpaca, Bocity, CoelacanthusHex, countercurrent-tim
       } else if (value > root->key) {
         root->right = insert(root->right, value);
       } else {
-        root->count++;  // 节点值相等，增加重复数量
+        root->count++;  // Giá trị nút bằng nhau, tăng số lần lặp lại
       }
       root->size = root->count + (root->left ? root->left->size : 0) +
-                   (root->right ? root->right->size : 0);  // 更新节点的子树大小
+                   (root->right ? root->right->size : 0);  // Cập nhật kích thước cây con của nút
       return root;
     }
     ```
 
-### 删除一个元素
+### Xóa một phần tử
 
-在以 `root` 为根节点的二叉搜索树中删除一个值为 `value` 的节点．
+Xóa một nút có giá trị `value` trong cây tìm kiếm nhị phân có gốc là `root`.
 
-先在二叉搜索树中搜索权值为 `value` 的节点，分类讨论如下：
+Trước tiên tìm kiếm nút có khóa `value` trong cây tìm kiếm nhị phân, thảo luận theo trường hợp:
 
--   若该节点的附加 `count` 大于 $1$，只需要减少 `count`．
+-   Nếu `count` bổ sung của nút đó lớn hơn $1$, chỉ cần giảm `count`.
 
--   若该节点的附加 `count` 为 $1$：
+-   Nếu `count` của nút đó bằng $1$:
 
-    -   若 `root` 为叶子节点，直接删除该节点即可．
+    -   Nếu `root` là nút lá, có thể xóa trực tiếp nút này.
 
-    -   若 `root` 为链节点，即只有一个儿子的节点，返回这个儿子．
+    -   Nếu `root` là nút dây chuyền, tức là chỉ có một con, trả về con này.
 
-    -   若 `root` 有两个非空子节点，一般是用它左子树的最大值（左子树最右的节点）或右子树的最小值（右子树最左的节点）代替它，然后将它删除．
+    -   Nếu `root` có hai cây con không rỗng, thông thường sẽ thay thế nó bằng giá trị lớn nhất của cây con bên trái (nút ngoài cùng bên phải của cây con bên trái) hoặc giá trị nhỏ nhất của cây con bên phải (nút ngoài cùng bên trái của cây con bên phải), sau đó xóa nút đó.
 
-时间复杂度 $O(h)$．
+Độ phức tạp thời gian $O(h)$.
 
-???+ note "实现"
-    方法使用 `root = remove(root, 1)` 表示删除根节点为 `root` 树中值为 1 的节点，并返回新的根节点．
+???+ note "Thực hiện"
+    Phương pháp sử dụng `root = remove(root, 1)` biểu thị việc xóa nút có giá trị 1 trong cây có gốc là `root`, và trả về gốc mới.
     
     ```cpp
-    // 此处返回值为删除 value 后的新 root
+    // Giá trị trả về là root mới sau khi xóa value
     TreeNode* remove(TreeNode* root, int value) {
       if (root == nullptr) {
         return root;
@@ -177,7 +175,7 @@ author: 2323122, aofall, AtomAlpaca, Bocity, CoelacanthusHex, countercurrent-tim
         root->right = remove(root->right, value);
       } else {
         if (root->count > 1) {
-          root->count--;  // 节点重复数量大于1，减少重复数量
+          root->count--;  // Số lần lặp lại của nút lớn hơn 1, giảm số lần lặp lại
         } else {
           if (root->left == nullptr) {
             TreeNode* temp = root->right;
@@ -190,22 +188,22 @@ author: 2323122, aofall, AtomAlpaca, Bocity, CoelacanthusHex, countercurrent-tim
           } else {
             TreeNode* successor = findMinNode(root->right);
             root->key = successor->key;
-            root->count = successor->count;  // 更新重复数量
-            // 当 successor->count > 1时，也应该删除该节点，否则
-            // 后续的删除只会减少重复数量
+            root->count = successor->count;  // Cập nhật số lần lặp lại
+            // Khi successor->count > 1, cũng nên xóa nút này, nếu không
+            // việc xóa sau này sẽ chỉ làm giảm số lần lặp lại
             successor->count = 1;
             root->right = remove(root->right, successor->key);
           }
         }
       }
-      // 继续维护size，不写成 --root->size;
-      // 是因为value可能不在树中，从而可能未发生删除
+      // Tiếp tục duy trì size, không viết thành --root->size;
+      // Là vì value có thể không có trong cây, dẫn đến có thể không xảy ra việc xóa
       root->size = root->count + (root->left ? root->left->size : 0) +
                    (root->right ? root->right->size : 0);
       return root;
     }
     
-    // 此处以右子树的最小值为例
+    // Lấy ví dụ là nút nhỏ nhất của cây con bên phải
     TreeNode* findMinNode(TreeNode* root) {
       while (root->left != nullptr) {
         root = root->left;
@@ -214,15 +212,15 @@ author: 2323122, aofall, AtomAlpaca, Bocity, CoelacanthusHex, countercurrent-tim
     }
     ```
 
-### 求元素的排名
+### Tính thứ hạng của một phần tử
 
-排名定义为将数组元素升序排序后第一个相同元素之前的数的个数加一．
+Thứ hạng được định nghĩa là số lượng các số đứng trước phần tử đầu tiên có cùng giá trị sau khi sắp xếp các phần tử của mảng theo thứ tự tăng dần, cộng thêm một.
 
-查找一个元素的排名，首先从根节点跳到这个元素，若向右跳，答案加上左儿子节点个数加当前节点重复的数个数，最后答案加上终点的左儿子子树大小加一．
+Để tìm thứ hạng của một phần tử, trước tiên nhảy từ nút gốc xuống nút chứa phần tử đó, nếu nhảy sang phải, đáp án cộng thêm số lượng nút con bên trái cộng với số lần lặp lại của nút hiện tại, cuối cùng đáp án cộng thêm kích thước cây con bên trái của nút đích cộng một.
 
-时间复杂度 $O(h)$．
+Độ phức tạp thời gian $O(h)$.
 
-???+ note "实现"
+???+ note "Thực hiện"
     ```cpp
     int queryRank(TreeNode* root, int v) {
       if (root == nullptr) return 0;
@@ -233,22 +231,22 @@ author: 2323122, aofall, AtomAlpaca, Bocity, CoelacanthusHex, countercurrent-tim
     }
     ```
 
-### 查找排名为 k 的元素
+### Tìm phần tử có thứ hạng là k
 
-在一棵子树中，根节点的排名取决于其左子树的大小．
+Trong một cây con, thứ hạng của nút gốc phụ thuộc vào kích thước của cây con bên trái của nó.
 
--   若其左子树的大小大于等于 $k$，则该元素在左子树中；
+-   Nếu kích thước cây con bên trái lớn hơn hoặc bằng $k$, thì phần tử đó nằm trong cây con bên trái;
 
--   若其左子树的大小在区间 $[k-\textit{count},k-1]$（`count` 为当前结点的值的出现次数）中，则该元素为子树的根节点；
+-   Nếu kích thước cây con bên trái nằm trong khoảng $[k-\textit{count}, k-1]$ (với $\textit{count}$ là số lần giá trị nút hiện tại xuất hiện), thì phần tử đó là nút gốc của cây con;
 
--   若其左子树的大小小于 $k-\textit{count}$，则该元素在右子树中．
+-   Nếu kích thước cây con bên trái nhỏ hơn $k-\textit{count}$, thì phần tử đó nằm trong cây con bên phải.
 
-时间复杂度 $O(h)$．
+Độ phức tạp thời gian $O(h)$.
 
-???+ note "实现"
+???+ note "Thực hiện"
     ```cpp
     int querykth(TreeNode* root, int k) {
-      if (root == nullptr) return -1;  // 或者根据需求返回其他合适的值
+      if (root == nullptr) return -1;  // Hoặc trả về giá trị phù hợp khác theo yêu cầu
       if (root->left) {
         if (root->left->size >= k) return querykth(root->left, k);
         if (root->left->size + root->count >= k) return root->key;
@@ -260,58 +258,58 @@ author: 2323122, aofall, AtomAlpaca, Bocity, CoelacanthusHex, countercurrent-tim
     }
     ```
 
-## 平衡树简介
+## Giới thiệu về cây cân bằng (Balanced Tree)
 
-使用搜索树的目的之一是缩短插入、删除、修改和查找（插入、删除、修改都包括查找操作）节点的时间．
+Một trong những mục đích sử dụng cây tìm kiếm là rút ngắn thời gian cho các thao tác chèn, xóa, sửa đổi và tìm kiếm (chèn, xóa, sửa đổi đều bao gồm thao tác tìm kiếm) nút.
 
-关于查找效率，如果一棵树的高度为 $h$，在最坏的情况，查找一个关键字需要对比 $h$ 次，查找时间复杂度（也为平均查找长度 ASL，Average Search Length）不超过 $O(h)$．一棵理想的二叉搜索树所有操作的时间可以缩短到 $O(\log n)$（n 是节点总数）．
+Về hiệu suất tìm kiếm, nếu chiều cao của cây là $h$, trong trường hợp xấu nhất, việc tìm kiếm một khóa cần so sánh $h$ lần, độ phức tạp thời gian tìm kiếm (cũng là độ dài tìm kiếm trung bình ASL, Average Search Length) không vượt quá $O(h)$. Một cây tìm kiếm nhị phân lý tưởng có thể rút ngắn thời gian của tất cả các thao tác xuống $O(\log n)$ ($n$ là tổng số nút).
 
-然而 $O(\log n)$ 的时间复杂度仅为理想情况．在最坏情况下，搜索树有可能退化为链表．想象一棵每个结点只有右孩子的二叉搜索树，那么它的性质就和链表一样，所有操作（增删改查）的时间是 $O(n)$．
+Tuy nhiên, độ phức tạp thời gian $O(\log n)$ chỉ là trường hợp lý tưởng. Trong trường hợp xấu nhất, cây tìm kiếm có thể thoái hóa thành một danh sách liên kết. Hãy tưởng tượng một cây tìm kiếm nhị phân mà mỗi nút chỉ có con phải, thì tính chất của nó giống hệt danh sách liên kết, thời gian cho tất cả các thao tác (thêm, xóa, sửa, tìm) là $O(n)$.
 
-可以发现操作的复杂度与树的高度 $h$ 有关．由此引出了平衡树，通过一定操作维持树的高度（平衡性）来降低操作的复杂度．
+Có thể thấy độ phức tạp của các thao tác liên quan đến chiều cao $h$ của cây. Từ đó dẫn đến cây cân bằng, thông qua một số thao tác nhất định để duy trì chiều cao (tính cân bằng) của cây nhằm giảm độ phức tạp của các thao tác.
 
-### 平衡性的定义
+### Định nghĩa về tính cân bằng
 
-关于一棵搜索树是否「**平衡**」，不同的平衡树中对「**平衡**」有着不同的定义．比如以 T 为根节点的二叉搜索树，左子树和右子树的高度相差很大，或者左子树的节点个数远大于右子树的节点个数，这棵树显然不具有平衡性．
+Về việc một cây tìm kiếm có "cân bằng" hay không, các cây cân bằng khác nhau có các định nghĩa khác nhau về "cân bằng". Ví dụ, nếu cây tìm kiếm với gốc là T, sự chênh lệch chiều cao giữa cây con bên trái và cây con bên phải rất lớn, hoặc số lượng nút ở cây con bên trái lớn hơn nhiều so với cây con bên phải, thì cây này rõ ràng là không có tính cân bằng.
 
-对于二叉搜索树来说，常见的平衡性的定义是指：以 T 为根节点的树，每一个结点的左子树和右子树高度差最多为 1．
+Đối với cây tìm kiếm nhị phân, định nghĩa phổ biến về tính cân bằng là: cây tìm kiếm với gốc là T, sự chênh lệch chiều cao giữa cây con bên trái và cây con bên phải của **mọi** nút không vượt quá 1.
 
--   [Splay 树](splay.md) 中，对于任意节点的访问操作（搜索、插入还是删除），都会将被访问的节点移动到树的根节点位置．
+-   Trong [Cây Splay](splay.md), đối với bất kỳ thao tác truy cập nút nào (tìm kiếm, chèn hay xóa), nút được truy cập sẽ được di chuyển lên vị trí gốc của cây.
 
--   [AVL 树](avl.md) 每个节点 N 维护以 N 为根节点的树的高度信息．AVL 树对平衡性的定义：如果 T 是一棵 AVL 树，当且仅当左右子树也是 AVL 树，且 $|height(T->left) - height(T->right)| \leq 1$．
+-   [Cây AVL](avl.md) duy trì thông tin chiều cao của cây con với gốc là N tại mỗi nút N. Định nghĩa về tính cân bằng của AVL: Nếu T là một cây AVL, thì chỉ khi cây con trái và cây con phải cũng là cây AVL, và $|height(T->left) - height(T->right)| \leq 1$.
 
--   [Size Balanced Tree](sbt.md) 每个节点 N 维护以 N 为根节点的树中节点个数 `size`．对平衡性的定义：任意节点的 `size` 不小于其兄弟节点（Sibling）的所有子节点（Nephew）的 `size`．
+-   [Size Balanced Tree (SBT)](sbt.md) mỗi nút N duy trì số lượng nút `size` trong cây con với gốc là N. Định nghĩa về tính cân bằng: `size` của bất kỳ nút nào không nhỏ hơn `size` của tất cả các nút con (Nephew) của nút anh em (Sibling) của nó.
 
-此外，对于拥有同样元素值集合的搜索树，平衡状态可能是不唯一的．也就是说，可能两棵不同的搜索树，含有的元素值集合相同，并且都是平衡的．
+Ngoài ra, đối với các cây tìm kiếm có cùng tập hợp giá trị phần tử, trạng thái cân bằng có thể không duy nhất. Nghĩa là, có thể có hai cây tìm kiếm khác nhau, chứa cùng một tập hợp giá trị phần tử, và cả hai đều cân bằng.
 
-### 平衡的调整过程
+### Quá trình điều chỉnh tính cân bằng
 
-对不满足平衡条件的搜索树进行调整操作，可以使不平衡的搜索树重新具有平衡性．
+Thực hiện các thao tác điều chỉnh trên cây tìm kiếm không thỏa mãn điều kiện cân bằng, có thể làm cho cây mất cân bằng trở nên cân bằng trở lại.
 
-关于二叉平衡树，平衡的调整操作分为包括 **左旋（Left Rotate 或者 zag）** 和 **右旋（Right Rotate 或者 zig）** 两种．由于二叉平衡树在调整时需要保证中序遍历序列不变．这两种操作均不改变中序遍历序列．
+Các thao tác điều chỉnh tính cân bằng của cây nhị phân cân bằng bao gồm **Xoay trái (Left Rotate hay zag)** và **Xoay phải (Right Rotate hay zig)**. Do các cây cân bằng nhị phân cần đảm bảo thứ tự duyệt trung thứ tự không thay đổi khi điều chỉnh, nên hai thao tác này đều không làm thay đổi thứ tự duyệt trung thứ tự.
 
-在这里先介绍右旋，右旋也称为「右单旋转」或「LL 平衡旋转」．对于结点 $A$ 的右旋操作是指：将 $A$ 的左孩子 $B$ 向右上旋转，代替 $A$ 成为根节点，将 $A$ 结点向右下旋转成为 $B$ 的右子树的根结点，$B$ 的原来的右子树变为 $A$ 的左子树．
+Ở đây giới thiệu trước thao tác xoay phải, thao tác xoay phải còn được gọi là "Xoay đơn bên phải" hay "Xoay LL". Thao tác xoay phải trên nút $A$ là: cho con trái $B$ của $A$ xoay lên trên bên phải, thay thế $A$ trở thành nút gốc, nút $A$ xoay xuống dưới bên phải trở thành gốc của cây con bên phải của $B$, cây con bên phải ban đầu của $B$ trở thành cây con bên trái của $A$.
 
 ![bst-rotate](images/bst-rotate.svg)
 
-右旋操作只改变了三组结点关联，相当于对三组边进行循环置换一下，因此需要暂存一个结点再进行轮换更新．
+Thao tác xoay phải chỉ thay đổi liên kết của ba nhóm nút, tương đương với việc hoán vị vòng quanh ba nhóm cạnh, do đó cần lưu tạm một nút rồi mới tiến hành luân chuyển và cập nhật.
 
-对于右旋操作一般的更新顺序是：暂存 $B$ 结点（新的根节点），让 $A$ 的左孩子指向 $B$ 的右子树 $T2$，再让 $B$ 的右孩子指针指向 $A$，最后让 $A$ 的父结点指向暂存的 $B$．
+Thứ tự cập nhật thông thường cho thao tác xoay phải là: Lưu tạm $B$ (nút gốc mới), cho con trái của $A$ trỏ tới cây con bên phải $T2$ của $B$, sau đó cho con phải của $B$ trỏ tới $A$, cuối cùng cho nút cha của $A$ trỏ tới $B$ đã lưu tạm.
 
-完全同理，有对应的左旋操作，也称为「左单旋转」或「RR 平衡旋转」．左旋操作与右旋操作互为镜像．
+Hoàn toàn tương tự, có thao tác xoay trái, còn được gọi là "Xoay đơn bên trái" hay "Xoay RR". Thao tác xoay trái là hình ảnh phản chiếu của thao tác xoay phải.
 
-下面给出左旋和右旋的代码．
+Dưới đây là mã cho thao tác xoay trái và xoay phải.
 
-???+ note "实现"
+???+ note "Thực hiện"
     ```cpp
     TreeNode* rotateLeft(TreeNode* root) {
       TreeNode* newRoot = root->right;
       root->right = newRoot->left;
       newRoot->left = root;
-      // 更新相关节点的信息
+      // Cập nhật thông tin các nút liên quan
       updateHeight(root);
       updateHeight(newRoot);
-      return newRoot;  // 返回新的根节点
+      return newRoot;  // Trả về nút gốc mới
     }
     
     TreeNode* rotateRight(TreeNode* root) {
@@ -324,32 +322,32 @@ author: 2323122, aofall, AtomAlpaca, Bocity, CoelacanthusHex, countercurrent-tim
     }
     ```
 
-对于这段示例代码，在调用时需要保存 `root` 的父节点 `pre`．方法返回指向新的根节点的指针，只需要将 `pre` 指向新的根节点即可．
+Đối với đoạn mã ví dụ này, khi gọi cần lưu lại nút cha `pre` của `root`. Hàm trả về con trỏ trỏ đến gốc mới, chỉ cần cho `pre` trỏ tới gốc mới là được.
 
-#### 四种平衡性破坏的情况
+#### Bốn tình huống phá vỡ tính cân bằng
 
-虽然不同的二叉平衡树的定义有所区别，不同二叉平衡树区别只在于节点维护的信息不同，以及旋转调整后节点更新的信息不同．二叉平衡树平衡性被破坏的情况只有以下四种．进行平衡性调整的操作只包括左旋和右旋．以下先介绍四种情况，再对不同的二叉平衡树进行对比．
+Mặc dù định nghĩa về cây cân bằng nhị phân khác nhau, sự khác biệt giữa các cây cân bằng nhị phân chỉ nằm ở thông tin mà nút duy trì và thông tin được cập nhật sau khi xoay nút. Các tình huống phá vỡ tính cân bằng của cây nhị phân chỉ có bốn loại sau. Các thao tác điều chỉnh tính cân bằng chỉ bao gồm xoay trái và xoay phải. Dưới đây giới thiệu bốn tình huống, sau đó so sánh giữa các cây cân bằng nhị phân khác nhau.
 
-LL 型：T 的左孩子的左子树过长导致平衡性破坏．
+Kiểu LL: Cây con bên trái của con trái của T bị quá dài dẫn đến phá vỡ tính cân bằng.
 
-调整方式：右旋节点 T．
+Thao tác điều chỉnh: Xoay phải nút T.
 
 ![bst-LL](images/bst-LL.svg)
 
-RR 型：与 LL 型类似，T 的右孩子的右子树过长导致平衡性破坏．
+Kiểu RR: Tương tự kiểu LL, cây con bên phải của con phải của T bị quá dài dẫn đến phá vỡ tính cân bằng.
 
-调整方式：左旋节点 T．
+Thao tác điều chỉnh: Xoay trái nút T.
 
 ![bst-RR](images/bst-RR.svg)
 
-LR 型：T 的左孩子的右子树过长导致平衡性破坏．
+Kiểu LR: Cây con bên phải của con trái của T bị quá dài dẫn đến phá vỡ tính cân bằng.
 
-调整方式：先左旋节点 L，成为 LL 型，再右旋节点 T．
+Thao tác điều chỉnh: Xoay trái nút L trước, trở thành kiểu LL, sau đó xoay phải nút T.
 
 ![bst-LR](images/bst-LR.svg)
 
-RL 型：与 LR 型类似，T 的右孩子的左子树过长导致平衡性破坏．
+Kiểu RL: Tương tự kiểu LR, cây con bên trái của con phải của T bị quá dài dẫn đến phá vỡ tính cân bằng.
 
-调整方式：先右旋节点 R，成为 RR 型，再左旋节点 T．
+Thao tác điều chỉnh: Xoay phải nút R trước, trở thành kiểu RR, sau đó xoay trái nút T.
 
 ![bst-RL](images/bst-RL.svg)

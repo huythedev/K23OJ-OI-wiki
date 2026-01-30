@@ -1,71 +1,71 @@
 author: sshwy, zhouyuyang2002, StudyingFather, Ir1d, ouuan, Enter-tainer
 
-## 引入
+## Giới thiệu
 
-笛卡尔树是一种二叉树，每一个节点由一个键值二元组 $(k,w)$ 构成．要求 $k$ 满足二叉搜索树（BST）的性质，而 $w$ 满足堆的性质．如果笛卡尔树的 $k,w$ 键值确定，且 $k$ 互不相同，$w$ 也互不相同，那么这棵笛卡尔树的结构是唯一的．如下图：
+Cây Descartes (Cartesian Tree) là một cấu trúc dữ liệu dạng cây nhị phân, trong đó mỗi nút được tạo thành bởi một cặp giá trị khóa nhị phân $(k, w)$. Yêu cầu là $k$ thỏa mãn tính chất của Cây tìm kiếm nhị phân (BST), còn $w$ thỏa mãn tính chất của Heap. Nếu các cặp giá trị khóa $k, w$ của cây Descartes được xác định, và các $k$ đôi một khác nhau, các $w$ cũng đôi một khác nhau, thì cấu trúc của cây Descartes là duy nhất. Như hình dưới:
 
 ![eg](./images/cartesian-tree1.png)
 
-（图源自维基百科）
+(Nguồn ảnh từ Wikipedia)
 
-上面这棵笛卡尔树相当于把数组元素值当作键值 $w$，而把数组下标当作键值 $k$．可以发现，这棵树的键值 $k$ 满足 BST 的性质，而键值 $w$ 满足小根堆的性质．同时根据二叉搜索树的性质，可以发现这种特殊的笛卡尔树满足一棵子树内的下标是一个连续区间．
+Cây Descartes trên hình tương đương với việc lấy giá trị phần tử của mảng làm khóa giá trị $w$, và lấy chỉ số mảng làm khóa giá trị $k$. Có thể thấy, khóa $k$ của cây này thỏa mãn tính chất BST, còn khóa $w$ thỏa mãn tính chất min-heap (heap gốc nhỏ). Đồng thời, dựa vào tính chất của cây tìm kiếm nhị phân, có thể thấy cây Descartes đặc biệt này thỏa mãn tính chất rằng chỉ số của các nút trong một cây con là một đoạn liên tục.
 
-竞赛中使用笛卡尔树时，常用数组下标作为二元组的键值 $k$，数组下标 $k$ 满足 BST 性质．
+Trong thi đấu, khi sử dụng cây Descartes, người ta thường dùng chỉ số mảng làm khóa $k$ của cặp nhị phân, chỉ số mảng $k$ thỏa mãn tính chất BST.
 
-下文使用 $k,w$ 时，默认 $k$ 满足 BST 性质，$w$ 满足堆的性质．
+Trong phần dưới, khi sử dụng $k, w$, mặc định $k$ thỏa mãn tính chất BST, $w$ thỏa mãn tính chất heap.
 
-## 单调栈构建笛卡尔树
+## Xây dựng cây Descartes bằng Stack đơn điệu
 
-### 过程
+### Quá trình
 
-我们考虑将元素按 $k$ 升序依次插入到当前的笛卡尔树中．
+Ta xét việc chèn lần lượt các phần tử theo thứ tự $k$ tăng dần vào cây Descartes hiện tại.
 
-对于一棵笛卡尔树，定义「右链」为从根节点开始一直走右儿子，走到叶节点形成的链．则插入节点后，这个节点一定在右链上．因为是按照满足 BST 性质的 $k$ 升序插入，那么这个新插入的节点必然在树的 **最右端**．这个节点不可能是一个左儿子，也没有右儿子．
+Đối với một cây Descartes, định nghĩa "chuỗi bên phải" là chuỗi tạo thành bằng cách đi từ nút gốc, luôn đi theo con phải, cho đến khi gặp nút lá. Khi chèn một nút mới, nút này chắc chắn sẽ nằm trên chuỗi bên phải. Vì việc chèn được thực hiện theo thứ tự $k$ tăng dần thỏa mãn tính chất BST, nên nút mới chèn vào chắc chắn nằm ở **phía ngoài cùng bên phải** của cây. Nút này không thể là con trái, và cũng không có con phải.
 
-于是我们执行这样一个过程，从下往上比较右链节点与当前节点 $u$ 的 $w$，如果找到了一个右链上的节点 $x$ 满足 $w_x<w_u$，就把 $u$ 接到 $x$ 的右儿子上，而 $x$ 原本的右子树就变成 $u$ 的左子树．
+Vì vậy, ta thực hiện quy trình sau: so sánh $w$ của các nút trên chuỗi bên phải với $w$ của nút hiện tại $u$ từ dưới lên. Nếu tìm thấy một nút $x$ trên chuỗi bên phải thỏa mãn $w_x < w_u$, ta sẽ gắn $u$ làm con phải của $x$, và cây con bên phải ban đầu của $x$ sẽ trở thành cây con bên trái của $u$.
 
-图中红框部分就是我们始终维护的右链：
+Phần được đóng khung đỏ trong hình là chuỗi bên phải mà ta luôn duy trì:
 
 ![build](./images/cartesian-tree2.png)
 
-显然每个数最多进出右链一次（或者说每个点在右链中存在的是一段连续的时间）．这个过程可以用单调栈维护，栈中维护当前笛卡尔树的右链上的节点．一个点不在右链上了就把它弹掉．这样每个点最多进出一次，复杂度 $O(n)$．
+Rõ ràng mỗi số chỉ ra khỏi chuỗi bên phải nhiều nhất một lần (hoặc nói cách khác, mỗi nút tồn tại trên chuỗi bên phải trong một khoảng thời gian liên tục). Quá trình này có thể được duy trì bằng stack đơn điệu, stack duy trì các nút trên chuỗi bên phải của cây Descartes hiện tại. Khi một nút không còn nằm trên chuỗi bên phải nữa thì ta bật nó ra khỏi stack. Như vậy mỗi nút vào và ra khỏi stack nhiều nhất một lần, độ phức tạp là $O(n)$.
 
-???+ note "笛卡尔树与 Treap"
-    实际上，Treap 是笛卡尔树的一种，只不过 Treap 中 $w$ 的值完全随机．Treap 有线性的构建算法，如果提前将键值 $k$ 排好序，是可以使用上述单调栈算法完成构建过程的，只不过很少会这么用．
+???+ note "Cây Descartes và Treap"
+    Thực tế, Treap là một loại cây Descartes, chỉ khác là giá trị $w$ trong Treap hoàn toàn ngẫu nhiên. Treap có thuật toán xây dựng tuyến tính, nếu sắp xếp trước các khóa $k$, có thể sử dụng thuật toán stack đơn điệu trên để hoàn thành quá trình xây dựng, mặc dù rất ít khi được sử dụng theo cách này.
 
-### C++ 实现
+### Triển khai bằng C++
 
 ```cpp
-// stk 维护笛卡尔树中节点对应到序列中的下标
+// stk duy trì chỉ số trong dãy tương ứng với các nút của cây Descartes
 for (int i = 1; i <= n; i++) {
-  int k = top;  // top 表示操作前的栈顶，k 表示当前栈顶
-  while (k > 0 && w[stk[k]] > w[i]) k--;  // 维护右链上的节点
-  if (k) rs[stk[k]] = i;  // 栈顶元素.右儿子 := 当前元素
-  if (k < top) ls[i] = stk[k + 1];  // 当前元素.左儿子 := 上一个被弹出的元素
-  stk[++k] = i;                     // 当前元素入栈
+  int k = top;  // top biểu thị stack top trước khi thao tác, k biểu thị stack top hiện tại
+  while (k > 0 && w[stk[k]] > w[i]) k--;  // Duy trì các nút trên chuỗi bên phải
+  if (k) rs[stk[k]] = i;  // Con phải của phần tử ở stack top. := Phần tử hiện tại
+  if (k < top) ls[i] = stk[k + 1];  // Con trái của phần tử hiện tại := Phần tử vừa bị bật ra trước đó
+  stk[++k] = i;                     // Phần tử hiện tại vào stack
   top = k;
 }
 ```
 
-## 例题
+## Ví dụ đề bài
 
-???+ note "[HDU 1506. Largest Rectangle in a Histogram](https://acm.hdu.edu.cn/showproblem.php?pid=1506)"
-    $n$ 个位置，每个位置上的高度是 $h_i$，求最大子矩形．如下图：
+???+ note "[HDU 1506. Largest Rectangle in a Histogram (Hình chữ nhật lớn nhất trong biểu đồ cột)](https://acm.hdu.edu.cn/showproblem.php?pid=1506)"
+    Có $n$ vị trí, mỗi vị trí có chiều cao là $h_i$, tìm hình chữ nhật có diện tích lớn nhất. Như hình dưới:
     
     ![eg](./images/cartesian-tree3.png)
     
-    阴影部分就是图中的最大子矩阵．
+    Phần tô bóng chính là hình chữ nhật có diện tích lớn nhất trong hình.
 
-??? note "解题思路"
-    具体地，我们把下标作为键值 $k$，$h_i$ 作为键值 $w$ 满足小根堆性质，构建一棵 $(i,h_i)$ 的笛卡尔树．
+??? note "Tư duy giải quyết"
+    Cụ thể, ta lấy chỉ số làm khóa $k$, chiều cao $h_i$ làm khóa $w$ thỏa mãn tính chất min-heap, xây dựng một cây Descartes của $(i, h_i)$.
     
-    这样我们枚举每个节点 $u$，把 $w_u$（即节点 $u$ 的高度 $h$）作为最大子矩阵的高度．由于我们建立的笛卡尔树满足小根堆性质，因此 $u$ 的子树内的节点的高度都大于等于 $u$．而我们又知道 $u$ 子树内的下标是一段连续的区间．于是我们只需要知道子树的大小，然后就可以算这个区间的最大子矩阵的面积了．用每一个点计算出来的值更新答案即可．显然这个可以一次 DFS 完成，因此复杂度是 $O(n)$ 的．
+    Như vậy, ta duyệt qua từng nút $u$, coi $w_u$ (tức là chiều cao $h$ của nút $u$) làm chiều cao của hình chữ nhật lớn nhất có thể có. Do cây Descartes ta xây dựng thỏa mãn tính chất min-heap, nên chiều cao của các nút trong cây con của $u$ đều lớn hơn hoặc bằng $u$. Mà ta biết rằng các chỉ số của các nút trong cây con của $u$ là một đoạn liên tục. Vì vậy, ta chỉ cần biết kích thước của cây con, sau đó có thể tính diện tích hình chữ nhật lớn nhất trong đoạn này. Cập nhật câu trả lời bằng giá trị tính toán được từ mỗi điểm. Rõ ràng việc này có thể hoàn thành trong một lần DFS, do đó độ phức tạp là $O(n)$.
 
-??? note "参考实现"
+??? note "Tham khảo triển khai"
     ```cpp
     --8<-- "docs/ds/code/cartesian-tree/cartesian-tree_1.cpp"
     ```
 
-## 参考资料
+## Tài liệu tham khảo
 
-[笛卡尔树 - 维基百科](https://zh.wikipedia.org/wiki/%E7%AC%9B%E5%8D%A1%E5%B0%94%E6%A0%91)
+[Cây Descartes - Wikipedia](https://zh.wikipedia.org/wiki/%E7%AC%9B%E5%8D%A1%E5%B0%94%E6%A0%91)

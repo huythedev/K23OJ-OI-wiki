@@ -1,51 +1,51 @@
 author: Anguei, sshwy, Xeonacid, Ir1d, MonkeyOliver, hsfzLZH1
 
-拆点是一种图论建模思想，常用于 [网络流](./flow.md)，用来处理 **点权或者点的流量限制** 的问题，也常用于 **分层图**．
+Tách đỉnh (拆点) là một kỹ thuật mô hình hóa trong đồ thị, thường dùng trong [Luồng mạng (Network Flow)](./flow.md), để xử lý các bài toán **giới hạn trên đỉnh hoặc giới hạn lưu lượng qua đỉnh**, và cũng thường dùng trong **đồ thị phân lớp (layered graph)**.
 
-## 结点有流量限制的最大流
+## Bài toán cực đại hóa luồng với giới hạn trên đỉnh
 
-如果把结点转化成边，那么这个问题就可以套板子解决了．
+Nếu chuyển các ràng buộc trên đỉnh thành ràng buộc trên cạnh, thì bài toán này có thể áp dụng các mẫu thuật toán chuẩn.
 
-我们考虑把有流量限制的结点转化成这样一种形式：由两个结点 $u,v$ 和一条边 $\left\langle u,v \right\rangle$ 组成的部分．其中，结点 $u$ 承接所有从原图上其他点的出发到原图上该点的边，结点 $v$ 引出所有从原图上该点出发到达原图上其他点的边．边 $\left\langle u,v \right\rangle$ 的流量限制为原图该点的流量限制，再套板子就可以解决本题．这就是拆点的基本思想．
+Ta xét chuyển mỗi đỉnh có giới hạn lưu lượng thành một cấu trúc gồm hai đỉnh $u, v$ và một cạnh $\left\langle u,v \right\rangle$. Trong đó, đỉnh $u$ nhận tất cả các cạnh đi vào từ các đỉnh khác trong đồ thị gốc, còn đỉnh $v$ phát ra tất cả các cạnh đi ra từ đỉnh đó trong đồ thị gốc. Cạnh $\left\langle u,v \right\rangle$ có giới hạn lưu lượng đúng bằng giới hạn của đỉnh gốc. Sau khi chuyển đổi, chỉ cần áp dụng các thuật toán chuẩn cho bài toán luồng. Đây chính là ý tưởng cơ bản của kỹ thuật tách đỉnh.
 
-如果原图是这样：
+Nếu đồ thị gốc như sau:
 
 ![](./images/node.svg)
 
-拆点之后的图是这个样子：
+Sau khi tách đỉnh, đồ thị sẽ như thế này:
 
 ![](./images/node-split.svg)
 
-## 分层图最短路
+## Đường đi ngắn nhất trên đồ thị phân lớp
 
-分层图最短路，如：有 $k$ 次零代价通过一条路径，求总的最小花费．对于这种题目，我们可以采用 DP 相关的思想，设 $\text{dis}_{i, j}$ 表示当前从起点 $i$ 号结点，使用了 $j$ 次免费通行权限后的最短路径．显然，$\text{dis}$ 数组可以这么转移：
+Bài toán đường đi ngắn nhất trên đồ thị phân lớp, ví dụ: Có $k$ lần được đi qua một cạnh với chi phí $0$, hỏi tổng chi phí nhỏ nhất từ $s$ đến $t$. Với dạng bài này, ta có thể sử dụng ý tưởng quy hoạch động (DP), đặt $\text{dis}_{i, j}$ là độ dài đường đi ngắn nhất từ đỉnh $i$ khi đã sử dụng $j$ lần quyền đi miễn phí. Rõ ràng, mảng $\text{dis}$ có thể chuyển trạng thái như sau:
 
 $\text{dis}_{i, j} = \min\{\min\{\text{dis}_{from, j - 1}\}, \min\{\text{dis}_{from,j} + w\}\}$
 
-其中，$from$ 表示 $i$ 的父亲节点，$w$ 表示当前所走的边的边权．当 $j - 1 \geq k$ 时，$\text{dis}_{from, j}$=$\infty$．
+Trong đó, $from$ là các đỉnh kề với $i$, $w$ là trọng số cạnh hiện tại. Khi $j - 1 \geq k$, $\text{dis}_{from, j} = \infty$.
 
-事实上，这个 DP 就相当于把每个结点拆分成了 $k+1$ 个结点，每个新结点代表使用不同多次免费通行后到达的原图结点．换句话说，就是每个结点 $u_i$ 表示使用 $i$ 次免费通行权限后到达 $u$ 结点．
+Thực chất, DP này tương đương với việc tách mỗi đỉnh thành $k+1$ đỉnh, mỗi đỉnh mới đại diện cho trạng thái đã sử dụng một số lần quyền miễn phí khác nhau khi đến đỉnh gốc. Nói cách khác, mỗi đỉnh $u_i$ biểu diễn trạng thái đã dùng $i$ lần quyền miễn phí khi đến $u$.
 
-??? note "[「JLOI2011」飞行路线](https://www.luogu.com.cn/problem/P4568)"
-    题意：有一个 $n$ 个点 $m$ 条边的无向图，你可以选择 $k$ 条道路以零代价通行，求 $s$ 到 $t$ 的最小花费．
-    
-    参考核心代码：
-    
+??? note "[「JLOI2011」Tuyến bay](https://www.luogu.com.cn/problem/P4568)"
+    Đề bài: Cho một đồ thị vô hướng $n$ đỉnh $m$ cạnh, bạn có thể chọn tối đa $k$ cạnh để đi qua với chi phí $0$, hỏi chi phí nhỏ nhất từ $s$ đến $t$.
+
+    Tham khảo code cốt lõi:
+
     ```cpp
-    struct State {    // 优先队列的结点结构体
-      int v, w, cnt;  // cnt 表示已经使用多少次免费通行权限
-    
+    struct State {    // Cấu trúc trạng thái cho hàng đợi ưu tiên
+      int v, w, cnt;  // cnt là số lần đã dùng quyền miễn phí
+
       State() {}
-    
+
       State(int v, int w, int cnt) : v(v), w(w), cnt(cnt) {}
-    
+
       bool operator<(const State &rhs) const { return w > rhs.w; }
     };
-    
+
     void dijkstra() {
       memset(dis, 0x3f, sizeof dis);
       dis[s][0] = 0;
-      pq.push(State(s, 0, 0));  // 到起点不需要使用免费通行权，距离为零
+      pq.push(State(s, 0, 0));  // Đến đỉnh xuất phát không cần dùng quyền miễn phí, khoảng cách là 0
       while (!pq.empty()) {
         const State top = pq.top();
         pq.pop();
@@ -54,30 +54,30 @@ $\text{dis}_{i, j} = \min\{\min\{\text{dis}_{from, j - 1}\}, \min\{\text{dis}_{f
         done[u][nowCnt] = true;
         for (int i = head[u]; i; i = edge[i].next) {
           int v = edge[i].v, w = edge[i].w;
-          if (nowCnt < k && dis[v][nowCnt + 1] > dis[u][nowCnt]) {  // 可以免费通行
+          if (nowCnt < k && dis[v][nowCnt + 1] > dis[u][nowCnt]) {  // Có thể đi miễn phí
             dis[v][nowCnt + 1] = dis[u][nowCnt];
             pq.push(State(v, dis[v][nowCnt + 1], nowCnt + 1));
           }
-          if (dis[v][nowCnt] > dis[u][nowCnt] + w) {  // 不可以免费通行
+          if (dis[v][nowCnt] > dis[u][nowCnt] + w) {  // Không đi miễn phí
             dis[v][nowCnt] = dis[u][nowCnt] + w;
             pq.push(State(v, dis[v][nowCnt], nowCnt));
           }
         }
       }
     }
-    
+
     int main() {
       n = read(), m = read(), k = read();
-      // 笔者习惯从 1 到 n 编号，而这道题是从 0 到 n - 1，所以要处理一下
+      // Thói quen của tác giả là đánh số từ 1 đến n, nhưng đề này đánh số từ 0 đến n-1 nên cần xử lý lại
       s = read() + 1, t = read() + 1;
       while (m--) {
         int u = read() + 1, v = read() + 1, w = read();
-        add(u, v, w), add(v, u, w);  // 这道题是双向边
+        add(u, v, w), add(v, u, w);  // Đồ thị vô hướng
       }
       dijkstra();
-      int ans = std::numeric_limits<int>::max();  // ans 取 int 最大值为初值
+      int ans = std::numeric_limits<int>::max();  // Khởi tạo ans là giá trị lớn nhất của int
       for (int i = 0; i <= k; ++i)
-        ans = std::min(ans, dis[t][i]);  // 对到达终点的所有情况取最优值
+        ans = std::min(ans, dis[t][i]);  // Lấy kết quả tốt nhất trong mọi trường hợp đến đích
       println(ans);
     }
     ```

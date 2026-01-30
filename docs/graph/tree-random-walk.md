@@ -1,26 +1,26 @@
-给定一棵有根树，树的某个结点上有一个硬币，在某一时刻硬币会等概率地移动到邻接结点上，问硬币移动到邻接结点上的期望距离．
+Cho một cây có gốc, trên một đỉnh của cây có một đồng xu. Tại mỗi thời điểm, đồng xu sẽ di chuyển ngẫu nhiên (xác suất đều) sang một đỉnh kề. Hỏi kỳ vọng quãng đường đồng xu di chuyển để đến một đỉnh kề.
 
-## 需要用到的定义
+## Các định nghĩa cần dùng
 
--   $T=(V,E)$: 所讨论的树
--   $d(u)$: 结点 $u$ 的度数
--   $w(u,v)$: 结点 $u$ 与结点 $v$ 之间的边的边权
--   $p_u$: 结点 $u$ 的父结点
--   $\textit{root}$: 树的根结点
--   $\textit{son}_u$: 结点 $u$ 的子结点集合
--   $\textit{sibling}_u$: 结点 $u$ 的兄弟结点集合
+-   $T=(V,E)$: Cây đang xét
+-   $d(u)$: Bậc của đỉnh $u$
+-   $w(u,v)$: Trọng số cạnh giữa $u$ và $v$
+-   $p_u$: Cha của đỉnh $u$
+-   $\textit{root}$: Gốc của cây
+-   $\textit{son}_u$: Tập các con của $u$
+-   $\textit{sibling}_u$: Tập các anh em của $u$
 
-## 向父结点走的期望距离
+## Kỳ vọng đi về phía cha
 
-设 $f(u)$ 代表 $u$ 结点走到其父结点 $p_u$ 的期望距离，则有：
+Gọi $f(u)$ là kỳ vọng quãng đường từ $u$ đi đến cha $p_u$, ta có:
 
 $$
 f(u) = \cfrac{w(u,p_u) + \sum\limits_{v \in \textit{son}_u}(w(u,v) + f(v) + f(u))}{d(u)}
 $$
 
-分子中的前半部分代表直接走向了父结点，后半部分代表先走向了子结点再由子结点走回来然后再向父结点走；分母 $d(u)$ 代表从 $u$ 结点走向其任何邻接点的概率相同．
+Tử số: phần đầu là đi thẳng về cha, phần sau là đi sang con rồi quay lại rồi mới về cha; mẫu số $d(u)$ là xác suất đều đến các đỉnh kề.
 
-化简如下：
+Rút gọn:
 
 $$
 \begin{aligned}
@@ -31,27 +31,27 @@ $$
 \end{aligned}
 $$
 
-对于叶子结点 $l$，初始状态为 $f(l) = w(p_l, l)$．
+Với lá $l$, khởi tạo $f(l) = w(p_l, l)$.
 
-当树上所有边的边权都为 $1$ 时，上式可化为：
+Nếu mọi cạnh đều có trọng số $1$, công thức thành:
 
 $$
 f(u) = d(u) + \sum\limits_{v \in \textit{son}_u}f(v)
 $$
 
-即 $u$ 子树的所有结点的度数和，也即 $u$ 子树大小的两倍 $-1$（每个结点连向其父亲的边都有且只有一条，除 $u$ 与 $p_u$ 之间的边只有 $1$ 点度数的贡献外，每条边会产生 $2$ 点度数的贡献）．
+Tức là tổng bậc các đỉnh trong cây con gốc $u$, cũng chính là $2 \times$ kích thước cây con $u$ $-1$ (mỗi cạnh đóng góp $2$ vào tổng bậc, trừ cạnh nối $u$ với cha chỉ đóng góp $1$).
 
-## 向子结点走的期望距离
+## Kỳ vọng đi về phía con
 
-设 $g(u)$ 代表 $p_u$ 结点走到其子结点 $u$ 的期望距离，则有：
+Gọi $g(u)$ là kỳ vọng quãng đường từ cha $p_u$ đi đến con $u$, ta có:
 
 $$
 g(u) = \cfrac{w(p_u,u) + \left(w(p_u,p_{p_u})+g(p_u)+g(u)\right) + \sum\limits_{s \in \textit{sibling}_u}(w(p_u,s)+f(s)+g(u))}{d(p_u)}
 $$
 
-分子中的第一部分代表直接走向了子结点 $u$，第二部分代表先走向了父结点再由父结点走回来然后再向 $u$ 结点走，第三部分代表先走向 $u$ 结点的兄弟结点再由其走回来然后再向 $u$ 结点走；分母 $d(p_u)$ 代表从 $p_u$ 结点走向其任何邻接点的概率相同．
+Tử số: phần đầu là đi thẳng đến $u$, phần hai là đi lên cha rồi quay lại rồi mới đến $u$, phần ba là đi sang anh em rồi quay lại rồi mới đến $u$; mẫu số $d(p_u)$ là xác suất đều đến các đỉnh kề.
 
-化简如下：
+Rút gọn:
 
 $$
 \begin{aligned}
@@ -64,11 +64,12 @@ $$
 \end{aligned}
 $$
 
-初始状态为 $g(\text{root}) = 0$．
+Khởi tạo $g(\text{root}) = 0$.
 
-## 代码实现（以无权树为例）
+## Cài đặt (ví dụ với cây không trọng số)
 
 ```cpp
+// filepath: /home/ubuntu/K23OJ-OI-wiki/docs/graph/tree-random-walk.md
 vector<int> G[MAXN];
 
 void dfs1(int u, int p) {

@@ -1,40 +1,40 @@
-## 关于段的问题
+## Về các đoạn
 
-我们由一个小清新的问题引入：
+Chúng ta bắt đầu bằng một vấn đề khá đơn giản:
 
-> 对于一个 $1-n$ 的排列，我们称一个值域连续的区间为段．问一个排列的段的个数．比如，$\{5 ,3 ,4, 1 ,2\}$ 的段有：$[1,1],[2,2],[3,3],[4,4],[5,5],[2,3],[4,5],[1,3],[2,5],[1,5]$．
+> Cho một hoán vị từ $1-n$, một đoạn có miền giá trị liên tiếp được gọi là một **đoạn (segment)**. Hỏi số lượng đoạn trong một hoán vị. Ví dụ: $\{5 ,3 ,4, 1 ,2\}$ có các đoạn là: $[1,1],[2,2],[3,3],[4,4],[5,5],[2,3],[4,5],[1,3],[2,5],[1,5]$.
 
-看到这个东西，感觉要维护区间的值域集合，复杂度好像挺不友好的．线段树可以查询某个区间是否为段，但不太能统计段的个数．
+Nhìn vào điều này, ta có cảm giác cần duy trì tập hợp miền giá trị của một đoạn, độ phức tạp có vẻ không thân thiện. Cây đoạn có thể truy vấn xem một đoạn có phải là đoạn hay không, nhưng không dễ thống kê số lượng đoạn.
 
-这里我们引入这个神奇的数据结构——析合树！
+Ở đây chúng ta giới thiệu cấu trúc dữ liệu thần kỳ này - Cây Phân Tích Hợp (析合树 - Divisor-Combinator Tree/Segment Tree)!
 
-## 连续段
+## Đoạn Liên Tiếp (Continuous Segment)
 
-在介绍析合树之前，我们先做一些前提条件的限定．鉴于 LCA 的课件中给出的定义不易理解，为方便读者理解，这里给出一些不太严谨（但更容易理解）的定义．
+Trước khi giới thiệu Cây Phân Tích Hợp, chúng ta đưa ra một số điều kiện tiên quyết. Vì định nghĩa trong tài liệu về LCA khó hiểu, ở đây đưa ra các định nghĩa không hoàn toàn chặt chẽ (nhưng dễ hiểu hơn) để độc giả dễ tiếp thu.
 
-### 排列与连续段
+### Hoán vị và Đoạn Liên Tiếp
 
-**排列**：定义一个 $n$ 阶排列 $P$ 是一个大小为 $n$ 的序列，使得 $P_i$ 取遍 $1,2,\cdots,n$．说得形式化一点，$n$ 阶排列 $P$ 是一个有序集合满足：
+**Hoán vị**: Định nghĩa hoán vị cấp $n$, $P$, là một dãy có kích thước $n$, sao cho $P_i$ lần lượt nhận các giá trị $1, 2, \ldots, n$. Nói một cách hình thức hơn, hoán vị cấp $n$, $P$, là một tập hợp có thứ tự thỏa mãn:
 
 1.  $|P|=n$.
-2.  $\forall i,P_i\in[1,n]$.
-3.  $\nexists i,j\in[1,n],P_i=P_j$.
+2.  $\forall i, P_i \in [1,n]$.
+3.  $\nexists i, j \in [1,n], P_i=P_j$.
 
-    **连续段**：对于排列 $P$，定义连续段 $(P,[l,r])$ 表示一个区间 $[l,r]$，要求 $P_{l\sim r}$ 值域是连续的．说得更形式化一点，对于排列 $P$，连续段表示一个区间 $[l,r]$ 满足：
+**Đoạn Liên Tiếp**: Đối với hoán vị $P$, đoạn liên tiếp $(P,[l,r])$ biểu thị một đoạn $[l,r]$ sao cho tập giá trị của $P_{l\sim r}$ là liên tiếp. Nói một cách hình thức hơn, đối với hoán vị $P$, đoạn liên tiếp biểu thị một đoạn $[l,r]$ thỏa mãn:
 
 $$
 (\nexists\ x,z\in[l,r],y\notin[l,r],\ P_x<P_y<P_z)
 $$
 
-特别地，当 $l>r$ 时，我们认为这是一个空的连续段，记作 $(P,\varnothing)$．
+Đặc biệt, khi $l>r$, ta coi đây là một đoạn rỗng, ký hiệu là $(P,\varnothing)$.
 
-我们称排列 $P$ 的所有连续段的集合为 $I_P$，并且我们认为 $(P,\varnothing)\in I_P$．
+Tập hợp tất cả các đoạn liên tiếp của hoán vị $P$ được gọi là $I_P$, và ta coi $(P,\varnothing)\in I_P$.
 
-### 连续段的运算
+### Phép toán của Đoạn Liên Tiếp
 
-连续段是依赖区间和值域定义的，于是我们可以定义连续段的交并差的运算．
+Đoạn liên tiếp phụ thuộc vào đoạn chỉ số và định nghĩa miền giá trị, vì vậy ta có thể định nghĩa các phép toán giao, hợp, trừ của đoạn liên tiếp.
 
-定义 $A=(P,[a,b]),B=(P,[x,y])$，且 $A,B\in I_P$．于是连续段的关系和运算可以表示为：
+Định nghĩa $A=(P,[a,b]), B=(P,[x,y])$, và $A,B\in I_P$. Các quan hệ và phép toán của đoạn liên tiếp có thể biểu diễn như sau:
 
 1.  $A\subseteq B\iff x\le a\wedge b\le y$.
 2.  $A=B\iff a=x\wedge b=y$.
@@ -42,130 +42,130 @@ $$
 4.  $A\cup B=(P,[\min(a,x),\max(b,y)])$.
 5.  $A\setminus B=(P,\{i|i\in[a,b]\wedge i\notin[x,y]\})$.
 
-其实这些运算就是普通的集合交并差放在区间上而已．
+Thực ra các phép toán này chỉ là phép toán giao, hợp, trừ tập hợp thông thường trên các đoạn chỉ số.
 
-### 连续段的性质
+### Tính chất của Đoạn Liên Tiếp
 
-连续段的一些显而易见的性质．我们定义 $A,B\in I_P,A \cap B \neq \varnothing,A \notin B,B \notin A$，那么有 $A\cup B,A\cap B,A\setminus B,B\setminus A\in I_P$．
+Một số tính chất hiển nhiên của đoạn liên tiếp. Ta định nghĩa $A,B\in I_P, A \cap B \neq \varnothing, A \notin B, B \notin A$, thì có $A\cup B,A\cap B,A\setminus B,B\setminus A\in I_P$.
 
-证明？证明的本质就是集合的交并差的运算．
+Chứng minh? Bản chất của chứng minh là các phép toán giao, hợp, trừ tập hợp.
 
-## 析合树
+## Cây Phân Tích Hợp (Divisor-Combinator Tree)
 
-好的，现在讲到重点了．你可能已经猜到了，析合树正是由连续段组成的一棵树．但是要知道一个排列可能有多达 $O(n^2)$ 个连续段，因此我们就要抽出其中更基本的连续段组成析合树．
+Được rồi, đến phần trọng tâm. Bạn có thể đoán được, Cây Phân Tích Hợp được tạo thành từ các đoạn liên tiếp. Nhưng ta biết rằng một hoán vị có thể có tới $O(n^2)$ đoạn liên tiếp, vì vậy chúng ta cần rút ra những đoạn liên tiếp cơ bản hơn để tạo thành Cây Phân Tích Hợp.
 
-### 本原段
+### Đoạn Nguyên Thủy (Primitive Segment)
 
-其实这个定义全称叫作 **本原连续段**．但笔者认为本原段更为简洁．
+Thực ra tên đầy đủ là **Đoạn Liên Tiếp Nguyên Thủy (Primitive Continuous Segment)**. Nhưng người viết cho rằng Đoạn Nguyên Thủy (Primitive Segment) ngắn gọn hơn.
 
-对于排列 $P$，我们认为一个本原段 $M$ 表示在集合 $I_P$ 中，不存在与之相交且不包含的连续段．形式化地定义，我们认为 $X\in I_P$ 且满足 $\forall A\in I_P,\ X\cap A= (P,\varnothing)\vee X\subseteq A\vee A\subseteq X$．
+Đối với hoán vị $P$, ta cho rằng một đoạn nguyên thủy $M$ biểu thị một đoạn liên tiếp trong tập hợp $I_P$ mà không tồn tại đoạn liên tiếp nào giao với nó mà không chứa nó. Định nghĩa hình thức, ta cho rằng $X\in I_P$ và thỏa mãn $\forall A\in I_P,\ X\cap A= (P,\varnothing)\vee X\subseteq A\vee A\subseteq X$.
 
-所有本原段的集合为 $M_P$. 显而易见，$(P,\varnothing)\in M_P$．
+Tập hợp tất cả các đoạn nguyên thủy là $M_P$. Hiển nhiên, $(P,\varnothing)\in M_P$.
 
-显然，本原段之间只有相离或者包含关系．并且你发现 **一个连续段可以由几个互不相交的本原段构成**．最大的本原段就是整个排列本身，它包含了其他所有本原段，因此我们认为本原段可以构成一个树形结构，我们称这个结构为 **析合树**．更严格地说，排列 $P$ 的析合树由排列 $P$ 的 **所有本原段** 组成．
+Rõ ràng, giữa các đoạn nguyên thủy chỉ có quan hệ rời nhau hoặc bao hàm. Và bạn nhận ra **một đoạn liên tiếp có thể được cấu thành từ một vài đoạn nguyên thủy không giao nhau**. Đoạn nguyên thủy lớn nhất chính là toàn bộ hoán vị, nó bao hàm tất cả các đoạn nguyên thủy khác, vì vậy ta cho rằng các đoạn nguyên thủy có thể tạo thành một cấu trúc cây, cấu trúc này gọi là **Cây Phân Tích Hợp**. Nghiêm ngặt hơn, Cây Phân Tích Hợp của hoán vị $P$ được tạo thành từ **tất cả các đoạn nguyên thủy** của hoán vị $P$.
 
-前面干讲这么多的定义，不来点图怎么行．考虑排列 $P=\{9,1,10,3,2,5,7,6,8,4\}$. 它的本原段构成的析合树如下：
+Nói nhiều định nghĩa khô khan như vậy mà không có hình vẽ thì sao được. Xét hoán vị $P=\{9,1,10,3,2,5,7,6,8,4\}$. Cây Phân Tích Hợp tạo bởi các đoạn nguyên thủy của nó như sau:
 
 ![p1](./images/div-com1.png)
 
-在图中我们没有标明本原段．而图中 **每个结点都代表一个本原段**．我们只标明了每个本原段的值域．举个例子，结点 $[5,8]$ 代表的本原段就是 $(P,[6,9])=\{5,7,6,8\}$．于是这里就有一个问题：**什么是析点合点？**
+Trong hình, chúng ta không đánh dấu các đoạn nguyên thủy. Mà **mỗi nút trong hình đại diện cho một đoạn nguyên thủy**. Chúng ta chỉ đánh dấu miền giá trị của mỗi đoạn nguyên thủy. Ví dụ, nút $[5,8]$ đại diện cho đoạn nguyên thủy $(P,[6,9])=\{5,7,6,8\}$. Vậy ở đây có một vấn đề: **Thế nào là nút Hợp (Combinator Node) và nút Phân Tích (Divisor Node)?**
 
-### 析点与合点
+### Nút Phân Tích và Nút Hợp
 
-这里我们直接给出定义，稍候再来讨论它的正确性．
+Ở đây chúng ta đưa ra định nghĩa trực tiếp, lát nữa sẽ thảo luận về tính đúng đắn của nó.
 
-1.  **值域区间**：对于一个结点 $u$，用 $[u_l,u_r]$ 表示该结点的值域区间．
-2.  **儿子序列**：对于析合树上的一个结点 $u$，假设它的儿子结点是一个 **有序** 序列，该序列是以值域区间为元素的（单个的数 $x$ 可以理解为 $[x,x]$ 的区间）．我们把这个序列称为儿子序列．记作 $S_u$．
-3.  **儿子排列**：对于一个儿子序列 $S_u$，把它的元素离散化成正整数后形成的排列称为儿子排列．举个例子，对于结点 $[5,8]$，它的儿子序列为 $\{[5,5],[6,7],[8,8]\}$，那么把区间排序标个号，则它的儿子排列就为 $\{1,2,3\}$；类似的，结点 $[4,8]$ 的儿子排列为 $\{2,1\}$．结点 $u$ 的儿子排列记为 $P_u$．
-4.  **合点**：我们认为，儿子排列为顺序或者逆序的点为合点．形式化地说，满足 $P_u=\{1,2,\cdots,|S_u|\}$ 或者 $P_u=\{|S_u|,|S_u-1|,\cdots,1\}$ 的点称为合点．**叶子结点没有儿子排列，我们也认为它是合点**．
-5.  **析点**：不是合点的就是析点．
+1.  **Miền giá trị (Value Range)**: Đối với một nút $u$, ký hiệu $[u_l,u_r]$ biểu thị miền giá trị của nút này.
+2.  **Dãy con (Son Sequence)**: Đối với một nút $u$ trên Cây Phân Tích Hợp, giả sử các nút con của nó là một dãy **có thứ tự**, dãy này chứa các miền giá trị (một số đơn lẻ $x$ có thể được hiểu là đoạn $[x,x]$). Ta gọi dãy này là dãy con. Ký hiệu là $S_u$.
+3.  **Hoán vị con (Son Permutation)**: Đối với một dãy con $S_u$, hoán vị được tạo thành sau khi rời rạc hóa các phần tử của nó thành các số nguyên dương được gọi là hoán vị con. Ví dụ, đối với nút $[5,8]$, dãy con của nó là $\{[5,5],[6,7],[8,8]\}$, nếu đánh số theo thứ tự sắp xếp các đoạn, thì hoán vị con của nó là $\{1,2,3\}$; tương tự, nút $[4,8]$ có hoán vị con là $\{2,1\}$. Hoán vị con của nút $u$ ký hiệu là $P_u$.
+4.  **Nút Hợp (Combinator Node)**: Ta cho rằng các nút có hoán vị con là tuần tự hoặc nghịch đảo là nút hợp. Nói hình thức: các nút thỏa mãn $P_u=\{1,2,\cdots,|S_u|\}$ hoặc $P_u=\{|S_u|,|S_u-1|,\cdots,1\}$ được gọi là nút hợp. **Nút lá không có hoán vị con, ta cũng coi nó là nút hợp**.
+5.  **Nút Phân Tích (Divisor Node)**: Là nút không phải nút hợp.
 
-从图中可以看到，只有 $[1,10]$ 不是合点．因为 $[1,10]$ 的儿子排列是 $\{3,1,4,2\}$．
+Từ hình vẽ có thể thấy, chỉ có $[1,10]$ không phải là nút hợp, vì hoán vị con của $[1,10]$ là $\{3,1,4,2\}$.
 
-### 析点与合点的性质
+### Tính chất của Nút Phân Tích và Nút Hợp
 
-析点与合点的命名来源于他们的性质．首先我们有一个非常显然的性质：对于析合树中任何的结点 $u$，其儿子序列区间的并集就是结点 $u$ 的值域区间．即 $\bigcup_{i=1}^{|S_u|}S_u[i]=[u_l,u_r]$．
+Tên gọi nút Phân Tích và nút Hợp bắt nguồn từ tính chất của chúng. Trước hết ta có một tính chất rất hiển nhiên: đối với bất kỳ nút $u$ nào trên Cây Phân Tích Hợp, hợp của các đoạn chỉ số của các nút con chính là đoạn chỉ số của nút $u$. Tức là $\bigcup_{i=1}^{|S_u|}S_u[i]=[u_l,u_r]$.
 
-对于一个合点 $u$：其儿子序列的任意 **子区间** 都构成一个 **连续段**．形式化地说，$\forall S_u[l\sim r]$，有 $\bigcup_{i=l}^rS_u[i]\in I_P$．
+Đối với một **nút hợp** $u$: Bất kỳ **đoạn con** nào của dãy con đều tạo thành một **đoạn liên tiếp**. Nói hình thức: $\forall S_u[l\sim r]$, thì $\bigcup_{i=l}^rS_u[i]\in I_P$.
 
-对于一个析点 $u$：其儿子序列的任意 **长度大于 1（这里的长度是指儿子序列中的元素数，不是下标区间的长度）** 的子区间都 **不** 构成一个 **连续段**．形式化地说，$\forall S_u[l\sim r],l<r$，有 $\bigcup_{i=l}^rS_u[i]\notin I_P$．
+Đối với một **nút phân tích** $u$: Bất kỳ đoạn con nào của dãy con có **độ dài lớn hơn 1** (độ dài ở đây là số phần tử trong dãy con, không phải độ dài đoạn chỉ số) đều **không** tạo thành một **đoạn liên tiếp**. Nói hình thức: $\forall S_u[l\sim r],l<r$, thì $\bigcup_{i=l}^rS_u[i]\notin I_P$.
 
-合点的性质不难证明．因为合点的儿子排列要么是顺序，要么是倒序，而值域区间也是首位相接，因此只要是连续的一段子序列（区间）都是一个连续段．
+Tính chất của nút hợp không khó chứng minh. Vì hoán vị con của nút hợp hoặc là thứ tự tăng dần, hoặc là thứ tự giảm dần, và các đoạn giá trị cũng liền kề nhau, nên bất kỳ đoạn con liên tiếp nào cũng là một đoạn liên tiếp.
 
-对于析点的性质可能很多读者就不太能理解了：为什么 **任意** 长度大于 $1$ 的子区间都不构成连续段？
+Đối với tính chất của nút phân tích, có lẽ nhiều độc giả sẽ không hiểu: tại sao **bất kỳ** đoạn con nào có độ dài lớn hơn 1 đều không tạo thành đoạn liên tiếp?
 
-使用反证法．假设对于一个点 $u$，它的儿子序列中有一个 **最长的** 区间 $S_u[l\sim r]$ 构成了连续段．那么这个 $A=\bigcup_{i=l}^rS_u[i]\in I_P$，也就意味着 $A$ 是一个本原段！（因为 $A$ 是儿子序列中最长的，因此找不到一个与它相交又不包含的连续段）于是你就没有使用所有的本原段构成这个析合树．矛盾．
+Sử dụng phản chứng. Giả sử đối với một nút $u$, có một đoạn **dài nhất** $S_u[l\sim r]$ tạo thành một đoạn liên tiếp. Khi đó $A=\bigcup_{i=l}^rS_u[i]\in I_P$, điều này có nghĩa là $A$ là một đoạn nguyên thủy! (Vì $A$ là đoạn dài nhất trong các đoạn con, nên không thể tìm được một đoạn liên tiếp giao với nó mà không chứa nó). Khi đó bạn đã không sử dụng tất cả các đoạn nguyên thủy để tạo thành cây này. Mâu thuẫn.
 
-### 析合树的构造
+### Xây dựng Cây Phân Tích Hợp
 
-对于具体构造析合树，LCA 提供了一种线性构造算法[^ref1]，下面给出一种比较好懂的 $O(n\log n)$ 算法．
+Đối với việc xây dựng Cây Phân Tích Hợp cụ thể, LCA cung cấp một thuật toán tuyến tính[^ref1], dưới đây là một thuật toán $O(n\log n)$ dễ hiểu hơn.
 
-#### 增量法
+#### Phương pháp Tăng dần (Incremental Method)
 
-我们考虑增量法．用一个栈维护前 $i-1$ 个元素构成的析合森林．在这里需要 **着重强调**，析合森林的意思是，在任何时侯，栈中结点要么是析点要么是合点．现在考虑当前结点 $P_i$．
+Chúng ta xét phương pháp tăng dần. Sử dụng một stack để duy trì rừng Phân Tích Hợp được tạo thành từ $i-1$ phần tử đầu tiên. Ở đây cần **nhấn mạnh** rằng rừng Phân Tích Hợp có nghĩa là, tại bất kỳ thời điểm nào, các nút trong stack hoặc là nút phân tích hoặc là nút hợp. Bây giờ xét nút hiện tại $P_i$.
 
-1.  我们先判断它能否成为栈顶结点的儿子，如果能就变成栈顶的儿子，然后把栈顶取出，作为当前结点．重复上述过程直到栈空或者不能成为栈顶结点的儿子．
-2.  如果不能成为栈顶的儿子，就看能不能把栈顶的若干个连续的结点都合并成一个结点（判断能否合并的方法在后面），把合并后的点，作为当前结点．
-3.  重复上述过程直到不能进行为止．然后结束此次增量，直接把当前结点压栈．
+1.  Ta xét xem nó có thể trở thành con của nút trên đỉnh stack hay không. Nếu có thì nó trở thành con của nút trên đỉnh stack, sau đó lấy nút trên đỉnh stack ra, làm nút hiện tại. Lặp lại quá trình này cho đến khi stack rỗng hoặc không thể trở thành con của nút trên đỉnh stack.
+2.  Nếu không thể trở thành con của nút trên đỉnh stack, thì xem xét xem có thể hợp nhất một số nút liên tiếp trên đỉnh stack thành một nút hay không (phương pháp phán đoán hợp nhất ở phần sau), nút được hợp nhất này làm nút hiện tại.
+3.  Lặp lại quá trình này cho đến khi không thể tiếp tục. Sau đó kết thúc lần tăng dần này, đẩy nút hiện tại vào stack.
 
-接下来我们仔细解释一下．
+Tiếp theo chúng ta giải thích chi tiết hơn.
 
-#### 具体的策略
+#### Chiến lược cụ thể
 
-我们认为，如果当前点能够成为栈顶结点的儿子，那么栈顶结点是一个合点．如果是析点，那么你合并后这个析点就存在一个子连续段，不满足析点的性质．因此一定是合点．
+Ta cho rằng, nếu nút hiện tại có thể trở thành con của nút trên đỉnh stack, thì nút trên đỉnh stack là một **nút hợp**. Nếu là nút phân tích, thì sau khi hợp nhất, nút phân tích này sẽ có một đoạn con liên tiếp, không thỏa mãn tính chất của nút phân tích. Do đó, nó chắc chắn là nút hợp.
 
-如果无法成为栈顶结点的儿子，那么我们就看栈顶连续的若干个点能否与当前点一起合并．设 $l$ 为当前点所在区间的左端点．我们计算 $L_i$ 表示右端点下标为 $i$ 的连续段中，左端点 $< l$ 的最大值．当前结点为 $P_i$，栈顶结点记为 $t$．
+Nếu không thể trở thành con của nút trên đỉnh stack, thì ta xem xét xem một số nút liên tiếp trên đỉnh stack có thể hợp nhất với nút hiện tại hay không. Đặt $l$ là mút trái của đoạn mà nút hiện tại nằm trong. Ta tính $L_i$ là giá trị lớn nhất của mút trái $< l$ trong đoạn liên tiếp có mút phải là $i$. Nút hiện tại là $P_i$, nút trên đỉnh stack là $t$.
 
-1.  如果 $L_i$ 不存在，那么显然当前结点无法合并；
-2.  如果 $t_l=L_i$，那么这就是两个结点合并，合并后就是一个 **合点**；
-3.  否则在栈中一定存在一个点 $t'$ 的左端点 ${t'}_l=L_i$，那么一定可以从当前结点合并到 $t’$ 形成一个 **析点**；
+1.  Nếu $L_i$ không tồn tại, thì rõ ràng nút hiện tại không thể hợp nhất;
+2.  Nếu $t_l=L_i$, thì đây là hai nút hợp nhất, nút sau khi hợp nhất là một **nút hợp**;
+3.  Ngược lại, chắc chắn tồn tại một nút $t'$ trong stack có mút trái ${t'}_l=L_i$, thì chắc chắn có thể hợp nhất từ nút hiện tại đến $t'$ tạo thành một **nút phân tích**;
 
-#### 判断能否合并
+#### Phán đoán có thể hợp nhất hay không
 
-最后，我们考虑如何处理 $L_i$．事实上，一个连续段 $(P,[l,r])$ 等价于区间极差与区间长度 -1 相等．即
+Cuối cùng, ta xét cách xử lý $L_i$. Thực tế, một đoạn liên tiếp $(P,[l,r])$ tương đương với việc hiệu cực đại trừ cực tiểu của đoạn bằng độ dài đoạn trừ 1. Tức là
 
 $$
 \max_{l\le i\le r}P_i-\min_{l\le i\le r}P_i=r-l
 $$
 
-而且由于 P 是一个排列，因此对于任意的区间 $[l,r]$ 都有
+Hơn nữa, do $P$ là một hoán vị, nên đối với bất kỳ đoạn $[l,r]$ nào đều có
 
 $$
 \max_{l\le i\le r}P_i-\min_{l\le i\le r}P_i\ge r-l
 $$
 
-于是我们就维护 $\max_{l\le i\le r}P_i-\min_{l\le i\le r}P_i-(r-l)$，那么要找到一个连续段相当于查询一个最小值！
+Vì vậy, chúng ta duy trì $\max_{l\le i\le r}P_i-\min_{l\le i\le r}P_i-(r-l)$, việc tìm một đoạn liên tiếp tương đương với việc truy vấn giá trị nhỏ nhất!
 
-有了上述思路，不难想到这样的算法．对于增量过程中的当前的 $i$，我们维护一个数组 $Q$ 表示区间 $[j,i]$ 的极差减长度．即
+Với ý tưởng trên, không khó để nghĩ ra thuật toán như sau. Đối với quá trình tăng dần hiện tại là $i$, ta duy trì một mảng $Q$ biểu thị hiệu cực đại trừ cực tiểu trừ độ dài cho đoạn $[j,i]$. Tức là
 
 $$
 Q_j=\max_{j\le k\le i}P_k-\min_{j\le k\le i}P_k-(i-j),\ \ 0<j<i
 $$
 
-现在我们想知道在 $1\sim i-1$ 中是否存在一个最小的 $j$ 使得 $Q_j=0$．这等价于求 $Q_{1\sim i-1}$ 的最小值．求得最小的 $j$ 就是 $L_i$．如果没有，那么 $L_i=i$．
+Bây giờ chúng ta muốn biết liệu có tồn tại $j$ nhỏ nhất trong $1\sim i-1$ sao cho $Q_j=0$ hay không. Điều này tương đương với việc tìm giá trị nhỏ nhất của $Q_{1\sim i-1}$. Giá trị $j$ nhỏ nhất tìm được chính là $L_i$. Nếu không có, thì $L_i=i$.
 
-但是当第 $i$ 次增量结束时，我们需要快速把 $Q$ 数组更新到 i+1 的情况．原本的区间从 $[j,i]$ 变成 $[j,i+1]$，如果 $P_{i+1}>\max$ 或者 $P_{i+1}<\min$ 都会造成 $Q_j$ 发生变化．如何变化？如果 $P_{i+1}>\max$，相当于我们把 $Q_j$ 先减掉 $\max$ 再加上 $P_{i+1}$ 就完成了 $Q_j$ 的更新；$P_{i+1}<\min$ 同理，相当于 $Q_j=Q_j+\min-P_{i+1}$.
+Tuy nhiên, khi kết thúc lần tăng dần thứ $i$, ta cần nhanh chóng cập nhật mảng $Q$ sang trường hợp $i+1$. Đoạn ban đầu là $[j,i]$ trở thành $[j,i+1]$, nếu $P_{i+1}>\max$ hoặc $P_{i+1}<\min$ sẽ làm $Q_j$ thay đổi. Thay đổi như thế nào? Nếu $P_{i+1}>\max$, coi như ta lấy $Q_j$ trừ đi $\max$ rồi cộng thêm $P_{i+1}$ là hoàn thành việc cập nhật $Q_j$; $P_{i+1}<\min$ tương tự, coi như $Q_j=Q_j+\min-P_{i+1}$.
 
-那么如果对于一个区间 $[x,y]$，满足 $P_{x\sim i},P_{x+1\sim i},P_{x+2\sim i},\cdots,P_{y\sim i}$ 的区间 $\max$ 都相同呢？你已经发现了，那么相当于我们在做一个区间加的操作；同理，当 $P_{x\sim i},P_{x+1\sim i},\cdots,P_{y\sim i}$ 的区间 $\min$ 都想同时也是一个区间加的操作．同时，$\max$ 和 $\min$ 的更新是相互独立的，因此可以各自更新．
+Vậy nếu đối với một đoạn $[x,y]$, thỏa mãn $\max$ của các đoạn $P_{x\sim i},P_{x+1\sim i},P_{x+2\sim i},\cdots,P_{y\sim i}$ đều giống nhau thì sao? Bạn đã nhận ra, điều này tương đương với việc ta đang thực hiện thao tác cộng trên đoạn; tương tự, khi $\min$ của các đoạn $P_{x\sim i},P_{x+1\sim i},\cdots,P_{y\sim i}$ cũng là một thao tác cộng trên đoạn. Đồng thời, việc cập nhật $\max$ và $\min$ là độc lập với nhau, do đó có thể cập nhật riêng rẽ.
 
-因此我们对 $Q$ 的维护可以这样描述：
+Do đó, việc duy trì $Q$ có thể được mô tả như sau:
 
-1.  找到最大的 $j$ 使得 $P_{j}>P_{i+1}$，那么显然，$P_{j+1\sim i}$ 这一段数全部小于 $P_{i+1}$，于是就需要更新 $Q_{j+1\sim i}$ 的最大值．由于 $P_{i},\max(P_i,P_{i-1}),\max(P_i,P_{i-1},P_{i-2}),\cdots,\max(P_i,P_{i-1},\cdots,P_{j+1})$ 是（非严格）单调递增的，因此可以每一段相同的 $\max$ 做相同的更新，即区间加操作．
-2.  更新 $\min$ 同理．
-3.  把每一个 $Q_j$ 都减 $1$．因为区间长度加 $1$．
-4.  查询 $L_i$：即查询 $Q$ 的最小值的所在的 **下标**．
+1.  Tìm $j$ lớn nhất sao cho $P_{j}>P_{i+1}$, thì rõ ràng, đoạn $P_{j+1\sim i}$ đều nhỏ hơn $P_{i+1}$, do đó cần cập nhật giá trị lớn nhất của $Q_{j+1\sim i}$. Do $\max(P_i), \max(P_i,P_{i-1}), \max(P_i,P_{i-1},P_{i-2}),\cdots,\max(P_i,P_{i-1},\cdots,P_{j+1})$ là (không nghiêm ngặt) đơn điệu tăng, nên có thể làm cập nhật giống nhau cho mỗi đoạn có $\max$ giống nhau, tức là thao tác cộng trên đoạn.
+2.  Cập nhật $\min$ tương tự.
+3.  Trừ mỗi $Q_j$ đi $1$. Vì độ dài đoạn tăng thêm $1$.
+4.  Truy vấn $L_i$: tức là truy vấn **chỉ số** của giá trị nhỏ nhất trong $Q$.
 
-没错，我们可以使用线段树维护 $Q$！现在还有一个问题：怎么找到相同的一段使得他们的 $\max/\min$ 都相同？使用单调栈维护！维护两个单调栈分别表示 $\max/\min$．那么显然，栈中以相邻两个元素为端点的区间的 $\max/\min$ 是相同的，于是在维护单调栈的时侯顺便更新线段树即可．
+Đúng vậy, chúng ta có thể sử dụng cây đoạn để duy trì $Q$! Vẫn còn một vấn đề: làm thế nào để tìm một đoạn có $\max/\min$ giống nhau? Sử dụng stack đơn điệu để duy trì! Duy trì hai stack đơn điệu lần lượt cho $\max/\min$. Rõ ràng, $\max/\min$ của các đoạn có đầu mút là hai phần tử liền kề trong stack là giống nhau, do đó trong quá trình duy trì stack đơn điệu, ta đồng thời cập nhật cây đoạn.
 
-具体的维护方法见代码．
+Việc duy trì cụ thể xem trong mã nguồn.
 
-讲这么多干巴巴的想必小伙伴也听得云里雾里的，那么我们就先上图吧．长图警告！
+Nói nhiều như vậy có vẻ các bạn cũng thấy rối, vậy ta xem hình trước đã. Cảnh báo hình lớn!
 
 ![p2](./images/div-com2.jpg)
 
-### 实现
+### Triển khai
 
-最后放一个实现的代码供参考．代码转自 [大米饼的博客](https://www.cnblogs.com/Paul-Guderian/p/11020708.html)，添加了一些注释．
+Cuối cùng đưa ra một mã nguồn tham khảo. Mã nguồn chuyển từ [Blog của Đại Mễ Bính](https://www.cnblogs.com/Paul-Guderian/p/11020708.html), có thêm một số chú thích.
 
 ```cpp
 #include <algorithm>
@@ -176,13 +176,13 @@ constexpr int N = 200010;
 int n, m, a[N], st1[N], st2[N], tp1, tp2, rt;
 int L[N], R[N], M[N], id[N], cnt, typ[N], bin[20], st[N], tp;
 
-// 本篇代码原题应为 CERC2017 Intrinsic Interval
-// a 数组即为原题中对应的排列
-// st1 和 st2 分别两个单调栈，tp1、tp2 为对应的栈顶，rt 为析合树的根
-// L、R 数组表示该析合树节点的左右端点，M 数组的作用在析合树构造时有提到
-// id 存储的是排列中某一位置对应的节点编号，typ 用于标记析点还是合点
-// st 为存储析合树节点编号的栈，tp为其栈顶
-struct RMQ {  // 预处理 RMQ（Max & Min）
+// Bài toán gốc của đoạn mã này có lẽ là CERC2017 Intrinsic Interval
+// Mảng a chính là hoán vị tương ứng trong bài toán gốc
+// st1 và st2 lần lượt là hai stack đơn điệu, tp1, tp2 là đỉnh stack tương ứng, rt là nút gốc của Cây Phân Tích Hợp
+// Mảng L, R biểu thị mút trái, phải của miền giá trị nút tương ứng, M có tác dụng được đề cập trong quá trình xây dựng Cây Phân Tích Hợp
+// id lưu trữ chỉ số nút tương ứng với vị trí trong hoán vị, typ dùng để đánh dấu nút phân tích hay nút hợp
+// st là stack lưu trữ chỉ số nút Cây Phân Tích Hợp, tp là đỉnh của nó
+struct RMQ {  // Tiền xử lý RMQ (Max & Min)
   int lg[N], mn[N][17], mx[N][17];
 
   void chkmn(int& x, int y) {
@@ -214,12 +214,12 @@ struct RMQ {  // 预处理 RMQ（Max & Min）
   }
 } D;
 
-// 维护 L_i
+// Duy trì L_i
 
-struct SEG {  // 线段树
+struct SEG {  // Cây đoạn
 #define ls (k << 1)
 #define rs (k << 1 | 1)
-  int mn[N << 1], ly[N << 1];  // 区间加；区间最小值
+  int mn[N << 1], ly[N << 1];  // Cộng trên đoạn; Giá trị nhỏ nhất trên đoạn
 
   void pushup(int k) { mn[k] = min(mn[ls], mn[rs]); }
 
@@ -245,7 +245,7 @@ struct SEG {  // 线段树
     pushup(k);
   }
 
-  int query(int k, int l, int r) {  // 询问 0 的位置
+  int query(int k, int l, int r) {  // Truy vấn vị trí bằng 0
     if (l == r) return l;
     pushdown(k);
     int mid = (l + r) >> 1;
@@ -253,7 +253,7 @@ struct SEG {  // 线段树
       return query(ls, l, mid);
     else
       return query(rs, mid + 1, r);
-    // 如果不存在 0 的位置就会自动返回当前你查询的位置
+    // Nếu không tồn tại vị trí bằng 0 sẽ tự động trả về vị trí bạn đang truy vấn
   }
 } T;
 
@@ -263,7 +263,7 @@ struct Edge {
   int v, nt;
 } E[N << 1];
 
-void add(int u, int v) {  // 树结构加边
+void add(int u, int v) {  // Thêm cạnh vào cấu trúc cây
   E[o] = Edge{v, hd[u]};
   hd[u] = o++;
 }
@@ -293,22 +293,21 @@ int lca(int u, int v) {
   return fa[u][0];
 }
 
-// 判断当前区间是否为连续段
+// Phán đoán đoạn có phải là đoạn liên tiếp hay không
 bool judge(int l, int r) { return D.ask_mx(l, r) - D.ask_mn(l, r) == r - l; }
 
-// 建树
+// Xây dựng cây
 void build() {
   for (int i = 1; i <= n; ++i) {
-    // 单调栈
-    // 在区间 [st1[tp1-1]+1,st1[tp1]] 的最小值就是 a[st1[tp1]]
-    // 现在把它出栈，意味着要把多减掉的 Min 加回来．
-    // 线段树的叶结点位置 j 维护的是从 j 到当前的 i 的
-    // Max{j,i}-Min{j,i}-(i-j)
-    // 区间加只是一个 Tag．
-    // 维护单调栈的目的是辅助线段树从 i-1 更新到 i．
-    // 更新到 i 后，只需要查询全局最小值即可知道是否有解
+    // Stack đơn điệu
+    // Trong đoạn [st1[tp1-1]+1,st1[tp1]] thì Min chính là a[st1[tp1]]
+    // Bây giờ đẩy nó ra, nghĩa là cần cộng lại Min đã trừ đi.
+    // Vị trí lá j của cây đoạn duy trì Max{j,i}-Min{j,i}-(i-j)
+    // Cộng trên đoạn chỉ là một Tag.
+    // Duy trì stack đơn điệu là để hỗ trợ cập nhật cây đoạn từ i-1 lên i.
+    // Sau khi cập nhật lên i, chỉ cần truy vấn giá trị nhỏ nhất toàn cục là biết có giải pháp hay không
 
-    while (tp1 && a[i] <= a[st1[tp1]])  // 单调递增的栈，维护 Min
+    while (tp1 && a[i] <= a[st1[tp1]])  // Stack đơn điệu tăng, duy trì Min
       T.update(1, 1, n, st1[tp1 - 1] + 1, st1[tp1], a[st1[tp1]]), tp1--;
     while (tp2 && a[i] >= a[st2[tp2]])
       T.update(1, 1, n, st2[tp2 - 1] + 1, st2[tp2], -a[st2[tp2]]), tp2--;
@@ -319,45 +318,44 @@ void build() {
     st2[++tp2] = i;
 
     id[i] = ++cnt;
-    L[cnt] = R[cnt] = i;  // 这里的 L,R 是指节点所对应区间的左右端点
+    L[cnt] = R[cnt] = i;  // L, R ở đây là mút trái, phải của đoạn chỉ số nút tương ứng
     int le = T.query(1, 1, n), now = cnt;
     while (tp && L[st[tp]] >= le) {
       if (typ[st[tp]] && judge(M[st[tp]], i)) {
-        // 判断是否能成为儿子，如果能就做
+        // Phán đoán có thể làm con hay không, nếu có thì làm
         R[st[tp]] = i, M[st[tp]] = L[now], add(st[tp], now), now = st[tp--];
       } else if (judge(L[st[tp]], i)) {
-        typ[++cnt] = 1;  // 合点一定是被这样建出来的
+        typ[++cnt] = 1;  // Nút hợp chắc chắn được xây dựng theo cách này
         L[cnt] = L[st[tp]], R[cnt] = i, M[cnt] = L[now];
-        // 这里M数组是记录节点最右面的儿子的左端点，用于上方能否成为儿子的判断
+        // Ở đây mảng M ghi lại mút trái của nút con ngoài cùng bên phải, dùng để phán đoán có thể làm con ở trên hay không
         add(cnt, st[tp--]), add(cnt, now);
         now = cnt;
       } else {
-        add(++cnt, now);  // 新建一个结点，把 now 添加为儿子
-        // 如果从当前结点开始不能构成连续段，就合并．
-        // 直到找到一个结点能构成连续段．而且我们一定能找到这样
-        // 一个结点．
+        add(++cnt, now);  // Tạo một nút mới, thêm now làm con
+        // Nếu không thể tạo thành đoạn liên tiếp bắt đầu từ nút hiện tại, thì hợp nhất.
+        // Cho đến khi tìm được một nút có thể tạo thành đoạn liên tiếp. Và ta chắc chắn tìm được một nút như vậy.
         do add(cnt, st[tp--]);
         while (tp && !judge(L[st[tp]], i));
         L[cnt] = L[st[tp]], R[cnt] = i, add(cnt, st[tp--]);
         now = cnt;
       }
     }
-    st[++tp] = now;  // 增量结束，把当前点压栈
+    st[++tp] = now;  // Kết thúc tăng dần, đẩy nút hiện tại vào stack
 
-    T.update(1, 1, n, 1, i, -1);  // 因为区间右端点向后移动一格，因此整体 -1
+    T.update(1, 1, n, 1, i, -1);  // Vì mút phải của đoạn dịch sang phải một ô, nên tổng thể -1
   }
 
-  rt = st[1];  // 栈中最后剩下的点是根结点
+  rt = st[1];  // Nút còn lại trong stack là nút gốc
 }
 
-// 分 lca 为析或和，这里把叶子看成析的
+// Phân biệt nút lca thành phân tích hay hợp, ở đây coi nút lá là nút phân tích (typ=0)
 void query(int l, int r) {
   int x = id[l], y = id[r];
   int z = lca(x, y);
   if (typ[z] & 1)
     l = L[go(x, dep[x] - dep[z] - 1)], r = R[go(y, dep[y] - dep[z] - 1)];
-  // 合点这里特判的原因是因为这个合点不一定是最小的包含l，r的连续段.
-  // 因为合点所代表的区间的子区间也都是连续段，而我们只需要其中的一段就够了．
+  // Nút hợp ở đây đặc biệt vì nút hợp này không nhất thiết là đoạn liên tiếp nhỏ nhất chứa l, r.
+  // Vì đoạn con của nút hợp cũng là đoạn liên tiếp, và ta chỉ cần một trong số chúng là đủ.
   else
     l = L[z], r = R[z];
   printf("%d %d\n", l, r);
@@ -379,11 +377,11 @@ int main() {
 }
 
 // 20190612
-// 析合树
+// Cây Phân Tích Hợp
 ```
 
-## 参考文献与链接
+## Tài liệu tham khảo và Liên kết
 
-[大米饼的博客 -【学习笔记】析合树](https://www.cnblogs.com/Paul-Guderian/p/11020708.html)
+[Blog của Đại Mễ Bính -【Ghi chép học tập】Cây Phân Tích Hợp](https://www.cnblogs.com/Paul-Guderian/p/11020708.html)
 
-[^ref1]: 刘承奥．简单的连续段数据结构．WC2019 营员交流．
+[^ref1]: Lưu Thừa Áo. Cấu trúc dữ liệu đoạn liên tiếp đơn giản. Giao lưu trại viên WC2019.

@@ -1,27 +1,27 @@
 ???+ note "Note"
-    本文翻译自 [e-maxx Prüfer Code](https://github.com/e-maxx-eng/e-maxx-eng/blob/master/src/graph/pruefer_code.md)．另外解释一下，原文的结点是从 $0$ 开始标号的，本文按照大多数人的习惯改成了从 $1$ 标号．
+    Bài viết này dịch từ [e-maxx Prüfer Code](https://github.com/e-maxx-eng/e-maxx-eng/blob/master/src/graph/pruefer_code.md). Ngoài ra, cần lưu ý: trong bản gốc các đỉnh đánh số từ $0$, còn trong bài này sẽ chuyển sang đánh số từ $1$ cho phù hợp với thói quen số đông.
 
-这篇文章介绍 Prüfer 序列 (Prüfer code)，这是一种将带标号的树用一个唯一的整数序列表示的方法．
+Bài viết này giới thiệu về dãy Prüfer (Prüfer code), một phương pháp biểu diễn duy nhất một cây có gán nhãn bằng một dãy số nguyên.
 
-使用 Prüfer 序列可以证明 [凯莱公式](#cayley-公式-cayleys-formula)(Cayley's formula)．并且我们也会讲解如何计算在一个图中加边使图连通的方案数．
+Dãy Prüfer có thể dùng để chứng minh [Công thức Cayley](#cayley-公式-cayleys-formula) (Cayley's formula). Ngoài ra, bài viết cũng trình bày cách tính số phương án thêm cạnh để liên thông đồ thị.
 
-**注意**：我们不考虑含有 $1$ 个结点的树．
+**Lưu ý**: Không xét trường hợp cây chỉ có $1$ đỉnh.
 
-## Prüfer 序列
+## Dãy Prüfer
 
-### 引入
+### Giới thiệu
 
-Prüfer 序列可以将一个带标号 $n$ 个结点的树用 $[1,n]$ 中的 $n-2$ 个整数表示．你也可以把它理解为完全图的生成树与数列之间的双射．常用组合计数问题中．
+Dãy Prüfer cho phép biểu diễn một cây có $n$ đỉnh gán nhãn bằng một dãy gồm $n-2$ số nguyên trong $[1,n]$. Có thể hiểu đây là một song ánh giữa tập các cây khung của đồ thị đầy đủ và các dãy số. Thường gặp trong các bài toán đếm tổ hợp.
 
-Heinz Prüfer 于 1918 年发明这个序列来证明 [凯莱公式](#cayley-公式-cayleys-formula)．
+Heinz Prüfer phát minh ra dãy này năm 1918 để chứng minh [Công thức Cayley](#cayley-公式-cayleys-formula).
 
-### 对树建立 Prüfer 序列
+### Cách xây dựng dãy Prüfer từ cây
 
-Prüfer 是这样建立的：每次选择一个编号最小的叶结点并删掉它，然后在序列中记录下它连接到的那个结点．重复 $n-2$ 次后就只剩下两个结点，算法结束．
+Cách xây dựng dãy Prüfer như sau: mỗi lần chọn lá có số nhỏ nhất, xóa nó khỏi cây và ghi lại đỉnh kề với nó vào dãy. Lặp lại $n-2$ lần, cuối cùng còn lại hai đỉnh, thuật toán kết thúc.
 
-显然使用堆可以做到 $O(n\log n)$ 的复杂度
+Rõ ràng, nếu dùng heap thì độ phức tạp là $O(n\log n)$.
 
-???+ note "实现"
+???+ note "Cài đặt"
     === "C++"
         ```cpp
         // 代码摘自原文，结点是从 0 标号的
@@ -82,36 +82,36 @@ Prüfer 是这样建立的：每次选择一个编号最小的叶结点并删掉
             return code
         ```
 
-例如，这是一棵 7 个结点的树的 Prüfer 序列构建过程：
+Ví dụ, dưới đây là quá trình xây dựng dãy Prüfer cho một cây $7$ đỉnh:
 
 ![Prüfer](./images/prufer1.png)
 
-最终的序列就是 $2,2,3,3,2$．
+Dãy cuối cùng là $2,2,3,3,2$.
 
-当然，也有一个线性的构造算法．
+Ngoài ra còn có một thuật toán xây dựng tuyến tính.
 
-### Prüfer 序列的线性构造算法
+### Thuật toán xây dựng dãy Prüfer tuyến tính
 
-线性构造的本质就是维护一个指针指向我们将要删除的结点．首先发现，叶结点数是非严格单调递减的，删去一个叶结点，叶结点总数要么不变要么减 1．
+Bản chất của thuật toán tuyến tính là duy trì một con trỏ chỉ tới đỉnh sẽ bị xóa tiếp theo. Nhận thấy số lá giảm đơn điệu, mỗi lần xóa một lá thì tổng số lá hoặc giữ nguyên hoặc giảm $1$.
 
-于是我们考虑这样一个过程：维护一个指针 $p$．初始时 $p$ 指向编号最小的叶结点．同时我们维护每个结点的度数，方便我们知道在删除结点的时侯是否产生新的叶结点．操作如下：
+Ta thực hiện như sau: duy trì một con trỏ $p$, ban đầu trỏ tới lá nhỏ nhất. Đồng thời duy trì mảng bậc của các đỉnh để biết khi xóa một đỉnh có sinh ra lá mới không. Các bước:
 
-1.  删除 $p$ 指向的结点，并检查是否产生新的叶结点．
-2.  如果产生新的叶结点，假设编号为 $x$，我们比较 $p,x$ 的大小关系．如果 $x>p$，那么不做其他操作；否则就立刻删除 $x$，然后检查删除 $x$ 后是否产生新的叶结点，重复 $2$ 步骤，直到未产生新节点或者新节点的编号 $>p$．
-3.  让指针 $p$ 自增直到遇到一个未被删除叶结点为止；
+1.  Xóa đỉnh mà $p$ trỏ tới, kiểm tra có sinh ra lá mới không.
+2.  Nếu có lá mới, giả sử là $x$, so sánh $x$ với $p$. Nếu $x>p$ thì không làm gì; nếu $x<p$ thì xóa luôn $x$, kiểm tra tiếp, lặp lại bước $2$ cho đến khi không còn lá mới hoặc lá mới có số lớn hơn $p$.
+3.  Tăng $p$ đến khi gặp lá chưa bị xóa.
 
-#### 正确性
+#### Đúng đắn
 
-循环上述操作 $n-2$ 次，就完成了序列的构造．接下来考虑算法的正确性．
+Lặp lại $n-2$ lần là xong. Đúng đắn vì:
 
-$p$ 是当前编号最小的叶结点，若删除 $p$ 后未产生叶结点，我们就只能去寻找下一个叶结点；若产生了叶结点 $x$：
+-   Nếu xóa $p$ không sinh lá mới, chỉ tìm lá tiếp theo.
+-   Nếu sinh lá mới $x$:
+    - Nếu $x>p$, sau này $p$ sẽ quét tới $x$.
+    - Nếu $x<p$, vì $p$ là nhỏ nhất, $x$ còn nhỏ hơn nên phải xóa $x$ trước.
 
--   如果 $x>p$，则反正 $p$ 往后扫描都会扫到它，于是不做操作；
--   如果 $x<p$，因为 $p$ 原本就是编号最小的，而 $x$ 比 $p$ 还小，所以 $x$ 就是当前编号最小的叶结点，优先删除．删除 $x$ 继续这样的考虑直到没有更小的叶结点．
+Mỗi cạnh chỉ bị truy cập tối đa một lần (khi giảm bậc), con trỏ cũng chỉ duyệt mỗi đỉnh một lần, nên độ phức tạp $O(n)$.
 
-算法复杂度分析，发现每条边最多被访问一次（在删度数的时侯），而指针最多遍历每个结点一次，因此复杂度是 $O(n)$ 的．
-
-#### 实现
+#### Cài đặt
 
 === "C++"
     ```cpp
@@ -196,18 +196,18 @@ $p$ 是当前编号最小的叶结点，若删除 $p$ 后未产生叶结点，�
         return code
     ```
 
-### Prüfer 序列的性质
+### Tính chất của dãy Prüfer
 
-1.  在构造完 Prüfer 序列后原树中会剩下两个结点，其中一个一定是编号最大的点 $n$．
-2.  每个结点在序列中出现的次数是其度数减 $1$．（没有出现的就是叶结点）
+1.  Sau khi xây dựng dãy Prüfer, cây gốc còn lại hai đỉnh, một trong số đó chắc chắn là đỉnh lớn nhất $n$.
+2.  Số lần xuất hiện của mỗi đỉnh trong dãy bằng bậc của nó trừ $1$ (đỉnh không xuất hiện là lá).
 
-### 用 Prüfer 序列重建树
+### Dựng lại cây từ dãy Prüfer
 
-重建树的方法是类似的．根据 Prüfer 序列的性质，我们可以得到原树上每个点的度数．然后也可以得到编号最小的叶结点，而这个结点一定与 Prüfer 序列的第一个数所对应的点连接．然后我们同时将这两个结点的度数减一．
+Cách dựng lại cây cũng tương tự. Dựa vào tính chất của dãy Prüfer, ta biết được bậc của mỗi đỉnh. Từ đó, luôn tìm được lá nhỏ nhất, và lá này sẽ nối với phần tử đầu tiên của dãy. Sau đó giảm bậc hai đỉnh đó đi $1$.
 
-讲到这里也许你已经知道该怎么做了．每次我们选择一个度数为 $1$ 的编号最小的结点，与当前枚举到的 Prüfer 序列的点连接，然后同时减掉两个点的度．到最后我们剩下两个度数为 $1$ 的点，其中一个是结点 $n$．把它们连上．使用堆维护这个过程，在节点度数下降的过程中如果发现度数减到 $1$ 就把这个结点添加到堆中，这样做的复杂度是 $O(n\log n)$ 的．
+Cứ lặp lại: mỗi lần chọn đỉnh bậc $1$ nhỏ nhất, nối với phần tử tiếp theo của dãy, giảm bậc hai đỉnh. Cuối cùng còn lại hai đỉnh bậc $1$, một trong số đó là $n$, nối chúng lại. Dùng heap để duy trì các lá, mỗi khi bậc giảm về $1$ thì thêm vào heap, độ phức tạp $O(n\log n)$.
 
-???+ note "实现"
+???+ note "Cài đặt"
     ```cpp
     // 原文摘代码
     vector<pair<int, int>> pruefer_decode(vector<int> const& code) {
@@ -232,11 +232,11 @@ $p$ 是当前编号最小的叶结点，若删除 $p$ 后未产生叶结点，�
     }
     ```
 
-### 线性时间重建树
+### Dựng lại cây tuyến tính
 
-同线性构造 Prüfer 序列的方法．在删度数的时侯会产生新的叶结点，于是判断这个叶结点与指针 $p$ 的大小关系，如果更小就优先考虑它．
+Tương tự như xây dựng dãy Prüfer tuyến tính. Khi giảm bậc sinh ra lá mới, nếu nhỏ hơn con trỏ thì ưu tiên xử lý.
 
-#### 实现
+#### Cài đặt
 
 ```cpp
 // 原文摘代码
@@ -265,69 +265,69 @@ vector<pair<int, int>> pruefer_decode(vector<int> const& code) {
 }
 ```
 
-通过这些过程其实可以理解，Prüfer 序列与带标号无根树建立了双射关系．
+Qua các bước trên, có thể thấy dãy Prüfer và cây vô hướng có gán nhãn là song ánh.
 
-## Cayley 公式 (Cayley's formula)
+## Công thức Cayley (Cayley's formula)
 
-完全图 $K_n$ 有 $n^{n-2}$ 棵生成树．
+Đồ thị đầy đủ $K_n$ có $n^{n-2}$ cây khung.
 
-怎么证明？方法很多，但是用 Prüfer 序列证是很简单的．任意一个长度为 $n-2$ 的值域 $[1,n]$ 的整数序列都可以通过 Prüfer 序列双射对应一个生成树，于是方案数就是 $n^{n-2}$．
+Chứng minh? Có nhiều cách, nhưng dùng dãy Prüfer là đơn giản nhất. Mỗi dãy số độ dài $n-2$ với giá trị trong $[1,n]$ ứng với đúng một cây, nên số cây là $n^{n-2}$.
 
-## 图连通方案数
+## Số phương án liên thông đồ thị
 
-Prüfer 序列可能比你想得还强大．它能创造比 [凯莱公式](#cayley-公式-cayleys-formula) 更通用的公式．比如以下问题：
+Dãy Prüfer còn mạnh hơn bạn nghĩ, nó cho phép xây dựng công thức tổng quát hơn cả [Công thức Cayley](#cayley-公式-cayleys-formula). Ví dụ:
 
-> 一个 $n$ 个点 $m$ 条边的带标号无向图有 $k$ 个连通块．我们希望添加 $k-1$ 条边使得整个图连通．求方案数．
+> Cho đồ thị vô hướng có gán nhãn $n$ đỉnh $m$ cạnh, có $k$ thành phần liên thông. Hỏi có bao nhiêu cách thêm $k-1$ cạnh để làm cho đồ thị liên thông?
 
-### 证明
+### Chứng minh
 
-设 $s_i$ 表示第 $i$ 个连通块内点的数量．我们考虑对 $k$ 个连通块构造 Prüfer 序列．由于两个连通块之间的连接方法很多，这并不是普通的 Prüfer 序列．于是不妨假设 $d_i$ 为第 $i$ 个连通块的度数．由于度数之和是边数的两倍，于是 $\sum_{i=1}^kd_i=2k-2$．则对于给定的 $d$ 序列构造 Prüfer 序列的方案数是
+Gọi $s_i$ là số đỉnh của thành phần liên thông thứ $i$. Xét xây dựng dãy Prüfer cho $k$ thành phần liên thông. Vì có nhiều cách nối giữa các thành phần, đây không phải dãy Prüfer thông thường. Gọi $d_i$ là bậc của thành phần $i$. Tổng bậc là $2k-2$, nên $\sum_{i=1}^k d_i=2k-2$. Với dãy $d$ cho trước, số cách xây dựng dãy Prüfer là
 
 $$
 \binom{k-2}{d_1-1,d_2-1,\cdots,d_k-1}=\frac{(k-2)!}{(d_1-1)!(d_2-1)!\cdots(d_k-1)!}
 $$
 
-对于第 $i$ 个连通块，它的连接方式有 ${s_i}^{d_i}$ 种，因此对于给定 $d$ 序列使图连通的方案数是
+Với thành phần $i$, có ${s_i}^{d_i}$ cách nối. Vậy với dãy $d$ cho trước, số phương án là
 
 $$
 \binom{k-2}{d_1-1,d_2-1,\cdots,d_k-1}\cdot \prod_{i=1}^k{s_i}^{d_i}
 $$
 
-现在我们要枚举 $d$ 序列，式子变成
+Tổng trên mọi dãy $d$:
 
 $$
 \sum_{d_i\ge 1，\sum_{i=1}^kd_i=2k-2}\binom{k-2}{d_1-1,d_2-1,\cdots,d_k-1}\cdot \prod_{i=1}^k{s_i}^{d_i}
 $$
 
-好的这是一个非常不喜闻乐见的式子．但是别慌！我们有多元二项式定理：
+Nhìn phức tạp, nhưng dùng đa thức Newton:
 
 $$
 (x_1 + \dots + x_m)^p = \sum_{\substack{c_i \ge 0 ,\  \sum_{i=1}^m c_i = p}} \binom{p}{c_1, c_2, \cdots ,c_m}\cdot \prod_{i=1}^m{x_i}^{c_i}
 $$
 
-那么我们对原式做一下换元，设 $e_i=d_i-1$，显然 $\sum_{i=1}^ke_i=k-2$，于是原式变成
+Đổi biến $e_i=d_i-1$, $\sum_{i=1}^k e_i=k-2$, công thức thành
 
 $$
 \sum_{e_i\ge 0，\sum_{i=1}^ke_i=k-2}\binom{k-2}{e_1,e_2,\cdots,e_k}\cdot \prod_{i=1}^k{s_i}^{e_i+1}
 $$
 
-化简得到
+Rút gọn:
 
 $$
 (s_1+s_2+\cdots+s_k)^{k-2}\cdot \prod_{i=1}^ks_i
 $$
 
-即
+Tức là
 
 $$
 n^{k-2}\cdot\prod_{i=1}^ks_i
 $$
 
-为答案．
+là đáp số.
 
-## 习题
+## Bài tập
 
--   [Luogu P6086【模板】Prüfer 序列](https://www.luogu.com.cn/problem/P6086)（模板题）
+-   [Luogu P6086【Mẫu】Dãy Prüfer](https://www.luogu.com.cn/problem/P6086) (bài mẫu)
 -   [Luogu P11039【MX-X3-T6】「RiOI-4」TECHNOPOLIS 2085](https://www.luogu.com.cn/problem/P11039)
 -   [UVa #10843 - Anne's game](https://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=20&page=show_problem&problem=1784)
 -   [Timus #1069 - Prufer Code](http://acm.timus.ru/problem.aspx?space=1&num=1069)

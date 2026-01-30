@@ -1,49 +1,49 @@
 author: JiZiQian, llleixx, firefly-zjyjoe
 
-## 什么是左偏树？
+## Cây lệch trái là gì?
 
-**左偏树** 与 [**配对堆**](./pairing-heap.md) 一样，是一种 **可并堆**，具有堆的性质，并且可以快速合并．
+**Cây lệch trái** (Leftist Tree), giống như [**Pairing Heap**](./pairing-heap.md), là một loại **Heap hợp nhất được** (Mergeable Heap), có các tính chất của heap và hỗ trợ thao tác hợp nhất nhanh chóng.
 
-## 左偏树的定义和性质
+## Định nghĩa và tính chất của Cây lệch trái
 
-对于一棵二叉树，我们定义 **外节点** 为子节点数小于两个的节点，定义一个节点的 $\mathrm{dist}$ 为其到子树中最近的外节点所经过的边的数量．空节点的 $\mathrm{dist}$ 为 $0$．
+Đối với một cây nhị phân, ta định nghĩa **nút ngoài** (external node) là nút có ít hơn hai con. Định nghĩa $\mathrm{dist}$ của một nút là số lượng cạnh đi qua trên đường đi ngắn nhất từ nút đó đến một nút ngoài trong cây con của nó. $\mathrm{dist}$ của nút rỗng (null node) là $0$.
 
-???+ note "注意"
-    有些资料中对 $\mathrm{dist}$ 的定义是本文中的 $\mathrm{dist}$ 减 $1$，这样定义是因为代码编写时可以省略一些判空流程，但需要注意应预先置空节点的 $\mathrm{dist}$ 为 $-1$．本文中所有代码对 $\mathrm{dist}$ 的定义 **均为空节点 $\mathrm{dist}$ 为 $-1$ 的定义**，请注意与行文间 $\mathrm{dist}$ 定义的差别．
+???+ note "Lưu ý"
+    Một số tài liệu định nghĩa $\mathrm{dist}$ nhỏ hơn định nghĩa trong bài viết này $1$ đơn vị. Định nghĩa như vậy giúp việc viết code bỏ qua được một số bước kiểm tra rỗng, nhưng cần lưu ý phải khởi tạo $\mathrm{dist}$ của nút rỗng là $-1$. Tất cả code trong bài viết này đều **sử dụng định nghĩa $\mathrm{dist}$ của nút rỗng là $-1$**, hãy chú ý sự khác biệt này so với định nghĩa trong văn bản.
 
-左偏树是一棵二叉树，它不仅具有堆的性质，并且是「左偏」的：每个节点左儿子的 $\mathrm{dist}$ 都大于等于右儿子的 $\mathrm{dist}$．
+Cây lệch trái là một cây nhị phân, không chỉ có tính chất của heap mà còn có tính chất "lệch trái": với mọi nút, $\mathrm{dist}$ của con trái luôn lớn hơn hoặc bằng $\mathrm{dist}$ của con phải.
 
-因此，左偏树每个节点的 $\mathrm{dist}$ 都等于其右儿子的 $\mathrm{dist}$ 加一．
+Do đó, $\mathrm{dist}$ của mỗi nút trong Cây lệch trái luôn bằng $\mathrm{dist}$ của con phải cộng thêm $1$.
 
-需要注意的是，$\mathrm{dist}$ 不是深度，**左偏树的深度没有保证**，一条向左的链也符合左偏树的定义．
+Cần lưu ý rằng, $\mathrm{dist}$ không phải là độ sâu, **độ sâu của Cây lệch trái không được đảm bảo**, một chuỗi các nút chỉ có con trái (dạng đường thẳng) cũng thỏa mãn định nghĩa của Cây lệch trái.
 
-## 核心操作：合并（merge）
+## Thao tác cốt lõi: Hợp nhất (merge)
 
-合并两个堆时，由于要满足堆性质，先取值较小（为了方便，本文讨论小根堆）的那个根作为合并后堆的根节点，然后将这个根的左儿子作为合并后堆的左儿子，递归地合并其右儿子与另一个堆，作为合并后的堆的右儿子．为了满足左偏性质，合并后若左儿子的 $\mathrm{dist}$ 小于右儿子的 $\mathrm{dist}$，就交换两个儿子．
+Khi hợp nhất hai heap, để thỏa mãn tính chất heap, trước tiên ta chọn gốc có giá trị nhỏ hơn (để thuận tiện, bài viết này xét min-heap) làm gốc của heap sau khi hợp nhất. Sau đó, giữ nguyên con trái của gốc này, và đệ quy hợp nhất con phải của nó với heap còn lại để làm con phải mới. Để thỏa mãn tính chất lệch trái, sau khi hợp nhất, nếu $\mathrm{dist}$ của con trái nhỏ hơn $\mathrm{dist}$ của con phải, ta đổi chỗ hai con này.
 
-参考代码：
+Code tham khảo:
 
-???+ note "实现"
+???+ note "Hiện thực"
     ```cpp
     int merge(int x, int y) {
-      if (!x || !y) return x | y;  // 若一个堆为空则返回另一个堆
-      if (t[x].val > t[y].val) swap(x, y);  // 取值较小的作为根
-      t[x].rs = merge(t[x].rs, y);          // 递归合并右儿子与另一个堆
+      if (!x || !y) return x | y;  // Nếu một heap rỗng thì trả về heap kia
+      if (t[x].val > t[y].val) swap(x, y);  // Lấy nút có giá trị nhỏ hơn làm gốc
+      t[x].rs = merge(t[x].rs, y);          // Đệ quy hợp nhất con phải với heap kia
       if (t[t[x].rs].d > t[t[x].ls].d)
-        swap(t[x].ls, t[x].rs);   // 若不满足左偏性质则交换左右儿子
-      t[x].d = t[t[x].rs].d + 1;  // 更新dist
+        swap(t[x].ls, t[x].rs);   // Nếu không thỏa mãn tính chất lệch trái thì đổi chỗ hai con
+      t[x].d = t[t[x].rs].d + 1;  // Cập nhật dist
       return x;
     }
     ```
 
-由于左偏性质，每递归一层，其中一个堆根节点的 $\mathrm{dist}$ 就会减小 $1$，而一棵有 $n$ 个节点的二叉树，根的 $\mathrm{dist}$ 不超过 $\left\lceil\log (n+1)\right\rceil$，所以合并两个大小分别为 $n$ 和 $m$ 的堆复杂度是 $O(\log n+\log m)$．
+Do tính chất lệch trái, mỗi khi đệ quy xuống một tầng, $\mathrm{dist}$ của gốc một trong hai heap sẽ giảm đi $1$. Mà một cây nhị phân có $n$ nút thì $\mathrm{dist}$ của gốc không vượt quá $\left\lceil\log (n+1)\right\rceil$, nên độ phức tạp để hợp nhất hai heap có kích thước lần lượt là $n$ và $m$ là $O(\log n+\log m)$.
 
-???+ note "关于 $\mathrm{dist}$ 性质的证明"
-    一棵根的 $\mathrm{dist}$ 为 $x$ 的二叉树至少有 $x-1$ 层是满二叉树，那么就至少有 $2^x-1$ 个节点．注意这个性质是所有二叉树都具有的，并不是左偏树所特有的．
+???+ note "Chứng minh về tính chất của $\mathrm{dist}$"
+    Một cây nhị phân có gốc với $\mathrm{dist}$ bằng $x$ sẽ có ít nhất $x-1$ tầng là cây nhị phân đầy đủ (full binary tree), do đó nó có ít nhất $2^x-1$ nút. Lưu ý rằng tính chất này đúng với mọi cây nhị phân, không chỉ riêng Cây lệch trái.
 
-左偏树还有一种无需交换左右儿子的写法：将 $\mathrm{dist}$ 较大的儿子视作左儿子，$\mathrm{dist}$ 较小的儿子视作右儿子：
+Cây lệch trái còn có một cách cài đặt không cần đổi chỗ hai con: coi con có $\mathrm{dist}$ lớn hơn là con trái, con có $\mathrm{dist}$ nhỏ hơn là con phải:
 
-???+ note "实现"
+???+ note "Hiện thực"
     ```cpp
     int& rs(int x) { return t[x].ch[t[t[x].ch[1]].d < t[t[x].ch[0]].d]; }
     
@@ -57,27 +57,27 @@ author: JiZiQian, llleixx, firefly-zjyjoe
     }
     ```
 
-## 左偏树的其它操作
+## Các thao tác khác trên Cây lệch trái
 
-### 插入节点
+### Chèn nút
 
-单个节点也可以视为一个堆，合并即可．
+Một nút đơn lẻ cũng có thể được xem là một heap, ta chỉ cần hợp nhất nó vào heap chính.
 
-### 删除根
+### Xóa gốc
 
-合并根的左右儿子即可．
+Hợp nhất con trái và con phải của gốc.
 
-### 删除任意节点
+### Xóa một nút bất kỳ
 
-#### 做法
+#### Cách làm
 
-先将左右儿子合并，然后自底向上更新 $\mathrm{dist}$、不满足左偏性质时交换左右儿子，当 $\mathrm{dist}$ 无需更新时结束递归：
+Đầu tiên hợp nhất con trái và con phải của nút cần xóa, sau đó cập nhật $\mathrm{dist}$ từ dưới lên trên (`pushup`). Nếu không thỏa mãn tính chất lệch trái thì đổi chỗ hai con. Khi $\mathrm{dist}$ không thay đổi nữa thì dừng đệ quy:
 
-???+ note "实现"
+???+ note "Hiện thực"
     ```cpp
     int& rs(int x) { return t[x].ch[t[t[x].ch[1]].d < t[t[x].ch[0]].d]; }
     
-    // 有了 pushup，直接 merge 左右儿子就实现了删除节点并保持左偏性质
+    // Với hàm pushup, ta có thể xóa nút và duy trì tính chất lệch trái bằng cách merge hai con
     int merge(int x, int y) {
       if (!x || !y) return x | y;
       if (t[x].val < t[y].val) swap(x, y);
@@ -107,24 +107,24 @@ author: JiZiQian, llleixx, firefly-zjyjoe
     }
     ```
 
-#### 复杂度证明
+#### Chứng minh độ phức tạp
 
-先考虑 `merge` 的过程，每次都会使 $x$ 或 $y$ 向下一层，也就是说最极端的情况，就是一直选择左偏树的右节点（$\mathrm{dist}$ 最小的节点）向下一层，此时 $\mathrm{dist}$ 减少了 $1$．
+Đầu tiên xét quá trình `merge`, mỗi bước đều đi xuống một tầng của $x$ hoặc $y$. Trường hợp tệ nhất là luôn chọn đi về phía con phải của Cây lệch trái (nút có $\mathrm{dist}$ nhỏ nhất), khi đó $\mathrm{dist}$ giảm đi $1$.
 
-再考虑 `pushup` 的过程，我们令当前 `pushup` 的这个节点为 $x$，其父亲为 $y$，一个节点的「初始 $\mathrm{dist}$」为它在 `pushup` 前的 $\mathrm{dist}$．从被删除节点的父亲开始递归，有两种情况：
+Tiếp theo xét quá trình `pushup`. Gọi nút hiện tại đang `pushup` là $x$, cha của nó là $y$. "$\mathrm{dist}$ ban đầu" của một nút là $\mathrm{dist}$ của nó trước khi thực hiện `pushup`. Bắt đầu đệ quy từ cha của nút bị xóa, có hai trường hợp:
 
-1.  $x$ 是 $y$ 的右儿子，此时 $y$ 的初始 $\mathrm{dist}$ 为 $x$ 的初始 $\mathrm{dist}$ 加一．
-2.  $x$ 是 $y$ 的左儿子，由于节点的 $\mathrm{dist}$ 最多减一，因此只有 $y$ 的左右儿子初始 $\mathrm{dist}$ 相等时（此时左儿子 $\mathrm{dist}$ 减一会导致左右儿子互换）才会继续递归下去，因此 $y$ 的初始 $\mathrm{dist}$ 仍然是 $x$ 的初始 $\mathrm{dist}$ 加一．
+1.  $x$ là con phải của $y$. Khi đó $\mathrm{dist}$ ban đầu của $y$ bằng $\mathrm{dist}$ ban đầu của $x$ cộng $1$.
+2.  $x$ là con trái của $y$. Do $\mathrm{dist}$ của một nút chỉ giảm tối đa $1$, nên đệ quy chỉ tiếp tục khi $\mathrm{dist}$ ban đầu của con trái và con phải của $y$ bằng nhau (khi đó việc con trái giảm $\mathrm{dist}$ sẽ dẫn đến hoán đổi hai con hoặc cập nhật lại $\mathrm{dist}$ của $y$). Do đó, $\mathrm{dist}$ ban đầu của $y$ vẫn bằng $\mathrm{dist}$ ban đầu của $x$ cộng $1$.
 
-所以，我们得到，每递归一层 $x$ 的初始 $\mathrm{dist}$ 就会加一，因此最多递归 $O(\log n)$ 层．
+Như vậy, mỗi khi đệ quy lên một tầng, $\mathrm{dist}$ ban đầu của $x$ sẽ tăng thêm $1$. Do đó số tầng đệ quy tối đa là $O(\log n)$.
 
-### 整个堆加上/减去一个值、乘上一个正数
+### Cộng/Trừ một giá trị, Nhân một số dương cho cả heap
 
-其实可以打标记且不改变相对大小的操作都可以．
+Thực tế, mọi thao tác có thể dùng lazy tag (đánh dấu) và không làm thay đổi thứ tự tương đối giữa các phần tử đều có thể thực hiện được.
 
-在根打上标记，删除根/合并堆（访问儿子）时下传标记即可：
+Ta đánh dấu (tag) tại gốc, và đẩy nhãn (pushdown) khi xóa gốc hoặc hợp nhất (truy cập vào con):
 
-???+ note "实现"
+???+ note "Hiện thực"
     ```cpp
     int merge(int x, int y) {
       if (!x || !y) return x | y;
@@ -142,93 +142,93 @@ author: JiZiQian, llleixx, firefly-zjyjoe
     }
     ```
 
-## 其他可并堆
+## Các loại Heap hợp nhất được khác
 
-### 随机堆
+### Heap ngẫu nhiên (Randomized Heap)
 
-???+ note "实现"
+???+ note "Hiện thực"
     ```cpp
     int merge(int x, int y) {
       if (!x || !y) return x | y;
       if (t[y].val < t[x].val) swap(x, y);
-      if (rand() & 1)  // 随机选择是否交换左右子节点
+      if (rand() & 1)  // Ngẫu nhiên chọn có đổi chỗ hai con hay không
         swap(t[x].ls, t[x].rs);
       t[x].ls = merge(t[x].ls, y);
       return x;
     }
     ```
 
-可以看到该实现方法唯一不同之处便是采用了随机数来实现合并，这样一来便可以省去 $\mathrm{dist}$ 的相关计算．且平均时间复杂度亦为 $O(\log n)$，详细证明可参考 [Randomized Heap](https://cp-algorithms.com/data_structures/randomized_heap.html)．
+Có thể thấy điểm khác biệt duy nhất của phương pháp này là sử dụng số ngẫu nhiên để quyết định việc hợp nhất, nhờ đó có thể bỏ qua việc tính toán $\mathrm{dist}$. Độ phức tạp thời gian trung bình vẫn là $O(\log n)$. Chứng minh chi tiết có thể tham khảo [Randomized Heap](https://cp-algorithms.com/data_structures/randomized_heap.html).
 
-### 斜堆
+### Heap nghiêng (Skew Heap)
 
-斜堆是左偏树的自适应形式．当合并两个堆时，它无条件交换合并路径上的所有节点，以此试图维护平衡．根据均摊分析，自顶向下斜堆（top-down skew heap）插入，合并，删除最小值的复杂度为 $O(\log n)$[^ref1]．
+Skew Heap là dạng tự điều chỉnh của Cây lệch trái. Khi hợp nhất hai heap, nó vô điều kiện đổi chỗ tất cả các nút trên đường đi hợp nhất, nhằm mục đích duy trì sự cân bằng. Theo phân tích khấu hao (amortized analysis), độ phức tạp của các thao tác chèn, hợp nhất, xóa giá trị nhỏ nhất trên Skew Heap (top-down) là $O(\log n)$[^ref1].
 
-## 例题
+## Bài tập ví dụ
 
-### 模板题
+### Bài tập mẫu
 
-[luogu P3377【模板】左偏树（可并堆）](https://www.luogu.com.cn/problem/P3377)
+[luogu P3377【Template】Leftist Tree (Mergeable Heap)](https://www.luogu.com.cn/problem/P3377)
 
 [Monkey King](https://www.luogu.com.cn/problem/P1456)
 
-[罗马游戏](https://www.luogu.com.cn/problem/P2713)
+[Roman Game](https://www.luogu.com.cn/problem/P2713)
 
-需要注意的是：
+Cần lưu ý:
 
-1.  合并前要检查是否已经在同一堆中．
+1.  Trước khi hợp nhất phải kiểm tra xem hai nút đã nằm trong cùng một heap chưa.
 
-2.  左偏树的深度可能达到 $O(n)$，因此找一个点所在的堆顶要用并查集维护，不能直接暴力跳父亲．（虽然很多题数据水，暴力跳父亲可以过……）（用并查集维护根时要保证原根指向新根，新根指向自己．）
+2.  Độ sâu của Cây lệch trái có thể lên tới $O(n)$, do đó để tìm gốc của heap chứa một nút, ta cần dùng DSU (Cấu trúc dữ liệu các tập hợp không giao nhau), không thể nhảy cha (brute force) trực tiếp. (Mặc dù nhiều bài có dữ liệu yếu nên nhảy cha vẫn qua được...) (Khi dùng DSU để bảo trì gốc, cần đảm bảo gốc cũ trỏ vào gốc mới, và gốc mới trỏ vào chính nó.)
 
-??? note "罗马游戏参考代码"
+??? note "Code tham khảo bài Roman Game"
     ```cpp
     --8<-- "docs/ds/code/leftist-tree/leftist-tree_1.cpp"
     ```
 
-### 树上问题
+### Bài toán trên cây
 
-[「APIO2012」派遣](https://www.luogu.com.cn/problem/P1552)
+[「APIO2012」Dispatching](https://www.luogu.com.cn/problem/P1552)
 
-[「JLOI2015」城池攻占](https://loj.ac/problem/2107)
+[「JLOI2015」City Capture](https://loj.ac/problem/2107)
 
-这类题目往往是每个节点维护一个堆，与儿子合并，依题意弹出、修改、计算答案，有点像线段树合并的类似题目．
+Loại bài này thường yêu cầu mỗi nút bảo trì một heap, hợp nhất với heap của các con, sau đó thực hiện pop, sửa đổi, tính toán đáp án theo đề bài, hơi giống với các bài dùng Segment Tree Merge (Hợp nhất cây phân đoạn).
 
-??? note "城池攻占参考代码"
+??? note "Code tham khảo bài City Capture"
     ```cpp
     --8<-- "docs/ds/code/leftist-tree/leftist-tree_2.cpp"
     ```
 
-### [「SCOI2011」棘手的操作](https://loj.ac/problem/2441)
+### [「SCOI2011」Tricky Operations](https://loj.ac/problem/2441)
 
-首先，找一个节点所在堆的堆顶要用并查集，而不能暴力向上跳．
+Đầu tiên, việc tìm gốc của heap chứa một nút phải dùng DSU, không thể nhảy cha trực tiếp.
 
-再考虑单点查询，若用普通的方法打标记，就得查询点到根路径上的标记之和，最坏情况下可以达到 $O(n)$ 的复杂度．如果只有堆顶有标记，就可以快速地查询了，但如何做到呢？
+Tiếp theo xét thao tác truy vấn đơn điểm. Nếu dùng cách đánh dấu (lazy tag) thông thường, ta phải tính tổng các tag trên đường đi từ nút đó đến gốc, trong trường hợp xấu nhất độ phức tạp có thể lên tới $O(n)$. Nếu chỉ có tag ở gốc heap thì có thể truy vấn nhanh, nhưng làm sao để thực hiện điều này?
 
-可以用类似启发式合并的方式，每次合并的时候把较小的那个堆标记暴力下传到每个节点，然后把较大的堆的标记作为合并后的堆的标记．由于合并后有另一个堆的标记，所以较小的堆下传标记时要下传其标记减去另一个堆的标记．由于每个节点每被合并一次所在堆的大小至少乘二，所以每个节点最多被下放 $O(\log n)$ 次标记，暴力下放标记的总复杂度就是 $O(n\log n)$．
+Ta có thể dùng phương pháp tương tự như **hợp nhất theo quy tắc nhỏ-gộp-lớn (small-to-large merging)**. Mỗi khi hợp nhất, ta đẩy tag (pushdown) một cách thủ công (brute force) xuống từng nút của heap nhỏ hơn, sau đó lấy tag của heap lớn hơn làm tag chung cho heap sau khi hợp nhất. Vì heap sau khi hợp nhất có chứa tag của heap lớn, nên khi đẩy tag cho heap nhỏ, ta phải trừ đi tag của heap lớn. Do mỗi lần hợp nhất, kích thước của heap chứa một nút bất kỳ sẽ tăng ít nhất gấp đôi, nên mỗi nút chỉ bị đẩy tag thủ công tối đa $O(\log n)$ lần. Tổng độ phức tạp của việc đẩy tag thủ công là $O(n\log n)$.
 
-再考虑单点加，先删除，再更新，最后插入即可．
+Đối với thao tác cộng đơn điểm: xóa nút, cập nhật giá trị, sau đó chèn lại.
 
-然后是全局最大值，可以用一个平衡树/支持删除任意节点的堆（如左偏树）/multiset 来维护每个堆的堆顶．
+Cuối cùng là thao tác tìm giá trị lớn nhất toàn cục. Ta có thể dùng một cây cân bằng / heap hỗ trợ xóa nút bất kỳ (như Cây lệch trái) / `multiset` để bảo trì giá trị lớn nhất của các heap (tức là giá trị tại gốc của mỗi heap).
 
-所以，每个操作分别如下：
+Tóm lại, các thao tác được xử lý như sau:
 
-1.  暴力下传点数较小的堆的标记，合并两个堆，更新 size、tag，在 multiset 中删去合并后不在堆顶的那个原堆顶．
-2.  删除节点，更新值，插入回来，更新 multiset．需要分删除节点是否为根来讨论一下．
-3.  堆顶打标记，更新 multiset．
-4.  打全局标记．
-5.  查询值 + 堆顶标记 + 全局标记．
-6.  查询根的值 + 堆顶标记 + 全局标记．
-7.  查询 multiset 最大值 + 全局标记．
+1.  Đẩy tag thủ công cho heap nhỏ hơn, hợp nhất hai heap, cập nhật size, tag. Trong `multiset`, xóa gốc cũ không còn là gốc sau khi hợp nhất.
+2.  Xóa nút, cập nhật giá trị, chèn lại, cập nhật `multiset`. Cần phân trường hợp nếu nút bị xóa là gốc.
+3.  Đánh tag tại gốc heap, cập nhật `multiset`.
+4.  Đánh tag toàn cục.
+5.  Truy vấn giá trị + tag tại gốc heap + tag toàn cục.
+6.  Truy vấn giá trị tại gốc + tag tại gốc heap + tag toàn cục.
+7.  Truy vấn giá trị lớn nhất trong `multiset` + tag toàn cục.
 
-??? note "棘手的操作参考代码"
+??? note "Code tham khảo bài Tricky Operations"
     ```cpp
     --8<-- "docs/ds/code/leftist-tree/leftist-tree_3.cpp"
     ```
 
-### [「BOI2004」Sequence 数字序列](https://www.luogu.com.cn/problem/P4331)
+### [「BOI2004」Sequence](https://www.luogu.com.cn/problem/P4331)
 
-这是一道论文题，详见 [《黄源河 -- 左偏树的特点及其应用》](https://github.com/OI-wiki/libs/blob/master/%E9%9B%86%E8%AE%AD%E9%98%9F%E5%8E%86%E5%B9%B4%E8%AE%BA%E6%96%87/%E5%9B%BD%E5%AE%B6%E9%9B%86%E8%AE%AD%E9%98%9F2005%E8%AE%BA%E6%96%87%E9%9B%86/%E9%BB%84%E6%BA%90%E6%B2%B3--%E5%B7%A6%E5%81%8F%E6%A0%91%E7%9A%84%E7%89%B9%E7%82%B9%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8/%E9%BB%84%E6%BA%90%E6%B2%B3.pdf)．
+Đây là một bài toán từ bài báo khoa học, chi tiết xem tại [《Hoàng Nguyên Hà -- Đặc điểm và ứng dụng của Cây lệch trái》](https://github.com/OI-wiki/libs/blob/master/%E9%9B%86%E8%AE%AD%E9%98%9F%E5%8E%86%E5%B9%B4%E8%AE%BA%E6%96%87/%E5%9B%BD%E5%AE%B6%E9%9B%86%E8%AE%AD%E9%98%9F2005%E8%AE%BA%E6%96%87%E9%9B%86/%E9%BB%84%E6%BA%90%E6%B2%B3--%E5%B7%A6%E5%81%8F%E6%A0%91%E7%9A%84%E7%89%B9%E7%82%B9%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8/%E9%BB%84%E6%BA%90%E6%B2%B3.pdf).
 
-## 参考资料
+## Tài liệu tham khảo
 
 [^ref1]: [Self-Adjusting Heaps](https://epubs.siam.org/doi/10.1137/0215004)

@@ -1,77 +1,77 @@
-## 主席树
+## Chủ Tịch Tree (Persistent Segment Tree)
 
-主席树全称是可持久化权值线段树，参见 [知乎讨论](https://www.zhihu.com/question/59195374)．
+Chủ Tịch Tree, tên đầy đủ là Persistent Segment Tree (Cây phân đoạn bền vững), bạn có thể tham khảo [thảo luận trên Zhihu](https://www.zhihu.com/question/59195374).
 
-???+ warning "关于函数式线段树"
-    **函数式线段树** 是指使用函数式编程思想的线段树．在函数式编程思想中，将计算机运算视为数学函数，并避免可改变的状态或变量．不难发现，函数式线段树是 [完全可持久化](persistent.md#完全可持久化-fully-persistent) 的．
+???+ warning "Về Functional Segment Tree"
+    **Functional Segment Tree** (Cây phân đoạn hàm) là cây phân đoạn sử dụng tư tưởng lập trình hàm. Trong tư tưởng lập trình hàm, tính toán máy tính được coi là hàm toán học và tránh các trạng thái hoặc biến có thể thay đổi. Không khó để nhận thấy, Functional Segment Tree là [Fully Persistent](persistent.md#fully-persistent) (bền vững hoàn toàn).
 
-## 引入
+## Giới thiệu
 
-先引入一道题目：给定 $n$ 个整数构成的序列 $a$，将对于指定的闭区间 $[l, r]$ 查询其区间内的第 $k$ 小值．
+Trước tiên hãy xem xét một bài toán: Cho một dãy số nguyên $a$ gồm $n$ phần tử, với một khoảng đóng $[l, r]$ bất kỳ, hãy tìm giá trị nhỏ thứ $k$ trong khoảng đó.
 
-你该如何解决？
+Bạn sẽ giải quyết vấn đề này như thế nào?
 
-一种可行的方案是：使用主席树．
-主席树的主要思想就是：保存每次插入操作时的历史版本，以便查询区间第 $k$ 小．
+Một giải pháp khả thi là: sử dụng Chủ Tịch Tree.
+Ý tưởng chính của Chủ Tịch Tree là: lưu lại các phiên bản lịch sử mỗi khi thực hiện thao tác chèn, để thuận tiện cho việc truy vấn giá trị nhỏ thứ $k$ trong khoảng.
 
-怎么保存呢？简单暴力一点，每次开一棵线段树呗．  
-那空间还不爆掉？
+Làm thế nào để lưu lại? Một cách đơn giản và "trâu bò" là mỗi lần tạo một cây phân đoạn mới.
+Nhưng làm vậy thì bộ nhớ sẽ bị tràn mất?
 
-## 解释
+## Giải thích
 
-我们分析一下，发现每次修改操作修改的点的个数是一样的．  
-（例如下图，修改了 $[1,8]$ 中对应权值为 1 的结点，红色的点即为更改的点）  
+Chúng ta hãy phân tích một chút, mỗi lần thao tác sửa đổi, số lượng điểm bị thay đổi là như nhau.
+(Ví dụ như hình bên dưới, sửa đổi nút có giá trị bằng 1 trong khoảng $[1,8]$, các điểm màu đỏ là các điểm bị thay đổi)
 ![](./images/persistent-seg.png)
 
-只更改了 $O(\log{n})$ 个结点，形成一条链，也就是说每次更改的结点数 = 树的高度．  
-注意主席树不能使用堆式存储法，就是说不能用 $x\times 2$，$x\times 2+1$ 来表示左右儿子，而是应该动态开点，并保存每个节点的左右儿子编号．  
-所以我们只要在记录左右儿子的基础上，保存插入每个数的时候的根节点就可以实现持久化了．
+Chỉ có $O(\log{n})$ nút bị thay đổi, tạo thành một chuỗi, tức là số lượng nút bị thay đổi mỗi lần = chiều cao của cây.
+Lưu ý rằng Chủ Tịch Tree không thể sử dụng phương pháp lưu trữ kiểu heap (nghĩa là không thể dùng $x\times 2$, $x\times 2+1$ để biểu diễn con trái và con phải), mà phải sử dụng cấp phát động (dynamic node creation) và lưu lại chỉ số con trái, con phải của mỗi nút.
+Vì vậy, chúng ta chỉ cần lưu lại nút gốc tại thời điểm chèn mỗi số, dựa trên việc ghi nhận con trái và con phải, là có thể thực hiện được tính bền vững (persistence).
 
-我们把问题简化一下：每次求 $[1,r]$ 区间内的 $k$ 小值．  
-怎么做呢？只需要找到插入 r 时的根节点版本，然后用普通权值线段树（有的叫键值线段树/值域线段树）做就行了．
+Chúng ta hãy đơn giản hóa bài toán: mỗi lần tìm giá trị nhỏ thứ $k$ trong khoảng $[1,r]$.
+Làm thế nào? Chỉ cần tìm phiên bản nút gốc khi chèn đến $r$, sau đó sử dụng cây phân đoạn giá trị (Value Segment Tree) thông thường để giải quyết.
 
-这个相信大家都能理解，回到原问题——求 $[l,r]$ 区间 $k$ 小值．  
-这里我们再联系另外一个知识：**前缀和**．  
-这个小东西巧妙运用了区间减法的性质，通过预处理从而达到 $O(1)$ 回答每个询问．
+Điều này chắc mọi người đều hiểu, quay lại bài toán ban đầu - tìm giá trị nhỏ thứ $k$ trong khoảng $[l,r]$.
+Ở đây chúng ta liên hệ đến một kiến thức khác: **Tiền tố (Prefix Sum)**.
+Công cụ nhỏ bé này sử dụng khéo léo tính chất của phép trừ trên khoảng, thông qua việc tiền xử lý để đạt được việc trả lời mỗi truy vấn trong $O(1)$.
 
-我们可以发现，主席树统计的信息也满足这个性质．  
-所以……如果需要得到 $[l,r]$ 的统计信息，只需要用 $[1,r]$ 的信息减去 $[1,l - 1]$ 的信息就行了．
+Chúng ta có thể nhận thấy, thông tin thống kê của Chủ Tịch Tree cũng thỏa mãn tính chất này.
+Vì vậy... nếu cần lấy thông tin thống kê của khoảng $[l,r]$, chỉ cần lấy thông tin của $[1,r]$ trừ đi thông tin của $[1,l - 1]$.
 
-至此，该问题解决！
+Đến đây, vấn đề đã được giải quyết!
 
-关于空间问题，我们分析一下：由于我们是动态开点的，所以一棵线段树只会出现 $2n-1$ 个结点．  
-然后，有 $n$ 次修改，每次至多增加 $\lceil\log_2{n}\rceil+1$ 个结点．因此，最坏情况下 $n$ 次修改后的结点总数会达到 $2n-1+n(\lceil\log_2{n}\rceil+1)$．
-此题的 $n \leq 10^5$，单次修改至多增加 $\lceil\log_2{10^5}\rceil+1 = 18$ 个结点，故 $n$ 次修改后的结点总数为 $2\times 10^5-1+18\times 10^5$，忽略掉 $-1$，大概就是 $20\times 10^5$．
+Về vấn đề không gian, chúng ta hãy phân tích: do chúng ta cấp phát động, nên một cây phân đoạn ban đầu chỉ có $2n-1$ nút.
+Sau đó, có $n$ lần sửa đổi, mỗi lần tăng tối đa $\lceil\log_2{n}\rceil+1$ nút. Do đó, trong trường hợp xấu nhất, tổng số nút sau $n$ lần sửa đổi sẽ đạt $2n-1+n(\lceil\log_2{n}\rceil+1)$.
+Với bài toán này $n \leq 10^5$, một lần sửa đổi tăng tối đa $\lceil\log_2{10^5}\rceil+1 = 18$ nút, vậy tổng số nút sau $n$ lần sửa đổi là $2\times 10^5-1+18\times 10^5$, bỏ qua $-1$, xấp xỉ $20\times 10^5$.
 
-最后给一个忠告：千万不要吝啬空间（大多数题目中空间限制都较为宽松，因此一般不用担心空间超限的问题）！大胆一点，直接上个 $2^5\times 10^5$，接近原空间的两倍（即 `n << 5`）．
+Cuối cùng là một lời khuyên: đừng keo kiệt không gian (hầu hết các bài toán giới hạn không gian đều khá thoải mái, nên thường không phải lo lắng về việc vượt quá giới hạn không gian)! Hãy mạnh dạn cấp phát $2^5\times 10^5$, gần gấp đôi không gian gốc (tức là `n << 5`).
 
-## 实现
+## Cài đặt
 
 ```cpp
 #include <algorithm>
 #include <cstdio>
 #include <cstring>
 using namespace std;
-constexpr int MAXN = 1e5;  // 数据范围
+constexpr int MAXN = 1e5;  // Phạm vi dữ liệu
 int tot, n, m;
 int sum[(MAXN << 5) + 10], rt[MAXN + 10], ls[(MAXN << 5) + 10],
     rs[(MAXN << 5) + 10];
 int a[MAXN + 10], ind[MAXN + 10], len;
 
-int getid(const int &val) {  // 离散化
+int getid(const int &val) {  // Rời rạc hóa
   return lower_bound(ind + 1, ind + len + 1, val) - ind;
 }
 
-int build(int l, int r) {  // 建树
+int build(int l, int r) {  // Xây dựng cây
   int root = ++tot;
   if (l == r) return root;
   int mid = l + r >> 1;
   ls[root] = build(l, mid);
   rs[root] = build(mid + 1, r);
-  return root;  // 返回该子树的根节点
+  return root;  // Trả về nút gốc của cây con này
 }
 
-int update(int k, int l, int r, int root) {  // 插入操作
+int update(int k, int l, int r, int root) {  // Thao tác chèn
   int dir = ++tot;
   ls[dir] = ls[root], rs[dir] = rs[root], sum[dir] = sum[root] + 1;
   if (l == r) return dir;
@@ -83,13 +83,13 @@ int update(int k, int l, int r, int root) {  // 插入操作
   return dir;
 }
 
-int query(int u, int v, int l, int r, int k) {  // 查询操作
+int query(int u, int v, int l, int r, int k) {  // Thao tác truy vấn
   int mid = l + r >> 1,
-      x = sum[ls[v]] - sum[ls[u]];  // 通过区间减法得到左儿子中所存储的数值个数
+      x = sum[ls[v]] - sum[ls[u]];  // Lấy số lượng phần tử được lưu trữ trong con trái thông qua phép trừ khoảng
   if (l == r) return l;
-  if (k <= x)  // 若 k 小于等于 x ，则说明第 k 小的数字存储在在左儿子中
+  if (k <= x)  // Nếu k nhỏ hơn hoặc bằng x, nghĩa là số nhỏ thứ k nằm trong con trái
     return query(ls[u], ls[v], l, mid, k);
-  else  // 否则说明在右儿子中
+  else  // Ngược lại nghĩa là nằm trong con phải
     return query(rs[u], rs[v], mid + 1, r, k - x);
 }
 
@@ -108,7 +108,7 @@ int l, r, k;
 void work() {
   while (m--) {
     scanf("%d%d%d", &l, &r, &k);
-    printf("%d\n", ind[query(rt[l - 1], rt[r], 1, len, k)]);  // 回答询问
+    printf("%d\n", ind[query(rt[l - 1], rt[r], 1, len, k)]);  // Trả lời truy vấn
   }
 }
 
@@ -119,15 +119,15 @@ int main() {
 }
 ```
 
-## 拓展：基于主席树的可持久化并查集
+## Mở rộng: DSU Bền vững dựa trên Chủ Tịch Tree
 
-主席树是实现可持久化并查集的便捷方式，在此也提供一个基于主席树的可持久化并查集实现示例．
+Chủ Tịch Tree là một cách thuận tiện để thực hiện Disjoint Set Union (DSU) bền vững (Persistent DSU). Dưới đây là một ví dụ về việc thực hiện DSU bền vững dựa trên Chủ Tịch Tree.
 
 ```cpp
 --8<-- "docs/ds/code/persistent-seg/persistent-seg_1.cpp"
 ```
 
-## 参考
+## Tham khảo
 
 <https://en.wikipedia.org/wiki/Persistent_data_structure>
 
