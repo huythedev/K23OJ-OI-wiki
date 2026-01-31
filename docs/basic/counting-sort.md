@@ -1,54 +1,54 @@
 前置知识：[前缀和](./prefix-sum.md)
 
-???+ warning "提醒"
-    本页面要介绍的不是 [**基数排序**](./radix-sort.md)．
+???+ warning "Nhắc nhở"
+    Trang này **không** nói về [**Sắp xếp theo cơ số (Radix sort)**](./radix-sort.md).
 
-本页面将简要介绍计数排序．
+Trang này sẽ giới thiệu ngắn gọn về **Sắp xếp đếm** (Counting sort).
 
-## 定义
+## Định nghĩa
 
-计数排序（英语：Counting sort）是一种线性时间的排序算法．
+**Sắp xếp đếm** (tiếng Anh: Counting sort) là một thuật toán sắp xếp có độ phức tạp tuyến tính.
 
-## 过程
+## Quy trình
 
-计数排序的工作原理是使用一个额外的数组 $C$，其中第 $i$ 个元素是待排序数组 $A$ 中值等于 $i$ 的元素的个数，然后根据数组 $C$ 来将 $A$ 中的元素排到正确的位置．[^ref1]
+Nguyên lý của sắp xếp đếm là sử dụng một mảng phụ $C$, trong đó phần tử thứ $i$ lưu số lần xuất hiện của giá trị $i$ trong mảng $A$ cần sắp xếp, sau đó dựa vào mảng $C$ để đưa các phần tử của $A$ về đúng vị trí.[^ref1]
 
-它的工作过程分为三个步骤：
+Quy trình gồm ba bước:
 
-1.  计算每个数出现了几次；
-2.  求出每个数出现次数的 [前缀和](./prefix-sum.md)；
-3.  利用出现次数的前缀和，从右至左计算每个数的排名．
+1.  Đếm số lần xuất hiện của từng số;
+2.  Tính [tổng tiền tố (prefix sum)](./prefix-sum.md) của số lần xuất hiện;
+3.  Dựa vào tổng tiền tố, từ phải sang trái xác định thứ hạng của từng số.
 
-### 计算前缀和的原因
+### Vì sao cần tính tổng tiền tố?
 
-直接将 $C$ 中正数对应的元素依次放入 $A$ 中不能解决元素重复的情形．
+Nếu chỉ đơn giản đưa các số có $C[i]>0$ vào mảng $A$ theo thứ tự, sẽ không xử lý được trường hợp có nhiều số trùng nhau.
 
-我们通过为额外数组 $C$ 中的每一项计算前缀和，结合每一项的数值，就可以为重复元素确定一个唯一排名：
+Bằng cách tính tổng tiền tố cho từng phần tử của mảng phụ $C$, ta xác định được thứ hạng duy nhất cho từng phần tử trùng nhau:
 
-额外数组 $C$ 中每一项的数值即是该 key 值下重复元素的个数，而该项的前缀和即是排在最后一个的重复元素的排名．
+Giá trị tại mỗi vị trí của $C$ là số lượng phần tử có giá trị đó, còn tổng tiền tố tại vị trí đó là thứ hạng của phần tử trùng cuối cùng.
 
-如果按照 $A$ 的逆序进行排列，那么显然排序后的数组将保持 $A$ 的原序（相同 key 值情况下），也即得到一种稳定的排序算法．
+Nếu ta duyệt $A$ từ phải sang trái, mảng kết quả sẽ giữ nguyên thứ tự ban đầu của các phần tử trùng nhau, tức là thuật toán **ổn định**.
 
 ![counting sort animate example](images/counting-sort-animate.svg)
 
-## 性质
+## Tính chất
 
-### 稳定性
+### Tính ổn định
 
-计数排序是一种稳定的排序算法．
+Sắp xếp đếm là một thuật toán **ổn định**.
 
-### 时间复杂度
+### Độ phức tạp thời gian
 
-计数排序的时间复杂度为 $O(n+w)$，其中 $w$ 代表待排序数据的值域大小．
+Độ phức tạp thời gian của sắp xếp đếm là $O(n+w)$, trong đó $w$ là miền giá trị của dữ liệu cần sắp xếp.
 
-## 代码实现
+## Cài đặt mã nguồn
 
-### 伪代码
+### Giả mã
 
 $$
 \begin{array}{ll}
-1 & \textbf{Input. } \text{An array } A \text{ consisting of }n\text{ positive integers no greater than } w. \\
-2 & \textbf{Output. } \text{Array }A\text{ after sorting in nondecreasing order stably.} \\
+1 & \textbf{Input. } \text{Một mảng } A \text{ gồm }n\text{ số nguyên dương không vượt quá } w. \\
+2 & \textbf{Output. } \text{Mảng }A\text{ sau khi được sắp xếp tăng dần, ổn định.} \\
 3 & \textbf{Method. }  \\
 4 & \textbf{for }i\gets0\textbf{ to }w\\
 5 & \qquad \textit{cnt}[i]\gets0\\
@@ -73,6 +73,6 @@ $$
     --8<-- "docs/basic/code/counting-sort/counting-sort_1.py:core"
     ```
 
-## 参考资料与注释
+## Tài liệu tham khảo & chú thích
 
-[^ref1]: [计数排序 - 维基百科，自由的百科全书](https://zh.wikipedia.org/wiki/%E8%AE%A1%E6%95%B0%E6%8E%92%E5%BA%8F)
+[^ref1]: [Counting sort - Wikipedia (tiếng Trung)](https://zh.wikipedia.org/wiki/%E8%AE%A1%E6%95%B0%E6%8E%92%E5%BA%8F)

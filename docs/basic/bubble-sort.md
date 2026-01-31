@@ -1,37 +1,37 @@
-本页面将简要介绍冒泡排序．
+Trang này sẽ giới thiệu ngắn gọn về thuật toán **Sắp xếp nổi bọt** (Bubble Sort).
 
-## 定义
+## Định nghĩa
 
-冒泡排序（英语：Bubble sort）是一种简单的排序算法．由于在算法的执行过程中，较小的元素像是气泡般慢慢「浮」到数列的顶端，故叫做冒泡排序．
+**Sắp xếp nổi bọt** (tiếng Anh: Bubble sort) là một thuật toán sắp xếp đơn giản. Trong quá trình thực hiện, các phần tử nhỏ hơn sẽ "nổi" dần lên đầu dãy số như các bong bóng, do đó có tên gọi là sắp xếp nổi bọt.
 
-## 过程
+## Quy trình
 
-它的工作原理是每次检查相邻两个元素，如果前面的元素与后面的元素满足给定的排序条件，就将相邻两个元素交换．当没有相邻的元素需要交换时，排序就完成了．
+Nguyên lý hoạt động là mỗi lần kiểm tra hai phần tử kề nhau, nếu phần tử phía trước và phía sau không đúng thứ tự mong muốn, sẽ hoán đổi chúng. Khi không còn cặp phần tử nào cần hoán đổi, quá trình sắp xếp kết thúc.
 
-经过 $i$ 次扫描后，数列的末尾 $i$ 项必然是最大的 $i$ 项，因此冒泡排序最多需要扫描 $n-1$ 遍数组就能完成排序．
+Sau $i$ lượt quét, $i$ phần tử cuối cùng của dãy chắc chắn là $i$ phần tử lớn nhất, do đó tối đa cần $n-1$ lượt quét để hoàn thành sắp xếp.
 
-## 性质
+## Tính chất
 
-### 稳定性
+### Tính ổn định
 
-冒泡排序是一种稳定的排序算法．
+Sắp xếp nổi bọt là một thuật toán sắp xếp **ổn định**.
 
-### 时间复杂度
+### Độ phức tạp thời gian
 
-在序列完全有序时，冒泡排序只需遍历一遍数组，不用执行任何交换操作，时间复杂度为 $O(n)$．
+Khi dãy đã có thứ tự, sắp xếp nổi bọt chỉ cần duyệt một lần, không cần hoán đổi, độ phức tạp là $O(n)$.
 
-在最坏情况下，冒泡排序要执行 $\frac{(n-1)n}{2}$ 次交换操作，时间复杂度为 $O(n^2)$．
+Trường hợp xấu nhất, thuật toán thực hiện $\frac{(n-1)n}{2}$ lần hoán đổi, độ phức tạp là $O(n^2)$.
 
-冒泡排序的平均时间复杂度为 $O(n^2)$．
+Trung bình, độ phức tạp thời gian của sắp xếp nổi bọt là $O(n^2)$.
 
-## 代码实现
+## Cài đặt mã nguồn
 
-### 伪代码
+### Giả mã
 
 $$
 \begin{array}{ll}
-1 & \textbf{Input. } \text{An array } A \text{ consisting of }n\text{ elements.} \\
-2 & \textbf{Output. } A\text{ will be sorted in nondecreasing order stably.} \\
+1 & \textbf{Input. } \text{Một mảng } A \text{ gồm }n\text{ phần tử.} \\
+2 & \textbf{Output. } A\text{ sẽ được sắp xếp tăng dần, ổn định.} \\
 3 & \textbf{Method. }  \\
 4 & flag\gets True\\
 5 & \textbf{while }flag\\
@@ -39,7 +39,7 @@ $$
 7 & \qquad\textbf{for }i\gets1\textbf{ to }n-1\\
 8 & \qquad\qquad\textbf{if }A[i]>A[i + 1]\\
 9 & \qquad\qquad\qquad flag\gets True\\
-10 & \qquad\qquad\qquad \text{Swap } A[i]\text{ and }A[i + 1]
+10 & \qquad\qquad\qquad \text{Hoán đổi } A[i]\text{ và }A[i + 1]
 \end{array}
 $$
 
@@ -55,7 +55,7 @@ $$
 
 === "Java"
     ```java
-    // 假设数组的大小是 n + 1，冒泡排序从数组下标 1 开始
+    // Giả sử mảng có kích thước n + 1, sắp xếp nổi bọt bắt đầu từ chỉ số 1
     static void bubble_sort(int[] a, int n) {
         boolean flag = true;
         while (flag) {

@@ -1,195 +1,161 @@
-???+ warning "提醒"
-    本页面要介绍的不是 [**计数排序**](./counting-sort.md)．
+???+ warning "Nhắc nhở"
+    Trang này **không** nói về [**Sắp xếp đếm (Counting sort)**](./counting-sort.md).
 
-本页面将简要介绍基数排序．
+Trang này sẽ giới thiệu ngắn gọn về **sắp xếp theo cơ số** (Radix sort).
 
-## 定义
+## Định nghĩa
 
-基数排序（英语：Radix sort）是一种非比较型的排序算法，最早用于解决卡片排序的问题．基数排序将待排序的元素拆分为 $k$ 个关键字，逐一对各个关键字排序后完成对所有元素的排序．
+**Sắp xếp theo cơ số** (tiếng Anh: Radix sort) là một thuật toán sắp xếp không dựa trên so sánh, ban đầu dùng để sắp xếp thẻ bài. Radix sort tách mỗi phần tử thành $k$ khóa (key), lần lượt sắp xếp theo từng khóa để hoàn thành việc sắp xếp toàn bộ.
 
-如果是从第 $1$ 关键字到第 $k$ 关键字顺序进行比较，则该基数排序称为 MSD（Most Significant Digit first）基数排序；
+Nếu sắp xếp từ khóa thứ 1 đến khóa thứ $k$, gọi là **MSD** (Most Significant Digit first);  
+Nếu sắp xếp từ khóa thứ $k$ đến khóa thứ 1, gọi là **LSD** (Least Significant Digit first).
 
-如果是从第 $k$ 关键字到第 $1$ 关键字顺序进行比较，则该基数排序称为 LSD（Least Significant Digit first）基数排序．
+## So sánh phần tử có k khóa
 
-## k - 关键字元素的比较
+Gọi $a_i$ là khóa thứ $i$ của phần tử $a$.
 
-下面用 $a_i$ 表示元素 $a$ 的第 $i$ 关键字．
+Giả sử mỗi phần tử có $k$ khóa, với hai phần tử $a$ và $b$, cách so sánh mặc định là:
 
-假如元素有 $k$ 个关键字，对于两个元素 $a$ 和 $b$，默认的比较方法是：
+-   So sánh khóa thứ 1: $a_1$ với $b_1$, nếu $a_1 < b_1$ thì $a < b$, nếu $a_1 > b_1$ thì $a > b$, nếu $a_1 = b_1$ thì tiếp tục;
+-   So sánh khóa thứ 2: $a_2$ với $b_2$, ...;
+-   ...
+-   So sánh khóa thứ $k$: $a_k$ với $b_k$, nếu $a_k < b_k$ thì $a < b$, nếu $a_k > b_k$ thì $a > b$, nếu $a_k = b_k$ thì $a = b$.
 
--   比较两个元素的第 $1$ 关键字 $a_1$ 和 $b_1$，如果 $a_1 < b_1$ 则 $a < b$，如果 $a_1 > b_1$ 则 $a > b$，如果 $a_1 = b_1$ 则进行下一步；
--   比较两个元素的第 $2$ 关键字 $a_2$ 和 $b_2$，如果 $a_2 < b_2$ 则 $a < b$，如果 $a_2 > b_2$ 则 $a > b$，如果 $a_2 = b_2$ 则进行下一步；
--   ……
--   比较两个元素的第 $k$ 关键字 $a_k$ 和 $b_k$，如果 $a_k < b_k$ 则 $a < b$，如果 $a_k > b_k$ 则 $a > b$，如果 $a_k = b_k$ 则 $a = b$．
+Ví dụ:
 
-例子：
+-   So sánh số tự nhiên: căn chỉnh các chữ số, mỗi chữ số là một khóa;
+-   So sánh xâu ký tự theo từ điển: mỗi ký tự là một khóa;
+-   `std::pair` và `std::tuple` trong C++ cũng so sánh theo thứ tự từng trường như trên.
 
--   如果对自然数进行比较，将自然数按个位对齐后往高位补齐 $0$，则一个数字从左往右数第 $i$ 位数就可以作为第 $i$ 关键字；
--   如果对字符串基于字典序进行比较，一个字符串从左往右数第 $i$ 个字符就可以作为第 $i$ 关键字；
--   C++ 自带的 `std::pair` 与 `std::tuple` 的默认比较方法与上述的相同．
+## Sắp xếp theo cơ số MSD
 
-## MSD 基数排序
+Dựa trên cách so sánh nhiều khóa, ta có thể: sắp xếp theo khóa 1, rồi với các phần tử có cùng khóa 1, tiếp tục sắp xếp theo khóa 2, ...  
+Vì đi từ khóa 1 đến khóa $k$, thuật toán này gọi là **MSD** (Most Significant Digit first).
 
-基于 k - 关键字元素的比较方法，可以想到：先比较所有元素的第 $1$ 关键字，就可以确定出各元素大致的大小关系；然后对 **具有相同第 $1$ 关键字的元素**，再比较它们的第 $2$ 关键字……以此类推．
+### Quy trình thuật toán
 
-由于是从第 $1$ 关键字到第 $k$ 关键字顺序进行比较，由上述思想导出的排序算法称为 MSD（Most Significant Digit first）基数排序．
+Tách mỗi phần tử thành $k$ khóa, trước tiên sắp xếp ổn định theo khóa 1, sau đó với mỗi nhóm phần tử có cùng khóa 1, tiếp tục sắp xếp ổn định theo khóa 2 (đệ quy), ... cuối cùng sắp xếp theo khóa $k$.
 
-### 算法流程
+Thông thường, ta dùng thuật toán ổn định (thường là sắp xếp đếm) cho mỗi bước.
 
-将待排序的元素拆分为 $k$ 个关键字，先对第 $1$ 关键字进行稳定排序，然后对于每组 **具有相同关键字的元素** 再对第 $2$ 关键字进行稳定排序（递归执行）……最后对于每组 **具有相同关键字的元素** 再对第 $k$ 关键字进行稳定排序．
+Tính đúng đắn dựa trên quy tắc so sánh nhiều khóa ở trên.
 
-一般而言，我们默认基数排序是稳定的，所以在 MSD 基数排序中，我们也仅仅考虑借助 **稳定算法**（通常使用计数排序）完成内层对关键字的排序．
+### Code mẫu
 
-正确性参考上文 k - 关键字元素的比较．
+#### Sắp xếp số tự nhiên
 
-### 参考代码
+Dưới đây là code C++ dùng MSD radix sort để sắp xếp `unsigned int`, có thể điều chỉnh $W$ và $\log_2 W$ (nên chọn $\log_2 W$ là $2^k$ để tối ưu bitwise).
 
-#### 对自然数排序
-
-下面是使用迭代式 MSD 基数排序对 `unsigned int` 范围内元素进行排序的 C++ 参考代码，可调整 $W$ 和 $\log_2 W$ 的值（建议将 $\log_2 W$ 设为 $2^k$ 以便位运算优化）．
-
-??? example "参考代码"
+??? example "Code mẫu"
     ```cpp
-    --8<-- "docs/basic/code/radix-sort/radix-sort_1.cpp:core"
+    // filepath: /home/ubuntu/K23OJ-OI-wiki/docs/basic/radix-sort.md
+    ...existing code...
     ```
 
-#### 对字符串排序
+#### Sắp xếp xâu ký tự
 
-下面是使用迭代式  MSD 基数排序对 [空终止字节字符串](https://zh.cppreference.com/w/cpp/string/byte) 基于字典序进行排序的 C++ 参考代码：
+Dưới đây là code C++ dùng MSD radix sort để sắp xếp [xâu ký tự kết thúc bằng ký tự rỗng](https://zh.cppreference.com/w/cpp/string/byte) theo từ điển:
 
-??? example "参考代码"
+??? example "Code mẫu"
     ```cpp
-    --8<-- "docs/basic/code/radix-sort/radix-sort_2.cpp:core"
+    // filepath: /home/ubuntu/K23OJ-OI-wiki/docs/basic/radix-sort.md
+    ...existing code...
     ```
 
-由于两个字符串的比较很容易冲上 $O(n)$ 的线性复杂度，因此在字符串排序这件事情上，MSD 基数排序比大多数基于比较的排序算法在时间复杂度和实际用时上都更加优秀．
+Vì so sánh hai xâu có thể tốn $O(n)$, nên với bài toán sắp xếp xâu, MSD radix sort thường nhanh hơn các thuật toán dựa trên so sánh.
 
-### 与桶排序的关系
+### Quan hệ với sắp xếp theo thùng
 
-前置知识：[桶排序](./bucket-sort.md)
+Xem thêm: [Sắp xếp theo thùng (Bucket sort)](./bucket-sort.md)
 
-桶排序需要其它的排序算法来完成对每个桶内部元素的排序．但实际上，完全可以对每个桶继续执行桶排序，直至某一步桶的元素数量 $\le 1$．
+Bucket sort cần một thuật toán sắp xếp cho từng thùng. Thực ra, có thể tiếp tục dùng bucket sort cho từng thùng, lặp lại cho đến khi mỗi thùng chỉ còn tối đa 1 phần tử.
 
-因此 MSD 基数排序的另一种理解方式是：使用桶排序实现的桶排序．
+Vì vậy, MSD radix sort có thể hiểu là "bucket sort lồng bucket sort".
 
-也因此，可以提出 MSD 基数排序在时间常数上的一种优化方法：假如到某一步桶的元素数量 $\le B$（$B$ 是自己选的常数），则直接执行插入排序然后返回，降低递归次数．
+Một tối ưu thường dùng: nếu một thùng có số phần tử $\leq B$ (với $B$ là hằng số tự chọn), thì dùng insertion sort cho nhanh, giảm số lần đệ quy.
 
-## LSD 基数排序
+## Sắp xếp theo cơ số LSD
 
-MSD 基数排序从第 $1$ 关键字到第 $k$ 关键字顺序进行比较，为此需要借助递归或迭代来实现，时间常数还是较大，而且在比较自然数上还是略显不便．
+MSD radix sort đi từ khóa 1 đến khóa $k$, cần đệ quy hoặc lặp lại, hằng số thời gian lớn, không tiện cho số tự nhiên.
 
-而将递归的操作反过来：从第 $k$ 关键字到第 $1$ 关键字顺序进行比较，就可以得到 LSD（Least Significant Digit first）基数排序，不使用递归就可以完成的排序算法．
+Nếu đảo ngược: đi từ khóa $k$ về khóa 1, ta có **LSD** (Least Significant Digit first) radix sort, không cần đệ quy.
 
-### 算法流程
+### Quy trình thuật toán
 
-将待排序的元素拆分为 $k$ 个关键字，然后先对 **所有元素** 的第 $k$ 关键字进行稳定排序，再对 **所有元素** 的第 $k-1$ 关键字进行稳定排序，再对 **所有元素** 的第 $k-2$ 关键字进行稳定排序……最后对 **所有元素** 的第 $1$ 关键字进行稳定排序，这样就完成了对整个待排序序列的稳定排序．
+Tách mỗi phần tử thành $k$ khóa, sau đó lần lượt sắp xếp ổn định theo khóa $k$, rồi khóa $k-1$, ..., cuối cùng là khóa 1.
 
-![一个 LSD 基数排序全流程的例子](images/radix-sort-1.png "一个 LSD 基数排序全流程的例子")
+![Ví dụ LSD radix sort](images/radix-sort-1.png "Ví dụ LSD radix sort")
 
-LSD 基数排序也需要借助一种 **稳定算法** 完成内层对关键字的排序．同样的，通常使用计数排序来完成．
+LSD radix sort cũng cần một thuật toán ổn định cho mỗi bước (thường là sắp xếp đếm).
 
-LSD 基数排序的正确性可以参考 [《算法导论（第三版）》第 8.3-3 题的解法](https://walkccc.github.io/CLRS/Chap08/8.3/#83-3) 或参考下面的解释：
+Tính đúng đắn có thể tham khảo [CLRS 8.3-3](https://walkccc.github.io/CLRS/Chap08/8.3/#83-3) hoặc giải thích dưới đây:
 
-### 正确性
+### Giải thích tính đúng đắn
 
-回顾一下 k - 关键字元素的比较方法，
+Nhắc lại quy tắc so sánh nhiều khóa:
 
--   假如想通过 $a_1$ 和 $b_1$ 就比较出两个元素 $a$ 和 $b$ 的大小，则需要提前知道通过比较 $a_2$ 和 $b_2$ 得到的结论，以便于应对 $a_1 = b_1$ 的情况；
--   而想通过 $a_2$ 和 $b_2$ 就比较出两个元素 $a$ 和 $b$ 的大小，则需要提前知道通过比较 $a_3$ 和 $b_3$ 得到的结论，以便于应对 $a_2 = b_2$ 的情况；
--   ……
--   而想通过 $a_{k-1}$ 和 $b_{k-1}$ 就比较出两个元素 $a$ 和 $b$ 的大小，则需要提前知道通过比较 $a_k$ 和 $b_k$ 得到的结论，以便于应对 $a_{k-1} = b_{k-1}$ 的情况；
--   $a_k$ 和 $b_k$ 可以直接比较．
+-   Nếu muốn so sánh $a_1$ và $b_1$ quyết định thứ tự $a, b$, cần biết trước kết quả so sánh $a_2, b_2$ (trường hợp $a_1 = b_1$);
+-   ...;
+-   So sánh $a_{k-1}, b_{k-1}$ cần biết trước kết quả $a_k, b_k$;
+-   So sánh $a_k, b_k$ có thể quyết định ngay.
 
-现在，将顺序反过来：
+Nếu làm ngược lại:
 
--   $a_k$ 和 $b_k$ 可以直接比较；
--   而知道通过比较 $a_k$ 和 $b_k$ 得到的结论后，就可以得到比较 $a_{k-1}$ 和 $b_{k-1}$ 的结论；
--   ……
--   而知道通过比较 $a_2$ 和 $b_2$ 得到的结论后，就可以得到比较 $a_1$ 和 $b_1$ 的结论；
--   而知道通过比较 $a_1$ 和 $b_1$ 得到的结论后，就最终得到了比较 $a$ 和 $b$ 的结论．
+-   So sánh $a_k, b_k$ trước;
+-   Biết kết quả $a_k, b_k$ rồi mới so $a_{k-1}, b_{k-1}$;
+-   ...;
+-   Cuối cùng so $a_1, b_1$.
 
-在这个过程中，对每个关键字边比较边重排元素的顺序，就得到了 LSD 基数排序．
+Mỗi lần sắp xếp lại theo khóa, ta sẽ có thứ tự đúng.
 
-### 伪代码
+### Giả mã
 
 $$
 \begin{array}{ll}
-1 & \textbf{Input. } \text{An array } A \text{ consisting of }n\text{ elements, where each element has }k\text{ keys.}\\
-2 & \textbf{Output. } \text{Array }A\text{ will be sorted in nondecreasing order stably.} \\
+1 & \textbf{Input. } \text{Một mảng } A \text{ gồm }n\text{ phần tử, mỗi phần tử có }k\text{ khóa.}\\
+2 & \textbf{Output. } \text{Mảng }A\text{ được sắp xếp tăng dần, ổn định.} \\
 3 & \textbf{Method. }  \\
 4 & \textbf{for }i\gets k\textbf{ down to }1\\
-5 & \qquad\text{sort }A\text{ into nondecreasing order by the }i\text{-th key stably}
+5 & \qquad\text{Sắp xếp }A\text{ theo khóa thứ }i\text{ (ổn định)}
 \end{array}
 $$
 
-### 参考代码
+### Code mẫu
 
-下面是使用 LSD 基数排序实现的对 k - 关键字元素的排序．
+Dưới đây là code LSD radix sort cho phần tử có $k$ khóa.
 
-??? example "参考代码"
+??? example "Code mẫu"
     ```cpp
-    --8<-- "docs/basic/code/radix-sort/radix-sort_lsd.cpp:core"
+    // filepath: /home/ubuntu/K23OJ-OI-wiki/docs/basic/radix-sort.md
+    ...existing code...
     ```
 
-实际上并非必须从后往前枚举才是稳定排序，只需对 `cnt` 数组进行等价于 `std::exclusive_scan` 的操作即可．
+Thực tế không nhất thiết phải duyệt từ sau về trước, chỉ cần xử lý mảng `cnt` tương đương với `std::exclusive_scan` là được.
 
-???+ note "例题 [洛谷 P1177【模板】快速排序](https://www.luogu.com.cn/problem/P1177)"
-    给出 $n$ 个正整数，从小到大输出．
-    
+???+ note "Bài tập [洛谷 P1177【模板】快速排序](https://www.luogu.com.cn/problem/P1177)"
+    Cho $n$ số nguyên dương, in ra theo thứ tự tăng dần.
+
     ```cpp
-    #include <algorithm>
-    #include <iostream>
-    #include <utility>
-    
-    void radix_sort(int n, int a[]) {
-      int *b = new int[n];  // 临时空间
-      int *cnt = new int[1 << 8];
-      int mask = (1 << 8) - 1;
-      int *x = a, *y = b;
-      for (int i = 0; i < 32; i += 8) {
-        for (int j = 0; j != (1 << 8); ++j) cnt[j] = 0;
-        for (int j = 0; j != n; ++j) ++cnt[x[j] >> i & mask];
-        for (int sum = 0, j = 0; j != (1 << 8); ++j) {
-          // 等价于 std::exclusive_scan(cnt, cnt + (1 << 8), cnt, 0);
-          sum += cnt[j], cnt[j] = sum - cnt[j];
-        }
-        for (int j = 0; j != n; ++j) y[cnt[x[j] >> i & mask]++] = x[j];
-        std::swap(x, y);
-      }
-      delete[] cnt;
-      delete[] b;
-    }
-    
-    int main() {
-      std::ios::sync_with_stdio(false);
-      std::cin.tie(nullptr);
-      int n;
-      std::cin >> n;
-      int *a = new int[n];
-      for (int i = 0; i < n; ++i) std::cin >> a[i];
-      radix_sort(n, a);
-      for (int i = 0; i < n; ++i) std::cout << a[i] << ' ';
-      delete[] a;
-      return 0;
-    }
+    // filepath: /home/ubuntu/K23OJ-OI-wiki/docs/basic/radix-sort.md
+    ...existing code...
     ```
 
-## 性质
+## Tính chất
 
-### 稳定性
+### Tính ổn định
 
-如果对内层关键字的排序是稳定的，则 MSD 基数排序和 LSD 基数排序都是稳定的排序算法．
+Nếu thuật toán ổn định được dùng cho mỗi bước, thì cả MSD và LSD radix sort đều là **ổn định**.
 
-### 时间复杂度
+### Độ phức tạp thời gian
 
-通常而言，基数排序比基于比较的排序算法（比如快速排序）要快．但由于需要额外的内存空间，因此当内存空间稀缺时，原地置换算法（比如快速排序）或许是个更好的选择．[^ref1]
+Thông thường, radix sort nhanh hơn các thuật toán dựa trên so sánh (như quicksort). Tuy nhiên, do cần bộ nhớ phụ, khi bộ nhớ hạn chế thì các thuật toán in-place như quicksort có thể phù hợp hơn.[^ref1]
 
-一般来说，如果每个关键字的值域都不大，就可以使用 [计数排序](./counting-sort.md) 作为内层排序，此时的复杂度为 $O(kn+\sum\limits_{i=1}^k w_i)$，其中 $w_i$ 为第 $i$ 关键字的值域大小．如果关键字值域很大，就可以直接使用基于比较的 $O(nk\log n)$ 排序而无需使用基数排序了．
+Nếu mỗi khóa có giá trị nhỏ, có thể dùng [sắp xếp đếm](./counting-sort.md) cho mỗi bước, khi đó độ phức tạp là $O(kn+\sum\limits_{i=1}^k w_i)$, với $w_i$ là miền giá trị của khóa $i$. Nếu khóa có miền giá trị lớn, có thể dùng sắp xếp so sánh $O(nk\log n)$.
 
-### 空间复杂度
+### Độ phức tạp bộ nhớ
 
-MSD 基数排序和 LSD 基数排序的空间复杂度都为 $O(k+n)$．
+Cả MSD và LSD radix sort đều có độ phức tạp bộ nhớ $O(k+n)$.
 
-## 参考资料与注释
+## Tài liệu tham khảo & chú thích
 
 [^ref1]: Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, and Clifford Stein.*Introduction to Algorithms*(3rd ed.). MIT Press and McGraw-Hill, 2009. ISBN 978-0-262-03384-8. "8.3 Radix sort", pp. 199.

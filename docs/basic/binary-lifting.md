@@ -1,62 +1,60 @@
 author: Ir1d, ShadowsEpic, Fomalhauthmj, siger-young, MingqiHuang, Xeonacid, hsfzLZH1, orzAtalod, NachtgeistW
 
-本页面将简要介绍倍增法．
+Trang này sẽ giới thiệu ngắn gọn về phương pháp **bội số hóa** (Binary Lifting).
 
-## 定义
+## Định nghĩa
 
-倍增法（英语：binary lifting），顾名思义就是「成倍增长」．我们在进行递推时，如果状态空间很大，通常的线性递推无法满足时间与空间复杂度的要求，那么我们可以通过成倍增长的方式，只递推状态空间中在 $k$ 的整数次幂位置上的值作为代表．当需要其他位置上的值时，我们通过「任意整数可以表示成若干个 $k$ 的次幂项的和」这一性质，使用之前求出的代表值拼成所需的值．所以使用倍增算法也要求我们递推的问题的状态空间关于 $k$ 的次幂具有可划分性．通常情况下 $k$ 取 $2$．[^ref1]
+**Bội số hóa** (tiếng Anh: binary lifting) là một kỹ thuật "tăng theo bội số". Khi thực hiện truy hồi (hoặc truy vết trạng thái), nếu không gian trạng thái quá lớn, việc truy hồi tuyến tính thông thường sẽ không đáp ứng được yêu cầu về độ phức tạp thời gian và bộ nhớ. Khi đó, ta có thể chỉ truy hồi tại các vị trí là lũy thừa nguyên của $k$ (thường là $k=2$), tức là chỉ lưu trạng thái ở các mốc $k^0, k^1, k^2, \ldots$. Khi cần truy vấn giá trị ở vị trí bất kỳ, ta tận dụng tính chất "mọi số nguyên đều có thể biểu diễn thành tổng các lũy thừa của $k$" để ghép các trạng thái đã lưu lại. Do đó, bài toán cần có tính chất chia nhỏ được theo lũy thừa của $k$. Thông thường, $k=2$ là phổ biến nhất.[^ref1]
 
-这个方法在很多算法中均有应用，其中最常用的是 RMQ 问题和求 [LCA（最近公共祖先）](../graph/lca.md)．
+Phương pháp này được ứng dụng rộng rãi trong nhiều bài toán, phổ biến nhất là bài toán RMQ và tìm [LCA (tổ tiên chung gần nhất)](../graph/lca.md).
 
-## 应用
+## Ứng dụng
 
-### RMQ 问题
+### Bài toán RMQ
 
-参见：[RMQ 专题](../topic/rmq.md)
+Xem thêm: [Chuyên đề RMQ](../topic/rmq.md)
 
-RMQ 是 Range Maximum/Minimum Query 的缩写，表示区间最大（最小）值．使用倍增思想解决 RMQ 问题的方法是 [ST 表](../ds/sparse-table.md)．
+RMQ là viết tắt của Range Maximum/Minimum Query, tức là truy vấn giá trị lớn nhất (nhỏ nhất) trên một đoạn. Phương pháp giải RMQ bằng ý tưởng bội số hóa chính là [Sparse Table (ST bảng)](../ds/sparse-table.md).
 
-### 树上倍增求 LCA
+### Tìm LCA trên cây bằng bội số hóa
 
-参见：[最近公共祖先](../graph/lca.md)
+Xem thêm: [Tổ tiên chung gần nhất](../graph/lca.md)
 
-## 例题
+## Bài tập ví dụ
 
-### 题 1
+### Bài 1
 
-???+ note "例题"
-    如何用尽可能少的砝码称量出 $[0,31]$ 之间的所有重量？（只能在天平的一端放砝码）
+???+ note "Bài tập"
+    Làm thế nào để dùng ít quả cân nhất để cân được tất cả các trọng lượng trong đoạn $[0,31]$? (Chỉ được đặt quả cân ở một bên cân)
 
-??? note "解题思路"
-    答案是使用 1 2 4 8 16 这五个砝码，可以称量出 $[0,31]$ 之间的所有重量．同样，如果要称量 $[0,127]$ 之间的所有重量，可以使用 1 2 4 8 16 32 64 这七个砝码．每次我们都选择 2 的整次幂作砝码的重量，就可以使用极少的砝码个数量出任意我们所需要的重量．
-    
-    为什么说是极少呢？因为如果我们要量出 $[0,1023]$ 之间的所有重量，只需要 10 个砝码，需要量出 $[0,1048575]$ 之间的所有重量，只需要 20 个．如果我们的目标重量翻倍，砝码个数只需要增加 1．这叫「对数级」的增长速度，因为砝码的所需个数与目标重量的范围的对数成正比．
+??? note "Hướng dẫn giải"
+    Đáp án là dùng các quả cân có trọng lượng 1, 2, 4, 8, 16, tổng cộng 5 quả cân, có thể cân được mọi trọng lượng từ $[0,31]$. Tương tự, nếu muốn cân các trọng lượng từ $[0,127]$, chỉ cần 7 quả cân: 1, 2, 4, 8, 16, 32, 64. Mỗi lần ta chọn trọng lượng là lũy thừa của 2, như vậy chỉ cần rất ít quả cân để cân được mọi trọng lượng cần thiết.
 
-### 题 2
+    Tại sao lại là "rất ít"? Vì nếu muốn cân các trọng lượng từ $[0,1023]$, chỉ cần 10 quả cân; từ $[0,1048575]$ chỉ cần 20 quả cân. Nếu phạm vi trọng lượng cần cân tăng gấp đôi, số quả cân chỉ tăng thêm 1. Đây gọi là tốc độ tăng "logarit", vì số quả cân tỉ lệ với logarit của phạm vi trọng lượng cần cân.
 
-???+ note "例题"
-    给出一个长度为 $n$ 的环和一个常数 $k$，每次会从第 $i$ 个点跳到第 $(i+k)\bmod n+1$ 个点，总共跳了 $m$ 次．每个点都有一个权值，记为 $a_i$，求 $m$ 次跳跃的起点的权值之和对 $10^9+7$ 取模的结果．
-    
-    数据范围：$1\leq n\leq 10^6$，$1\leq m\leq 10^{18}$，$1\leq k\leq n$，$0\le a_i\le 10^9$．
+### Bài 2
 
-??? note "解题思路"
-    这里显然不能暴力模拟跳 $m$ 次．因为 $m$ 最大可到 $10^{18}$ 级别，如果暴力模拟的话，时间承受不住．
-    
-    所以就需要进行一些预处理，提前整合一些信息，以便于在查询的时候更快得出结果．如果记录下来每一个可能的跳跃次数的结果的话，不论是时间还是空间都难以承受．
-    
-    那么应该如何预处理呢？看看第一道例题．有思路了吗？
-    
-    回到本题．我们要预处理一些信息，然后用预处理的信息尽量快的整合出答案．同时预处理的信息也不能太多．所以可以预处理出以 2 的整次幂为单位的信息，这样的话在预处理的时候只需要处理少量信息，在整合的时候也不需要大费周章．
-    
-    在这题上，就是我们预处理出从每个点开始跳 1、2、4、8 等等步之后的结果（所处点和点权和），然后如果要跳 13 步，只需要跳 1+4+8 步就好了．也就是说先在起始点跳 1 步，然后再在跳了之后的终点跳 4 步，再接着跳 8 步，同时统计一下预先处理好的点权和，就可以知道跳 13 步的点权和了．
-    
-    对于每一个点开始的 $2^i$ 步，记录一个 `go[i][x]` 表示第 $x$ 个点跳 $2^i$ 步之后的终点，而 `sum[i][x]` 表示第 $x$ 个点跳 $2^i$ 步之后能获得的点权和．预处理的时候，开两重循环，对于跳 $2^i$ 步的信息，我们可以看作是先跳了 $2^{i-1}$ 步，再跳 $2^{i-1}$ 步，因为显然有 $2^{i-1}+2^{i-1}=2^i$．即我们有 `sum[i][x] = sum[i-1][x]+sum[i-1][go[i-1][x]]`，且 `go[i][x] = go[i-1][go[i-1][x]]`．
-    
-    当然还有一些实现细节需要注意．为了保证统计的时候不重不漏，我们一般预处理出「左闭右开」的点权和．亦即，对于跳 1 步的情况，我们只记录该点的点权和；对于跳 2 步的情况，我们只记录该点及其下一个点的点权和．相当于总是不将终点的点权和计入 sum．这样在预处理的时候，只需要将两部分的点权和直接相加就可以了，不需要担心第一段的终点和第二段的起点会被重复计算．
-    
-    这题的 $m\leq 10^{18}$，虽然看似恐怖，但是实际上只需要预处理出 $65$ 以内的 $i$，就可以轻松解决，比起暴力枚举快了很多．用行话讲，这个做法的 [时间复杂度](./complexity.md) 是预处理 $\Theta(n\log m)$，查询每次 $\Theta(\log m)$．
+???+ note "Bài tập"
+    Cho một vòng tròn gồm $n$ điểm và một hằng số $k$. Mỗi lần nhảy từ điểm $i$ sang điểm $((i+k)\bmod n)+1$. Tổng cộng thực hiện $m$ lần nhảy. Mỗi điểm có trọng số $a_i$. Hãy tính tổng trọng số của các điểm xuất phát trong $m$ lần nhảy, lấy kết quả theo modulo $10^9+7$.
 
-??? note "参考代码"
+    Giới hạn: $1\leq n\leq 10^6$, $1\leq m\leq 10^{18}$, $1\leq k\leq n$, $0\le a_i\le 10^9$.
+
+??? note "Hướng dẫn giải"
+    Rõ ràng không thể mô phỏng từng bước nhảy vì $m$ có thể lên tới $10^{18}$, quá lớn để duyệt trâu.
+
+    Do đó, cần tiền xử lý, tổng hợp trước một số thông tin để khi truy vấn có thể trả lời nhanh hơn. Nếu lưu kết quả cho mọi số bước nhảy có thể thì cả thời gian lẫn bộ nhớ đều không chịu nổi.
+
+    Vậy nên tiền xử lý như thế nào? Hãy xem lại bài tập 1. Bạn đã có ý tưởng chưa?
+
+    Quay lại bài này. Ta sẽ tiền xử lý một số thông tin, sau đó dùng các thông tin này để ghép thành đáp án. Thông tin tiền xử lý cũng không nên quá nhiều. Cách làm là tiền xử lý các kết quả nhảy $2^i$ bước từ mỗi điểm (vị trí đến và tổng trọng số), như vậy chỉ cần xử lý một lượng nhỏ thông tin, và khi ghép đáp án cũng rất nhanh.
+
+    Cụ thể, với mỗi điểm, lưu `go[i][x]` là điểm đến sau khi nhảy $2^i$ bước từ điểm $x$, và `sum[i][x]` là tổng trọng số thu được sau khi nhảy $2^i$ bước từ $x$. Khi tiền xử lý, dùng hai vòng lặp: với $2^i$ bước, coi như nhảy hai lần $2^{i-1}$ bước, tức là `sum[i][x] = sum[i-1][x]+sum[i-1][go[i-1][x]]`, và `go[i][x] = go[i-1][go[i-1][x]]`.
+
+    Cần chú ý một số chi tiết khi cài đặt. Để tránh tính trùng hoặc thiếu, thường sẽ tiền xử lý tổng trọng số theo kiểu "nửa mở" (tức là chỉ tính các điểm bắt đầu, không tính điểm kết thúc). Như vậy, khi cộng tổng, chỉ cần cộng trực tiếp hai đoạn mà không lo bị trùng.
+
+    Bài này $m\leq 10^{18}$, nhìn thì lớn nhưng thực ra chỉ cần tiền xử lý tới $i=65$ là đủ, nhanh hơn rất nhiều so với duyệt trâu. Độ phức tạp thời gian là tiền xử lý $\Theta(n\log m)$, mỗi truy vấn $\Theta(\log m)$.
+
+??? note "Code tham khảo"
     ```cpp
     #include <cstdio>
     using namespace std;
@@ -64,13 +62,13 @@ RMQ 是 Range Maximum/Minimum Query 的缩写，表示区间最大（最小）�
     constexpr int mod = 1000000007;
     
     int modadd(int a, int b) {
-      if (a + b >= mod) return a + b - mod;  // 减法代替取模，加快运算
+      if (a + b >= mod) return a + b - mod;  // Dùng phép trừ thay cho chia lấy dư để tăng tốc
       return a + b;
     }
     
     int vi[1000005];
     
-    int go[75][1000005];  // 将数组稍微开大以避免越界，小的一维尽量定义在前面
+    int go[75][1000005];  // Mở rộng mảng một chút để tránh truy cập ngoài, ưu tiên khai báo chiều nhỏ trước
     int sum[75][1000005];
     
     int main() {
@@ -85,7 +83,7 @@ RMQ 是 Range Maximum/Minimum Query 的缩写，表示区间最大（最小）�
         sum[0][i] = vi[i];
       }
     
-      int logn = 31 - __builtin_clz(n);  // 一个快捷的取对数的方法
+      int logn = 31 - __builtin_clz(n);  // Cách nhanh để lấy logarit cơ số 2 của n
       for (int i = 1; i <= logn; ++i) {
         for (int j = 1; j <= n; ++j) {
           go[i][j] = go[i - 1][go[i - 1][j]];
@@ -99,10 +97,10 @@ RMQ 是 Range Maximum/Minimum Query 的缩写，表示区间最大（最小）�
       int ans = 0;
       int curx = 1;
       for (int i = 0; m; ++i) {
-        if (m & (1ll << i)) {  // 参见位运算的相关内容，意为 m 的第 i 位是否为 1
+        if (m & (1ll << i)) {  // Xem lại phần toán tử bit, kiểm tra bit thứ i của m có bằng 1 không
           ans = modadd(ans, sum[i][curx]);
           curx = go[i][curx];
-          m ^= 1ll << i;  // 将第 i 位置零
+          m ^= 1ll << i;  // Đặt bit thứ i về 0
         }
       }
     
@@ -110,4 +108,4 @@ RMQ 是 Range Maximum/Minimum Query 的缩写，表示区间最大（最小）�
     }
     ```
 
-[^ref1]: 引用自李煜东《算法竞赛进阶指南》0x06. 倍增一节
+[^ref1]: Trích từ "Hướng dẫn giải thuật thi đấu" của Lý Dục Đông, mục 0x06. Bội số hóa

@@ -1,89 +1,89 @@
 author: linehk, persdre
 
-时间复杂度和空间复杂度是衡量一个算法效率的重要标准．
+Độ phức tạp thời gian và độ phức tạp bộ nhớ là hai tiêu chí quan trọng để đánh giá hiệu quả của một thuật toán.
 
-## 基本操作数
+## Số phép toán cơ bản
 
-同一个算法在不同的计算机上运行的速度会有一定的差别，并且实际运行速度难以在理论上进行计算，实际去测量又比较麻烦，所以我们通常考虑的不是算法运行的实际用时，而是算法运行所需要进行的基本操作的数量．
+Cùng một thuật toán khi chạy trên các máy tính khác nhau có thể có tốc độ khác nhau, và thời gian thực tế cũng khó xác định chính xác về mặt lý thuyết, việc đo đạc thực tế lại khá phiền phức. Vì vậy, thông thường ta không xét thời gian thực tế mà xét số lượng phép toán cơ bản mà thuật toán thực hiện.
 
-在普通的计算机上，加减乘除、访问变量（基本数据类型的变量，下同）、给变量赋值等都可以看作基本操作．
+Trên máy tính thông thường, các phép cộng, trừ, nhân, chia, truy cập biến (biến kiểu dữ liệu cơ bản), gán giá trị cho biến... đều được coi là phép toán cơ bản.
 
-对基本操作的计数或是估测可以作为评判算法用时的指标．
+Việc đếm hoặc ước lượng số phép toán cơ bản có thể dùng làm chỉ số đánh giá thời gian chạy của thuật toán.
 
-## 时间复杂度
+## Độ phức tạp thời gian
 
-### 定义
+### Định nghĩa
 
-衡量一个算法的快慢，一定要考虑数据规模的大小．所谓数据规模，一般指输入的数字个数、输入中给出的图的点数与边数等等．一般来说，数据规模越大，算法的用时就越长．而在算法竞赛中，我们衡量一个算法的效率时，最重要的不是看它在某个数据规模下的用时，而是看它的用时随数据规模而增长的趋势，即 **时间复杂度**．
+Để đánh giá tốc độ của một thuật toán, nhất định phải xét đến kích thước dữ liệu. Kích thước dữ liệu thường là số lượng phần tử đầu vào, số đỉnh/số cạnh của đồ thị, v.v. Nói chung, dữ liệu càng lớn thì thời gian chạy càng lâu. Trong các kỳ thi thuật toán, điều quan trọng nhất không phải là thời gian chạy với một kích thước cụ thể, mà là xu hướng tăng thời gian chạy khi kích thước dữ liệu tăng, tức là **độ phức tạp thời gian**.
 
-### 引入
+### Dẫn nhập
 
-考虑用时随数据规模变化的趋势的主要原因有以下几点：
+Việc xét xu hướng thay đổi thời gian chạy theo kích thước dữ liệu có các lý do sau:
 
-1.  现代计算机每秒可以处理数亿乃至更多次基本运算，因此我们处理的数据规模通常很大．如果算法 A 在规模为 $n$ 的数据上用时为 $100n$ 而算法 B 在规模为 $n$ 的数据上用时为 $n^2$，在数据规模小于 $100$ 时算法 B 用时更短，但在一秒钟内算法 A 可以处理数百万规模的数据，而算法 B 只能处理数万规模的数据．在允许算法执行时间更久时，时间复杂度对可处理数据规模的影响就会更加明显，远大于同一数据规模下用时的影响．
-2.  我们采用基本操作数来表示算法的用时，而不同的基本操作实际用时是不同的，例如加减法的用时远小于除法的用时．计算时间复杂度而忽略不同基本操作之间的区别以及一次基本操作与十次基本操作之间的区别，可以消除基本操作间用时不同的影响．
+1.  Máy tính hiện đại có thể thực hiện hàng trăm triệu phép toán cơ bản mỗi giây, nên dữ liệu thường rất lớn. Nếu thuật toán A với dữ liệu kích thước $n$ chạy mất $100n$ đơn vị thời gian, còn thuật toán B chạy mất $n^2$, thì với $n<100$ thuật toán B nhanh hơn, nhưng với $n$ lớn, thuật toán A xử lý được hàng triệu dữ liệu mỗi giây, còn B chỉ xử lý được vài chục nghìn. Khi cho phép chạy lâu hơn, ảnh hưởng của độ phức tạp thời gian đến quy mô dữ liệu xử lý được sẽ lớn hơn nhiều so với ảnh hưởng của thời gian chạy ở một kích thước cụ thể.
+2.  Ta dùng số phép toán cơ bản để biểu diễn thời gian chạy, nhưng thực tế mỗi phép toán lại có thời gian khác nhau (cộng/trừ nhanh hơn chia). Khi tính độ phức tạp thời gian, ta bỏ qua sự khác biệt này cũng như sự khác biệt giữa 1 phép toán và 10 phép toán, giúp loại bỏ ảnh hưởng của các phép toán khác nhau.
 
-当然，算法的运行用时并非完全由输入规模决定，而是也与输入的内容相关．所以，时间复杂度又分为几种，例如：
+Tất nhiên, thời gian chạy không chỉ phụ thuộc vào kích thước đầu vào mà còn phụ thuộc vào nội dung đầu vào. Vì vậy, độ phức tạp thời gian lại chia thành các loại như:
 
-1.  最坏时间复杂度，即每个输入规模下用时最长的输入对应的时间复杂度．在算法竞赛中，由于输入可以在给定的数据范围内任意给定，我们为保证算法能够通过某个数据范围内的任何数据，一般考虑最坏时间复杂度．
-2.  平均（期望）时间复杂度，即每个输入规模下所有可能输入对应用时的平均值的复杂度（随机输入下期望用时的复杂度）．
+1.  Độ phức tạp thời gian **tệ nhất**: là độ phức tạp với trường hợp đầu vào khiến thuật toán chạy lâu nhất. Trong các kỳ thi, vì dữ liệu có thể được cho tùy ý trong phạm vi cho phép, nên thường xét trường hợp tệ nhất để đảm bảo thuật toán chạy đúng với mọi dữ liệu.
+2.  Độ phức tạp thời gian **trung bình** (kỳ vọng): là độ phức tạp trung bình trên tất cả các đầu vào cùng kích thước (hoặc kỳ vọng với đầu vào ngẫu nhiên).
 
-所谓「用时随数据规模而增长的趋势」是一个模糊的概念，我们需要借助下文所介绍的 **渐近符号** 来形式化地表示时间复杂度．
+Khái niệm "xu hướng tăng thời gian chạy theo kích thước dữ liệu" là một khái niệm mơ hồ, cần dùng **ký hiệu tiệm cận** để biểu diễn một cách hình thức.
 
-## 渐近符号的定义
+## Định nghĩa ký hiệu tiệm cận
 
-渐近符号是函数的阶的规范描述．简单来说，渐近符号忽略了一个函数中增长较慢的部分以及各项的系数（在时间复杂度相关分析中，系数一般被称作「常数」），而保留了可以用来表明该函数增长趋势的重要部分．
+Ký hiệu tiệm cận là cách mô tả bậc của hàm số một cách chuẩn hóa. Nói đơn giản, ký hiệu tiệm cận bỏ qua các phần tăng chậm và các hệ số (trong phân tích độ phức tạp, hệ số thường gọi là "hằng số"), chỉ giữ lại phần quan trọng thể hiện xu hướng tăng của hàm.
 
-一个简单的记忆方法是，含等于（非严格）用大写，不含等于（严格）用小写，相等是 $\Theta$，小于是 $O$，大于是 $\Omega$．大 $O$ 和小 $o$ 原本是希腊字母 Omicron，由于字形相同，也可以理解为拉丁字母的大 $O$ 和小 $o$．
+Một mẹo nhớ đơn giản: ký hiệu có dấu bằng (không nghiêm ngặt) dùng chữ hoa, không có dấu bằng (nghiêm ngặt) dùng chữ thường. Bằng nhau là $\Theta$, nhỏ hơn là $O$, lớn hơn là $\Omega$. Chữ $O$ và $o$ vốn là chữ Hy Lạp Omicron, nhưng do giống chữ Latin nên cũng có thể hiểu là chữ O hoa và o thường.
 
-在英文中，词根「-micro-」和「-mega-」常用于表示 10 的负六次方（百万分之一）和六次方（百万），也表示「小」和「大」．小和大也是希腊字母 Omicron 和 Omega 常表示的含义．
+Trong tiếng Anh, tiền tố "-micro-" và "-mega-" thường dùng để chỉ $10^{-6}$ (một phần triệu) và $10^6$ (một triệu), cũng có nghĩa là "nhỏ" và "lớn". Chữ Omicron và Omega trong tiếng Hy Lạp cũng mang nghĩa nhỏ và lớn.
 
-### 大 Θ 符号
+### Ký hiệu $\Theta$ (Theta lớn)
 
-对于函数 $f(n)$ 和 $g(n)$，$f(n)=\Theta(g(n))$，当且仅当 $\exists c_1,c_2,n_0>0$，使得 $\forall n \ge n_0, 0\le c_1\cdot g(n)\le f(n) \le c_2\cdot g(n)$．
+Với hai hàm $f(n)$ và $g(n)$, $f(n)=\Theta(g(n))$ khi và chỉ khi tồn tại $c_1,c_2,n_0>0$ sao cho $\forall n \ge n_0, 0\le c_1\cdot g(n)\le f(n) \le c_2\cdot g(n)$.
 
-也就是说，如果函数 $f(n)=\Theta(g(n))$，那么我们能找到两个正数 $c_1, c_2$ 使得 $f(n)$ 被 $c_1\cdot g(n)$ 和 $c_2\cdot g(n)$ 夹在中间．
+Nói cách khác, nếu $f(n)=\Theta(g(n))$, ta có thể tìm được hai số dương $c_1, c_2$ sao cho $f(n)$ bị kẹp giữa $c_1\cdot g(n)$ và $c_2\cdot g(n)$.
 
-例如，$3n^2+5n-3=\Theta(n^2)$, 这里的 $c_1, c_2, n_0$ 可以分别是 $2, 4, 100$．$n\sqrt {n} + n{\log^5 n} + m{\log m} +nm=\Theta(n\sqrt {n} + m{\log m} + nm)$，这里的 $c_1, c_2, n_0$ 可以分别是 $1, 2, 100$．
+Ví dụ, $3n^2+5n-3=\Theta(n^2)$, ở đây $c_1, c_2, n_0$ có thể lần lượt là $2, 4, 100$. $n\sqrt {n} + n{\log^5 n} + m{\log m} +nm=\Theta(n\sqrt {n} + m{\log m} + nm)$, ở đây $c_1, c_2, n_0$ có thể lần lượt là $1, 2, 100$.
 
-### 大 O 符号
+### Ký hiệu $O$ (O lớn)
 
-$\Theta$ 符号同时给了我们一个函数的上下界，如果只知道一个函数的渐近上界而不知道其渐近下界，可以使用 $O$ 符号．$f(n)=O(g(n))$，当且仅当 $\exists c,n_0$，使得 $\forall n \ge n_0,0\le f(n)\le c\cdot g(n)$．
+Ký hiệu $\Theta$ cho cả cận trên và dưới, nếu chỉ biết cận trên mà không biết cận dưới, dùng ký hiệu $O$. $f(n)=O(g(n))$ khi và chỉ khi tồn tại $c,n_0$ sao cho $\forall n \ge n_0,0\le f(n)\le c\cdot g(n)$.
 
-研究时间复杂度时通常会使用 $O$ 符号，因为我们关注的通常是程序用时的上界，而不关心其用时的下界．
+Khi phân tích độ phức tạp thời gian, thường dùng ký hiệu $O$ vì ta quan tâm đến cận trên, không quan tâm đến cận dưới.
 
-需要注意的是，这里的「上界」和「下界」是对于函数的变化趋势而言的，而不是对算法而言的．算法用时的上界对应的是「最坏时间复杂度」而非大 $O$ 记号．所以，使用 $\Theta$ 记号表示最坏时间复杂度是完全可行的，甚至可以说 $\Theta$ 比 $O$ 更加精确，而使用 $O$ 记号的主要原因，一是我们有时只能证明时间复杂度的上界而无法证明其下界（这种情况一般出现在较为复杂的算法以及复杂度分析），二是 $O$ 在电脑上输入更方便一些．
+Lưu ý, "cận trên" và "cận dưới" ở đây là về xu hướng của hàm, không phải về thuật toán. Cận trên thời gian chạy của thuật toán là "độ phức tạp thời gian tệ nhất", không phải ký hiệu $O$. Do đó, có thể dùng ký hiệu $\Theta$ để biểu diễn độ phức tạp thời gian tệ nhất, thậm chí $\Theta$ còn chính xác hơn. Lý do chủ yếu dùng $O$ là đôi khi chỉ chứng minh được cận trên mà không chứng minh được cận dưới (thường gặp ở các thuật toán/phân tích phức tạp), và $O$ dễ gõ hơn.
 
-### 大 Ω 符号
+### Ký hiệu $\Omega$ (Omega lớn)
 
-同样的，我们使用 $\Omega$ 符号来描述一个函数的渐近下界．$f(n)=\Omega(g(n))$，当且仅当 $\exists c,n_0$，使得 $\forall n \ge n_0,0\le c\cdot g(n)\le f(n)$．
+Tương tự, ký hiệu $\Omega$ dùng để mô tả cận dưới tiệm cận. $f(n)=\Omega(g(n))$ khi và chỉ khi tồn tại $c,n_0$ sao cho $\forall n \ge n_0,0\le c\cdot g(n)\le f(n)$.
 
-### 小 o 符号
+### Ký hiệu $o$ (o nhỏ)
 
-如果说 $O$ 符号相当于小于等于号，那么 $o$ 符号就相当于小于号．
+Nếu $O$ tương ứng với dấu nhỏ hơn hoặc bằng, thì $o$ tương ứng với dấu nhỏ hơn.
 
-小 $o$ 符号大量应用于数学分析中，函数在某点处的泰勒展开式拥有皮亚诺余项，使用小 $o$ 符号表示严格小于，从而进行等价无穷小的渐近分析．
+Ký hiệu $o$ được dùng nhiều trong giải tích, ví dụ trong khai triển Taylor có phần dư Peano, dùng $o$ để biểu diễn "nhỏ hơn hẳn", phục vụ cho phân tích tiệm cận.
 
-$f(n)=o(g(n))$，当且仅当对于任意给定的正数 $c$，$\exists n_0$，使得 $\forall n \ge n_0,0\le f(n)< c\cdot g(n)$．
+$f(n)=o(g(n))$ khi và chỉ khi với mọi số dương $c$, tồn tại $n_0$ sao cho $\forall n \ge n_0,0\le f(n)< c\cdot g(n)$.
 
-### 小 ω 符号
+### Ký hiệu $\omega$ (omega nhỏ)
 
-如果说 $\Omega$ 符号相当于大于等于号，那么 $\omega$ 符号就相当于大于号．
+Nếu $\Omega$ tương ứng với dấu lớn hơn hoặc bằng, thì $\omega$ tương ứng với dấu lớn hơn.
 
-$f(n)=\omega(g(n))$，当且仅当对于任意给定的正数 $c$，$\exists n_0$，使得 $\forall n \ge n_0,0\le c\cdot g(n)< f(n)$．
+$f(n)=\omega(g(n))$ khi và chỉ khi với mọi số dương $c$, tồn tại $n_0$ sao cho $\forall n \ge n_0,0\le c\cdot g(n)< f(n)$.
 
 ![](images/order.png)
 
-### 常见性质
+### Một số tính chất thường gặp
 
 -   $f(n) = \Theta(g(n))\iff f(n)=O(g(n))\land f(n)=\Omega(g(n))$
 -   $f_1(n) + f_2(n) = O(\max(f_1(n), f_2(n)))$
 -   $f_1(n) \times f_2(n) = O(f_1(n) \times f_2(n))$
--   $\forall a \neq 1, \log_a{n} = O(\log_2 n)$．由换底公式可以得知，任何对数函数无论底数为何，都具有相同的增长率，因此渐近时间复杂度中对数的底数一般省略不写．
+-   $\forall a \neq 1, \log_a{n} = O(\log_2 n)$. Theo công thức đổi cơ số, mọi hàm logarit đều có tốc độ tăng tương tự, nên khi viết độ phức tạp thường bỏ qua cơ số log.
 
-## 简单的时间复杂度计算的例子
+## Ví dụ tính độ phức tạp thời gian đơn giản
 
-### `for` 循环
+### Vòng lặp `for`
 
 === "C++"
     ```cpp
@@ -122,15 +122,15 @@ $f(n)=\omega(g(n))$，当且仅当对于任意给定的正数 $c$，$\exists n_0
     }
     ```
 
-如果以输入的数值 $n$ 和 $m$ 的大小作为数据规模，则上面这段代码的时间复杂度为 $\Theta(n^2m)$．
+Nếu coi $n$ và $m$ là kích thước dữ liệu, đoạn code trên có độ phức tạp thời gian là $\Theta(n^2m)$.
 
 ### DFS
 
-在对一张 $n$ 个点 $m$ 条边的图进行 [DFS](../graph/dfs.md) 时，由于每个节点和每条边都只会被访问常数次，复杂度为 $\Theta(n+m)$．
+Khi duyệt [DFS](../graph/dfs.md) trên đồ thị $n$ đỉnh $m$ cạnh, mỗi đỉnh và mỗi cạnh chỉ được thăm một số lần hằng số, nên độ phức tạp là $\Theta(n+m)$.
 
-## 哪些量是常量？
+## Những đại lượng nào là hằng số?
 
-当我们要进行若干次操作时，如何判断这若干次操作是否影响时间复杂度呢？例如：
+Khi thực hiện một số thao tác nhất định, làm sao biết các thao tác đó có ảnh hưởng đến độ phức tạp thời gian không? Ví dụ:
 
 === "C++"
     ```cpp
@@ -155,66 +155,67 @@ $f(n)=\omega(g(n))$，当且仅当对于任意给定的正数 $c$，$\exists n_0
     }
     ```
 
-如果 $N$ 的大小不被看作输入规模，那么这段代码的时间复杂度就是 $O(1)$．
+Nếu $N$ không được coi là kích thước đầu vào, thì đoạn code trên có độ phức tạp $O(1)$.
 
-进行时间复杂度计算时，哪些变量被视作输入规模是很重要的，而所有和输入规模无关的量都被视作常量，计算复杂度时可当作 $1$ 来处理．
+Khi tính độ phức tạp, việc xác định biến nào là kích thước đầu vào rất quan trọng. Mọi đại lượng không phụ thuộc vào kích thước đầu vào đều coi là hằng số, khi tính độ phức tạp có thể coi là $1$.
 
-需要注意的是，在进行时间复杂度相关的理论性讨论时，「算法能够解决任何规模的问题」是一个基本假设（当然，在实际中，由于时间和存储空间有限，无法解决规模过大的问题）．因此，能在常量时间内解决数据规模有限的问题（例如，对于数据范围内的每个可能输入预先计算出答案）并不能使一个算法的时间复杂度变为 $O(1)$．
+Lưu ý, trong các thảo luận lý thuyết về độ phức tạp, giả định "thuật toán giải được mọi kích thước dữ liệu" là cơ bản (dù thực tế bộ nhớ/thời gian có hạn). Do đó, việc tiền xử lý đáp án cho mọi trường hợp nhỏ không làm độ phức tạp thành $O(1)$.
 
-## 主定理 (Master Theorem)
+## Định lý chính (Master Theorem)
 
-我们可以使用 Master Theorem 来快速求得关于递归算法的复杂度．
-Master Theorem 递推关系式如下
+Có thể dùng Master Theorem để nhanh chóng tính độ phức tạp của các thuật toán đệ quy.
+
+Công thức truy hồi Master Theorem:
 
 $$
 T(n) = a T\left(\frac{n}{b}\right)+f(n)\qquad \forall n > b
 $$
 
-那么
+Khi đó,
 
 $$
 T(n) = \begin{cases}\Theta(n^{\log_b a}) & f(n) = O(n^{\log_b (a)-\epsilon}),\epsilon > 0 \\ \Theta(f(n)) & f(n) = \Omega(n^{\log_b (a)+\epsilon}),\epsilon\ge 0\\ \Theta(n^{\log_b a}\log^{k+1} n) & f(n)=\Theta(n^{\log_b a}\log^k n),k\ge 0 \end{cases}
 $$
 
-需要注意的是，这里的第二种情况还需要满足 regularity condition, 即 $a f(n/b) \leq c f(n)$，for some constant $c < 1$ and sufficiently large $n$．
+Lưu ý, trường hợp thứ hai cần thỏa mãn điều kiện regularity: $a f(n/b) \leq c f(n)$ với một hằng số $c < 1$ và $n$ đủ lớn.
 
-证明思路是是将规模为 $n$ 的问题，分解为 $a$ 个规模为 $(\frac{n}{b})$ 的问题，然后依次合并，直到合并到最高层．每一次合并子问题，都需要花费 $f(n)$ 的时间．
+Ý tưởng chứng minh là chia bài toán kích thước $n$ thành $a$ bài toán kích thước $n/b$, rồi hợp lại, mỗi lần hợp tốn $f(n)$ thời gian.
 
-??? note "证明"
-    依据上文提到的证明思路，具体证明过程如下
+??? note "Chứng minh"
+    Theo ý tưởng trên, chứng minh cụ thể như sau:
     
-    对于第 $0$ 层（最高层），合并子问题需要花费 $f(n)$ 的时间
+    Ở tầng $0$ (tầng cao nhất), hợp các bài toán con tốn $f(n)$ thời gian.
     
-    对于第 $1$ 层（第一次划分出来的子问题），共有 $a$ 个子问题，每个子问题合并需要花费 $f\left(\frac{n}{b}\right)$ 的时间，所以合并总共要花费 $a f\left(\frac{n}{b}\right)$ 的时间．
+    Ở tầng $1$ (sau khi chia lần đầu), có $a$ bài toán con, mỗi bài hợp tốn $f\left(\frac{n}{b}\right)$, tổng cộng $a f\left(\frac{n}{b}\right)$.
     
-    层层递推，我们可以写出类推树如下：![](./images/master-theorem-proof.svg)
+    Lặp lại, ta có cây như sau: ![](./images/master-theorem-proof.svg)
     
-    这棵树的高度为 ${\log_b n}$，共有 $n^{\log_b a}$ 个叶子，从而 $T(n) = \Theta(n^{\log_b a}) + g(n)$，其中 $g(n) = \sum_{j = 0}^{\log_{b}{n - 1}} a^{j} f(n / b^{j})$．
+    Cây này cao ${\log_b n}$, có $n^{\log_b a}$ lá, nên $T(n) = \Theta(n^{\log_b a}) + g(n)$, với $g(n) = \sum_{j = 0}^{\log_{b}{n - 1}} a^{j} f(n / b^{j})$.
     
-    针对于第一种情况：$f(n) = O(n^{\log_b a-\epsilon})$，因此 $g(n) = O(n^{\log_b a})$．
+    Trường hợp 1: $f(n) = O(n^{\log_b a-\epsilon})$ nên $g(n) = O(n^{\log_b a})$.
     
-    对于第二种情况而言：首先 $g(n) = \Omega(f(n))$，又因为 $a f(\dfrac{n}{b}) \leq c f(n)$，只要 $c$ 的取值是一个足够小的正数，且 $n$ 的取值足够大，因此可以推导出：$g(n) = O(f(n)$)．两侧夹逼可以得出，$g(n) = \Theta(f(n))$．
+    Trường hợp 2: $g(n) = \Omega(f(n))$, lại có $a f(\dfrac{n}{b}) \leq c f(n)$ với $c$ đủ nhỏ và $n$ đủ lớn, nên $g(n) = O(f(n))$. Hai phía kẹp lại, $g(n) = \Theta(f(n))$.
     
-    而对于第三种情况：$f(n) = \Theta(n^{\log_b a})$，因此 $g(n) = O(n^{\log_b a} {\log n})$．$T(n)$ 的结果可在 $g(n)$ 得出后显然得到．
+    Trường hợp 3: $f(n) = \Theta(n^{\log_b a})$ nên $g(n) = O(n^{\log_b a} {\log n})$. Kết quả $T(n)$ hiển nhiên.
 
-下面举几个例子来说明主定理如何使用．
+Ví dụ sử dụng Master Theorem:
 
-1.  $T(n) = 2T\left(\frac{n}{2}\right) + 1$，那么 $a=2, b=2, {\log_2 2} = 1$，那么 $\epsilon$ 可以取值在 $(0, 1]$ 之间，从而满足第一种情况，所以 $T(n) = \Theta(n)$．
+1.  $T(n) = 2T\left(\frac{n}{2}\right) + 1$, $a=2, b=2, {\log_2 2} = 1$, $\epsilon$ lấy $(0, 1]$, thỏa mãn trường hợp 1, $T(n) = \Theta(n)$.
 
-2.  $T(n) = T\left(\frac{n}{2}\right) + n$，那么 $a=1, b=2, {\log_2 1} = 0$，那么 $\epsilon$ 可以取值在 $(0, 1]$ 之间，从而满足第二种情况，所以 $T(n) = \Theta(n)$．
+2.  $T(n) = T\left(\frac{n}{2}\right) + n$, $a=1, b=2, {\log_2 1} = 0$, $\epsilon$ lấy $(0, 1]$, thỏa mãn trường hợp 2, $T(n) = \Theta(n)$.
 
-3.  $T(n) = T\left(\frac{n}{2}\right) + {\log n}$，那么 $a=1, b=2, {\log_2 1}=0$，那么 $k$ 可以取值为 $1$，从而满足第三种情况，所以 $T(n) = \Theta(\log^2 n)$．
+3.  $T(n) = T\left(\frac{n}{2}\right) + {\log n}$, $a=1, b=2, {\log_2 1}=0$, $k=1$, thỏa mãn trường hợp 3, $T(n) = \Theta(\log^2 n)$.
 
-4.  $T(n) = T\left(\frac{n}{2}\right) + 1$，那么 $a=1, b=2, {\log_2 1} = 0$，那么 $k$ 可以取值为 $0$，从而满足第三种情况，所以 $T(n) = \Theta(\log n)$．
+4.  $T(n) = T\left(\frac{n}{2}\right) + 1$, $a=1, b=2, {\log_2 1} = 0$, $k=0$, thỏa mãn trường hợp 3, $T(n) = \Theta(\log n)$.
 
-## 均摊复杂度
+## Độ phức tạp trung bình (amortized)
 
-详情可见 [均摊复杂度](./amortized-analysis.md)．
+Xem chi tiết tại [Độ phức tạp trung bình](./amortized-analysis.md).
 
-## 空间复杂度
+## Độ phức tạp bộ nhớ
 
-类似地，算法所使用的空间随输入规模变化的趋势可以用 **空间复杂度** 来衡量．
+Tương tự, lượng bộ nhớ mà thuật toán sử dụng khi kích thước đầu vào thay đổi được gọi là **độ phức tạp bộ nhớ**.
 
-## 计算复杂性
+## Độ phức tạp tính toán
 
-本文主要从算法分析的角度对复杂度进行了介绍，如果有兴趣的话可以在 [计算复杂性](../misc/cc-basic.md) 进行更深入的了解．
+Bài này chủ yếu giới thiệu độ phức tạp từ góc độ phân tích thuật toán. Nếu muốn tìm hiểu sâu hơn, xem [Độ phức tạp tính toán](../misc/cc-basic.md).
