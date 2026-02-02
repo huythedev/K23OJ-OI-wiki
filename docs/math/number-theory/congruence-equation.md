@@ -1,181 +1,176 @@
 author: iamtwz, aofall, CCXXXI, CoelacanthusHex, Great-designer, Marcythm, Persdre, shuzhouliu, Tiphereth-A, Xeonacid
 
-## 定义
+## Định nghĩa
 
-???+ abstract "同余方程"
-    对正整数 $m$ 和一元整系数多项式 $f(x)=\sum_{i=0}^n a_ix^i$，其中未知数 $x\in\mathbf{Z}_m$，称形如
+???+ abstract "Phương trình đồng dư"
+    Với số nguyên dương $m$ và đa thức một biến hệ số nguyên $f(x)=\sum_{i=0}^n a_ix^i$, trong đó ẩn $x\in\mathbf{Z}_m$, ta gọi phương trình
     
     $$
     f(x)\equiv 0\pmod m\tag{1}
     $$
     
-    的方程为关于未知数 $x$ 的模 $m$ 的一元 **同余方程**（Congruence Equation）．
+    là **phương trình đồng dư** một ẩn modulo $m$ (Congruence Equation).
     
-    若 $a_n\not\equiv 0\pmod m$，则称上式为 $n$ 次同余方程．
+    Nếu $a_n\not\equiv 0\pmod m$ thì gọi là phương trình đồng dư bậc $n$.
     
-    类似可定义同余方程组．
+    Tương tự có thể định nghĩa hệ phương trình đồng dư.
 
-关于一次同余方程与方程组的相关内容请参见 [线性同余方程](./linear-equation.md) 与 [中国剩余定理](./crt.md)．
+Về phương trình đồng dư bậc nhất và hệ phương trình, xem [phương trình đồng dư tuyến tính](./linear-equation.md) và [định lý Trung Quốc](./crt.md).
 
-本文首先研究同余方程的可解性和解集结构，之后会简要介绍高次同余方程的解法．
+Bài viết trước hết nghiên cứu tính khả giải và cấu trúc nghiệm, sau đó giới thiệu ngắn gọn cách giải phương trình đồng dư bậc cao.
 
-由 [中国剩余定理](./crt.md) 可知，求解关于模合数 $m$ 的同余方程可转化为求解模素数幂次的情况．故以下只介绍素数幂模同余方程和素数模同余方程的相关理论．
+Theo [định lý Trung Quốc](./crt.md), giải phương trình modulo hợp số $m$ có thể quy về modulo lũy thừa của số nguyên tố. Do đó, dưới đây chỉ trình bày lý thuyết cho modulo lũy thừa nguyên tố và modulo nguyên tố.
 
-## 素数幂模同余方程
+## Phương trình đồng dư modulo lũy thừa nguyên tố
 
-以下假设模数 $m=p^e~(p\in\mathbf{P},~e\in\mathbf{Z}_{>1})$．
+Giả sử $m=p^e~(p\in\mathbf{P},~e\in\mathbf{Z}_{>1})$.
 
-注意到，若 $x_0$ 是方程
+Nếu $x_0$ là nghiệm của
 
 $$
 f(x)\equiv 0\pmod{p^e}
 $$
 
-的解，则 $x_0$ 是方程
+thì $x_0$ cũng là nghiệm của
 
 $$
 f(x)\equiv 0\pmod{p^{e-1}}
 $$
 
-的解．这启发我们尝试通过较低的模幂次的解去构造较高的模幂次的解．我们有如下定理：
+Điều này gợi ý xây nghiệm modulo bậc cao từ nghiệm modulo bậc thấp. Ta có:
 
 <a id="定理-1"></a>
 
-???+ note "定理 1（Hensel 引理）"
-    对素数 $p$ 和整数 $e>1$，取整系数多项式 $f(x)=\sum_{i=0}^na_ix^i~(p^e\nmid a_n)$，令 $f'(x)=\sum_{i=1}^nia_ix^{i-1}$ 为其导数．令 $x_0$ 为方程
+???+ note "Định lý 1 (Bổ đề Hensel)"
+    Với số nguyên tố $p$ và $e>1$, đa thức hệ số nguyên $f(x)=\sum_{i=0}^na_ix^i~(p^e\nmid a_n)$, đặt đạo hàm $f'(x)=\sum_{i=1}^nia_ix^{i-1}$. Cho $x_0$ là nghiệm của
     
     $$
     f(x)\equiv 0\pmod{p^{e-1}}\tag{2}
     $$
     
-    的解，则：
+    thì:
     
-    1.  若 $f'(x_0)\not\equiv 0\pmod p$，则存在整数 $t$ 使得
+    1.  Nếu $f'(x_0)\not\equiv 0\pmod p$ thì tồn tại $t$ sao cho
     
         $$
         x=x_0+p^{e-1}t \tag{3}
         $$
     
-        是方程
+        là nghiệm của
     
         $$
         f(x)\equiv 0\pmod{p^e} \tag{4}
         $$
     
-        的解．
-    2.  若 $f'(x_0)\equiv 0\pmod p$ 且 $f(x_0)\equiv 0\pmod{p^e}$，则对 $t=0,1,\dots,p-1$，由式 $(3)$ 确定的 $x$ 均为方程 $(4)$ 的解．
-    3.  若 $f'(x_0)\equiv 0\pmod p$ 且 $f(x_0)\not\equiv 0\pmod{p^e}$，则不能由式 $(3)$ 构造方程 $(4)$ 的解．
+    2.  Nếu $f'(x_0)\equiv 0\pmod p$ và $f(x_0)\equiv 0\pmod{p^e}$ thì với mọi $t=0,1,\dots,p-1$, $x$ từ (3) đều là nghiệm của (4).
+    3.  Nếu $f'(x_0)\equiv 0\pmod p$ và $f(x_0)\not\equiv 0\pmod{p^e}$ thì không thể dùng (3) để tạo nghiệm của (4).
 
-???+ note "证明"
-    我们假设式 $(3)$ 是方程 $(4)$ 的解，即
+???+ note "Chứng minh"
+    Giả sử (3) là nghiệm của (4), tức
     
     $$
     f(x_0+p^{e-1}t)\equiv 0\pmod{p^e}
     $$
     
-    整理后可得
+    Suy ra
     
     $$
     f(x_0)+p^{e-1}tf'(x_0)\equiv 0\pmod{p^e}
     $$
     
-    于是
+    nên
     
     $$
     tf'(x_0)\equiv -\frac{f(x_0)}{p^{e-1}}\pmod p\tag{5}
     $$
     
-    1.  若 $f'(x_0)\not\equiv 0\pmod p$，则关于 $t$ 的方程 $(5)$ 有唯一解 $t_0$，代入式 $(3)$ 可验证其为方程 $(4)$ 的解．
-    2.  若 $f'(x_0)\equiv 0\pmod p$ 且 $f(x_0)\equiv 0\pmod{p^e}$，则任意 $t$ 均能使方程 $(5)$ 成立，代入式 $(3)$ 可验证其均为方程 $(4)$ 的解．
-    3.  若 $f'(x_0)\equiv 0\pmod p$ 且 $f(x_0)\not\equiv 0\pmod{p^e}$，则方程 $(5)$ 无解，从而不能由式 $(3)$ 构造方程 $(4)$ 的解．
+    1.  Nếu $f'(x_0)\not\equiv 0\pmod p$ thì (5) có nghiệm duy nhất $t_0$, thay vào (3) cho nghiệm của (4).
+    2.  Nếu $f'(x_0)\equiv 0\pmod p$ và $f(x_0)\equiv 0\pmod{p^e}$ thì mọi $t$ đều thỏa (5), do đó mọi $x$ từ (3) đều là nghiệm.
+    3.  Nếu $f'(x_0)\equiv 0\pmod p$ và $f(x_0)\not\equiv 0\pmod{p^e}$ thì (5) vô nghiệm nên không thể dựng nghiệm của (4).
 
-进而我们有推论：
+Suy ra:
 
 <a id="推论-1"></a>
 
-???+ note "推论 1"
-    对 [定理 1](#定理-1) 的 $p$，$e$，$f(x)$，$x_0$，
+???+ note "Hệ quả 1"
+    Với $p,e,f(x),x_0$ như [Định lý 1](#定理-1),
     
-    1.  若 $s$ 是方程 $f(x)\equiv 0\pmod p$ 的解，且 $f'(s)\not\equiv 0\pmod p$，则存在 $x_s\in\mathbf{Z}_{p^e}$，$x_s\equiv s\pmod p$ 使得 $x_s$ 是方程 $(4)$ 的解．
-    2.  若方程 $f(x)\equiv 0\pmod p$ 与 $f'(x)\equiv 0\pmod p$ 无公共解，则方程 $(4)$ 和方程 $f(x)\equiv 0\pmod p$ 的解数相同．
+    1.  Nếu $s$ là nghiệm của $f(x)\equiv 0\pmod p$ và $f'(s)\not\equiv 0\pmod p$ thì tồn tại $x_s\in\mathbf{Z}_{p^e}$, $x_s\equiv s\pmod p$, sao cho $x_s$ là nghiệm của (4).
+    2.  Nếu $f(x)\equiv 0\pmod p$ và $f'(x)\equiv 0\pmod p$ không có nghiệm chung thì số nghiệm của (4) bằng số nghiệm của $f(x)\equiv 0\pmod p$.
 
-从而我们可以将素数幂模同余方程化归到素数模同余方程的情况．
+Vì vậy có thể quy về trường hợp modulo nguyên tố.
 
-## 素数模同余方程
+## Phương trình đồng dư modulo nguyên tố
 
-以下令 $p\in\mathbf{P}$，整系数多项式 $f(x)=\sum_{i=0}^na_ix^i$，其中 $p\nmid a_n$，$x\in\mathbf{Z}_p$．
+Giả sử $p\in\mathbf{P}$, $f(x)=\sum_{i=0}^na_ix^i$ với $p\nmid a_n$, $x\in\mathbf{Z}_p$.
 
 <a id="定理-2"></a>
 
-???+ note "定理 2"
-    若方程
+???+ note "Định lý 2"
+    Nếu phương trình
     
     $$
     f(x)\equiv 0\pmod p\tag{6}
     $$
     
-    有 $k$ 个不同的解 $x_1,x_2,\dots,x_k~(k\leq n)$，则
+    có $k$ nghiệm phân biệt $x_1,\dots,x_k~(k\leq n)$, thì
     
     $$
     f(x)\equiv g(x)\prod_{i=1}^k(x-x_i)\pmod p,
     $$
     
-    其中 $\deg g=n-k$ 且 $[x^{n-k}]g(x)=a_n$．
+    với $\deg g=n-k$ và $[x^{n-k}]g(x)=a_n$.
 
-???+ note "证明"
-    对 $k$ 应用数学归纳法．
+???+ note "Chứng minh"
+    Quy nạp theo $k$.
     
-    -   当 $k=1$ 时，做多项式带余除法，有 $f(x)=(x-x_1)g(x)+r$，其中 $r\in\mathbf{Z}$．
-    
-        由 $f(x_1)\equiv 0\pmod p$ 可知 $r\equiv 0\pmod p$，从而 $f(x)\equiv(x-x_1)g(x)\pmod p$．
-    -   假设命题对 $k-1$($k>1$) 时的情况成立，现在设 $f(x)$ 有 $k$ 个不同的解 $x_1,x_2,\dots,x_k$，则 $f(x)\equiv(x-x_1)h(x)\pmod p$，进而有
+    -   $k=1$: chia đa thức, $f(x)=(x-x_1)g(x)+r$, $r\in\mathbf{Z}$. Vì $f(x_1)\equiv 0\pmod p$ nên $r\equiv 0\pmod p$, do đó $f(x)\equiv(x-x_1)g(x)\pmod p$.
+    -   Giả sử đúng với $k-1$ ($k>1$). Nếu $f$ có $k$ nghiệm $x_1,\dots,x_k$ thì $f(x)\equiv(x-x_1)h(x)\pmod p$. Với $i\ge2$:
     
         $$
-        (\forall i=2,3,\dots,k),~~0\equiv f(x_i)\equiv (x_i-x_1)h(x_i)\pmod p
+        0\equiv f(x_i)\equiv (x_i-x_1)h(x_i)\pmod p
         $$
     
-        从而 $h(x)$ 有 $k-1$ 个不同的解 $x_2,x_3,\dots,x_k$，由归纳假设有
+        nên $h$ có $k-1$ nghiệm $x_2,\dots,x_k$. Theo giả thiết quy nạp:
     
         $$
-        h(x)\equiv g(x)\prod_{i=2}^k(x-x_i)\pmod p
+        h(x)\equiv g(x)\prod_{i=2}^k(x-x_i)\pmod p,
         $$
     
-        其中 $\deg g=n-k$ 且 $[x^{n-k}]g(x)=a_n$．
-    
-        因此命题得证．
+        với $\deg g=n-k$ và $[x^{n-k}]g(x)=a_n$. Suy ra mệnh đề đúng.
 
 <a id="推论-2"></a>
 
-???+ note "推论 2"
-    对素数 $p$，
+???+ note "Hệ quả 2"
+    Với số nguyên tố $p$,
     
-    -   $(\forall x\in\mathbf{Z}),~~x^{p-1}-1 \equiv \prod_{i=1}^{p-1}(x-i)\pmod p$．
-    -   （[Wilson 定理](./factorial.md#wilson-定理)）$(p-1)! \equiv -1 \pmod p$．
+    -   $(\forall x\in\mathbf{Z}),~~x^{p-1}-1 \equiv \prod_{i=1}^{p-1}(x-i)\pmod p$.
+    -   ([Định lý Wilson](./factorial.md#wilson-定理)) $(p-1)! \equiv -1 \pmod p$.
 
 <a id="定理-3lagrange-定理"></a>
 
-???+ note "定理 3（Lagrange 定理）"
-    方程 $(6)$ 至多有 $n$ 个不同解．
+???+ note "Định lý 3 (Lagrange)"
+    Phương trình (6) có nhiều nhất $n$ nghiệm phân biệt.
 
-???+ note "证明"
-    假设 $f(x)$ 有 $n+1$ 个不同解 $x_1,x_2,\dots,x_{n+1}$，则由 [定理 2](#定理-2)，对 $x_1,x_2,\dots,x_n$ 有
+???+ note "Chứng minh"
+    Giả sử có $n+1$ nghiệm $x_1,\dots,x_{n+1}$. Theo [Định lý 2](#定理-2), với $x_1,\dots,x_n$,
     
     $$
     f(x)\equiv a_n\prod_{i=1}^n(x-x_i)\pmod p
     $$
     
-    令 $x=x_{n+1}$，则
+    Thế $x=x_{n+1}$:
     
     $$
     0\equiv f(x_{n+1})\equiv a_n\prod_{i=1}^n(x_{n+1}-x_i)\pmod p
     $$
     
-    而右侧显然不是 $p$ 的倍数，因此假设矛盾．
+    Vế phải không chia hết cho $p$, mâu thuẫn.
 
 <a id="推论-3"></a>
 
-???+ note "推论 3"
-    若同余方程 $\sum_{i=0}^nb_ix^i\equiv 0\pmod p$ 的解数大于 $n$，则
+???+ note "Hệ quả 3"
+    Nếu phương trình $\sum_{i=0}^nb_ix^i\equiv 0\pmod p$ có nhiều hơn $n$ nghiệm thì
     
     $$
     (\forall i=0,1,\dots,n),~~p\mid b_i.
@@ -183,91 +178,85 @@ $$
 
 <a id="定理-4"></a>
 
-???+ note "定理 4"
-    方程 $(6)$ 若解的个数不为 $p$，则必存在满足 $\deg r<p$ 的整系数多项式 $r(x)$ 使得 $f(x)\equiv 0\pmod p$ 和 $r(x)\equiv 0\pmod p$ 的解集相同．
+???+ note "Định lý 4"
+    Nếu (6) không có đủ $p$ nghiệm, thì tồn tại đa thức hệ số nguyên $r(x)$ với $\deg r<p$ sao cho nghiệm của $f(x)\equiv 0\pmod p$ và $r(x)\equiv 0\pmod p$ là như nhau.
 
-???+ note "证明"
-    不妨设 $n\geq p$，对 $f(x)$ 做多项式带余除法
+???+ note "Chứng minh"
+    Giả sử $n\ge p$, chia đa thức:
     
     $$
     f(x)=g(x)\left(x^p-x\right)+r(x)
     $$
     
-    其中 $\deg r<p$．
+    với $\deg r<p$.
     
-    由 [Fermat 小定理](./fermat.md) 知对任意整数 $x$ 有 $x^p\equiv x\pmod p$，从而
+    Theo [định lý Fermat nhỏ](./fermat.md), với mọi $x$ nguyên, $x^p\equiv x\pmod p$, do đó:
     
-    -   若 $r(x)\equiv 0\pmod p$，则由 [推论 2](#推论-2) 可知 $f(x)$ 有 $p$ 个不同的解．
-    -   若 $r(x)\not\equiv 0\pmod p$，则由 $f(x)\equiv r(x)\pmod p$ 可知 $f(x)$ 和 $r(x)$ 的解集相同．
+    -   Nếu $r(x)\equiv 0\pmod p$ thì theo [Hệ quả 2](#推论-2), $f(x)$ có $p$ nghiệm.
+    -   Nếu $r(x)\not\equiv 0\pmod p$ thì $f(x)\equiv r(x)\pmod p$, hai phương trình có cùng nghiệm.
 
-我们可以通过这个定理对同余方程降次．
+Định lý này dùng để hạ bậc.
 
 <a id="定理-5"></a>
 
-???+ note "定理 5"
-    设 $n\leq p$，则方程
+???+ note "Định lý 5"
+    Với $n\leq p$, phương trình
     
     $$
     x^n+\sum_{i=0}^{n-1}a_ix^i\equiv 0\pmod p\tag{7}
     $$
     
-    有 $n$ 个解当且仅当存在整系数多项式 $q(x)$，$r(x)~(\deg r < n)$ 使得
+    có $n$ nghiệm khi và chỉ khi tồn tại đa thức hệ số nguyên $q(x)$, $r(x)~(\deg r < n)$ sao cho
     
     $$
     x^p-x=f(x)q(x)+pr(x). \tag{8}
     $$
 
-???+ note "证明"
-    -   必要性：由多项式除法知存在整系数多项式 $q(x)$，$r_1(x)~(\deg r_1 < n)$ 使得
+???+ note "Chứng minh"
+    -   Cần: chia đa thức:
     
         $$
         x^p-x=f(x)q(x)+r_1(x).
         $$
     
-        若方程 $(7)$ 有 $n$ 个解，则 $r_1\equiv 0\pmod p$ 也有 $n$ 个相同的解，进而由 [推论 3](#推论-3) 可知存在整系数多项式 $r(x)$ 满足 $r_1(x)=pr(x)$，从而命题得证．
-    -   充分性：若式 $(8)$ 成立，则由 [Fermat 小定理](./fermat.md) 可知，对任意整数 $x$,
+        Nếu (7) có $n$ nghiệm, thì $r_1\equiv 0\pmod p$ cũng có $n$ nghiệm, theo [Hệ quả 3](#推论-3) suy ra $r_1(x)=pr(x)$. Do đó (8) đúng.
+    -   Đủ: nếu (8) đúng, theo Fermat nhỏ:
     
         $$
         0\equiv x^p-x\equiv f(x)q(x)\pmod p.
         $$
     
-        即方程 $f(x)q(x)\equiv 0\pmod p$ 有 $p$ 个解．
-    
-        设方程 $(7)$ 的解数为 $s$，则由 [Lagrange 定理](#定理-3lagrange-定理) 可知 $s\leq n$．
-    
-        又由于 $\deg q=p-n$，则由 [Lagrange 定理](#定理-3lagrange-定理) 可知 $q(x)\equiv 0\pmod p$ 的解数不超过 $p-n$，而方程 $f(x)q(x)\equiv 0\pmod p$ 的解集是 $f(x)\equiv 0\pmod p$ 解集和 $q(x)\equiv 0\pmod p$ 解集的并集，故 $s+(p-n)\geq p$，有 $s\geq n$．
-    
-        因此 $s=n$．
+        Suy ra $f(x)q(x)\equiv 0\pmod p$ có $p$ nghiệm. Gọi số nghiệm của (7) là $s$, theo [Lagrange](#定理-3lagrange-定理) có $s\le n$. Do $\deg q=p-n$, nên số nghiệm của $q(x)\equiv 0\pmod p$ không quá $p-n$. Vì tập nghiệm là hợp của hai tập nghiệm, ta có $s+(p-n)\ge p$, nên $s\ge n$. Vậy $s=n$.
 
-对于非首一多项式，由于 $\mathbf{Z}_p$ 是域，故可以将其化为首一多项式，从而适用该定理．
+Với đa thức không đơn vị, do $\mathbf{Z}_p$ là trường nên có thể chuẩn hóa về đơn vị để áp dụng.
 
 <a id="定理-6"></a>
 
-???+ note "定理 6"
-    设 $n\mid p-1$，$p\nmid a$，则方程
+???+ note "Định lý 6"
+    Nếu $n\mid p-1$, $p\nmid a$, thì
     
     $$
     x^n\equiv a\pmod p\tag{9}
     $$
     
-    有解当且仅当
+    có nghiệm khi và chỉ khi
     
     $$
     a^{\frac{p-1}{n}}\equiv 1\pmod p.
     $$
     
-    而且，若 $(9)$ 有解，则解数为 $n$．
+    Và nếu có nghiệm thì có đúng $n$ nghiệm.
 
 ???+ note "Note"
-    方程 $(9)$ 解集的具体结构可参见 [k 次剩余](./residue.md)．
+    Cấu trúc nghiệm của (9) xem [phần dư bậc $k$](./residue.md).
 
-???+ note "证明"
-    -   必要性：若方程 $(9)$ 有解 $x_0$，则
+???+ note "Chứng minh"
+    -   Cần: nếu $x_0$ là nghiệm thì
     
         $$
         a^{\frac{p-1}{n}}\equiv {\left(x_0^n\right)}^{\frac{p-1}{n}}\equiv 1\pmod p
         $$
-    -   充分性：若 $a^{\frac{p-1}{n}}\equiv 1\pmod p$，则
+    -   Đủ: nếu $a^{\frac{p-1}{n}}\equiv 1\pmod p$, thì
     
         $$
         \begin{aligned}
@@ -277,39 +266,39 @@ $$
         \end{aligned}
         $$
     
-        其中 $P(x)$ 是某个整系数多项式，因此由 [定理 5](#定理-5) 可知方程 $(9)$ 有 $n$ 个解．
+        với $P(x)$ là đa thức hệ số nguyên. Theo [Định lý 5](#定理-5), (9) có $n$ nghiệm.
 
-## 高次同余方程（组）的求解方法
+## Cách giải phương trình đồng dư bậc cao (và hệ)
 
-首先我们可以借助 [中国剩余定理](./crt.md) 将求解 **同余方程组** 转为求解 **同余方程**，以及将求解模 **合数**  $m$ 的同余方程转化为求解模 **素数幂次** 的同余方程．之后我们借助 [定理 1](#定理-1) 将求解模 **素数幂次** 的同余方程转化为求解模 **素数** 的同余方程．
+Dùng [CRT](./crt.md) để chuyển **hệ phương trình đồng dư** thành **phương trình đồng dư**, và chuyển modulo **hợp số** $m$ thành modulo **lũy thừa nguyên tố**. Sau đó dùng [Định lý 1](#定理-1) để chuyển về modulo **nguyên tố**.
 
-结合模素数同余方程的若干定理，我们只需考虑方程
+Khi đó chỉ cần xét
 
 $$
 x^n+\sum_{i=0}^{n-1}a_ix^i\equiv 0\pmod p
 $$
 
-的求法，其中 $p$ 是素数，$n<p$．
+với $p$ nguyên tố, $n<p$.
 
-我们可以通过将 $x$ 代换为 $x-\dfrac{a_{n-1}}{n}$ 来消去 $x^{n-1}$ 项，从而我们只需考虑方程
+Có thể thay $x\mapsto x-\dfrac{a_{n-1}}{n}$ để khử hạng $x^{n-1}$, nên xét
 
 $$
 x^n+\sum_{i=0}^{n-2}a_ix^i\equiv 0\pmod p\tag{10}
 $$
 
-的求法，其中 $p$ 是素数，$n<p$．
+với $p$ nguyên tố, $n<p$.
 
--   若 $n=1$，则求法参见 [线性同余方程](./linear-equation.md)．
--   若 $n=2$，则求法参见 [二次剩余](./quad-residue.md)．
--   若方程 $(10)$ 可化为
-
+-   $n=1$: xem [phương trình đồng dư tuyến tính](./linear-equation.md).
+-   $n=2$: xem [phần dư bậc hai](./quad-residue.md).
+-   Nếu (10) quy về
+    
     $$
     x^n\equiv a\pmod p,
     $$
+    
+    thì xem [phần dư bậc $k$](./residue.md).
 
-    则求法参见 [k 次剩余](./residue.md)．
-
-## 参考资料
+## Tài liệu tham khảo
 
 1.  [Congruence Equation -- from Wolfram MathWorld](https://mathworld.wolfram.com/CongruenceEquation.html)
 2.  [Lagrange's theorem (number theory) - Wikipedia](https://en.wikipedia.org/wiki/Lagrange%27s_theorem_%28number_theory%29)

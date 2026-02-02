@@ -1,20 +1,20 @@
 author: Ir1d, cjsoft, Lans1ot, JasonkayZK
-类（class）是结构体的拓展，不仅能够拥有成员元素，还拥有成员函数．
+Lớp (class) là mở rộng của struct, không chỉ có dữ liệu thành viên mà còn có hàm thành viên.
 
-在面向对象编程（OOP）中，对象就是类的实例，也就是变量．
+Trong lập trình hướng đối tượng (OOP), đối tượng là thể hiện của lớp, tức là biến.
 
-C++ 中 `struct` 关键字定义的也是类，上文中的 **结构体** 的定义来自 C．因为某些历史原因，C++ 保留并拓展了 `struct`．
+Trong C++, `struct` cũng định nghĩa lớp; khái niệm **struct** ở phần trước là từ C. Vì lý do lịch sử, C++ giữ và mở rộng `struct`.
 
-## 定义类
+## Định nghĩa lớp
 
-类使用关键字 `class` 或者 `struct` 定义，下文以 `class` 举例．
+Lớp dùng `class` hoặc `struct`, dưới đây dùng `class`.
 
 ```cpp
 class ClassName {
   ...
 };
 
-// Example:
+// Ví dụ:
 class Object {
  public:
   int weight;
@@ -26,41 +26,41 @@ Object b, B[array_length];
 Object *c;
 ```
 
-与使用 `struct` 大同小异．该例定义了一个名为 `Object` 的类．该类拥有两个成员元素，分别为 `weight,value`；并在 `}` 后使用该类型定义了一个数组 `e`．
+Tương tự `struct`. Ví dụ trên định nghĩa lớp `Object` với hai thành viên `weight,value`, và sau `}` khai báo mảng `e`.
 
-定义类的指针形同 [`struct`](./struct.md)．
+Con trỏ tới lớp giống [struct](./struct.md).
 
-### 访问说明符
+### Bộ chỉ định truy cập
 
-不同于 [`struct`](./struct.md) 中的举例，本例中出现了 `public`，这属于访问说明符．
+Khác với ví dụ `struct`, ở đây có `public`, đây là bộ chỉ định truy cập.
 
--   `public`：该访问说明符之后的各个成员都可以被公开访问，简单来说就是无论 **类内** 还是 **类外** 都可以访问．
--   `protected`：该访问说明符之后的各个成员可以被 **类内**、派生类或者友元的成员访问，但类外 **不能访问**．
--   `private`：该访问说明符之后的各个成员 **只能** 被 **类内** 成员或者友元的成员访问，**不能** 被从类外或者派生类中访问．
+-   `public`: các thành viên sau đó đều truy cập được từ **trong lớp** và **ngoài lớp**.
+-   `protected`: truy cập được từ **trong lớp**, lớp dẫn xuất hoặc friend, nhưng **không** từ ngoài lớp.
+-   `private`: **chỉ** truy cập từ **trong lớp** hoặc friend; **không** từ ngoài lớp hoặc lớp dẫn xuất.
 
-对于 `struct`，它的所有成员都是默认 `public`．对于 `class`，它的所有成员都是默认 `private`．
+Với `struct`, mặc định là `public`; với `class`, mặc định là `private`.
 
-??? note "关于友元以及派生类的基本概念"
-    友元（`friend`）：使用 `friend` 关键字修饰某个函数或者类．可以使得在 **被修饰者** 在不成为成员函数或者成员类的情况下，访问该类的私有（`private`）或者受保护（`protected`）成员．简单来说就是只要带有这个类的 `friend` 标记，就可以访问私有或受保护的成员元素．
+??? note "Khái niệm cơ bản về friend và lớp dẫn xuất"
+    Friend (`friend`): đánh dấu một hàm hoặc lớp để có thể truy cập `private`/`protected` của lớp đó, dù không là thành viên. Nói đơn giản, có `friend` thì truy cập được phần riêng tư.
     
-    派生类（`derived class`）：C++ 允许使用一个类作为 **基类**，并通过基类 **派生** 出 **派生类**．其中派生类（根据特定规则）继承基类中的成员变量和成员函数．可以提高代码的复用率．
+    Lớp dẫn xuất (derived class): C++ cho phép dùng một lớp làm **lớp cơ sở** và tạo **lớp dẫn xuất**. Lớp dẫn xuất kế thừa thành viên và hàm theo quy tắc. Tăng tái sử dụng.
     
-    派生类似 "is" 的关系．如猫（派生类）"is" 哺乳动物（基类）．
+    Lớp dẫn xuất giống quan hệ "is". Ví dụ mèo (lớp dẫn xuất) "is" động vật có vú (lớp cơ sở).
     
-    对于上面 `private` 和 `protected` 的区别，可以看做派生类可以访问基类的 `protected` 的元素（`public` 同），但不能访问 `private` 元素．
+    Khác biệt `private` và `protected`: lớp dẫn xuất truy cập được `protected` (cũng như `public`) nhưng không truy cập `private`.
 
-## 访问与修改成员元素的值
+## Truy cập và sửa giá trị thành viên
 
-方法形同 [`struct`](./struct.md)
+Giống [struct](./struct.md)
 
--   对于变量，使用 `.` 符号．
--   对于指针，使用 `->` 符号．
+-   Với biến, dùng `.`.
+-   Với con trỏ, dùng `->`.
 
-## 成员函数
+## Hàm thành viên
 
-成员函数，顾名思义．就是类中所包含的函数．
+Hàm thành viên là các hàm nằm trong lớp.
 
-??? note "常见成员函数举例"
+??? note "Ví dụ hàm thành viên phổ biến"
     ```cpp
     vector.push_back();
     set.insert();
@@ -72,7 +72,7 @@ class Class_Name {
   ... type Function_Name(...) { ... }
 };
 
-// Example:
+// Ví dụ:
 class Object {
  public:
   int weight;
@@ -91,28 +91,28 @@ void Object::change_w(int _weight) { weight = _weight; }
 Object var;
 ```
 
-该类有一个打印 `Object` 成员元素的函数，以及更改成员元素 `weight` 的函数．
+Lớp có hàm in `Object` và hàm đổi `weight`.
 
-和函数类似，对于成员函数，也可以先声明，在定义，如第十四行（声明处）以及十七行后（定义处）．
+Giống hàm thường, có thể khai báo trước rồi định nghĩa sau như dòng 14 và 17.
 
-如果想要调用 `var` 的 `print` 成员函数，可以使用 `var.print()` 进行调用．
+Gọi `var.print()` để gọi hàm thành viên.
 
-### 重载运算符
+### Nạp chồng toán tử
 
-??? note "何为重载"
-    C++ 允许编写者为名称相同的函数或者运算符指定不同的定义．这称为 **重载**（overload）．
+??? note "Nạp chồng là gì"
+    C++ cho phép nhiều hàm hoặc toán tử cùng tên nhưng khác tham số gọi là **nạp chồng** (overload).
     
-    如果同名函数的参数种类、数量中的一者或多者两两不相同，则这些同名函数被看做是不同的．
+    Nếu loại tham số hoặc số lượng khác nhau thì xem là hàm khác nhau.
     
-    需要注意的是：如果两个同名函数的区别仅仅是返回值的类型不同则无法进行重载，此时编译器会拒绝编译！
+    Lưu ý: nếu chỉ khác kiểu trả về thì **không** thể nạp chồng, compiler sẽ báo lỗi.
     
-    如果在调用时不会出现混淆（指调用某些同名函数时，无法根据所填参数种类和数量唯一地判断出被调用函数．常发生在具有默认参数的函数中），则编译器会根据调用时所填参数判断应调用函数．
+    Khi gọi không gây mơ hồ (thường mơ hồ nếu có tham số mặc định), compiler chọn hàm dựa vào tham số.
     
-    而上述过程被称作重载解析．
+    Quá trình đó gọi là phân giải nạp chồng.
 
-重载运算符，可以部分程度上代替函数，简化代码．
+Nạp chồng toán tử giúp đơn giản code.
 
-下面给出重载运算符的例子．
+Ví dụ:
 
 ```cpp
 class Vector {
@@ -137,24 +137,24 @@ Vector Vector::operator-(const Vector& other) const {
   return Vector(x - other.x, y - other.y);
 }
 
-// 关于4,5行表示为x,y赋值，具体实现参见后文．
+// Về dòng 4,5 gán x,y, xem phần sau.
 ```
 
-该例定义了一个向量类，并重载了 `* + -` 运算符，并分别代表向量内积，向量加，向量减．
+Ví dụ định nghĩa lớp Vector và nạp chồng `* + -` lần lượt là tích vô hướng, cộng, trừ vector.
 
-重载运算符的模板大致可分为下面几部分．
+Mẫu nạp chồng:
 
 ```text
-/*类定义内重载*/ 返回类型 operator符号(参数){...}
+/*nạp chồng trong lớp*/ Kiểu trả về operatorKýHiệu(Tham số){...}
 
-/*类定义内声明，在外部定义*/ 返回类型 类名称::operator符号(参数){...}
+/*khai báo trong lớp, định nghĩa ngoài*/ Kiểu trả về TênLớp::operatorKýHiệu(Tham số){...}
 ```
 
-对于自定义的类，如果重载了某些运算符（一般来说只需要重载 `<` 这个比较运算符），便可以使用相应的 STL 容器或算法，如 [`sort`](../basic/stl-sort.md)．
+Với lớp tự định nghĩa, nếu nạp chồng một số toán tử (thường chỉ cần `<`), có thể dùng STL container hoặc thuật toán tương ứng như [`sort`](../basic/stl-sort.md).
 
-如要了解更多，可参见「参考资料」第四条．
+Xem thêm mục “Tài liệu tham khảo” số 4.
 
-??? note "可以被重载的运算符"
+??? note "Toán tử có thể nạp chồng"
     ```text
     +       -       *       /       %       ^       &
     |       ~       !       =       <       >       +=
@@ -164,16 +164,16 @@ Vector Vector::operator-(const Vector& other) const {
     ->      ()      []      new     new []  delete  delete []
     ```
 
-### 在实例化变量时设定初始值
+### Gán giá trị khởi tạo khi tạo biến
 
-为完成这种操作，需要定义 **默认构造函数**(Default constructor)．
+Cần định nghĩa **constructor mặc định** (Default constructor).
 
 ```cpp
 class ClassName {
   ... ClassName(...)... { ... }
 };
 
-// Example:
+// Ví dụ:
 class Object {
  public:
   int weight;
@@ -186,31 +186,29 @@ class Object {
 };
 ```
 
-该例定义了 `Object` 的默认构造函数，该函数能够在我们实例化 `Object` 类型变量时，将所有的成员元素初始化为 `0`．
+Ví dụ này định nghĩa constructor mặc định để khởi tạo `weight` và `value` bằng 0.
 
-若无显式的构造函数，则编译器认为该类有隐式的默认构造函数．换言之，若无定义任何构造函数，则编译器会自动生成一个默认构造函数，并会根据成员元素的类型进行初始化（与定义 内置类型 变量相同）．
+Nếu không định nghĩa constructor, compiler tạo constructor mặc định ngầm định, và khởi tạo theo kiểu của thành viên (như biến kiểu cơ bản).
 
-在这种情况下，成员元素都是未初始化的，访问未初始化的变量的结果是未定义的（也就是说并不知道会返回何值）．
+Trong trường hợp đó, thành viên chưa được khởi tạo; đọc giá trị chưa khởi tạo là undefined.
 
-如果需要自定义初始化的值，可以再定义（或重载）构造函数．
+Nếu cần khởi tạo giá trị khác, có thể định nghĩa (nạp chồng) constructor khác.
 
-??? note "关于定义（或重载）构造函数"
-    一般来说，默认构造函数是不带参数的，这区别于构造函数．构造函数和默认构造函数的定义大同小异，只是参数数量上的不同．
+??? note "Về định nghĩa (nạp chồng) constructor"
+    Constructor mặc định thường không có tham số, khác với constructor khác có tham số. Nếu đã định nghĩa constructor có tham số, compiler **không** tự sinh constructor mặc định, nên gọi không tham số sẽ lỗi.
+
+Dùng C++11 trở lên có thể dùng `{}` để khởi tạo.
+
+??? note "Về `{}`"
+    Dùng `{}` sẽ sử dụng `std::initializer_list` để khởi tạo.
     
-    构造函数可以被重载（当然首次被叫做定义）．需要注意的是，如果已经定义了构造函数，那么编译器便不会再生成无参数的默认构造函数．这会可能会使试图以默认方法构造变量的行为编译失败（指不填入初始化参数）．
-
-使用 C++11 或以上时，可以使用 `{}` 进行变量的初始化．
-
-??? note "关于 `{}`"
-    使用 `{}` 进行初始化，会用到 std::initializer\_list 这一个轻量代理对象进行初始化．
+    Quy trình đại khái:
     
-    初始化步骤大概如下
+    1.  Tìm constructor nhận `std::initializer_list`, nếu có thì gọi (xong thì dừng).
+    2.  Thử điền phần tử `{}` vào tham số constructor khác theo thứ tự; nếu điền đủ (kể cả tham số mặc định) thì gọi.
+    3.  Nếu không có thành viên `private`, thử gán ngoài lớp theo thứ tự khai báo hoặc chỉ số.
     
-    1.  尝试寻找参数中有 `std::initializer_list` 的默认构造函数，如果有则调用（调用完后不再进行下面的查找，下同）．
-    2.  尝试将 `{}` 中的元素填入其他构造参数，如果能将参数按照顺序填满（默认参数也算在内），则调用该默认构造函数．
-    3.  若无 `private` 成员元素，则尝试在 **类外** 按照元素定义顺序或者下标顺序依次赋值．
-    
-    *上述过程只是完整过程的简化版本，详细内容参见 "参考资料九"*
+    *Quy trình trên là rút gọn, xem "Tài liệu tham khảo 9".*
 
 ```cpp
 class Object {
@@ -228,11 +226,11 @@ class Object {
     value = _value;
   }
 
-  // the same as
+  // tương đương
   // Object(int _weight,int _value):weight(_weight),value(_value) {}
 };
 
-// the same as
+// tương đương
 // Object::Object(int _weight,int _value){
 //   weight = _weight;
 //   value = _value;
@@ -241,11 +239,11 @@ class Object {
 
 Object A;        // ok
 Object B(1, 2);  // ok
-Object C{1, 2};  // ok,(C++11)
+Object C{1, 2};  // ok (C++11)
 ```
 
-??? note "关于隐式类型转换"
-    有时候会写出如下的代码
+??? note "Về chuyển kiểu ngầm định"
+    Có thể gặp code:
     
     ```cpp
     class Node {
@@ -258,11 +256,11 @@ Object C{1, 2};  // ok,(C++11)
     Node a = 1;
     ```
     
-    看上去十分不符合逻辑，一个 `int` 类型不可能转化为 `node` 类型．但是编译器不会进行 `error` 提示．
+    Nhìn có vẻ vô lý vì `int` không thể chuyển thành `node`, nhưng compiler không báo lỗi.
     
-    原因是在进行赋值时，首先会将 `1` 作为参数调用 `node::node(int)`，然后调用默认的复制函数进行赋值．
+    Lý do: khi gán, `1` được dùng để gọi `node::node(int)`, sau đó gọi copy constructor để gán.
     
-    但大多数情况下，编写者会希望编译器进行报错．这时便可以在构造函数前追加 `explicit` 关键字．这会告诉编译器必须显式进行调用．
+    Thường người viết muốn compiler báo lỗi; khi đó thêm `explicit` trước constructor.
     
     ```cpp
     class Node {
@@ -273,21 +271,21 @@ Object C{1, 2};  // ok,(C++11)
     };
     ```
     
-    也就是说 `node a=1` 将会报错，但 `node a=node(1)` 不会．因为后者显式调用了构造函数．当然大多数人不会写出后者的代码，但此例足以说明 explicit 的作用．
+    Khi đó `node a=1` sẽ lỗi, còn `node a=node(1)` thì không vì gọi rõ ràng constructor.
     
-    *不过在算法竞赛中，为了避免此类情况常用的是 "加强对代码的规范程度"，从源头上避免*
+    *Trong thi đấu, thường tránh bằng cách tuân thủ quy tắc code.*
 
-### 销毁
+### Hủy
 
-这是不可避免的问题．每一个变量都将在作用范围结束走向销毁．
+Mọi biến sẽ bị hủy khi hết phạm vi.
 
-但对于已经指向了动态申请的内存的指针来说，该指针在销毁时不会自动释放所指向的内存，需要手动释放动态内存．
+Với con trỏ trỏ đến vùng nhớ cấp phát động, khi bị hủy sẽ **không** tự giải phóng bộ nhớ; cần giải phóng thủ công.
 
-如果结构体的成员元素包含指针，同样会遇到这种问题．需要用到析构函数来手动释放动态内存．
+Nếu struct có thành viên là con trỏ, cũng gặp vấn đề này, nên dùng destructor để giải phóng.
 
-**析构** 函数（Destructor）将会在该变量被销毁时被调用．重载的方法形同构造函数，但需要在前加 `~`
+**Destructor** sẽ được gọi khi biến bị hủy. Cú pháp giống constructor nhưng thêm `~` phía trước.
 
-*默认定义的析构函数通常对于算法竞赛已经足够使用，通常我们只有在成员元素包含指针时才会重载析构函数．*
+*Destructor mặc định thường đủ cho thi đấu; chỉ cần tự viết khi thành viên có con trỏ.*
 
 ```cpp
 class Object {
@@ -305,30 +303,30 @@ class Object {
 };
 ```
 
-### 为类变量赋值
+### Gán cho biến lớp
 
-默认情况下，赋值时会按照对应成员元素赋值的规则进行．也可以使用 `类名称()` 或 `类名称{}` 作为临时变量来进行赋值．
+Mặc định, gán sẽ theo quy tắc gán từng thành viên. Có thể dùng `TênLớp()` hoặc `TênLớp{}` làm biến tạm để gán.
 
-前者只是调用了复制构造函数（copy constructor），而后者在调用复制构造函数前会调用默认构造函数．
+Cách đầu chỉ gọi copy constructor, cách sau còn gọi constructor mặc định trước.
 
-另外默认情况下，进行的赋值都是对应元素间进行 **浅拷贝**，如果成员元素中有指针，则在赋值完成后，两个变量的成员指针具有相同的地址．
+Mặc định là **shallow copy**. Nếu có con trỏ, sau khi gán, hai biến sẽ trỏ cùng địa chỉ.
 
 ```cpp
-// A,tmp1,tmp2,tmp3类型为Object
+// A,tmp1,tmp2,tmp3 kiểu Object
 tmp1 = A;
 tmp2 = Object(...);
 tmp3 = {...};
 ```
 
-如需解决指针问题或更多操作，需要重载相应的构造函数．
+Muốn xử lý con trỏ hay thao tác khác cần nạp chồng constructor tương ứng.
 
-*更多 构造函数（constructor）内容，参见「参考资料」第六条．*
+*Xem thêm “Tài liệu tham khảo” số 6 về constructor.*
 
-## 参考资料
+## Tài liệu tham khảo
 
 1.  [cppreference class](https://zh.cppreference.com/w/cpp/language/class)
 2.  [cppreference access](https://zh.cppreference.com/w/cpp/language/access)
-3.  [cppreference default\_constructor](https://zh.cppreference.com/w/cpp/language/default_constructor)
+3.  [cppreference default_constructor](https://zh.cppreference.com/w/cpp/language/default_constructor)
 4.  [cppreference operator](https://zh.cppreference.com/w/cpp/language/operators)
 5.  [cplusplus Data structures](http://www.cplusplus.com/doc/tutorial/structures/)
 6.  [cplusplus Special members](http://www.cplusplus.com/doc/tutorial/classes2/)

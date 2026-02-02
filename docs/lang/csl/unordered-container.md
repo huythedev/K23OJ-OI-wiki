@@ -1,38 +1,38 @@
-## 概述
+## Tổng quan
 
-自 C++11 标准起，四种基于 [哈希](../../ds/hash.md) 实现的无序关联式容器正式纳入了 C++ 的标准模板库中，分别是：`unordered_set`，`unordered_multiset`，`unordered_map`，`unordered_multimap`．
+Từ C++11, bốn loại container liên kết không thứ tự dựa trên [băm](../../ds/hash.md) chính thức vào STL: `unordered_set`, `unordered_multiset`, `unordered_map`, `unordered_multimap`.
 
-??? note "编译器不支持 C++11 的使用方法"
-    在 C++11 之前，无序关联式容器属于 C++ 的 TR1 扩展．所以，如果编译器不支持 C++11，在使用时需要在头文件的名称中加入 `tr1/` 前缀，并且使用 `std::tr1` 命名空间．如 `#include <unordered_map>` 需要改成 `#include <tr1/unordered_map>`；`std::unordered_map` 需要改为 `std::tr1::unordered_map`（如果使用 `using namespace std;`，则为 `tr1::unordered_map`）．
+??? note "Cách dùng khi compiler không hỗ trợ C++11"
+    Trước C++11, các container không thứ tự thuộc TR1. Vì vậy nếu compiler không hỗ trợ C++11, cần thêm tiền tố `tr1/` vào tên header và dùng namespace `std::tr1`. Ví dụ `#include <unordered_map>` đổi thành `#include <tr1/unordered_map>`; `std::unordered_map` đổi thành `std::tr1::unordered_map` (nếu `using namespace std;` thì là `tr1::unordered_map`).
 
-它们与相应的关联式容器在功能，函数等方面有诸多共同点，而最大的不同点则体现在普通的关联式容器一般采用红黑树实现，内部元素按特定顺序进行排序；而这几种无序关联式容器则采用哈希方式存储元素，内部元素不以任何特定顺序进行排序，所以访问无序关联式容器中的元素时，访问顺序也没有任何保证．
+Chúng có nhiều điểm chung với container liên kết tương ứng, nhưng khác biệt lớn nhất là: container liên kết thường dùng cây đỏ-đen, phần tử có thứ tự; còn container không thứ tự dùng băm, phần tử không theo bất kỳ thứ tự nào, nên thứ tự truy cập không đảm bảo.
 
-采用哈希存储的特点使得无序关联式容器 **在平均情况下** 大多数操作（包括查找，插入，删除）都能在常数时间复杂度内完成，相较于关联式容器与容器大小成对数的时间复杂度更加优秀．
+Đặc tính băm giúp các thao tác (tìm, chèn, xóa) **trung bình** là thời gian hằng số, tốt hơn so với container liên kết có độ phức tạp log.
 
 ??? warning "Warning"
-    在最坏情况下，对无序关联式容器进行插入、删除、查找等操作的时间复杂度会 **与容器大小成线性关系**！这一情况往往在容器内出现大量哈希冲突时产生．
+    Trong trường hợp xấu nhất, chèn/xóa/tìm có thể **tuyến tính theo kích thước container**! Điều này thường xảy ra khi có nhiều xung đột băm.
     
-    同时，由于无序关联式容器的操作时通常存在较大的常数，其效率有时并不比普通的关联式容器好太多．
+    Đồng thời, do hằng số ẩn lớn, hiệu năng đôi khi không vượt trội so với container liên kết.
     
-    因此应谨慎使用无序关联式容器，尽量避免滥用（例如懒得离散化，直接将 `unordered_map<int, int>` 当作空间无限的普通数组使用）．
+    Vì vậy cần dùng thận trọng, tránh lạm dụng (ví dụ không muốn rời rạc hóa mà dùng `unordered_map<int, int>` như mảng vô hạn).
 
-由于无序关联式容器与相应的关联式容器在用途和操作中有很多共同点，这里不再介绍无序关联式容器的各种操作，这些内容读者可以参考 [关联式容器](./associative-container.md)．
+Do các thao tác tương tự container liên kết, phần này không lặp lại; xem [container liên kết](./associative-container.md).
 
-## 制造哈希冲突
+## Tạo xung đột băm
 
-上文中提到了，在最坏情况下，对无序关联式容器进行一些操作的时间复杂度会与容器大小成线性关系．
+Ở trường hợp xấu nhất, độ phức tạp có thể tuyến tính.
 
-在哈希函数确定的情况下，可以构造出数据使得容器内产生大量哈希冲突，导致复杂度达到上界．
+Với hàm băm cố định, có thể dựng dữ liệu tạo nhiều xung đột, đẩy độ phức tạp lên cao.
 
-在标准库实现里，每个元素的散列值是将值对一个质数取模得到的，更具体地说，是 [这个列表](https://github.com/gcc-mirror/gcc/blob/releases/gcc-8.1.0/libstdc%2B%2B-v3/src/shared/hashtable-aux.cc) 中的质数（g++ 6 及以前版本的编译器，这个质数一般是 $126271$，g++ 7 及之后版本的编译器，这个质数一般是 $107897$）．
+Trong hiện thực thư viện chuẩn, giá trị băm là lấy modulo một số nguyên tố, cụ thể là [danh sách này](https://github.com/gcc-mirror/gcc/blob/releases/gcc-8.1.0/libstdc%2B%2B-v3/src/shared/hashtable-aux.cc) (g++ 6 trở về trước thường là $126271$, g++ 7 trở đi thường là $107897$).
 
-因此可以通过向容器中插入这些模数的倍数来达到制造大量哈希冲突的目的．
+Vì vậy có thể chèn các bội của mô-đun để tạo nhiều xung đột băm.
 
-## 自定义哈希函数
+## Tùy biến hàm băm
 
-使用自定义哈希函数可以有效避免构造数据产生的大量哈希冲突．
+Dùng hàm băm tự định nghĩa có thể tránh các bộ dữ liệu gây xung đột lớn.
 
-要想使用自定义哈希函数，需要定义一个结构体，并在结构体中重载 `()` 运算符，像这样：
+Cần định nghĩa một struct và nạp chồng toán tử `()`:
 
 ```cpp
 struct my_hash {
@@ -40,9 +40,9 @@ struct my_hash {
 };
 ```
 
-当然，为了确保哈希函数不会被迅速破解（例如 Codeforces 中对使用无序关联式容器的提交进行 hack），可以试着在哈希函数中加入一些随机化函数（如时间）来增加破解的难度．
+Để tránh bị hack (ví dụ Codeforces), có thể thêm ngẫu nhiên hóa (như thời gian) để tăng độ khó phá.
 
-例如，在 [这篇博客](https://codeforces.com/blog/entry/62393) 中给出了如下哈希函数：
+Ví dụ từ [bài blog này](https://codeforces.com/blog/entry/62393):
 
 ```cpp
 struct my_hash {
@@ -59,7 +59,7 @@ struct my_hash {
     return splitmix64(x + FIXED_RANDOM);
   }
 
-  // 针对 std::pair<int, int> 作为主键类型的哈希函数
+  // Hàm băm cho std::pair<int, int> làm key
   size_t operator()(pair<uint64_t, uint64_t> x) const {
     static const uint64_t FIXED_RANDOM =
         chrono::steady_clock::now().time_since_epoch().count();
@@ -69,4 +69,4 @@ struct my_hash {
 };
 ```
 
-写完自定义的哈希函数后，就可以通过 `unordered_map<int, int, my_hash> my_map;` 或者 `unordered_map<pair<int, int>, int, my_hash> my_pair_map;` 的定义方式将自定义的哈希函数传入容器了．
+Sau đó dùng `unordered_map<int, int, my_hash> my_map;` hoặc `unordered_map<pair<int, int>, int, my_hash> my_pair_map;` để truyền hàm băm tự định nghĩa vào container.

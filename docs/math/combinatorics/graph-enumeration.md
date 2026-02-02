@@ -1,23 +1,23 @@
-在组合数学中，图论计数（Graph Enumeration）是研究满足特定性质的图的计数问题的分支．[生成函数](../poly/intro.md)、[波利亚计数定理](./polya.md) 与 [符号化方法](../poly/symbolic-method.md#%E9%9B%86%E5%90%88%E7%9A%84-cycle-%E6%9E%84%E9%80%A0) 和 [OEIS](https://oeis.org/) 是解决这类问题时最重要的数学工具．图论计数可分为有标号和无标号两大类问题，大多数情况下[^1]有标号版本的问题都比其对应的无标号问题更加简单，因此我们将先考察有标号问题的计数．
+Trong tổ hợp, **đếm đồ thị** (Graph Enumeration) là nhánh nghiên cứu các bài toán đếm số đồ thị thỏa mãn một tính chất nhất định. [Hàm sinh](../poly/intro.md)、[định lý đếm Polya](./polya.md) và [phương pháp ký hiệu](../poly/symbolic-method.md#%E9%9B%86%E5%90%88%E7%9A%84-cycle-%E6%9E%84%E9%80%A0), cùng với [OEIS](https://oeis.org/), là những công cụ toán học quan trọng nhất để giải các bài toán loại này. Đếm đồ thị có thể chia thành hai loại chính: có nhãn và không nhãn. Trong đa số trường hợp[^1], bài toán có nhãn thường đơn giản hơn bài toán không nhãn tương ứng, vì vậy ta sẽ xét trước các bài toán có nhãn.
 
-[^1]: 也许无标号二叉树是一个反例，在结构简单的情况下，对应的置换群是恒等群（Identity Group），此时有标号版本可以直接通过乘以 $n!$ 得到．
+[^1]: Có lẽ cây nhị phân không nhãn là một phản ví dụ: khi cấu trúc đủ đơn giản, nhóm hoán vị tương ứng là nhóm đồng nhất (Identity Group), khi đó phiên bản có nhãn chỉ cần nhân thêm $n!$ là được.
 
-## 有标号树
+## Cây có nhãn
 
-即 Cayley 公式，参见 [Prüfer 序列](../../graph/prufer.md) 一文，我们也可以使用 [Kirchhoff 矩阵树定理](../../graph/matrix-tree.md) 或 [生成函数](../poly/intro.md#生成函数) 和 [拉格朗日定理](https://codeforces.com/blog/entry/104184) 得到这一结果．
+Chính là công thức Cayley, xem bài [dãy Prüfer](../../graph/prufer.md). Ta cũng có thể dùng [định lý cây ma trận Kirchhoff](../../graph/matrix-tree.md) hoặc [hàm sinh](../poly/intro.md#生成函数) và [định lý Lagrange](https://codeforces.com/blog/entry/104184) để suy ra kết quả này.
 
-### 习题
+### Bài tập
 
 -   [Hihocoder 1047. Random Tree](https://vjudge.net/problem/HihoCoder-1047)
 
-## 有标号连通图
+## Đồ thị liên thông có nhãn
 
-### 例题「POJ 1737」Connected Graph
+### Ví dụ “POJ 1737” Connected Graph
 
-???+ note "例题 [「POJ 1737」Connected Graph](http://poj.org/problem?id=1737)"
-    题目大意：求有 $n$ 个结点的有标号连通图的方案数（$n \leq 50$）．
+???+ note "Ví dụ [“POJ 1737” Connected Graph](http://poj.org/problem?id=1737)"
+    Tóm tắt đề: đếm số đồ thị liên thông có nhãn với $n$ đỉnh ($n \leq 50$).
 
-这类问题最早出现于楼教主的男人八题系列中，我们设 $g_n$ 为 $n$ 个点有标号图的方案数，$c_n$ 为待求序列．$n$ 个点的图至多有 $\binom{n}{2}$ 条边，每条边根据其出现与否有两种状态，每种状态之间独立，因而有 $g_n = 2^{\binom{n}{2}}$．我们固定其中一个节点，枚举其所在连通块的大小，那么还需要从剩下的 $n-1$ 个节点中选择 $i-1$ 个节点组成一个连通块．连通块之外的节点可以任意连边，因而有如下递推关系：
+Loại bài này xuất hiện sớm trong loạt “8 bài đàn ông” của Lou. Đặt $g_n$ là số đồ thị có nhãn trên $n$ đỉnh, $c_n$ là dãy cần tìm. Với $n$ đỉnh, số cạnh tối đa là $\binom{n}{2}$, mỗi cạnh có/không có độc lập nên $g_n = 2^{\binom{n}{2}}$. Cố định một đỉnh, liệt kê kích thước thành phần liên thông chứa nó, ta cần chọn thêm $i-1$ đỉnh từ $n-1$ đỉnh còn lại để tạo thành thành phần liên thông. Các đỉnh ngoài thành phần có thể nối cạnh tùy ý, nên có quan hệ đệ quy:
 
 $$
 \begin{align}
@@ -26,22 +26,22 @@ c_n &= g_n - \sum_{i=1}^{n-1} \binom{n-1}{i-1} c_i g_{n-i}
 \end{align}
 $$
 
-移项得到 $c_n$ 序列的 $O(n^2)$ 递推公式，可以通过此题．
+Chuyển vế ta được công thức đệ quy $O(n^2)$ cho $c_n$, đủ để AC bài này.
 
-### 例题「集训队作业 2013」城市规划
+### Ví dụ “Bài tập đội tuyển 2013” Quy hoạch thành phố
 
-???+ note "例题 [「集训队作业 2013」城市规划](https://www.luogu.com.cn/problem/P4841)"
-    题目大意：求有 $n$ 个结点的有标号连通图的方案数（$n \leq 130000$）．
+???+ note "Ví dụ [“Bài tập đội tuyển 2013” Quy hoạch thành phố](https://www.luogu.com.cn/problem/P4841)"
+    Tóm tắt đề: đếm số đồ thị liên thông có nhãn trên $n$ đỉnh ($n \leq 130000$).
 
-对于数据范围更大的序列问题，往往我们需要构造这些序列的生成函数，以使用高效的多项式算法．
+Với phạm vi lớn hơn, ta thường cần xây dựng hàm sinh để dùng các thuật toán đa thức nhanh.
 
-#### 方法一：分治 FFT
+#### Cách 1: chia để trị + FFT
 
-上述的递推式可以看作一种自卷积形式，因而可以使用分治 FFT 进行计算，复杂度 $O(n\log^2n)$．
+Công thức đệ quy trên có dạng tự chập, nên có thể dùng FFT chia để trị, độ phức tạp $O(n\log^2n)$.
 
-#### 方法二：多项式求逆
+#### Cách 2: nghịch đảo đa thức
 
-我们将上述递推式中的组合数展开，并进行变形：
+Khai triển tổ hợp trong công thức đệ quy và biến đổi:
 
 $$
 \begin{align}
@@ -50,7 +50,7 @@ $$
 \end{align}
 $$
 
-构造多项式：
+Xây dựng đa thức:
 
 $$
 \begin{align}
@@ -60,11 +60,11 @@ H(x) &= \sum_{n=1} \frac{g_n}{(n-1)!} x^n
 \end{align}
 $$
 
-代换进上式得到 $CG = H$，使用 [多项式求逆](../poly/elementary-func.md#%E5%A4%9A%E9%A1%B9%E5%BC%8F%E6%B1%82%E9%80%86) 后再卷积解出 $C(x)$ 即可．
+Thế vào được $CG = H$, dùng [nghịch đảo đa thức](../poly/elementary-func.md#%E5%A4%9A%E9%A1%B9%E5%BC%8F%E6%B1%82%E9%80%86) rồi chập để tìm $C(x)$.
 
-#### 方法三：多项式 exp
+#### Cách 3: đa thức exp
 
-另一种做法是使用 [EGF 中多项式 exp 的组合意义](../poly/egf.md#egf-%E4%B8%AD%E5%A4%9A%E9%A1%B9%E5%BC%8F-exp-%E7%9A%84%E7%BB%84%E5%90%88%E6%84%8F%E4%B9%89)，我们设有标号连通图和简单图序列的 EGF 分别为 $C(x)$ 和 $G(x)$，那么它们将有下列关系：
+Một cách khác là dùng [ý nghĩa tổ hợp của exp trong EGF](../poly/egf.md#egf-%E4%B8%AD%E5%A4%9A%E9%A1%B9%E5%BC%8F-exp-%E7%9A%84%E7%BB%84%E5%90%88%E6%84%8F%E4%B9%89). Gọi EGF của đồ thị liên thông có nhãn và đồ thị đơn có nhãn lần lượt là $C(x)$ và $G(x)$, ta có:
 
 $$
 \begin{align}
@@ -73,24 +73,24 @@ C(x) &= \ln(G(x))
 \end{align}
 $$
 
-使用 [多项式 ln](../poly/elementary-func.md#多项式对数函数--指数函数) 解出 $C(x)$ 即可．
+Dùng [đa thức ln](../poly/elementary-func.md#多项式对数函数--指数函数) để lấy $C(x)$.
 
-## 有标号欧拉图、二分图
+## Đồ thị Euler, đồ thị hai phía có nhãn
 
-### 例题「SPOJ KPGRAPHS」Counting Graphs
+### Ví dụ “SPOJ KPGRAPHS” Counting Graphs
 
-???+ note "例题 [「SPOJ KPGRAPHS」Counting Graphs](http://www.spoj.com/problems/KPGRAPHS/)"
-    题目大意：求有 $n$ 个结点的分别满足下列性质的有标号图的方案数（$n \leq 1000$）．
+???+ note "Ví dụ [“SPOJ KPGRAPHS” Counting Graphs](http://www.spoj.com/problems/KPGRAPHS/)"
+    Tóm tắt đề: đếm số đồ thị có nhãn trên $n$ đỉnh thỏa các tính chất sau ($n \leq 1000$).
     
-    -   连通图 [A001187](https://oeis.org/A001187)．
-    -   欧拉图 [A033678](https://oeis.org/A033678)．
-    -   二分图 [A047864](https://oeis.org/A047864)．
+    -   Liên thông [A001187](https://oeis.org/A001187).
+    -   Euler [A033678](https://oeis.org/A033678).
+    -   Hai phía [A047864](https://oeis.org/A047864).
 
-本题限制代码长度，因而无法直接使用多项式模板，但生成函数依然可以帮助我们进行分析．
+Bài này giới hạn độ dài code nên không thể dùng template đa thức, nhưng hàm sinh vẫn giúp phân tích.
 
-连通图问题在之前的例题中已被解决，考虑欧拉图．注意到上述对连通图计数的几种方法，均可以在满足任意性质的有标号连通图进行推广．例如我们可以将连通图递推公式中的 $g_n$，从任意图替换成满足顶点度数均为偶数的图，此时得到的 $c_n$ 即为欧拉图．
+Bài liên thông đã giải ở trên. Xét đồ thị Euler. Lưu ý các cách đếm liên thông ở trên đều có thể tổng quát cho đồ thị liên thông thỏa một tính chất bất kỳ. Ví dụ, thay $g_n$ trong công thức liên thông hóa từ “đồ thị bất kỳ” sang “đồ thị mà bậc đỉnh đều chẵn”, khi đó $c_n$ chính là số đồ thị Euler.
 
-我们将 POJ 1737 的递推过程封装成连通化函数，
+Ta gói quá trình ở POJ 1737 thành hàm liên thông hóa:
 
 ```cpp
 void ln(Int C[], Int G[]) {
@@ -102,7 +102,7 @@ void ln(Int C[], Int G[]) {
 }
 ```
 
-前两问即可轻松解决：
+Hai câu đầu có thể giải dễ dàng:
 
 ```cpp
 for (int i = 1; i <= n; ++i) G[i] = pow(2, binom[i][2]);
@@ -111,7 +111,7 @@ for (int i = 1; i <= n; ++i) G[i] = pow(2, binom[i - 1][2]);
 ln(E, G);
 ```
 
-注意到这里的连通化递推过程其实等价于对其 EGF 求多项式 ln，同理我们也可以写出逆连通化函数，它等价于对其 EGF 求多项式 exp．
+Lưu ý quá trình liên thông hóa này tương đương với lấy log của EGF. Tương tự, ta cũng có hàm “nghịch liên thông hóa”, tương đương với exp của EGF.
 
 ```cpp
 void exp(Int G[], Int C[]) {
@@ -123,21 +123,21 @@ void exp(Int G[], Int C[]) {
 }
 ```
 
-下面讨论有标号二分图计数，
+Tiếp theo bàn về đếm đồ thị hai phía có nhãn,
 
-我们设 $b_n$ 表示 n 个结点的二分图方案数，$g_n$ 表示 $n$ 个结点对结点进行 2 染色，满足相同颜色的结点之间不存在边的图的方案数．枚举其中一种颜色节点的数量，有[^2]：
+Gọi $b_n$ là số đồ thị hai phía trên $n$ đỉnh, $g_n$ là số đồ thị trên $n$ đỉnh được tô 2 màu sao cho các đỉnh cùng màu không có cạnh nối. Liệt kê số đỉnh của một màu, ta có[^2]:
 
 $$
 g_n = \sum_{i=0}^{n} \binom{n}{i}2^{i(n-i)}
 $$
 
-[^2]: [粉兔的 blog](https://www.luogu.com.cn/blog/PinkRabbit/solution-sp4420) 告诉我们，这个序列也可以使用 [Chirp Z-Transform](../poly/czt.md) 优化．
+[^2]: [Blog của PinkRabbit](https://www.luogu.com.cn/blog/PinkRabbit/solution-sp4420) cho biết dãy này cũng có thể tối ưu bằng [Chirp Z-Transform](../poly/czt.md).
 
-接下来我们用两种不同的方法建立 $g_n$ 与 $b_n$ 之间的关系．
+Sau đó ta dùng hai cách khác nhau để liên hệ $g_n$ và $b_n$.
 
-#### 方法一：算两次
+#### Cách 1: tính hai lần
 
-我们设 $c_{n, k}$ 表示有 k 个连通分量的二分图方案数，那么不难得到如下关系：
+Gọi $c_{n, k}$ là số đồ thị hai phía có $k$ thành phần liên thông, dễ có:
 
 $$
 \begin{align}
@@ -146,7 +146,7 @@ g_n &= \sum_{i=1}^{n} c_{n, i} 2^i
 \end{align}
 $$
 
-比较两种 $g_n$ 的表达式，展开得：
+So sánh hai biểu thức của $g_n$, khai triển:
 
 $$
 \begin{align}
@@ -155,16 +155,15 @@ c_{n, i} &= \sum_{i=0}{n-1} \binom{n-1}{i-1} c_{n, 1}c_{n-i,k-1}
 \end{align}
 $$
 
-不难得到 $b_n$ 的递推关系，复杂度 $O(n^3)$，进一步使用容斥原理，可以优化到 $O(n^2)$ 通过本题．
+Suy ra đệ quy cho $b_n$ với độ phức tạp $O(n^3)$, rồi dùng bao hàm–loại trừ tối ưu còn $O(n^2)$ để AC.
 
-#### 方法二：连通化递推
+#### Cách 2: liên thông hóa đệ quy
 
-方法二和方法三均使用连通二分图 $b1_n$  [A001832](https://oeis.org/A001832) 来建立 $g_n$ 与 $b_n$ 之间的桥梁．
+Cách 2 và 3 đều dùng số đồ thị hai phía liên thông $b1_n$ [A001832](https://oeis.org/A001832) để làm cầu nối giữa $g_n$ và $b_n$.
 
-注意到对于每个连通二分图，我们恰好有两种不同的染色方法，对应到两组不同的连通 2 染色图，
-因而对 $g_n$ 进行连通化，得到的序列恰好是 $b1_n$ 的两倍，而 $b_n$ 则由 $b1_n$ 进行逆连通化得到．
+Mỗi đồ thị hai phía liên thông có đúng 2 cách tô màu, ứng với hai đồ thị 2 màu liên thông khác nhau. Vì vậy, liên thông hóa $g_n$ cho ta dãy đúng bằng $2b1_n$, còn $b_n$ thì lấy nghịch liên thông hóa từ $b1_n$.
 
-因此：
+Do đó:
 
 ```cpp
 for (int i = 1; i <= n; ++i) {
@@ -176,13 +175,13 @@ for (int i = 1; i <= n; ++i) B1[i] /= 2;
 exp(B, B1);
 ```
 
-两种递推的过程复杂度均为 $O(n^2)$，可以通过本题．
+Cả hai quá trình đều $O(n^2)$, AC được bài.
 
-#### 方法三：多项式 exp
+#### Cách 3: đa thức exp
 
-我们注意到也可以使用 EGF 理解上面的递推过程．
+Ta cũng có thể hiểu bằng EGF.
 
-设 $G(x)$ 为 $g_n$ 的 EGF，$B1(x)$ 为 $b1_n$ 的 EGF，$B(x)$ 为 $b_n$ 的 EGF，应用做法二的方法，我们有：
+Gọi $G(x)$ là EGF của $g_n$, $B1(x)$ là EGF của $b1_n$, $B(x)$ là EGF của $b_n$. Theo cách 2:
 
 $$
 \begin{align}
@@ -193,8 +192,7 @@ B(x) &= \exp(B1(x))  \\
 \end{align}
 $$
 
-我们可以对等式两边分别进行求导并比较两边系数，以得到易于编码的递推公式，通过此题．
-注意到做法二与做法三本质相同，且一般情况下做法三可以得到更优的时间复杂度．
+Lấy đạo hàm hai vế và so hệ số sẽ ra công thức đệ quy dễ code. Lưu ý cách 2 và 3 về bản chất là như nhau, và thường cách 3 cho thời gian tốt hơn.
 
 $$
 \begin{align}
@@ -203,12 +201,12 @@ B_n^2 &= G  \\
 \end{align}
 $$
 
-??? note "参考代码"
+??? note "Mã tham khảo"
     ```cpp
     --8<-- "docs/math/code/combinatorics/graph-enumeration/graph-enumeration_1.cpp"
     ```
 
-### 习题
+### Bài tập
 
 -   [UOJ Goodbye Jihai D. 新年的追逐战](https://uoj.ac/contest/50/problem/498)
 -   [BZOJ 3864. 大朋友和多叉树](https://hydro.ac/p/bzoj-P3864)
@@ -226,11 +224,11 @@ $$
 -   [Luogu U152448. 有标号强连通图计数](https://www.luogu.com.cn/problem/U152448)
 -   [Project Euler 434. Rigid graphs](https://projecteuler.net/problem=434)
 
-## Riddell's Formula
+## Công thức Riddell
 
-上述关于 EGF 的 exp 的用法，有时又被称作 Riddell's formula for labeled graphs，生成函数的 [欧拉变换](../poly/symbolic-method.md#%E9%9B%86%E5%90%88%E7%9A%84-multiset-%E6%9E%84%E9%80%A0)，有时也被称为 Riddell's formula for unlabeled graphs，后者最早出现在欧拉对分拆数的研究中，除了解决图论计数问题之外，也在完全背包问题中出现．
+Cách dùng exp trong EGF ở trên đôi khi được gọi là **công thức Riddell cho đồ thị có nhãn**. Hàm sinh với **biến đổi Euler** của [phương pháp ký hiệu](../poly/symbolic-method.md#%E9%9B%86%E5%90%88%E7%9A%84-multiset-%E6%9E%84%E9%80%A0) đôi khi cũng được gọi là **công thức Riddell cho đồ thị không nhãn**; dạng sau xuất hiện sớm trong nghiên cứu phân hoạch của Euler và cũng gặp trong bài toán ba lô vô hạn.
 
-对于给定序列 $a_i$，和对应的 OGF $A(x)$，定义 $A(x)$ 的欧拉变换为：
+Với dãy $a_i$ và OGF $A(x)$ tương ứng, định nghĩa biến đổi Euler của $A(x)$:
 
 $$
 \begin{align}
@@ -239,102 +237,102 @@ $$
 \end{align}
 $$
 
-设 $\mathcal{E}(A(x))$ 的各项系数为 $b_i$，定义辅助数组 $c_i = \sum_{d|n} d a_d$，则有递推公式
+Gọi hệ số của $\mathcal{E}(A(x))$ là $b_i$, và định nghĩa mảng phụ $c_i = \sum_{d|n} d a_d$, ta có công thức đệ quy:
 
 $$
 n b_n = c_n + \sum_{i=1}^{n-1} c_i b_{n-i}
 $$
 
-## 无标号树
+## Cây không nhãn
 
-### 例题「SPOJ PT07D」Let us count 1 2 3
+### Ví dụ “SPOJ PT07D” Let us count 1 2 3
 
-???+ note "例题 [「SPOJ PT07D」Let us count 1 2 3](https://www.spoj.com/problems/PT07D/)"
-    题目大意：求有 n 个结点的分别满足下列性质的树的方案数．
+???+ note "Ví dụ [“SPOJ PT07D” Let us count 1 2 3](https://www.spoj.com/problems/PT07D/)"
+    Tóm tắt đề: đếm số cây có $n$ đỉnh thỏa các tính chất:
     
-    -   有标号有根树 [A000169](https://oeis.org/A000169)．
-    -   有标号无根树 [A000272](https://oeis.org/A000272)．
-    -   无标号有根树 [A000081](https://oeis.org/A000081)．
-    -   无标号无根树 [A000055](https://oeis.org/A000055)．
+    -   Cây có nhãn có gốc [A000169](https://oeis.org/A000169).
+    -   Cây có nhãn không gốc [A000272](https://oeis.org/A000272).
+    -   Cây không nhãn có gốc [A000081](https://oeis.org/A000081).
+    -   Cây không nhãn không gốc [A000055](https://oeis.org/A000055).
 
-#### 有根树
+#### Cây có gốc
 
-有标号情况以在前文中解决，下面考察无标号有根树，设其 OGF 为 $F(x)$，应用欧拉变换，可得：
+Trường hợp có nhãn đã giải ở trên. Xét cây có gốc không nhãn, đặt OGF là $F(x)$, áp dụng biến đổi Euler, ta có:
 
 $$
 F(x) = x\mathcal{E}(F(x))
 $$
 
-取出系数即可．
+Lấy hệ số là được.
 
-#### 无根树
+#### Cây không gốc
 
-考虑容斥，我们用有根树的方案中减去根不是重心的方案，并对 $n$ 的奇偶性进行讨论．
+Xét bao hàm–loại trừ: lấy số cây có gốc trừ đi số cây mà gốc không phải trọng tâm, và xét chẵn/lẻ của $n$.
 
-当 $n$ 是奇数时：
+Khi $n$ lẻ:
 
-必然存在一棵子树大小 $\geq \left\lceil \frac{n}{2}\right\rceil$，枚举这棵子树的大小有．
+Tồn tại một cây con có kích thước $\geq \left\lceil \frac{n}{2}\right\rceil$, liệt kê kích thước cây con:
 
 $$
 g_n = f_n - \sum_{i=\left\lceil\frac{n}{2}\right\rceil}^{n-1} f_i f_{n-i}
 $$
 
-当 $n$ 是偶数时：
+Khi $n$ chẵn:
 
-注意到当有两个重心的情况时，上面的过程只会减去一次，因此还需要减去
+Nếu có hai trọng tâm, quá trình trên chỉ trừ một lần, nên cần trừ thêm:
 
 $$
 g_n = f_n - \sum_{i=\left\lceil\frac{n}{2}\right\rceil}^{n-1} f_i f_{n-i} - \binom{f_{\frac{n}{2}}}{2}
 $$
 
-### 例题「Luogu P5900」无标号无根树计数
+### Ví dụ “Luogu P5900” Đếm cây không nhãn không gốc
 
-???+ note "例题 [「Luogu P5900」无标号无根树计数](https://www.luogu.com.cn/problem/P5900)"
-    题目大意：求有 n 个结点的无标号无根树的方案数（$n \leq 200000$）．
+???+ note "Ví dụ [“Luogu P5900” Đếm cây không nhãn không gốc](https://www.luogu.com.cn/problem/P5900)"
+    Tóm tắt đề: đếm số cây không nhãn không gốc trên $n$ đỉnh ($n \leq 200000$).
 
-对于数据范围更大的情况，做法同理，欧拉变换后使用多项式模板即可．
+Với dữ liệu lớn hơn, làm tương tự: biến đổi Euler rồi dùng template đa thức.
 
-## 无标号简单图
+## Đồ thị đơn không nhãn
 
-### 例题「SGU 282. Isomorphism」Isomorphism
+### Ví dụ “SGU 282. Isomorphism” Isomorphism
 
-???+ note "例题 [「SGU 282. Isomorphism」Isomorphism](https://codeforces.com/problemsets/acmsguru/problem/99999/282)"
-    题目大意：求有 n 个结点的无标号完全图的边进行 m 染色的方案数．
+???+ note "Ví dụ [“SGU 282. Isomorphism” Isomorphism](https://codeforces.com/problemsets/acmsguru/problem/99999/282)"
+    Tóm tắt đề: đếm số cách tô màu $m$ màu cho các cạnh của đồ thị đầy đủ không nhãn trên $n$ đỉnh.
 
-注意到当 m = 2 时，所求对象就是无标号简单图 [A000088](https://oeis.org/A000088)，考察波利亚计数定理，
+Khi $m = 2$, đối tượng chính là đồ thị đơn không nhãn [A000088](https://oeis.org/A000088). Xét định lý đếm Polya:
 
 $$
 \frac{1}{|G|}\sum_{g\in G} m^{c(g)}
 $$
 
-本题中置换群 $G$ 为顶点的 $n$ 阶对称群生成的边集置换群，但暴力做法的枚举量为 $O(n!)$，无法通过此题．
+Nhóm hoán vị $G$ là nhóm đối xứng bậc $n$ của các đỉnh sinh ra hoán vị trên tập cạnh. Làm brute force cần $O(n!)$, không thể.
 
-考虑根据按照置换的循环结构进行分类，每种循环结构对应一种数的分拆，我们用 dfs() 生成分拆，那么问题即转化为求每一种分拆 $p$ 所对应的置换数目 $w(p)$ 和每一类置换中的循环个数 $c(p)$，答案为
+Phân loại theo cấu trúc chu trình của hoán vị; mỗi cấu trúc tương ứng một phân hoạch số. Dùng dfs() sinh phân hoạch, bài toán chuyển thành tính số hoán vị $w(p)$ ứng với phân hoạch $p$ và số chu trình $c(p)$ trong mỗi lớp. Đáp án:
 
 $$
 \frac{1}{|G|} \sum_{p \in P} w(p) m^{c(p)}
 $$
 
-考虑 $w(p)$，每一个分拆对应一个循环排列，同时同一种大小的分拆之间的顺序无关，因而我们有：
+Xét $w(p)$: mỗi phân hoạch tương ứng một hoán vị chu trình, các phần tử cùng kích thước không phân biệt thứ tự, nên:
 
 $$
 w(p) = \frac{n!}{\prod_{i}(p_i)\prod_{i}(q_i!)} 
 $$
 
-这里 $q_i$ 表示大小为 $i$ 的分拆在 $p$ 中出现的次数．
+với $q_i$ là số lần phần tử kích thước $i$ xuất hiện trong $p$.
 
-考虑 $c(p)$，$p$ 所影响的点集的循环即为 $|p|$，但题目考察的是边染色，所以还需要考察点置换所生成的边置换，
+Xét $c(p)$: chu trình trên tập đỉnh là $|p|$, nhưng ta quan tâm chu trình trên tập cạnh.
 
-如果一条边关联的顶点处在同一个循环内，设该循环大小为 $p_i$，那么边所生成的循环数恰好为 $\left\lfloor \frac{p_i}{2} \right\rfloor$．
+Nếu một cạnh nối hai đỉnh cùng một chu trình, kích thước chu trình là $p_i$, thì số chu trình cạnh là $\left\lfloor \frac{p_i}{2} \right\rfloor$.
 
-如果一条边关联的顶点处在两个不同的循环中，设分别为 $p_i$,$p_j$，每个循环节的长度均为 $\operatorname{lcm}(p_i,p_j)$，因而边所生成的循环数恰好为 $\frac{p_i p_j}{\operatorname{lcm}(p_i,p_j)} = \gcd(p_i, p_j)$．
+Nếu một cạnh nối hai đỉnh thuộc hai chu trình khác nhau, kích thước lần lượt $p_i,p_j$, mỗi chu trình cạnh có độ dài $\operatorname{lcm}(p_i,p_j)$, nên số chu trình cạnh là $\frac{p_i p_j}{\operatorname{lcm}(p_i,p_j)} = \gcd(p_i, p_j)$.
 
-??? note "参考代码"
+??? note "Mã tham khảo"
     ```cpp
     --8<-- "docs/math/code/combinatorics/graph-enumeration/graph-enumeration_2.cpp"
     ```
 
-## 习题
+## Bài tập
 
 -   [CodeForces 438 E. The Child and Binary Tree](https://codeforces.com/problemset/problem/438/E)
 -   [Luogu P5448. \[THUPC2018\] 好图计数](https://www.luogu.com.cn/problem/P5448)
@@ -349,10 +347,10 @@ $$
 -   [Luogu P7592. 数树（2021 CoE-II E）](https://www.luogu.com.cn/problem/P7592)
 -   [Luogu P5206. \[WC2019\] 数树](https://www.luogu.com.cn/problem/P5206)
 
-## 参考资料与注释
+## Tài liệu tham khảo và chú thích
 
-1.  [WC2015, 顾昱洲营员交流资料 Graphical Enumeration](https://github.com/lychees/ACM-Training/blob/master/Note/%E5%86%AC%E4%BB%A4%E8%90%A5/2015/%E9%A1%BE%E6%98%B1%E6%B4%B2%E8%90%A5%E5%91%98%E4%BA%A4%E6%B5%81%E8%B5%84%E6%96%99%20Graphical%20Enumeration.pdf)
-2.  [WC2019, 生成函数，多项式算法与图的计数](https://github.com/lychees/ACM-Training/tree/master/Note/%E5%86%AC%E4%BB%A4%E8%90%A5/2019/d4)
+1.  [WC2015, Tài liệu trao đổi của học viên Gu Yuzhou: Graphical Enumeration](https://github.com/lychees/ACM-Training/blob/master/Note/%E5%86%AC%E4%BB%A4%E8%90%A5/2015/%E9%A1%BE%E6%98%B1%E6%B4%B2%E8%90%A5%E5%91%98%E4%BA%A4%E6%B5%81%E8%B5%84%E6%96%99%20Graphical%20Enumeration.pdf)
+2.  [WC2019, Hàm sinh, thuật toán đa thức và đếm đồ thị](https://github.com/lychees/ACM-Training/tree/master/Note/%E5%86%AC%E4%BB%A4%E8%90%A5/2019/d4)
 3.  [Counting labeled graphs - Algorithms for Competitive Programming](https://cp-algorithms.com/combinatorics/counting_labeled_graphs.html)
 4.  [Graphical Enumeration Paperback, Frank Harary, Edgar M. Palmer](https://github.com/lychees/ACM-Training/blob/master/Note/Book/)
 5.  [The encyclopedia of integer sequences, N. J. A. Sloane, Simon Plouffe](https://github.com/lychees/ACM-Training/blob/master/Note/Book/The%20encyclopedia%20of%20integer%20sequences%20\(N.%20J.A.%20Sloane%2C%20Simon%20Plouffe\).pdf)

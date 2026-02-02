@@ -1,61 +1,61 @@
-在 STL 中，迭代器（Iterator）用来访问和检查 STL 容器中元素的对象，它的行为模式和指针类似，但是它封装了一些有效性检查，并且提供了统一的访问格式．类似的概念在其他很多高级语言中都存在，如 Python 的 `__iter__` 函数，C# 的 `IEnumerator`．
+Trong STL, iterator (Iterator) là đối tượng dùng để truy cập và kiểm tra phần tử trong container STL. Hành vi giống con trỏ, nhưng có thêm kiểm tra hợp lệ và cung cấp cách truy cập thống nhất. Khái niệm tương tự cũng có trong nhiều ngôn ngữ khác, như `__iter__` của Python, `IEnumerator` của C#.
 
-## 基础使用
+## Cách dùng cơ bản
 
-迭代器听起来比较晦涩，其实迭代器本身可以看作一个数据指针．迭代器主要支持两个运算符：自增 (`++`) 和解引用（单目 `*` 运算符），其中自增用来移动迭代器，解引用可以获取或修改它指向的元素．
+Iterator nghe có vẻ trừu tượng, nhưng có thể xem như con trỏ dữ liệu. Iterator chủ yếu hỗ trợ hai toán tử: tăng (`++`) và giải tham chiếu (toán tử một ngôi `*`). Tăng để di chuyển iterator, giải tham chiếu để lấy hoặc sửa phần tử mà nó trỏ tới.
 
-指向某个 [STL 容器](./container.md)  `container` 中元素的迭代器的类型一般为 `container::iterator`．
+Kiểu iterator trỏ tới phần tử trong [container STL](./container.md) `container` thường là `container::iterator`.
 
-迭代器可以用来遍历容器，例如，下面两个 for 循环的效果是一样的：
+Iterator có thể dùng để duyệt container; ví dụ hai vòng for dưới đây tương đương:
 
 ```cpp
 vector<int> data(10);
 
 for (int i = 0; i < data.size(); i++)
-  cout << data[i] << endl;  // 使用下标访问元素
+  cout << data[i] << endl;  // Truy cập bằng chỉ số
 
 for (vector<int>::iterator iter = data.begin(); iter != data.end(); iter++)
-  cout << *iter << endl;  // 使用迭代器访问元素
-// 在C++11后可以使用 auto iter = data.begin() 来简化上述代码
+  cout << *iter << endl;  // Truy cập bằng iterator
+// Sau C++11 có thể dùng auto iter = data.begin() để rút gọn
 ```
 
-???+ tip "`auto` 在竞赛中的使用"
-    大部分选手都喜欢使用 `auto` 来代替繁琐的迭代器声明．根据 2021 年 9 月发布的 [关于 NOI 系列活动中编程语言使用限制的补充说明](https://www.noi.cn/xw/2021-09-01/735729.shtml)，NOI 系列比赛（包括 CSP J/S）在评测时将使用 **C++14**，这个版本已经支持了 `auto` 关键字．
+???+ tip "`auto` trong thi đấu"
+    Phần lớn thí sinh thích dùng `auto` thay cho khai báo iterator dài dòng. Theo [Thông báo bổ sung về giới hạn ngôn ngữ trong các kỳ thi NOI](https://www.noi.cn/xw/2021-09-01/735729.shtml) (09/2021), các kỳ NOI (bao gồm CSP J/S) sẽ dùng **C++14**, hỗ trợ `auto`.
 
-## 分类
+## Phân loại
 
-在 STL 的定义中，迭代器根据其支持的操作依次分为以下几类：
+Trong STL, iterator được phân loại theo các thao tác hỗ trợ:
 
--   InputIterator（输入迭代器）：只要求支持拷贝、自增和解引访问．
--   OutputIterator（输出迭代器）：只要求支持拷贝、自增和解引赋值．
--   ForwardIterator（前向迭代器）：在 InputIterator 的基础上支持多次遍历迭代器解引访问，且保证多次访问的结果一致．
--   BidirectionalIterator（双向迭代器）：在 ForwardIterator 的基础上支持自减（即反向访问）．
--   RandomAccessIterator（随机访问迭代器）：在 BidirectionalIterator 的基础上支持加减运算和比较运算（即随机访问）．
--   ContiguousIterator（连续迭代器）：在 RandomAccessIterator 的基础上要求对可解引用的迭代器 `a + n` 满足 `*(a + n)` 与 `*(std::address_of(*a) + n)` 等价（即连续存储，其中 `a` 为连续迭代器、`n` 为整型值）．
+-   InputIterator (iterator đầu vào): chỉ yêu cầu copy, tăng, và giải tham chiếu để đọc.
+-   OutputIterator (iterator đầu ra): chỉ yêu cầu copy, tăng, và giải tham chiếu để gán.
+-   ForwardIterator (iterator tiến): ngoài InputIterator, hỗ trợ duyệt nhiều lần và đảm bảo kết quả nhất quán.
+-   BidirectionalIterator (iterator hai chiều): ngoài ForwardIterator, hỗ trợ giảm (duyệt ngược).
+-   RandomAccessIterator (iterator truy cập ngẫu nhiên): ngoài BidirectionalIterator, hỗ trợ cộng/trừ và so sánh (truy cập ngẫu nhiên).
+-   ContiguousIterator (iterator liên tiếp): ngoài RandomAccessIterator, yêu cầu `*(a + n)` tương đương `*(std::address_of(*a) + n)` (lưu trữ liên tiếp), với `a` là iterator, `n` là số nguyên.
 
-    ContiguousIterator 于 C++17 中正式引入．
+    ContiguousIterator được đưa vào chính thức từ C++17.
 
-???+ tip "为什么输入迭代器叫输入迭代器？"
-    「输入」指的是「可以从迭代器中获取输入」，而「输出」指的是「可以输出到迭代器」．
+???+ tip "Vì sao gọi là iterator đầu vào?"
+    “Đầu vào” nghĩa là “có thể lấy dữ liệu từ iterator”, “đầu ra” nghĩa là “có thể ghi dữ liệu vào iterator”.
     
-    「输入」和「输出」的施动者是程序的其它部分，而不是迭代器自身．
+    “Đầu vào/đầu ra” là từ góc nhìn của phần còn lại của chương trình, không phải từ iterator.
 
-迭代器的这些分类并不互斥．实际上，除了输出迭代器之外，列表中排在前面的迭代器都包含着排在后面的迭代器．例如，在要求使用前向迭代器的地方，同样可以使用双向迭代器．从前向迭代器开始，如果这些迭代器还实现了输出迭代器的功能（即允许写操作），就称它们是可变迭代器．由此，可以衍生出诸如「可变随机访问迭代器」这样的类别．
+Các loại iterator không loại trừ nhau. Trên thực tế, trừ OutputIterator, các loại trước bao hàm các loại sau. Ví dụ nơi cần ForwardIterator vẫn có thể dùng BidirectionalIterator. Nếu iterator còn hỗ trợ ghi (như OutputIterator) thì gọi là iterator có thể sửa. Vì vậy có thể có các khái niệm như “iterator truy cập ngẫu nhiên có thể sửa”.
 
-不同的 [STL 容器](./container.md) 支持的迭代器类型不同，在使用时需要留意．
+Các [container STL](./container.md) khác nhau hỗ trợ loại iterator khác nhau, cần lưu ý khi dùng.
 
-数组指针满足连续迭代器（或随机访问迭代器，对于 C++14 及以前的版本）的所有要求，可以当作连续迭代器使用．
+Con trỏ mảng thỏa các yêu cầu của contiguous iterator (hoặc random access trong C++14 trở về trước), nên có thể dùng như contiguous iterator.
 
-## 相关函数
+## Các hàm liên quan
 
-很多 [STL 函数](./algorithm.md) 都使用迭代器作为参数．
+Nhiều [hàm STL](./algorithm.md) dùng iterator làm tham số.
 
-可以使用 `std::advance(it, n)` 将迭代器 `it` 向后移动 `n` 步；若 `n` 为负数，则对应向前移动，此时迭代器必须满足双向迭代器，否则行为未定义．
+Có thể dùng `std::advance(it, n)` để dịch iterator `it` đi `n` bước; nếu `n` âm thì dịch ngược, khi đó iterator phải là bidirectional trở lên, иначе hành vi không xác định.
 
-在 C++11 以后可以使用 `std::next(it)` 获得前向迭代器 `it` 的后继（此时迭代器 `it` 不变），`std::next(it, n)` 获得前向迭代器 `it` 的第 `n` 个后继．
+Trong C++11 trở đi, có thể dùng `std::next(it)` để lấy hậu kế của iterator tiến `it` (it không đổi), `std::next(it, n)` lấy hậu kế thứ `n`.
 
-在 C++11 以后可以使用 `std::prev(it)` 获得双向迭代器 `it` 的前驱（此时迭代器 `it` 不变），`std::prev(it, n)` 获得双向迭代器 `it` 的第 `n` 个前驱．
+Trong C++11 trở đi, có thể dùng `std::prev(it)` để lấy tiền nhiệm của iterator hai chiều `it` (it không đổi), `std::prev(it, n)` lấy tiền nhiệm thứ `n`.
 
-[STL 容器](./container.md) 一般支持从一端或两端开始的访问，以及对 [const 修饰符](../const.md) 的支持．例如容器的 `begin()` 函数可以获得指向容器第一个元素的迭代器，`rbegin()` 函数可以获得指向容器最后一个元素的反向迭代器，`cbegin()` 函数可以获得指向容器第一个元素的 const 迭代器，`end()` 函数可以获得指向容器尾端（「尾端」并不是最后一个元素，可以看作是最后一个元素的后继；「尾端」的前驱是容器里的最后一个元素，其本身不指向任何一个元素）的迭代器．
+[Container STL](./container.md) thường hỗ trợ truy cập từ một hoặc hai đầu, và hỗ trợ [const](../const.md). Ví dụ `begin()` trả về iterator trỏ tới phần tử đầu, `rbegin()` trả về reverse iterator trỏ tới phần tử cuối, `cbegin()` trả về const iterator trỏ tới phần tử đầu, `end()` trả về iterator trỏ tới vị trí sau phần tử cuối (không trỏ phần tử nào; tiền nhiệm của `end()` là phần tử cuối).
 
-可在 [Iterator library - cppreference.com](https://en.cppreference.com/w/cpp/iterator) 查看更多用法．
+Xem thêm tại [Iterator library - cppreference.com](https://en.cppreference.com/w/cpp/iterator).

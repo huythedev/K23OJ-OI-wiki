@@ -1,150 +1,150 @@
 ## `set`
 
-`set` 是关联容器，含有键值类型对象的已排序集，搜索、移除和插入拥有对数复杂度．`set` 内部通常采用 [红黑树](../../ds/rbtree.md) 实现．[平衡二叉树](../../ds/bst.md) 的特性使得 `set` 非常适合处理需要同时兼顾查找、插入与删除的情况．
+`set` là container liên kết, chứa tập các đối tượng kiểu khóa đã được sắp thứ tự; tìm kiếm, xóa và chèn có độ phức tạp logarit. `set` thường được hiện thực bằng [cây đỏ-đen](../../ds/rbtree.md). Tính chất của [cây nhị phân cân bằng](../../ds/bst.md) khiến `set` rất phù hợp cho các tình huống vừa cần tìm kiếm, chèn và xóa.
 
-和数学中的集合相似，`set` 中不会出现值相同的元素．如果需要有相同元素的集合，需要使用 `multiset`．`multiset` 的使用方法与 `set` 的使用方法基本相同．
+Tương tự tập trong toán học, `set` không chứa phần tử trùng giá trị. Nếu cần tập có phần tử trùng, hãy dùng `multiset`. Cách dùng `multiset` gần như giống `set`.
 
-### 插入与删除操作
+### Thao tác chèn và xóa
 
--   `insert(x)` 当容器中没有等价元素的时候，将元素 x 插入到 `set` 中．
--   `erase(x)` 删除值为 x 的 **所有** 元素，返回删除元素的个数．
--   `erase(pos)` 删除迭代器为 pos 的元素，要求迭代器必须合法．
--   `erase(first,last)` 删除迭代器在 $[first,last)$ 范围内的所有元素．
--   `clear()` 清空 `set`．
+-   `insert(x)` Khi trong container không có phần tử tương đương, chèn phần tử x vào `set`.
+-   `erase(x)` Xóa **tất cả** phần tử có giá trị x, trả về số phần tử bị xóa.
+-   `erase(pos)` Xóa phần tử tại iterator pos, iterator phải hợp lệ.
+-   `erase(first,last)` Xóa tất cả phần tử trong phạm vi iterator $[first,last)$.
+-   `clear()` Xóa toàn bộ `set`.
 
-???+ note "insert 函数的返回值"
-    insert 函数的返回值类型为 `pair<iterator, bool>`，其中 iterator 是一个指向所插入元素（或者是指向等于所插入值的原本就在容器中的元素）的迭代器，而 bool 则代表元素是否插入成功，由于 `set` 中的元素具有唯一性质，所以如果在 `set` 中已有等值元素，则插入会失败，返回 false，否则插入成功，返回 true；`map` 中的 insert 也是如此．
+???+ note "Giá trị trả về của hàm insert"
+    Kiểu trả về của insert là `pair<iterator, bool>`, trong đó iterator trỏ tới phần tử được chèn (hoặc phần tử đã có giá trị bằng với giá trị chèn), còn bool biểu thị chèn thành công hay không. Do `set` có tính duy nhất nên nếu đã có phần tử bằng giá trị đó thì chèn thất bại, trả về false; ngược lại trả về true. `map` cũng tương tự.
 
-### 迭代器
+### Iterator
 
-`set` 提供了以下几种迭代器：
+`set` cung cấp các iterator sau:
 
 1.  `begin()/cbegin()`   
-    返回指向首元素的迭代器，其中 `*begin = front`．
+    Trả về iterator trỏ đến phần tử đầu, trong đó `*begin = front`.
 2.  `end()/cend()`   
-    返回指向数组尾端占位符的迭代器，注意是没有元素的．
+    Trả về iterator trỏ đến vị trí sau phần tử cuối (không có phần tử).
 3.  `rbegin()/crbegin()`   
-    返回指向逆向数组的首元素的逆向迭代器，可以理解为正向容器的末元素．
+    Trả về reverse iterator trỏ đến phần tử đầu của dãy đảo, có thể hiểu là phần tử cuối của container thường.
 4.  `rend()/crend()`   
-    返回指向逆向数组末元素后一位置的迭代器，对应容器首的前一个位置，没有元素．
+    Trả về reverse iterator trỏ đến vị trí sau phần tử cuối của dãy đảo (trước phần tử đầu), không có phần tử.
 
-以上列出的迭代器中，含有字符 `c` 的为只读迭代器，你不能通过只读迭代器去修改 `set` 中的元素的值．如果一个 `set` 本身就是只读的，那么它的一般迭代器和只读迭代器完全等价．只读迭代器自 C++11 开始支持．
+Trong các iterator trên, iterator có ký tự `c` là iterator chỉ đọc; không thể dùng để sửa giá trị phần tử. Nếu `set` là hằng thì iterator thường và iterator chỉ đọc là tương đương. Iterator chỉ đọc được hỗ trợ từ C++11.
 
-### 查找操作
+### Thao tác tìm kiếm
 
--   `count(x)` 返回 `set` 内键为 x 的元素数量．
--   `find(x)` 在 `set` 内存在键为 x 的元素时会返回该元素的迭代器，否则返回 `end()`．
--   `lower_bound(x)` 返回指向首个不小于给定键的元素的迭代器．如果不存在这样的元素，返回 `end()`．
--   `upper_bound(x)` 返回指向首个大于给定键的元素的迭代器．如果不存在这样的元素，返回 `end()`．
--   `empty()` 返回容器是否为空．
--   `size()` 返回容器内元素个数．
+-   `count(x)` Trả về số phần tử có khóa x trong `set`.
+-   `find(x)` Nếu có phần tử khóa x thì trả về iterator tới phần tử đó, nếu không trả về `end()`.
+-   `lower_bound(x)` Trả về iterator trỏ tới phần tử đầu tiên không nhỏ hơn khóa cho trước. Nếu không có, trả về `end()`.
+-   `upper_bound(x)` Trả về iterator trỏ tới phần tử đầu tiên lớn hơn khóa cho trước. Nếu không có, trả về `end()`.
+-   `empty()` Trả về container có rỗng hay không.
+-   `size()` Trả về số phần tử trong container.
 
-???+ warning "`lower_bound` 和 `upper_bound` 的时间复杂度"
-    `set` 自带的 `lower_bound` 和 `upper_bound` 的时间复杂度为 $O(\log n)$．
+???+ warning "Độ phức tạp của `lower_bound` và `upper_bound`"
+    `lower_bound` và `upper_bound` của `set` có độ phức tạp $O(\log n)$.
     
-    但使用 `algorithm` 库中的 `lower_bound` 和 `upper_bound` 函数对 `set` 中的元素进行查询，时间复杂度为 $O(n)$．
+    Nhưng nếu dùng `lower_bound` và `upper_bound` trong thư viện `algorithm` để truy vấn `set` thì độ phức tạp là $O(n)$.
 
-???+ warning "`nth_element` 的时间复杂度"
-    `set` 没有提供自带的 `nth_element`．使用 `algorithm` 库中的 `nth_element` 查找第 $k$ 大的元素时间复杂度为 $O(n)$．
+???+ warning "Độ phức tạp của `nth_element`"
+    `set` không có `nth_element`. Dùng `nth_element` trong `algorithm` để tìm phần tử lớn thứ $k$ có độ phức tạp $O(n)$.
     
-    如果需要实现平衡二叉树所具备的 $O(\log n)$ 查找第 $k$ 大元素的功能，需要自己手写平衡二叉树或权值线段树，或者选择使用 pb\_ds 库中的平衡二叉树．
+    Nếu cần chức năng tìm phần tử lớn thứ $k$ với $O(\log n)$ như cây cân bằng, phải tự cài cây cân bằng hoặc cây đoạn theo giá trị, hoặc dùng cây cân bằng trong thư viện pb_ds.
 
-### 使用样例
+### Ví dụ sử dụng
 
-#### `set` 在贪心中的使用
+#### `set` trong greedy
 
-在贪心算法中经常会需要出现类似 **找出并删除最小的大于等于某个值的元素**．这种操作能轻松地通过 `set` 来完成．
+Trong thuật toán greedy thường cần thao tác kiểu **tìm và xóa phần tử nhỏ nhất mà >= một giá trị nào đó**. Thao tác này dễ dàng thực hiện với `set`.
 
 ```cpp
-// 现存可用的元素
+// Các phần tử hiện có
 set<int> available;
-// 需要大于等于的值
+// Giá trị cần >=
 int x;
 
-// 查找最小的大于等于x的元素
+// Tìm phần tử nhỏ nhất >= x
 set<int>::iterator it = available.lower_bound(x);
 if (it == available.end()) {
-  // 不存在这样的元素，则进行相应操作……
+  // Không tồn tại phần tử như vậy, xử lý tương ứng...
 } else {
-  // 找到了这样的元素，将其从现存可用元素中移除
+  // Tìm thấy, xóa khỏi tập hiện có
   available.erase(it);
-  // 进行相应操作……
+  // Xử lý tiếp...
 }
 ```
 
 ## `map`
 
-`map` 是有序键值对容器，它的元素的键是唯一的．搜索、移除和插入操作拥有对数复杂度．`map` 通常实现为 [红黑树](../../ds/rbtree.md)．
+`map` là container cặp khóa-giá trị có thứ tự, khóa là duy nhất. Tìm kiếm, xóa, chèn có độ phức tạp logarit. `map` thường hiện thực bằng [cây đỏ-đen](../../ds/rbtree.md).
 
-设想如下场景：现在需要存储一些键值对，例如存储学生姓名对应的分数：`Tom 0`，`Bob 100`，`Alan 100`．但是由于数组下标只能为非负整数，所以无法用姓名作为下标来存储，这个时候最简单的办法就是使用 STL 中的 `map`．
+Hãy tưởng tượng cần lưu các cặp khóa-giá trị, ví dụ lưu tên học sinh và điểm: `Tom 0`, `Bob 100`, `Alan 100`. Vì chỉ số mảng chỉ là số nguyên không âm, không thể dùng tên làm chỉ số. Khi đó cách đơn giản nhất là dùng `map` trong STL.
 
-`map` 重载了 `operator[]`，可以用任意定义了 `operator <` 的类型作为下标（在 `map` 中叫做 `key`，也就是索引）：
+`map` nạp chồng `operator[]`, có thể dùng bất kỳ kiểu nào định nghĩa `operator <` làm chỉ số (trong `map` gọi là `key`):
 
 ```cpp
 map<Key, T> yourMap;
 ```
 
-其中，`Key` 是键的类型，`T` 是值的类型，下面是使用 `map` 的实例：
+Trong đó, `Key` là kiểu khóa, `T` là kiểu giá trị; ví dụ:
 
 ```cpp
 map<string, int> mp;
 ```
 
-`map` 中不会存在键相同的元素，`multimap` 中允许多个元素拥有同一键．`multimap` 的使用方法与 `map` 的使用方法基本相同．
+`map` không chứa phần tử có khóa trùng; `multimap` cho phép nhiều phần tử có cùng khóa. Cách dùng `multimap` gần như giống `map`.
 
 ??? warning "Warning"
-    正是因为 `multimap` 允许多个元素拥有同一键的特点，`multimap` 并没有提供给出键访问其对应值的方法．
+    Do `multimap` cho phép nhiều phần tử cùng khóa, nên không cung cấp cách truy cập giá trị bằng khóa.
 
-### 插入与删除操作
+### Thao tác chèn và xóa
 
--   可以直接通过下标访问来进行查询或插入操作．例如 `mp["Alan"]=100`．
--   通过向 `map` 中插入一个类型为 `pair<Key, T>` 的值可以达到插入元素的目的，例如 `mp.insert(pair<string,int>("Alan",100));`；
--   `erase(key)` 函数会删除键为 `key` 的 **所有** 元素．返回值为删除元素的数量．
--   `erase(pos)`: 删除迭代器为 pos 的元素，要求迭代器必须合法．
--   `erase(first,last)`: 删除迭代器在 $[first,last)$ 范围内的所有元素．
--   `clear()` 函数会清空整个容器．
+-   Có thể truy cập/chèn trực tiếp bằng chỉ số, ví dụ `mp["Alan"]=100`.
+-   Chèn một cặp `pair<Key, T>` vào `map`, ví dụ `mp.insert(pair<string,int>("Alan",100));`.
+-   `erase(key)` sẽ xóa **tất cả** phần tử có khóa `key`. Trả về số phần tử bị xóa.
+-   `erase(pos)`: xóa phần tử tại iterator pos, iterator phải hợp lệ.
+-   `erase(first,last)`: xóa các phần tử trong phạm vi iterator $[first,last)$.
+-   `clear()` xóa toàn bộ container.
 
-???+ note "下标访问中的注意事项"
-    在利用下标访问 `map` 中的某个元素时，如果 `map` 中不存在相应键的元素，会自动在 `map` 中插入一个新元素，并将其值设置为默认值（对于整数，值为零；对于有默认构造函数的类型，会调用默认构造函数进行初始化）．
+???+ note "Lưu ý khi truy cập bằng chỉ số"
+    Khi truy cập `map` bằng chỉ số, nếu không tồn tại khóa tương ứng, `map` sẽ tự chèn một phần tử mới với giá trị mặc định (với số nguyên là 0; với kiểu có constructor mặc định thì gọi constructor).
     
-    当下标访问操作过于频繁时，容器中会出现大量无意义元素，影响 `map` 的效率．因此一般情况下推荐使用 `find()` 函数来寻找特定键的元素．
+    Nếu thao tác truy cập bằng chỉ số quá thường xuyên, container sẽ có nhiều phần tử vô nghĩa, làm giảm hiệu quả. Vì vậy thường khuyến nghị dùng `find()` để tìm khóa cụ thể.
 
-### 查询操作
+### Thao tác truy vấn
 
--   `count(x)`: 返回容器内键为 x 的元素数量．复杂度为 $O(\log(size)+ans)$（关于容器大小对数复杂度，加上匹配个数）．
--   `find(x)`: 若容器内存在键为 x 的元素，会返回该元素的迭代器；否则返回 `end()`．
--   `lower_bound(x)`: 返回指向首个不小于给定键的元素的迭代器．
--   `upper_bound(x)`: 返回指向首个大于给定键的元素的迭代器．若容器内所有元素均小于或等于给定键，返回 `end()`．
--   `empty()`: 返回容器是否为空．
--   `size()`: 返回容器内元素个数．
+-   `count(x)`: trả về số phần tử có khóa x. Độ phức tạp $O(\log(size)+ans)$ (log kích thước cộng số lượng khớp).
+-   `find(x)`: nếu có khóa x thì trả về iterator; nếu không trả về `end()`.
+-   `lower_bound(x)`: trả về iterator trỏ tới phần tử đầu tiên không nhỏ hơn khóa cho trước.
+-   `upper_bound(x)`: trả về iterator trỏ tới phần tử đầu tiên lớn hơn khóa cho trước. Nếu tất cả phần tử <= khóa, trả về `end()`.
+-   `empty()`: trả về container có rỗng hay không.
+-   `size()`: trả về số phần tử.
 
-### 使用样例
+### Ví dụ sử dụng
 
-#### `map` 用于存储复杂状态
+#### `map` dùng để lưu trạng thái phức tạp
 
-在搜索中，我们有时需要存储一些较为复杂的状态（如坐标，无法离散化的数值，字符串等）以及与之有关的答案（如到达此状态的最小步数）．`map` 可以用来实现此功能．其中的键是状态，而值是与之相关的答案．下面的示例展示了如何使用 `map` 存储以 `string` 表示的状态．
+Trong tìm kiếm, đôi khi cần lưu trạng thái phức tạp (tọa độ, số không rời rạc được, chuỗi...) và đáp án liên quan (ví dụ số bước nhỏ nhất). `map` phù hợp cho mục đích này: khóa là trạng thái, giá trị là đáp án. Ví dụ dưới lưu trạng thái bằng `string`.
 
 ```cpp
-// 存储状态与对应的答案
+// Lưu trạng thái và đáp án tương ứng
 map<string, int> record;
 
-// 新搜索到的状态与对应答案
+// Trạng thái mới và đáp án tương ứng
 string status;
 int ans;
-// 查找对应的状态是否出现过
+// Tìm xem trạng thái đã xuất hiện chưa
 map<string, int>::iterator it = record.find(status);
 if (it == record.end()) {
-  // 尚未搜索过该状态，将其加入状态记录中
+  // Chưa từng xuất hiện, thêm vào
   record[status] = ans;
-  // 进行相应操作……
+  // Xử lý tiếp...
 } else {
-  // 已经搜索过该状态，进行相应操作……
+  // Đã xuất hiện, xử lý tương ứng...
 }
 ```
 
-## 遍历容器
+## Duyệt container
 
-可以利用迭代器来遍历关联式容器的所有元素．
+Có thể dùng iterator để duyệt tất cả phần tử của container liên kết.
 
 ```cpp
 set<int> s;
@@ -152,26 +152,26 @@ using si = set<int>::iterator;
 for (si it = s.begin(); it != s.end(); it++) cout << *it << endl;
 ```
 
-需要注意的是，对 `map` 的迭代器解引用后，得到的是类型为 `pair<Key, T>` 的键值对．
+Lưu ý: dereference iterator của `map` sẽ trả về `pair<Key, T>`.
 
-在 C++11 中，使用范围 for 循环会让代码简洁很多：
+Trong C++11, dùng range-for sẽ gọn hơn:
 
 ```cpp
 set<int> s;
 for (auto x : s) cout << x << endl;
 ```
 
-对于任意关联式容器，使用迭代器遍历容器的时间复杂度均为 $O(n)$．
+Với mọi container liên kết, duyệt bằng iterator có độ phức tạp $O(n)$.
 
-## 自定义比较方式
+## Tùy biến phép so sánh
 
-`set` 在默认情况下的比较函数为 `<`（如果是非内置类型需要 [重载 `<` 运算符](../op-overload.md#比较运算符)）．然而在某些特殊情况下，我们希望能自定义 `set` 内部的比较方式．
+Mặc định `set` dùng phép so sánh `<` (nếu là kiểu tự định nghĩa thì cần [nạp chồng `<`](../op-overload.md#比较运算符)). Trong một số trường hợp cần tự định nghĩa cách so sánh nội bộ.
 
-这时候可以通过传入自定义比较器来解决问题．
+Có thể truyền vào comparator tự định nghĩa.
 
-具体来说，我们需要定义一个类，并在这个类中 [重载 `()` 运算符](../op-overload.md#函数调用运算符)．
+Cụ thể, định nghĩa một lớp và [nạp chồng `()`](../op-overload.md#函数调用运算符).
 
-例如，我们想要维护一个存储整数，且较大值靠前的 `set`，可以这样实现：
+Ví dụ, muốn `set` lưu số nguyên nhưng giá trị lớn hơn đứng trước:
 
 ```cpp
 struct cmp {
@@ -181,4 +181,4 @@ struct cmp {
 set<int, cmp> s;
 ```
 
-对于其他关联式容器，可以用类似的方式实现自定义比较，这里不再赘述．
+Các container liên kết khác có thể làm tương tự, không trình bày thêm.

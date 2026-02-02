@@ -1,20 +1,20 @@
-> 声明具名变量为引用，即既存对象或函数的别名．
+> Khai báo một biến có tên là tham chiếu, tức là bí danh của một đối tượng hoặc hàm đã tồn tại.
 
-引用可以看成是 C++ 封装的非空指针，可以用来传递它所指向的对象，在声明时必须指向对象．
+Tham chiếu có thể coi là con trỏ không rỗng được đóng gói trong C++, dùng để truyền đối tượng mà nó trỏ tới, và khi khai báo phải trỏ tới một đối tượng.
 
-引用不是对象，因此不存在引用的数组、无法获取引用的指针，也不存在引用的引用．
+Tham chiếu không phải là đối tượng, nên không có mảng tham chiếu, không thể lấy con trỏ tới tham chiếu, cũng không có tham chiếu của tham chiếu.
 
-??? note "引用类型不属于对象类型"
-    如果想让引用能完成一般的复制、赋值等操作，比如作为容器元素，则需要 [`reference_wrapper`](https://zh.cppreference.com/w/cpp/utility/functional/reference_wrapper)，通常维护一个非空指针实现．
+??? note "Kiểu tham chiếu không thuộc kiểu đối tượng"
+    Nếu muốn tham chiếu hỗ trợ sao chép/gán như đối tượng thường (ví dụ làm phần tử container), cần [`reference_wrapper`](https://zh.cppreference.com/w/cpp/utility/functional/reference_wrapper), thường được cài bằng một con trỏ không rỗng.
 
-引用主要分为两种，左值引用和右值引用．
+Tham chiếu chủ yếu gồm hai loại: tham chiếu trái (lvalue) và tham chiếu phải (rvalue).
 
-??? note "左值和右值"
-    对左值和右值的讲解，请参考 [值类别](./value-category.md) 页面．
+??? note "Lvalue và rvalue"
+    Xem giải thích tại [phân loại giá trị](./value-category.md).
 
-## 左值引用 T&
+## Tham chiếu trái T&
 
-通常我们会接触到的引用为左值引用，即绑定到左值的引用，同时 `const` 限定的左值引用可以绑定右值．以下是来自 [参考手册](https://zh.cppreference.com/w/cpp/language/reference) 的一段示例代码．
+Tham chiếu thường gặp là tham chiếu trái, ràng buộc vào lvalue; tham chiếu trái có `const` có thể ràng buộc rvalue. Dưới đây là ví dụ từ [tham khảo](https://zh.cppreference.com/w/cpp/language/reference):
 
 ```cpp
 #include <iostream>
@@ -25,35 +25,35 @@ int main() {
   std::string& r1 = s;
   const std::string& r2 = s;
 
-  r1 += "ample";  // 修改 r1，即修改了 s
-  // r2 += "!"; // 错误：不能通过到 const 的引用修改
-  std::cout << r2 << '\n';  // 打印 r2，访问了s，输出 "Example"
+  r1 += "ample";  // sửa r1 tức là sửa s
+  // r2 += "!"; // lỗi: không thể sửa qua tham chiếu const
+  std::cout << r2 << '\n';  // in r2, truy cập s, ra "Example"
 }
 ```
 
-左值引用最常用的地方是函数参数，用于避免不需要的拷贝．
+Tham chiếu trái dùng nhiều nhất ở tham số hàm để tránh copy không cần thiết.
 
 ```cpp
 #include <iostream>
 #include <string>
 
-// 参数中的 s 是引用，在调用函数时不会发生拷贝
+// s là tham chiếu, gọi hàm không tạo bản sao
 char& char_number(std::string& s, std::size_t n) {
-  s += s;  // 's' 与 main() 的 'str'
-           // 是同一对象，此处还说明左值也是可以放在等号右侧的
-  return s.at(n);  // string::at() 返回 char 的引用
+  s += s;  // 's' với 'str' trong main() là cùng một đối tượng
+           // cũng cho thấy lvalue có thể nằm bên phải dấu '='
+  return s.at(n);  // string::at() trả về tham chiếu char
 }
 
 int main() {
   std::string str = "Test";
-  char_number(str, 1) = 'a';  // 函数返回是左值，可被赋值
-  std::cout << str << '\n';   // 此处输出 "TastTest"
+  char_number(str, 1) = 'a';  // hàm trả về lvalue, có thể gán
+  std::cout << str << '\n';   // in "TastTest"
 }
 ```
 
-## 右值引用 T&&（C++ 11）
+## Tham chiếu phải T&&（C++ 11）
 
-右值引用是绑定到右值的引用，用于移动对象，也可以用于 **延长临时对象生存期**．
+Tham chiếu phải ràng buộc vào rvalue, dùng để di chuyển đối tượng và **kéo dài vòng đời tạm**.
 
 ```cpp
 #include <iostream>
@@ -63,31 +63,31 @@ using namespace std;
 
 int main() {
   string s1 = "Test";
-  // string&& r1 = s1; // 错误：不能绑定到左值，需要 std::move 或者 static_cast
+  // string&& r1 = s1; // lỗi: không thể ràng buộc lvalue, cần std::move hoặc static_cast
 
-  const string& r2 = s1 + s1;  // 可行：到常量的左值引用延长生存期
-  // r2 += "Test"; // 错误：不能通过到常量的引用修改
+  const string& r2 = s1 + s1;  // OK: tham chiếu trái const kéo dài vòng đời
+  // r2 += "Test"; // lỗi: không thể sửa qua tham chiếu const
   cout << r2 << '\n';
 
-  string&& r3 = s1 + s1;  // 可行：右值引用延长生存期
+  string&& r3 = s1 + s1;  // OK: tham chiếu phải kéo dài vòng đời
   r3 += "Test";
   cout << r3 << '\n';
 
-  const string& r4 = r3;  // 右值引用可以转换到 const 限定的左值
+  const string& r4 = r3;  // tham chiếu phải có thể chuyển thành tham chiếu trái const
   cout << r4 << '\n';
 
-  string& r5 = r3;  // 右值引用可以转换到左值
+  string& r5 = r3;  // tham chiếu phải có thể chuyển thành tham chiếu trái
   cout << r5 << '\n';
 }
 ```
 
-## 悬垂引用
+## Tham chiếu treo (dangling)
 
-当引用指代的对象已经销毁，引用就会变成悬垂引用，访问悬垂引用这是一种未定义行为，可能会导致程序崩溃．
+Khi đối tượng được tham chiếu bị hủy, tham chiếu trở thành dangling; truy cập là hành vi không xác định, có thể crash.
 
-以下为常见的悬垂引用的例子：
+Ví dụ thường gặp:
 
--   引用局部变量
+-   Tham chiếu biến cục bộ
 
     ```cpp
     #include <iostream>
@@ -99,11 +99,11 @@ int main() {
 
     int main() {
       int& b = foo();
-      std::cout << b << std::endl;  // 未定义行为
+      std::cout << b << std::endl;  // hành vi không xác định
     }
     ```
 
--   解分配导致的悬垂引用
+-   Treo do giải phóng
 
     ```cpp
     #include <iostream>
@@ -113,11 +113,11 @@ int main() {
       int& ref = *ptr;
       delete ptr;
 
-      std::cout << ref << std::endl;  // 未定义行为
+      std::cout << ref << std::endl;  // hành vi không xác định
     }
     ```
 
--   内存重分配导致的悬垂引用
+-   Treo do tái cấp phát
 
     ```cpp
     #include <iostream>
@@ -127,41 +127,41 @@ int main() {
 
       const char& ref = str.front();
 
-      str.append("world");  // 可能会重新分配内存，导致 ref 指向的内存被释放
+      str.append("world");  // có thể tái cấp phát, ref trỏ tới bộ nhớ đã bị giải phóng
 
-      std::cout << ref << std::endl;  // 未定义行为
+      std::cout << ref << std::endl;  // hành vi không xác định
     }
     ```
 
-    类似 `std::vector`，`std::unordered_map` 等容器的插入操作，均有可能导致内存重新分配．
+    Các thao tác chèn của `std::vector`, `std::unordered_map`... đều có thể gây tái cấp phát.
 
-使用引用时，应时刻关注引用指向的对象的生命周期，避免造成悬垂引用．
+Khi dùng tham chiếu, luôn phải chú ý vòng đời đối tượng, tránh dangling.
 
-通常静态检查工具和良好的代码习惯能让我们避免悬垂引用的问题．
+Công cụ phân tích tĩnh và thói quen tốt giúp tránh lỗi này.
 
-## 引用相关的优化技巧
+## Mẹo tối ưu liên quan đến tham chiếu
 
-### 消除非轻量对象入参的拷贝开销
+### Loại bỏ copy của đối tượng “nặng”
 
-常见的 **非轻量对象** 有：
+Các **đối tượng nặng** thường gặp:
 
--   容器 `vector`，`array`，`map` 等
+-   Container `vector`, `array`, `map`...
 -   `string`
--   其他实现了或继承了自定义拷贝构造、移动构造等特殊函数的类型
+-   Các kiểu có copy/move constructor đặc biệt
 
-而对 **轻量对象** 使用引用不能带来任何好处，引用类型作为参数的空间占用大小，甚至可能会比类型本身还大．
+Với **đối tượng nhẹ**, truyền tham chiếu không giúp gì, thậm chí tham chiếu còn tốn bộ nhớ hơn.
 
-这可能会带来些的性能负担，同时可能会阻止编译器优化．
+Điều này có thể gây overhead và cản trở tối ưu.
 
-以下属于 **轻量对象**
+**Đối tượng nhẹ**:
 
--   基本类型 `int`，`float` 等
--   较小的 [聚合体类型](https://zh.cppreference.com/w/cpp/language/aggregate_initialization)
--   标准库容器的迭代器
+-   Kiểu cơ bản `int`, `float`...
+-   Các [aggregate](https://zh.cppreference.com/w/cpp/language/aggregate_initialization) nhỏ
+-   Iterator của container chuẩn
 
-### 将左值转换为右值
+### Chuyển lvalue thành rvalue
 
-使用 `std::move` [转移](./value-category.md#stdmove) 对象的所有权．这通常见于局部变量之间，或参数与局部变量之间：
+Dùng `std::move` để [chuyển](./value-category.md#stdmove) quyền sở hữu. Thường gặp giữa biến cục bộ hoặc giữa tham số và biến cục bộ:
 
 ```cpp
 #include <iostream>
@@ -191,14 +191,14 @@ int main() {
 }
 ```
 
-但不是所有时候都需要这么做，比如 [函数返回值优化](./value-category.md#常见误区)．
+Không phải lúc nào cũng cần làm vậy, ví dụ [tối ưu trả về](./value-category.md#常见误区).
 
-### 右值延长临时量生命期
+### Kéo dài vòng đời tạm bằng rvalue
 
-从语义上，临时量可能会带来的额外的复制或移动，尽管多数情况下编译器能通过 [复制消除](./value-category.md#复制消除) 进行优化，但引用能强制编译器不进行这些多余操作，避免不确定性．
+Về mặt ngữ nghĩa, tạm có thể gây copy/move thêm; dù compiler thường tối ưu bằng [copy elision](./value-category.md#复制消除), tham chiếu có thể ép compiler tránh thao tác dư thừa, giảm bất định.
 
-## 参考内容
+## Tài liệu tham khảo
 
-1.  [C++ 语言文档——引用声明](https://zh.cppreference.com/w/cpp/language/reference)
-2.  [C++ 语言文档——值类别](https://zh.cppreference.com/w/cpp/language/value_category)
+1.  [C++ Reference — reference declaration](https://zh.cppreference.com/w/cpp/language/reference)
+2.  [C++ Reference — value categories](https://zh.cppreference.com/w/cpp/language/value_category)
 3.  [Does const ref lvalue to non-const func return value specifically reduce copies?](https://stackoverflow.com/questions/38909228/does-const-ref-lvalue-to-non-const-func-return-value-specifically-reduce-copies)

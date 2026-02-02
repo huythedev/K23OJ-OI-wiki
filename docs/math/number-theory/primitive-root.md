@@ -1,326 +1,326 @@
-前置知识：[费马小定理](./fermat.md#费马小定理)、[欧拉定理](./fermat.md#欧拉定理)、[拉格朗日定理](./congruence-equation.md#定理-3lagrange-定理)
+Kiến thức trước: [Định lý nhỏ Fermat](./fermat.md#费马小定理)、[Định lý Euler](./fermat.md#欧拉定理)、[Định lý Lagrange](./congruence-equation.md#定理-3lagrange-定理)
 
-阶和原根，是理解模 $m$ [既约剩余系](./basic.md#同余类与剩余系) $\mathbf Z_m^*$ 乘法结构的重要工具．基于此，可以定义 [离散对数](./discrete-logarithm.md) 等概念．更为一般的讨论可以参见抽象代数部分 [群论](../algebra/group-theory.md#阶) 和 [环论](../algebra/ring-theory.md#应用整数同余类的乘法群) 等页面相关章节．
+Khái niệm **bậc** và **nguyên căn** là công cụ quan trọng để hiểu cấu trúc nhân của [hệ thặng dư tối giản](./basic.md#同余类与剩余系) $\mathbf Z_m^*$ theo modulo $m$. Từ đó có thể định nghĩa các khái niệm như [logarit rời rạc](./discrete-logarithm.md). Thảo luận tổng quát hơn có thể xem ở phần đại số trừu tượng: [lý thuyết nhóm](../algebra/group-theory.md#阶) và [lý thuyết vành](../algebra/ring-theory.md#应用整数同余类的乘法群), cùng các mục liên quan.
 
-## 阶
+## Bậc
 
-本节中，总是假设模数 $m\in\mathbf N_+$ 和底数 $a\in\mathbf Z$ 互素，即 $(a,m)=1$，也记作 $a\perp m$．
+Trong mục này, luôn giả sử mô-đun $m\in\mathbf N_+$ và cơ số $a\in\mathbf Z$ nguyên tố cùng nhau, tức $(a,m)=1$, cũng ký hiệu $a\perp m$.
 
-对于 $n\in\mathbf Z$，幂次 $a^n\bmod m$ 呈现一种循环结构．这个循环节的最小长度，就是 $a$ 模 $m$ 的阶．阶就定义为幂 $a^n \bmod m$ 第一次回到起点 $a^0\bmod m = 1$ 时的指数：
+Với $n\in\mathbf Z$, các lũy thừa $a^n\bmod m$ có một cấu trúc tuần hoàn. Độ dài chu kỳ nhỏ nhất chính là bậc của $a$ modulo $m$. Bậc được định nghĩa là số mũ khi $a^n \bmod m$ quay về điểm xuất phát $a^0\bmod m = 1$ lần đầu:
 
-???+ abstract "阶"
-    对于 $a\in\mathbf Z,m\in\mathbf N_+$ 且 $a\perp m$，满足同余式 $a^n \equiv 1 \pmod m$ 的最小正整数 $n$ 称作 **$a$ 模 $m$ 的阶**（the order of $a$ modulo $m$），记作 $\delta_m(a)$ 或 $\operatorname{ord}_m(a)$．
+???+ abstract "Bậc"
+    Với $a\in\mathbf Z,m\in\mathbf N_+$ và $a\perp m$, số nguyên dương nhỏ nhất $n$ thỏa $a^n \equiv 1 \pmod m$ được gọi là **bậc của $a$ modulo $m$** (the order of $a$ modulo $m$), ký hiệu $\delta_m(a)$ hoặc $\operatorname{ord}_m(a)$.
 
-???+ tip "注"
-    在 [抽象代数](../algebra/group-theory.md#阶) 中，这里的「阶」就是模 $m$ 既约剩余系关于乘法形成的群中，元素 $a$ 的阶．用记号 $\delta$ 表示阶只适用于这个特殊的群．下面的诸多性质可以直接推广到抽象代数中群元素的阶的性质．
-    
-    另外还有「半阶」的概念，在数论中会用 $\delta^-$ 记号表示．它是满足同余式 $a^n \equiv -1 \pmod m$ 的最小正整数．半阶不是群论中的概念．阶一定存在，半阶不一定存在．
+???+ tip "Ghi chú"
+    Trong [đại số trừu tượng](../algebra/group-theory.md#阶), “bậc” ở đây chính là bậc của phần tử $a$ trong nhóm nhân của hệ thặng dư tối giản modulo $m$. Ký hiệu $\delta$ chỉ dùng cho nhóm đặc biệt này. Nhiều tính chất dưới đây có thể trực tiếp tổng quát hóa cho bậc phần tử trong nhóm nói chung.
 
-### 幂的循环结构
+    Ngoài ra còn có khái niệm “bán bậc”, trong số học ký hiệu $\delta^-$. Đó là số nguyên dương nhỏ nhất thỏa $a^n \equiv -1 \pmod m$. Bán bậc không phải khái niệm trong lý thuyết nhóm. Bậc luôn tồn tại, bán bậc thì không nhất thiết.
 
-利用阶，可以刻画幂的循环结构．对于幂 $a^n\bmod m$，可以将指数 $n$ 对阶 $\delta_m(a)$ 做带余除法：
+### Cấu trúc tuần hoàn của lũy thừa
+
+Nhờ bậc, ta có thể mô tả cấu trúc tuần hoàn của lũy thừa. Với $a^n\bmod m$, viết $n$ theo phép chia có dư bởi $\delta_m(a)$:
 
 $$
 n = \delta_m(a)q + r, ~ 0\le r < \delta_m(a). 
 $$
 
-进而，利用幂的运算律，就得到
+Suy ra theo quy tắc lũy thừa:
 
 $$
 a^n = a^{\delta_m(a)q + r} = (a^{\delta_m(a)})^q \cdot a^r \equiv a^r \pmod m.
 $$
 
-这说明，对于任意指数的幂，可以将它平移到第一个非负的循环节．由此，可以得到一系列关于阶的性质．
+Điều này cho thấy mọi lũy thừa có thể “tịnh tiến” về chu kỳ đầu tiên. Từ đó suy ra một loạt tính chất của bậc.
 
 <a id="ord-prop-1"></a>
 
-???+ note "性质 1"
-    对于 $a\in\mathbf Z,m\in\mathbf N_+$ 且 $a\perp m$，幂次 $a^0(=1),a,a^2,\cdots,a^{\delta_m(a)-1}$ 模 $m$ 两两不同余．
+???+ note "Tính chất 1"
+    Với $a\in\mathbf Z,m\in\mathbf N_+$ và $a\perp m$, các lũy thừa $a^0(=1),a,a^2,\cdots,a^{\delta_m(a)-1}$ modulo $m$ đôi một không đồng dư.
 
-??? note "证明"
-    考虑反证．假设存在两个数 $0\le i< j<\delta_m(a)$，且 $a^i\equiv a^j\pmod m$，则有 $a^{j - i}\equiv 1\pmod m$．但是，$0 < j - i < \delta_m(a)$．这与阶的最小性矛盾，故原命题成立．
+??? note "Chứng minh"
+    Chứng minh phản chứng. Giả sử tồn tại $0\le i< j<\delta_m(a)$ sao cho $a^i\equiv a^j\pmod m$, khi đó $a^{j - i}\equiv 1\pmod m$. Nhưng $0 < j - i < \delta_m(a)$, mâu thuẫn với tính nhỏ nhất của bậc. Do đó mệnh đề đúng.
 
 <a id="ord-prop-2"></a>
 
-???+ note "性质 2"
-    对于 $a,n\in\mathbf Z,m\in\mathbf N_+$ 且 $a\perp m$，同余关系 $a^n \equiv 1 \pmod m$ 成立，当且仅当 $\delta_m(a)\mid n$．
+???+ note "Tính chất 2"
+    Với $a,n\in\mathbf Z,m\in\mathbf N_+$ và $a\perp m$, quan hệ $a^n \equiv 1 \pmod m$ đúng khi và chỉ khi $\delta_m(a)\mid n$.
 
-??? note "证明"
-    如前文所述，$a^{n}\equiv a^{n\bmod\delta_m(a)}\pmod m$．由 [性质 1](#ord-prop-1) 可知，$0\le r < \delta_m(a)$ 中唯一一个使得 $a^r\equiv 1\pmod m$ 成立的 $r$ 就是 $r=0$．因此，$a^n \equiv 1 \pmod m$，当且仅当 $n\bmod \delta_m(a) = 0$，也就是 $\delta_m(a)\mid n$．
+??? note "Chứng minh"
+    Như trên, $a^{n}\equiv a^{n\bmod\delta_m(a)}\pmod m$. Theo [Tính chất 1](#ord-prop-1), trong $0\le r < \delta_m(a)$ chỉ có duy nhất $r=0$ khiến $a^r\equiv 1\pmod m$. Vì vậy $a^n \equiv 1 \pmod m$ khi và chỉ khi $n\bmod \delta_m(a) = 0$, tức $\delta_m(a)\mid n$.
 
-[欧拉定理](./fermat.md#欧拉定理) 中，同余关系 $a^{\varphi(m)}\equiv 1\pmod m$ 对于所有 $a\perp m$ 都成立．结合 [性质 2](#ord-prop-2)，这说明对于所有 $a\perp m$，都有 $\delta_m(a)\mid\varphi(m)$．换句话说，$\varphi(m)$ 是所有 $a\perp m$ 的阶的一个公倍数．对于一个正整数 $m$，所有 $a\perp m$ 的阶 $\delta_m(a)$ 的最小公倍数，记作 $\lambda(m)$，就是 $m$ 的 [Carmichael 函数](#carmichael-函数)．后文会详细讨论它的性质．
+Trong [định lý Euler](./fermat.md#欧拉定理), $a^{\varphi(m)}\equiv 1\pmod m$ đúng với mọi $a\perp m$. Kết hợp [Tính chất 2](#ord-prop-2) suy ra với mọi $a\perp m$ đều có $\delta_m(a)\mid\varphi(m)$. Nói cách khác, $\varphi(m)$ là một bội chung của mọi bậc $\delta_m(a)$. Với số nguyên dương $m$, bội chung nhỏ nhất của tất cả các bậc $\delta_m(a)$ (với $a\perp m$) ký hiệu $\lambda(m)$, chính là [hàm Carmichael](#carmichael-函数). Phần sau sẽ bàn kỹ.
 
-和其他的循环结构类似，可以根据 $a$ 的阶计算 $a^k$ 的阶．
+Cũng như các cấu trúc tuần hoàn khác, có thể suy ra bậc của $a^k$ từ bậc của $a$.
 
 <a id="ord-prop-3"></a>
 
-???+ note "性质 3"
-    对于 $k,a\in\mathbf Z,m\in\mathbf N_+$ 且 $a\perp m$，有
-    
+???+ note "Tính chất 3"
+    Với $k,a\in\mathbf Z,m\in\mathbf N_+$ và $a\perp m$, ta có
+
     $$
     \delta_m(a^k) = \dfrac{\delta_m(a)}{(\delta_m(a),k)}.
     $$
 
-??? note "证明"
-    由 [性质 2](#ord-prop-2)，同余关系 $(a^k)^n = a^{kn} \equiv 1\pmod m$ 成立，当且仅当 $\delta_m(a) \mid kn$．这一条件就等价于
-    
+??? note "Chứng minh"
+    Theo [Tính chất 2](#ord-prop-2), $(a^k)^n = a^{kn} \equiv 1\pmod m$ khi và chỉ khi $\delta_m(a) \mid kn$. Điều này tương đương
+
     $$
     \dfrac{\delta_m(a)}{\left(\delta_m(a),k\right)} \mid n.
     $$
-    
-    使得这一条件成立的最小正整数就是
-    
+
+    Số nguyên dương nhỏ nhất thỏa điều kiện là
+
     $$
     \delta_m(a^k)=\dfrac{\delta_m(a)}{\left(\delta_m(a),k\right)}.
     $$
 
-### 乘积的阶
+### Bậc của tích
 
-设 $a,b$ 是与 $m$ 互素的不同整数．如果已知阶 $\delta_m(a)$ 和 $\delta_m(b)$，那么，同样可以获得一些关于它们乘积 $ab$ 的阶 $\delta_{m}(ab)$ 的信息．
+Giả sử $a,b$ là hai số nguyên khác nhau, đều nguyên tố cùng nhau với $m$. Nếu biết $\delta_m(a)$ và $\delta_m(b)$, ta có thể suy ra thông tin về bậc của tích $ab$, ký hiệu $\delta_{m}(ab)$.
 
 <a id="ord-prop-4"></a>
 
-???+ note "性质 4"
-    对于 $a,b\in\mathbf Z,m\in\mathbf N_+$ 且 $a,b\perp m$，那么，有
-    
+???+ note "Tính chất 4"
+    Với $a,b\in\mathbf Z,m\in\mathbf N_+$ và $a,b\perp m$, ta có
+
     $$
     \dfrac{[\delta_m(a),\delta_m(b)]}{(\delta_m(a),\delta_m(b))} \mid \delta_m(ab) \mid [\delta_m(a),\delta_m(b)].
     $$
 
-??? note "证明"
-    因为 $[\delta_m(a),\delta_m(b)]$ 是 $\delta_m(a)$ 和 $\delta_m(b)$ 的倍数，所以，由 [性质 2](#ord-prop-2) 可知
-    
+??? note "Chứng minh"
+    Vì $[\delta_m(a),\delta_m(b)]$ là bội của $\delta_m(a)$ và $\delta_m(b)$, theo [Tính chất 2](#ord-prop-2) suy ra
+
     $$
     (ab)^{[\delta_m(a),\delta_m(b)]} = a^{[\delta_m(a),\delta_m(b)]} b^{[\delta_m(a),\delta_m(b)]} \equiv 1 \pmod m.
     $$
-    
-    再次应用性质 2，就得到
-    
+
+    Áp dụng Tính chất 2 lần nữa, ta được
+
     $$
     \delta_m(ab) \mid [\delta_m(a),\delta_m(b)].
     $$
-    
-    这就得到右侧的整除关系．
-    
-    反过来，由于
-    
+
+    Đây là quan hệ chia hết phía phải.
+
+    Mặt khác, do
+
     $$
     1 \equiv (ab)^{\delta_m(ab)\delta_m(b)} \equiv a^{\delta_m(ab)\delta_m(b)} \pmod m,
     $$
-    
-    所以，应用性质 2，就得到 $\delta_m(a)\mid\delta_m(ab)\delta_m(b)$．两侧消去 $(\delta_m(a),\delta_m(b))$，就得到
-    
+
+    nên theo Tính chất 2 có $\delta_m(a)\mid\delta_m(ab)\delta_m(b)$. Khử $(\delta_m(a),\delta_m(b))$ hai vế, ta được
+
     $$
     \dfrac{\delta_m(a)}{(\delta_m(a),\delta_m(b))}\mid\delta_m(ab)\dfrac{\delta_m(b)}{(\delta_m(a),\delta_m(b))}.
     $$
-    
-    消去公因子后，两个分式互素，这就得到
-    
+
+    Hai phân số vế trái và phải nguyên tố cùng nhau, nên suy ra
+
     $$
     \dfrac{\delta_m(a)}{(\delta_m(a),\delta_m(b))}\mid\delta_m(ab).
     $$
-    
-    同理，也有
-    
+
+    Tương tự,
+
     $$
     \dfrac{\delta_m(b)}{(\delta_m(a),\delta_m(b))}\mid\delta_m(ab).
     $$
-    
-    由于两个整除关系的左侧互素，有
-    
+
+    Vì hai số ở vế trái nguyên tố cùng nhau, nên
+
     $$
     \dfrac{[\delta_m(a),\delta_m(b)]}{(\delta_m(a),\delta_m(b))} =\dfrac{\delta_m(a)\delta_m(b)}{(\delta_m(a),\delta_m(b))^2}\mid\delta_m(ab).
     $$
-    
-    这就得到左侧的整除关系．
 
-对于 $a$ 和 $b$ 的阶互素的情形，这一结论有着更为简单的形式．
+    Đây là quan hệ chia hết phía trái.
+
+Với trường hợp bậc của $a$ và $b$ nguyên tố cùng nhau, kết quả có dạng đơn giản hơn.
 
 <a id="ord-prop-4p"></a>
 
-???+ note "性质 4'"
-    对于 $a,b\in\mathbf Z,m\in\mathbf N_+$ 且 $a,b\perp m$，那么，有
-    
+???+ note "Tính chất 4'"
+    Với $a,b\in\mathbf Z,m\in\mathbf N_+$ và $a,b\perp m$, ta có
+
     $$
     \delta_m(ab) = \delta_m(a)\delta_m(b) \iff \delta_m(a)\perp\delta_m(b).
     $$
 
-??? note "证明"
-    如果 $\delta_m(a)\perp\delta_m(b)$，那么 [性质 4](#ord-prop-4) 中所有整除关系都是等式，所以有
-    
+??? note "Chứng minh"
+    Nếu $\delta_m(a)\perp\delta_m(b)$ thì trong [Tính chất 4](#ord-prop-4), mọi quan hệ chia hết đều là đẳng thức, nên
+
     $$
     \delta_m(ab) = [\delta_m(a),\delta_m(b)] = \delta_m(a)\delta_m(b).
     $$
-    
-    反过来，如果 $\delta_m(ab)=\delta_m(a)\delta_m(b)$，那么根据性质 4，就有
-    
+
+    Ngược lại, nếu $\delta_m(ab)=\delta_m(a)\delta_m(b)$, thì theo Tính chất 4,
+
     $$
     \delta_m(a)\delta_m(b) = \delta_m(ab) \mid [\delta_m(a),\delta_m(b)].
     $$
-    
-    这立马说明 $(\delta_m(a),\delta_m(b))=1$，即 $\delta_m(a)\perp\delta_m(b)$．
 
-一般情形中，[性质 4](#ord-prop-4) 得到的界已经是紧的．乘积的阶取得下界的情形很容易构造：例如 $(a,b,m)=(3,5,7)$ 时，$\delta_m(a)=\delta_m(b)=6$，但是它们的乘积的阶 $\delta_m(ab)=1$．
+    Suy ra $(\delta_m(a),\delta_m(b))=1$, tức $\delta_m(a)\perp\delta_m(b)$.
 
-尽管一般情形中，乘积 $ab$ 的阶未必是它们的阶的最小公倍数，但是总能找到一个元素使得它的阶等于这个最小公倍数．
+Trong trường hợp tổng quát, các cận trong [Tính chất 4](#ord-prop-4) là chặt. Dễ dựng ví dụ khi bậc của tích đạt cận dưới: chẳng hạn $(a,b,m)=(3,5,7)$ thì $\delta_m(a)=\delta_m(b)=6$, nhưng $\delta_m(ab)=1$.
+
+Dù trong trường hợp chung, bậc của tích $ab$ chưa chắc bằng bội chung nhỏ nhất của hai bậc, nhưng luôn tồn tại một phần tử có bậc đúng bằng bội chung nhỏ nhất đó.
 
 <a id="ord-prop-5"></a>
 
-???+ note "性质 5"
-    对于 $a,b\in\mathbf Z,m\in\mathbf N_+$ 且 $a,b\perp m$，总是存在 $c\in\mathbf Z$ 且 $c\perp m$ 使得
-    
+???+ note "Tính chất 5"
+    Với $a,b\in\mathbf Z,m\in\mathbf N_+$ và $a,b\perp m$, luôn tồn tại $c\in\mathbf Z$ với $c\perp m$ sao cho
+
     $$
     \delta_m(c) = [\delta_m(a),\delta_m(b)].
     $$
 
-??? note "证明"
-    考虑素因数分解：
-    
+??? note "Chứng minh"
+    Xét phân tích thừa số nguyên tố:
+
     $$
     \delta_m(a) = \prod_p p^{\alpha_p},~ \delta_m(b) = \prod_p p^{\beta_p}.
     $$
-    
-    利用 $\alpha_p$ 和 $\beta_p$ 的大小关系，可以将所有素因子分为两类：
-    
+
+    Dựa trên so sánh $\alpha_p$ và $\beta_p$, chia các thừa số nguyên tố thành hai nhóm:
+
     $$
     A = \{p : \alpha_p \ge \beta_p\}, ~ B = \{p : \alpha_p < \beta_p\}.
     $$
-    
-    由此，分别设
-    
+
+    Từ đó đặt
+
     $$
     \gamma_A = \prod_{p\in A}p^{\alpha_p},~\gamma_B = \prod_{p\in B}p^{\alpha_p},~\eta_A = \prod_{p\in A}p^{\beta_p},~\eta_B = \prod_{p\in B}p^{\beta_p},
     $$
-    
-    就有 $\delta_m(a) = \gamma_A\gamma_B$ 和 $\delta_m(b)=\eta_A\eta_B$．根据 [性质 3](#ord-prop-3)，可知
-    
+
+    suy ra $\delta_m(a) = \gamma_A\gamma_B$ và $\delta_m(b)=\eta_A\eta_B$. Theo [Tính chất 3](#ord-prop-3),
+
     $$
     \begin{aligned}
     \delta_m(a^{\gamma_B}) &= \dfrac{\delta_m(a)}{(\delta_m(a),\gamma_B)} = \dfrac{\delta_m(a)}{\gamma_B} = \gamma_A,\\
     \delta_m(b^{\eta_A}) &= \dfrac{\delta_m(b)}{(\delta_m(b),\eta_A)} = \dfrac{\delta_m(b)}{\eta_A} = \eta_B.
     \end{aligned}
     $$
-    
-    因为 $\gamma_A\perp\eta_B$，由 [性质 4'](#ord-prop-4p)，就有
-    
+
+    Vì $\gamma_A\perp\eta_B$, theo [Tính chất 4'](#ord-prop-4p),
+
     $$
     \delta_m(a^{\gamma_B}b^{\eta_A}) = \gamma_A\eta_B = \prod_p p^{\max\{\alpha_p,\beta_p\}} = [\delta_m(a),\delta_m(b)].
     $$
-    
-    因此，$c=a^{\gamma_B}b^{\eta_A}$ 就是阶为 $[\delta_m(a),\delta_m(b)]$ 的元素．
 
-这一结论常用于构造出指定阶的元素．
+    Do đó $c=a^{\gamma_B}b^{\eta_A}$ có bậc đúng bằng $[\delta_m(a),\delta_m(b)]$.
 
-## 原根
+Kết luận này thường dùng để dựng phần tử có bậc cho trước.
 
-原根是一些特殊元素——它的阶就等于所有模 $m$ 既约剩余系的个数．
+## Nguyên căn
 
-???+ abstract "原根"
-    对于 $m\in\mathbf N_+$，如果存在 $g\in\mathbf Z$ 且 $g\perp m$ 使得 $\delta_m(g)=|\mathbf Z_m^*|=\varphi(m)$，就称 $g$ 为 **模 $m$ 的原根**（primitive root modulo $m$）．其中，$\varphi(m)$ 是 [欧拉函数](./euler-totient.md)．
+Nguyên căn là những phần tử đặc biệt — bậc của nó bằng số phần tử của hệ thặng dư tối giản modulo $m$.
 
-并非所有正整数 $m$ 都存在模 $m$ 的原根．由上文的 [性质 1](#ord-prop-1)，如果模 $m$ 的原根 $g$ 存在，那么，$g,g^2,\cdots,g^{\varphi(m)}$ 所在的同余类互不相同，构成模 $m$ 既约剩余系．特别地，对于素数 $p$，余数 $g^i\bmod p$ 对于 $i=1,2,\cdots,p-1$ 两两不同．
+???+ abstract "Nguyên căn"
+    Với $m\in\mathbf N_+$, nếu tồn tại $g\in\mathbf Z$ với $g\perp m$ sao cho $\delta_m(g)=|\mathbf Z_m^*|=\varphi(m)$, thì gọi $g$ là **nguyên căn modulo $m$** (primitive root modulo $m$). Ở đây $\varphi(m)$ là [hàm Euler](./euler-totient.md).
 
-???+ tip "注"
-    在 [抽象代数](../algebra/ring-theory.md#应用整数同余类的乘法群) 中，原根就是循环群的生成元．这个概念只在模 $m$ 既约剩余系关于乘法形成的群中有「原根」这个名字，在一般的循环群中都称作「生成元」．并非每个模 $m$ 既约剩余系关于乘法形成的群都是循环群，存在原根就表明它同构于循环群，如果不存在原根就表明不同构．
+Không phải mọi số nguyên dương $m$ đều có nguyên căn. Theo [Tính chất 1](#ord-prop-1), nếu nguyên căn $g$ modulo $m$ tồn tại, thì các lớp đồng dư chứa $g,g^2,\cdots,g^{\varphi(m)}$ đôi một khác nhau, tạo thành hệ thặng dư tối giản modulo $m$. Đặc biệt, với số nguyên tố $p$, các số dư $g^i\bmod p$ với $i=1,2,\cdots,p-1$ đôi một khác nhau.
 
-模为 $1$ 时，模 $1$ 整数乘法群就是 $\{0\}$．这显然是循环群，所以原根就是 $0$．
+???+ tip "Ghi chú"
+    Trong [đại số trừu tượng](../algebra/ring-theory.md#应用整数同余类的乘法群), nguyên căn chính là phần tử sinh của nhóm cyclic. Khái niệm “nguyên căn” chỉ dùng cho nhóm nhân của hệ thặng dư tối giản modulo $m$; trong các nhóm cyclic nói chung, thường gọi là “phần tử sinh”. Không phải mọi nhóm nhân modulo $m$ đều là cyclic; có nguyên căn nghĩa là nhóm đó đẳng cấu với nhóm cyclic, không có nguyên căn thì không đẳng cấu.
 
-### 原根判定定理
+Khi mô-đun là $1$, nhóm nhân modulo $1$ là $\{0\}$. Đây là nhóm cyclic, nên nguyên căn là $0$.
 
-如果已知模数 $\varphi(m)$ 的全体素因子，那么很容易判断模 $m$ 的原根是否存在．
+### Định lý kiểm tra nguyên căn
 
-???+ note "定理"
-    对于整数 $m\ge 3$ 和 $g\perp m$，那么，$g$ 是模 $m$ 的原根，当且仅当对于 $\varphi(m)$ 的每个素因数 $p$，都有
-    
+Nếu biết phân tích thừa số nguyên tố của $\varphi(m)$, có thể dễ dàng kiểm tra $g$ có phải là nguyên căn modulo $m$ hay không.
+
+???+ note "Định lý"
+    Với số nguyên $m\ge 3$ và $g\perp m$, thì $g$ là nguyên căn modulo $m$ khi và chỉ khi với mỗi ước nguyên tố $p$ của $\varphi(m)$, ta có
+
     $$
     g^{\frac{\varphi(m)}{p}}\not\equiv 1 \pmod m.
     $$
 
-??? note "证明"
-    必要性显然．为证明充分性，考虑使用反证法．如果 $g$ 不是模 $m$ 的原根，那么一定有 $\delta_m(g)< \varphi(m)$．由 [性质 2](#ord-prop-2) 和欧拉定理可知，$\delta_m(g)\mid\varphi(m)$．由此，设 $p$ 是 $\dfrac{\varphi(m)}{\delta_m(g)}$ 的一个素因子，就有 $\delta_m(g)\mid\dfrac{\varphi(m)}{p}$．再次应用性质 2 就得到
-    
+??? note "Chứng minh"
+    Tính cần thiết là hiển nhiên. Để chứng minh đủ, dùng phản chứng. Nếu $g$ không phải nguyên căn modulo $m$, thì $\delta_m(g)< \varphi(m)$. Theo [Tính chất 2](#ord-prop-2) và định lý Euler, $\delta_m(g)\mid\varphi(m)$. Lấy $p$ là một ước nguyên tố của $\dfrac{\varphi(m)}{\delta_m(g)}$, suy ra $\delta_m(g)\mid\dfrac{\varphi(m)}{p}$. Áp dụng Tính chất 2 lần nữa:
+
     $$
     g^{\frac{\varphi(m)}{p}} \equiv 1 \pmod m.
     $$
-    
-    但是，$p$ 也是 $\varphi(m)$ 的一个因子，这就与题设条件矛盾．由此，原命题的充分性成立．
 
-### 原根个数
+    Nhưng $p$ cũng là ước của $\varphi(m)$, mâu thuẫn với điều kiện giả thiết. Do đó, tính đủ được chứng minh.
 
-原根如果存在，也未必唯一．一般地，对于模 $m$ 既约剩余系中所有元素可能的阶和某个阶的元素数量，有如下结论：
+### Số lượng nguyên căn
 
-???+ note "定理"
-    如果正整数 $m$ 有原根 $g$，那么，当且仅当 $d\mid\varphi(m)$ 时，模 $m$ 的 $d$ 阶元素存在，且恰有 $\varphi(d)$ 个．特别地，模 $m$ 的原根个数为 $\varphi(\varphi(m))$．
+Khi nguyên căn tồn tại, nó không nhất thiết là duy nhất. Nói chung, về các bậc có thể và số phần tử có bậc cho trước trong hệ thặng dư tối giản, có kết luận sau:
 
-??? note "证明"
-    根据原根的定义，所有模 $m$ 的既约同余类都可以写作 $g^k\bmod m$ 的形式，且 $k$ 是 $1,2,\cdots,\varphi(m)$ 之一．由 [性质 3](#ord-prop-3)，这些元素的阶等于
-    
+???+ note "Định lý"
+    Nếu số nguyên dương $m$ có nguyên căn $g$, thì phần tử bậc $d$ modulo $m$ tồn tại khi và chỉ khi $d\mid\varphi(m)$, và có đúng $\varphi(d)$ phần tử như vậy. Đặc biệt, số nguyên căn modulo $m$ là $\varphi(\varphi(m))$.
+
+??? note "Chứng minh"
+    Theo định nghĩa nguyên căn, mọi lớp đồng dư modulo $m$ đều có dạng $g^k\bmod m$, với $k$ là một trong $1,2,\cdots,\varphi(m)$. Theo [Tính chất 3](#ord-prop-3), bậc các phần tử này là
+
     $$
     \delta_m(g^k) = \dfrac{\varphi(m)}{(\varphi(m),k)}.
     $$
-    
-    因此，$d$ 阶元素存在，当且仅当 $d\mid\varphi(m)$．而且，对于 $d\mid\varphi(m)$，令 $d'=\varphi(m)/d$，这些元素的集合就是
-    
+
+    Do đó, tồn tại phần tử bậc $d$ khi và chỉ khi $d\mid\varphi(m)$. Hơn nữa, với $d\mid\varphi(m)$, đặt $d'=\varphi(m)/d$, ta có tập các phần tử đó là
+
     $$
     \begin{aligned}
     A &= \{g^k : (\varphi(m),k)=d',~1\le k \le\varphi(m)\} \\
     &= \{g^k : d'\mid k,~ (d, k/d') = 1,~ 1 \le k/d' \le d\}.
     \end{aligned}
     $$
-    
-    这些元素对应的 $k'=k/d'$ 恰为那些不超过 $d$ 且与 $d$ 互素的正整数．由欧拉函数的定义，这就是 $\varphi(d)$．
 
-### 原根存在定理
+    Các $k'=k/d'$ đúng là những số nguyên dương không vượt quá $d$ và nguyên tố cùng nhau với $d$, số lượng là $\varphi(d)$.
 
-本节将建立如下原根存在定理：
+### Định lý tồn tại nguyên căn
 
-???+ note "定理"
-    模 $m$ 的原根存在，当且仅当 $m=1,2,4,p^e,2p^e$，其中，$p$ 是奇素数且 $e\in\mathbf N_+$．
+Trong mục này sẽ chứng minh định lý tồn tại nguyên căn sau:
 
-为说明这一结论，需要分别讨论如下四种情形：
+???+ note "Định lý"
+    Nguyên căn modulo $m$ tồn tại khi và chỉ khi $m=1,2,4,p^e,2p^e$, trong đó $p$ là số nguyên tố lẻ và $e\in\mathbf N_+$.
 
-1.  $m=1,2,4$，原根分别是 $g=0,1,3$，显然存在．
+Để giải thích kết luận này, ta xét bốn trường hợp:
 
-2.  $m=p^{e}$ 是奇素数的幂，其中，$p$ 为奇素数，$e\in\mathbf N_+$．
+1.  $m=1,2,4$, nguyên căn lần lượt là $g=0,1,3$, hiển nhiên tồn tại.
 
-    ???+ note "引理 1"
-        对于奇素数 $p$，模 $p$ 的原根存在．
+2.  $m=p^{e}$ là lũy thừa của số nguyên tố lẻ $p$, với $e\in\mathbf N_+$.
 
-    ??? note "证明"
-        证明分为两步．
-        
-        **第一步**：对于 $d\mid(p-1)$，同余方程 $x^d\equiv 1\pmod p$ 恰有 $d$ 个互不相同的解．
-        
-        令 $p-1=kd$，多项式
-        
+    ???+ note "Bổ đề 1"
+        Với số nguyên tố lẻ $p$, nguyên căn modulo $p$ tồn tại.
+
+    ??? note "Chứng minh"
+        Chứng minh gồm hai bước.
+
+        **Bước 1**: Với $d\mid(p-1)$, phương trình đồng dư $x^d\equiv 1\pmod p$ có đúng $d$ nghiệm đôi một khác nhau.
+
+        Đặt $p-1=kd$, xét đa thức
+
         $$
         f(x) = x^{d(k-1)} + x^{d(k-2)} + \cdots + x^d + 1. 
         $$
-        
-        根据 [欧拉定理](./fermat.md#欧拉定理)，同余方程 $(x^d-1)f(x)=x^{p-1}-1\equiv 0\pmod{p}$ 恰有 $p-1$ 个互不相同的解．这些解分别是 $x^d-1$ 和 $f(x)$ 的零点．由 [Lagrange 定理](./congruence-equation.md#定理-3lagrange-定理)，它们分别至多只能有 $d$ 个和 $d(k-1)$ 个互不相同的零点．由于 $d+d(k-1)=p-1$，前者只能恰好有 $d$ 个互不相同的零点．这说明同余方程 $x^d\equiv 1\pmod p$ 恰有 $d$ 个互不相同的解．
-        
-        **第二步**：对于 $d\mid(p-1)$，$d$ 阶元素恰好有 $\varphi(d)$ 个．
-        
-        对于 $\varphi(p)$ 的所有因子排序，然后应用归纳法．因为 $1$ 阶元素只能是 $1$，只有一个，归纳起点成立．对于 $d\mid(p-1)$，根据前文的 [性质 2](#ord-prop-2)，同余方程 $x^d\equiv 1\pmod p$ 的解一定满足 $\delta_p(x)\mid d$．因此，其中 $d$ 阶元素个数为
-        
+
+        Theo [định lý Euler](./fermat.md#欧拉定理), phương trình $(x^d-1)f(x)=x^{p-1}-1\equiv 0\pmod{p}$ có đúng $p-1$ nghiệm khác nhau. Các nghiệm này là nghiệm của $x^d-1$ hoặc $f(x)$. Theo [định lý Lagrange](./congruence-equation.md#定理-3lagrange-定理), chúng lần lượt có nhiều nhất $d$ và $d(k-1)$ nghiệm. Vì $d+d(k-1)=p-1$, nên $x^d\equiv 1\pmod p$ có đúng $d$ nghiệm.
+
+        **Bước 2**: Với $d\mid(p-1)$, số phần tử bậc $d$ đúng bằng $\varphi(d)$.
+
+        Sắp các ước của $\varphi(p)$ theo thứ tự và dùng quy nạp. Bậc $1$ chỉ có phần tử $1$, nên cơ sở quy nạp đúng. Với $d\mid(p-1)$, theo [Tính chất 2](#ord-prop-2), mọi nghiệm của $x^d\equiv 1\pmod p$ đều có bậc chia hết cho $d$. Do đó số phần tử bậc $d$ là
+
         $$
         N(d) = d - \sum_{e\mid d,~e\neq d} N(e) =  d - \sum_{e\mid d,~e\neq d} \varphi(e) = \varphi(d).
         $$
-        
-        第二个等号是归纳假设，第三个等号是欧拉函数的性质．由数学归纳法，就知道对于所有 $d\mid(p-1)$，都恰有 $\varphi(d)$ 个 $d$ 阶元素．
-        
-        特别地，对于 $d=p-1$，恰有 $\varphi(p-1)$ 个 $(p-1)$ 阶元素．因此，模 $p$ 的原根存在．
 
-    ???+ note "引理 2"
-        对于奇素数 $p$ 和 $e \in \mathbf{N}_+$，模 $p^e$ 的原根存在．
+        Đẳng thức thứ hai dùng giả thiết quy nạp, đẳng thức thứ ba là tính chất của hàm Euler. Suy ra với mọi $d\mid(p-1)$ có đúng $\varphi(d)$ phần tử bậc $d$.
 
-    ??? note "证明"
-        证明分为三步．
-        
-        **第一步**：存在模 $p$ 的原根 $g$，使得 $g^{p-1}\not\equiv 1\pmod{p^2}$．
-        
-        任取一个模 $p$ 的原根 $g$．如果它不符合条件，即 $g^{p-1}\equiv 1\pmod{p^2}$，那么，可以证明 $g+p$ 符合条件：$g+p$ 也是模 $p$ 的原根，且
-        
+        Đặc biệt, với $d=p-1$ có đúng $\varphi(p-1)$ phần tử bậc $p-1$. Vậy nguyên căn modulo $p$ tồn tại.
+
+    ???+ note "Bổ đề 2"
+        Với số nguyên tố lẻ $p$ và $e \in \mathbf{N}_+$, nguyên căn modulo $p^e$ tồn tại.
+
+    ??? note "Chứng minh"
+        Chứng minh gồm ba bước.
+
+        **Bước 1**: Tồn tại nguyên căn modulo $p$ là $g$, sao cho $g^{p-1}\not\equiv 1\pmod{p^2}$.
+
+        Chọn bất kỳ nguyên căn modulo $p$ là $g$. Nếu $g^{p-1}\equiv 1\pmod{p^2}$, ta chứng minh $g+p$ thỏa điều kiện: $g+p$ cũng là nguyên căn modulo $p$ và
+
         $$
         \begin{aligned}
         (g+p)^{p-1} &\equiv \binom{p-1}{0}g^{p-1} + \binom{p-1}{1}g^{p-2}p \\
@@ -328,45 +328,45 @@ $$
         &\equiv 1 - pg^{p-2} \not\equiv 1 \pmod{p^2}.
         \end{aligned}
         $$
-        
-        **第二步**：上文选取的 $g$，对于任意 $e\ge 1$，都有 $g^{\varphi(p^e)}\not\equiv 1\pmod{p^{e+1}}$．
-        
-        对 $g$ 的选取保证了 $e=1$ 时，该式成立．假设该式对于 $e$ 的情形成立，现要证明 $e+1$ 的情形也成立．对于任意 $e \ge 1$，由欧拉定理可知，存在 $\lambda$ 使得
-        
+
+        **Bước 2**: Với $g$ đã chọn, với mọi $e\ge 1$ đều có $g^{\varphi(p^e)}\not\equiv 1\pmod{p^{e+1}}$.
+
+        Khi $e=1$ điều này đúng theo Bước 1. Giả sử đúng với $e$, chứng minh cho $e+1$. Với $e \ge 1$, theo định lý Euler tồn tại $\lambda$ sao cho
+
         $$
         g^{\varphi(p^e)} = 1 + \lambda p^e
         $$
-        
-        成立．由归纳假设，$\lambda\perp p$．因为 $\varphi(p^{e+1})=p\varphi(p^e)$，所以
-        
+
+        đúng. Theo giả thiết quy nạp, $\lambda\perp p$. Vì $\varphi(p^{e+1})=p\varphi(p^e)$, nên
+
         $$
         g^{\varphi(p^{e+1})} = \left(g^{\varphi(p^{e})}\right)^p = (1 + \lambda p^e)^p \equiv 1 + \lambda p^{e+1} \pmod{p^{e+2}}.
         $$
-        
-        结合 $\lambda\perp p$ 可知，$g^{\varphi(p^{e+1})}\not\equiv 1\pmod{p^{e+2}}$．由数学归纳法可知，命题成立．
-        
-        **第三步**：上文选取的 $g$，对于任意 $e\ge 1$，都是模 $p^e$ 的原根．
-        
-        对 $g$ 的选取保证了 $e=1$ 时，命题成立．假设命题对于 $e$ 成立，现在要证明命题对于 $e+1$ 也成立．将 $\delta_{p^{e+1}}(g)$ 简记为 $\delta$．由于 $g^\delta\equiv 1\pmod{p^{e+1}}$，必然也有 $g^\delta\equiv 1\pmod{p^e}$．由归纳假设可知，$\delta_{p^e}(g) = \varphi(p^e)$．因此，由前文阶的 [性质 2](#ord-prop-2)，就有 $\varphi(p^e)\mid\delta$．又由欧拉定理可知，$\delta\mid\varphi(p^{e+1})$．但是，$\varphi(p^{e+1})=p\varphi(p^e)$．因此，只有两种可能：$\delta=\varphi(p^e)$ 或 $\delta=\varphi(p^{e+1})$．但是，第二步的结论说明，$g^{\varphi(p^e)}\not\equiv 1\pmod{p^{e+1}}$．因此，可能性 $\delta=\varphi(p^e)$ 并不成立．唯一的可能性就是 $\delta=\varphi(p^{e+1})$．这就说明 $g$ 是 $p^{e+1}$ 的原根．由数学归纳法，命题对于所有 $e\ge 1$ 都成立．
 
-3.  $m=2p^{e}$，其中，$p$ 为奇素数，$e\in\mathbf N_+$．
+        Với $\lambda\perp p$ suy ra $g^{\varphi(p^{e+1})}\not\equiv 1\pmod{p^{e+2}}$. Quy nạp hoàn tất.
 
-    ???+ note "引理 3"
-        对于奇素数 $p$ 和 $e \in \mathbf{N}_+$，模 $2p^e$ 的原根存在．
+        **Bước 3**: Với $g$ đã chọn, với mọi $e\ge 1$ thì $g$ là nguyên căn modulo $p^e$.
 
-    ??? note "证明"
-        设 $g$ 是模 $p^{e}$ 的原根，则 $g+p^e$ 也是模 $p^{e}$ 的原根．两者之间必然有一个是奇数，不妨设它就是 $g$．显然，$(g,2p^e)=1$．设 $\delta=\delta_{2p^e}(g)$，需要证明 $\delta=\varphi(2p^e)$．由欧拉定理，$\delta\mid\varphi(2p^e)$．同时，根据定义 $g^\delta\equiv 1\pmod{2p^e}$，所以，$g^\delta\equiv 1\pmod{p^e}$，因此，由阶的 [性质 2](#ord-prop-2) 和 $g$ 的选取可知，$\delta_{p^e}(g)=\varphi(p^e)\mid \delta$．由欧拉函数表达式可知，$\varphi(2p^e) = \varphi(p^e)$．所以，$\delta=\delta_{2p^e}(g)=\varphi(p^e)$．这就说明 $\delta$ 是模 $2p^e$ 的原根．
+        Với $e=1$ hiển nhiên đúng. Giả sử đúng với $e$, chứng minh với $e+1$. Gọi $\delta=\delta_{p^{e+1}}(g)$. Vì $g^\delta\equiv 1\pmod{p^{e+1}}$ nên $g^\delta\equiv 1\pmod{p^e}$. Theo giả thiết quy nạp, $\delta_{p^e}(g) = \varphi(p^e)$, do đó theo [Tính chất 2](#ord-prop-2) suy ra $\varphi(p^e)\mid\delta$. Mặt khác, theo định lý Euler, $\delta\mid\varphi(p^{e+1})$, mà $\varphi(p^{e+1})=p\varphi(p^e)$. Vậy chỉ có hai khả năng: $\delta=\varphi(p^e)$ hoặc $\delta=\varphi(p^{e+1})$. Bước 2 cho thấy $g^{\varphi(p^e)}\not\equiv 1\pmod{p^{e+1}}$, nên không thể là $\delta=\varphi(p^e)$. Do đó $\delta=\varphi(p^{e+1})$, nghĩa là $g$ là nguyên căn modulo $p^{e+1}$. Quy nạp xong.
 
-4.  $m\ne 1,2,4,p^{e},2p^{e}$，其中，$p$ 为奇素数，$e\in\mathbf N_+$．
+3.  $m=2p^{e}$, với $p$ là số nguyên tố lẻ, $e\in\mathbf N_+$.
+
+    ???+ note "Bổ đề 3"
+        Với số nguyên tố lẻ $p$ và $e \in \mathbf{N}_+$, nguyên căn modulo $2p^e$ tồn tại.
+
+    ??? note "Chứng minh"
+        Gọi $g$ là nguyên căn modulo $p^{e}$, thì $g+p^e$ cũng là nguyên căn modulo $p^{e}$. Trong hai số đó có một số lẻ; không mất tính tổng quát, giả sử $g$ là số lẻ. Khi đó $(g,2p^e)=1$. Đặt $\delta=\delta_{2p^e}(g)$, cần chứng minh $\delta=\varphi(2p^e)$. Theo định lý Euler, $\delta\mid\varphi(2p^e)$. Mặt khác, từ $g^\delta\equiv 1\pmod{2p^e}$ suy ra $g^\delta\equiv 1\pmod{p^e}$, nên theo [Tính chất 2](#ord-prop-2) và lựa chọn $g$ có $\delta_{p^e}(g)=\varphi(p^e)\mid \delta$. Do công thức của hàm Euler, $\varphi(2p^e) = \varphi(p^e)$. Vậy $\delta=\delta_{2p^e}(g)=\varphi(p^e)$. Suy ra $g$ là nguyên căn modulo $2p^e$.
+
+4.  $m\ne 1,2,4,p^{e},2p^{e}$, với $p$ là số nguyên tố lẻ, $e\in\mathbf N_+$.
 
     <a id="prim-root-lem-4"></a>
 
-    ???+ note "引理 4"
-        假设 $m\neq 1,2,4$ 且不存在奇素数 $p$ 和正整数 $e$ 使得 $m=p^e$ 或 $m=2p^e$．那么，模 $m$ 的原根不存在．
+    ???+ note "Bổ đề 4"
+        Giả sử $m\neq 1,2,4$ và không tồn tại số nguyên tố lẻ $p$ cùng số nguyên dương $e$ sao cho $m=p^e$ hoặc $m=2p^e$. Khi đó nguyên căn modulo $m$ không tồn tại.
 
-    ??? note "证明"
-        对于 $m=2^e$ 且 $e\ge 3$，假设模 $m$ 的原根 $g$ 存在．由于 $g\perp m$，它一定是奇数．假设 $g=2k+1$ 且 $k\in\mathbf N$，那么，有
-        
+    ??? note "Chứng minh"
+        Với $m=2^e$ và $e\ge 3$, giả sử nguyên căn $g$ modulo $m$ tồn tại. Vì $g\perp m$ nên $g$ là số lẻ. Đặt $g=2k+1$ với $k\in\mathbf N$, khi đó
+
         $$
         \begin{aligned}
         g^{2^{e-2}}
@@ -377,205 +377,205 @@ $$
         &\equiv 1 \pmod{2^{e}}.
         \end{aligned}
         $$
-        
-        倒数第二行中，因为 $k$ 与 $(2^{e-2}-1)k^2$ 奇偶性相同，所以它们的和是偶数．由阶的定义可知，$\delta_{2^{e}}(g)\le 2^{e-2}< \varphi(2^{e}) = 2^{e-1}$．这与假设中 $g$ 是原根矛盾．由反证法，这样的原根并不存在．
-        
-        假设 $m$ 满足所述条件，且不是 $2$ 的幂，那么，一定存在 $2 < m_1 < m_2$ 且 $m_1\perp m_2$ 使得 $m=m_1m_2$ 成立．假设模 $m$ 的原根 $g$ 存在．因为 $g\perp m$，所以对于 $i=1,2$，都有 $g\perp m_i$．由欧拉定理可知，
-        
+
+        Ở dòng áp chót, vì $k$ và $(2^{e-2}-1)k^2$ cùng tính chẵn lẻ nên tổng của chúng là số chẵn. Theo định nghĩa bậc, $\delta_{2^{e}}(g)\le 2^{e-2}< \varphi(2^{e}) = 2^{e-1}$. Mâu thuẫn với giả thiết $g$ là nguyên căn. Do đó không tồn tại nguyên căn.
+
+        Giả sử $m$ thỏa điều kiện nêu trên và không phải lũy thừa của $2$, khi đó tồn tại $2 < m_1 < m_2$ và $m_1\perp m_2$ sao cho $m=m_1m_2$. Giả sử nguyên căn $g$ modulo $m$ tồn tại. Vì $g\perp m$ nên với $i=1,2$ đều có $g\perp m_i$. Theo định lý Euler,
+
         $$
         g^{\varphi(m_i)} \equiv 1 \pmod{m_i}.
         $$
-        
-        由于 $m_i > 2$，所以 $\varphi(m_i)$ 为偶数，所以，对于 $i=1,2$，有
-        
+
+        Vì $m_i > 2$ nên $\varphi(m_i)$ là số chẵn, do đó với $i=1,2$,
+
         $$
         g^{\frac{1}{2}\varphi(m_1)\varphi(m_2)} \equiv 1 \pmod{m_i}.
         $$
-        
-        由 [中国剩余定理](./crt.md) 可知
-        
+
+        Theo [định lý phần dư Trung Hoa](./crt.md),
+
         $$
         g^{\frac{1}{2}\varphi(m_1)\varphi(m_2)} \equiv 1 \pmod{m}.
         $$
-        
-        又因为 $\varphi(m)=\varphi(m_1)\varphi(m_2)$，所以由阶的定义可知
-        
+
+        Lại có $\varphi(m)=\varphi(m_1)\varphi(m_2)$, nên theo định nghĩa bậc
+
         $$
         \delta_m(g) \le \frac{1}{2}\varphi(m_1)\varphi(m_2) = \dfrac{1}{2}\varphi(m) < \varphi(m).
         $$
-        
-        这与 $g$ 是模 $m$ 的原根的假设矛盾．故而，由反证法知，模 $m$ 的原根不存在．
 
-综合以上四个引理，我们便给出了一个数存在原根的充要条件．
+        Mâu thuẫn với giả thiết $g$ là nguyên căn modulo $m$. Do đó không tồn tại nguyên căn.
 
-### 求原根的算法
+Tổng hợp bốn bổ đề trên, ta có điều kiện cần và đủ để một số tồn tại nguyên căn.
 
-对于任何存在原根的模数 $m$，要求得它的原根 $g$，只需要枚举可能的正整数，并逐个判断它是否为原根即可．枚举时，通常有两种处理方式：从小到大逐一枚举、随机生成一些正整数．这两种枚举方式的实际效率相当．
+### Thuật toán tìm nguyên căn
 
-从小到大逐一枚举时，得到的是模 $m$ 的最小原根 $g_m$，因此，枚举部分的复杂度取决于 $g_m$ 的大小．对此，有如下估计：
+Với mọi mô-đun $m$ có nguyên căn, để tìm nguyên căn $g$ chỉ cần duyệt các số nguyên dương khả dĩ và kiểm tra từng số. Có hai cách: duyệt tăng dần hoặc sinh ngẫu nhiên. Hai cách này có hiệu năng tương đương trong thực tế.
 
--   上界的估计：王元[^yuan1959note]和 Burgess[^burgess1962character]证明了素数 $p$ 的最小原根 $g_p=O\left(p^{0.25+\epsilon}\right)$，其中 $\epsilon>0$．Cohen, Odoni, and Stothers[^cohen1974least]和 Elliott and Murata[^elliott1998least]分别证明了该估计对于模数 $p^2$ 和 $2p^2$ 也成立，其中，$p$ 是奇素数．由于对于 $e>2$，模 $p^2$（或 $2p^2$）的原根也是模 $p^e$（或 $2p^e$）的原根，所以，最小原根的上界 $O\left(p^{0.25+\epsilon}\right)$ 对于所有情形都成立．
--   下界的估计：Fridlander[^fridlender1949least]和 Salié[^salie1949kleinsten]证明了存在 $C>0$，使得对于无穷多素数 $p$，都有最小原根 $g_p > C\log p$ 成立．
--   平均情形的估计：Burgess and Elliott[^burgess1968average]证明了平均情形下素数 $p$ 的最小原根 $g_p=O((\log p)^2(\log\log p)^4)$．Elliott and Murata[^elliott1997average]进一步猜想素数 $p$ 的最小原根的平均值是一个常数，且通过数值验证[^more-evidence]得到它大概为 $4.926$．随后，Elliott and Murata[^elliott1998least]将这一猜想推广到模 $2p^2$ 的情形．
+Khi duyệt tăng dần, ta thu được nguyên căn nhỏ nhất $g_m$. Vì vậy độ phức tạp phần duyệt phụ thuộc vào $g_m$. Có các ước lượng sau:
 
-根据这些分析，暴力寻找最小原根时，枚举部分的复杂度 $O(g_m(\log m)^2)$ 是可以接受的．
+-   Cận trên: Wang Yuan[^yuan1959note] và Burgess[^burgess1962character] chứng minh với số nguyên tố $p$ thì nguyên căn nhỏ nhất $g_p=O\left(p^{0.25+\epsilon}\right)$, với $\epsilon>0$. Cohen, Odoni và Stothers[^cohen1974least] cùng Elliott và Murata[^elliott1998least] lần lượt chứng minh ước lượng này đúng với mô-đun $p^2$ và $2p^2$, trong đó $p$ là số nguyên tố lẻ. Vì với $e>2$, nguyên căn của $p^2$ (hoặc $2p^2$) cũng là nguyên căn của $p^e$ (hoặc $2p^e$), nên cận trên $O\left(p^{0.25+\epsilon}\right)$ đúng cho mọi trường hợp.
+-   Cận dưới: Fridlander[^fridlender1949least] và Salié[^salie1949kleinsten] chứng minh tồn tại hằng số $C>0$ sao cho với vô hạn số nguyên tố $p$ có $g_p > C\log p$.
+-   Trường hợp trung bình: Burgess và Elliott[^burgess1968average] chứng minh trung bình thì $g_p=O((\log p)^2(\log\log p)^4)$. Elliott và Murata[^elliott1997average] còn suy đoán giá trị trung bình của $g_p$ là một hằng số, được kiểm chứng số liệu[^more-evidence] khoảng $4.926$. Sau đó Elliott và Murata[^elliott1998least] mở rộng suy đoán này cho mô-đun $2p^2$.
 
-除了从小到大枚举外，还可以通过随机生成正整数并验证的方法寻找原根．原根的密度并不低：[^density-prim-root]
+Từ các phân tích trên, việc vét cạn tìm nguyên căn nhỏ nhất có độ phức tạp $O(g_m(\log m)^2)$ là chấp nhận được.
+
+Ngoài việc duyệt tăng dần, ta có thể sinh ngẫu nhiên số nguyên và kiểm tra nguyên căn. Mật độ nguyên căn không nhỏ: [^density-prim-root]
 
 $$
 \dfrac{\varphi(\varphi(m))}{m} = \Omega\left(\dfrac{1}{\log\log m}\right).
 $$
 
-所以，通过随机方法寻找原根时，枚举部分的期望复杂度为 $O((\log m)^2\log\log m)$．
+Do đó, kỳ vọng độ phức tạp phần duyệt là $O((\log m)^2\log\log m)$.
 
-需要注意的是，判定原根时需要已知 $\varphi(m)$ 的质因数分解．算法竞赛 [常用质因数分解算法](./pollard-rho.md) 中，复杂度最优的 Pollard Rho 算法也需要 $O(m^{1/4+\varepsilon})$ 的时间．因此，只要 $\varphi(m)$ 的质因数分解是未知的，无论采用哪种枚举方式，求原根的复杂度瓶颈都在于质因数分解这一步，而非枚举验证的部分．
+Cần lưu ý: kiểm tra nguyên căn cần biết phân tích thừa số nguyên tố của $\varphi(m)$. Trong các thuật toán phân tích thừa số thường dùng trong thi đấu (xem [Pollard Rho](./pollard-rho.md)), độ phức tạp tốt nhất vẫn là $O(m^{1/4+\varepsilon})$. Vì vậy khi chưa có phân tích thừa số của $\varphi(m)$, “nút thắt” về độ phức tạp nằm ở bước phân tích thừa số, không phải ở phần duyệt kiểm tra.
 
-## Carmichael 函数
+## Hàm Carmichael
 
-相对于模 $m$ 元素的阶这一局部概念，Carmichael 函数是一个全局概念．它是所有与 $m$ 互素的整数的幂次的最小公共循环节．
+So với khái niệm bậc của một phần tử modulo $m$, hàm Carmichael là khái niệm toàn cục: nó là chu kỳ chung nhỏ nhất của mọi lũy thừa các số nguyên tố cùng nhau với $m$.
 
-???+ abstract "Carmichael 函数"
-    对于 $m\in\mathbf N_+$，定义 $\lambda(m)$ 为能够使得同余关系 $a^n\equiv 1\pmod m$ 对于所有 $a\perp m$ 都成立的最小正整数 $n$．函数 $\lambda:\mathbf N_+\to\mathbf N_+$ 就称为 **Carmichael 函数**．
+???+ abstract "Hàm Carmichael"
+    Với $m\in\mathbf N_+$, định nghĩa $\lambda(m)$ là số nguyên dương nhỏ nhất sao cho với mọi $a\perp m$ đều có $a^n\equiv 1\pmod m$. Hàm $\lambda:\mathbf N_+\to\mathbf N_+$ được gọi là **hàm Carmichael**.
 
-根据 [性质 2](#ord-prop-2)，能够使得 $a^n\equiv 1\pmod m$ 对于所有 $a\perp m$ 都成立，意味着 $\delta_m(a)\mid n$ 对于所有 $a\perp m$ 都成立．也就是说，符合这一条件的正整数 $n$，一定是全体 $\delta_m(a)$ 的公倍数．因此，最小的这样的 $n$ 就是它们的最小公倍数：
+Theo [Tính chất 2](#ord-prop-2), điều kiện $a^n\equiv 1\pmod m$ với mọi $a\perp m$ tương đương với $\delta_m(a)\mid n$ với mọi $a\perp m$. Nghĩa là $n$ phải là bội chung của tất cả $\delta_m(a)$. Do đó, số nhỏ nhất như vậy là bội chung nhỏ nhất:
 
 $$
 \lambda(m) = \operatorname{lcm}\{\delta_m(a) : a\perp m\}.
 $$
 
-这也常用作 Carmichael 函数的等价定义．
+Đây cũng là một định nghĩa tương đương thường dùng của hàm Carmichael.
 
-反复应用 [性质 5](#ord-prop-5) 可知，一定存在某个元素 $a\perp m$ 使得 $\delta_m(a)=\lambda(m)$．因此，上式也可以写作
+Lặp lại [Tính chất 5](#ord-prop-5) nhiều lần cho thấy tồn tại $a\perp m$ sao cho $\delta_m(a)=\lambda(m)$. Vì vậy,
 
 $$
 \lambda(m) = \max\{\delta_m(a) : a\perp m\}.
 $$
 
-取得这一最值的元素 $a\perp m$ 也称为模 $m$ 的 **$\lambda$‑原根**．它对于所有模数 $m$ 都存在．
+Phần tử đạt cực đại này gọi là **$\lambda$‑nguyên căn** modulo $m$. Nó tồn tại với mọi mô-đun $m$.
 
-### 递推公式
+### Công thức truy hồi
 
-Carmichael 函数是一个 [数论函数](./basic.md#数论函数)．本节讨论它的一个递推公式，并由此给出原根存在定理的另一个证明．
+Hàm Carmichael là một [hàm số học](./basic.md#数论函数). Mục này trình bày công thức truy hồi, và từ đó cho một chứng minh khác của định lý tồn tại nguyên căn.
 
-虽然不是积性函数，但是计算 Carmichael 函数时，同样可以对互素的因子分别处理．
+Mặc dù không phải hàm nhân, khi tính $\lambda(m)$ vẫn có thể xử lý riêng các thừa số nguyên tố cùng nhau.
 
-???+ note "引理"
-    对于互素的正整数 $m_1,m_2$，有 $\lambda(m_1m_2)=[\lambda(m_1),\lambda(m_2)]$．
+???+ note "Bổ đề"
+    Với $m_1,m_2$ nguyên tố cùng nhau, có $\lambda(m_1m_2)=[\lambda(m_1),\lambda(m_2)]$.
 
-??? note "证明"
-    设 $a_1$ 和 $a_2$ 分别为模 $m_1$ 和模 $m_2$ 的 $\lambda$‑原根．令 $m=m_1m_2$，由 [中国剩余定理](./crt.md) 可知，存在 $a\perp m$ 使得 $a\equiv a_i\pmod{m_i}$ 对于 $i=1,2$ 都成立．由于 $a^{\lambda(m)}\equiv 1\pmod m$，所以对于 $i=1,2$，都有 $a_i^{\lambda(m)} \equiv 1\pmod{m_i}$，进而由 [性质 2](#ord-prop-2) 和 $a_i$ 的选取可知，$\lambda(m_i)=\delta_{m_i}(a_i)\mid \lambda(m)$．这就说明 $[\lambda(m_1),\lambda(m_2)]\mid\lambda(m)$．
-    
-    反过来，对于任意 $a\perp m$ 和 $i=1,2$，都有 $a^{[\lambda(m_1),\lambda(m_2)]} \equiv 1 \pmod{m_i}$．应用中国剩余定理，就得到 $a^{[\lambda(m_1),\lambda(m_2)]} \equiv 1 \pmod{m}$ 对于所有 $a\perp m$ 都成立．根据 Carmichael 函数的定义可知，$\lambda(m)\mid [\lambda(m_1),\lambda(m_2)]$．
-    
-    由此，命题中的等式成立．
+??? note "Chứng minh"
+    Gọi $a_1,a_2$ lần lượt là $\lambda$‑nguyên căn modulo $m_1$ và $m_2$. Đặt $m=m_1m_2$. Theo [định lý phần dư Trung Hoa](./crt.md), tồn tại $a\perp m$ sao cho $a\equiv a_i\pmod{m_i}$ với $i=1,2$. Vì $a^{\lambda(m)}\equiv 1\pmod m$, nên với $i=1,2$ đều có $a_i^{\lambda(m)} \equiv 1\pmod{m_i}$, suy ra theo [Tính chất 2](#ord-prop-2) và lựa chọn $a_i$ thì $\lambda(m_i)=\delta_{m_i}(a_i)\mid \lambda(m)$. Do đó $[\lambda(m_1),\lambda(m_2)]\mid\lambda(m)$.
 
-因此，接下来只要计算 Carmichael 函数在素数幂处的取值．首先，处理 $2$ 的幂次的情形．
+    Ngược lại, với mọi $a\perp m$ và $i=1,2$, ta có $a^{[\lambda(m_1),\lambda(m_2)]} \equiv 1 \pmod{m_i}$. Áp dụng định lý phần dư Trung Hoa suy ra $a^{[\lambda(m_1),\lambda(m_2)]} \equiv 1 \pmod{m}$ với mọi $a\perp m$. Theo định nghĩa hàm Carmichael, $\lambda(m)\mid [\lambda(m_1),\lambda(m_2)]$.
 
-???+ note "引理"
-    对于 $m=2^e$ 且 $e\in\mathbf N_+$，有 $\lambda(2)=1$，$\lambda(4)=2$，且对于 $e\ge 3$ 都有 $\lambda(m)=2^{e-2}$．
+    Vậy đẳng thức trong bổ đề đúng.
 
-??? note "证明"
-    对于 $m=2,4$ 的情形，单独讨论即可．对于 $m=2^e$ 且 $e\ge 3$ 的情形，首先重复前文 [引理 4](#prim-root-lem-4) 的证明的第一部分，就得到 $\lambda(m)\le 2^{e-2}$．进而，只需要证明存在 $2^{e-2}$ 阶元素即可．为此，有
-    
+Vì vậy, chỉ cần tính $\lambda$ tại các lũy thừa nguyên tố. Trước hết là trường hợp lũy thừa của $2$.
+
+???+ note "Bổ đề"
+    Với $m=2^e$ và $e\in\mathbf N_+$, ta có $\lambda(2)=1$, $\lambda(4)=2$, và với $e\ge 3$ thì $\lambda(m)=2^{e-2}$.
+
+??? note "Chứng minh"
+    Với $m=2,4$ thì kiểm tra trực tiếp. Với $m=2^e$ và $e\ge 3$, lặp lại phần đầu chứng minh của [Bổ đề 4](#prim-root-lem-4) suy ra $\lambda(m)\le 2^{e-2}$. Sau đó chỉ cần chứng minh tồn tại phần tử bậc $2^{e-2}$. Ta có
+
     $$
     5^{2^{e-3}} = (1 + 2^2)^{2^{e-3}} = 1 + 2^2\times 2^{e-3} = 1 + 2^{e-1} \not\equiv 1 \pmod{2^e}.
     $$
-    
-    这说明 $\delta_m(5)\nmid 2^{e-3}$，又因为 $\delta_m(5) \mid 2^{e-2}$，所以，$5$ 只能是 $2^{e-2}$ 阶元素．这就说明，$\lambda(m)=2^{e-2}$．
 
-在这个引理的证明过程中，实际上得到了关于模 $2^e$ 既约剩余系结构的刻画：
+    Do đó $\delta_m(5)\nmid 2^{e-3}$, mà $\delta_m(5) \mid 2^{e-2}$, nên $5$ phải có bậc $2^{e-2}$. Suy ra $\lambda(m)=2^{e-2}$.
+
+Trong quá trình chứng minh bổ đề này, ta cũng thu được mô tả cấu trúc của hệ thặng dư tối giản modulo $2^e$:
 
 <a id="mod-pow-2"></a>
 
-???+ note "推论"
-    设模数为 $2^e$ 且 $e \ge 2$．那么，所有奇数都同余于唯一一个 $\pm 5^k$ 形式的整数同余，其中，$k\in\mathbf N$ 且 $k < 2^{e-2}$．也就是说，$\pm 1,\pm 5,\cdots,\pm 5^{2^{e-2}-1}$ 两两不同余，且构成一个既约剩余系．
+???+ note "Hệ quả"
+    Với mô-đun $2^e$ và $e \ge 2$, mọi số lẻ đồng dư với duy nhất một số dạng $\pm 5^k$, với $k\in\mathbf N$ và $k < 2^{e-2}$. Nghĩa là $\pm 1,\pm 5,\cdots,\pm 5^{2^{e-2}-1}$ đôi một không đồng dư và tạo thành một hệ thặng dư tối giản.
 
-??? note "证明"
-    容易验证，$e=2$ 的情形成立．对于 $e \ge 3$ 的情形，由于前述证明中已经得到 $5$ 模 $2^e$ 的阶是 $2^{e-2}$，所以，$1,5,\cdots,5^{2^{e-2}-1}$ 两两不同余．因为这些整数都模 $4$ 余 $1$，它们的相反数都模 $4$ 余 $3$，所以 $\pm 1,\pm 5,\cdots,\pm 5^{2^{e-2}-1}$ 模 $2^e$ 两两不同余．由于它们共计 $2^{e-1}$ 个，恰为模 $2^{e}$ 的既约剩余系的大小，所以，它们就构成了既约剩余系本身．
+??? note "Chứng minh"
+    Dễ kiểm tra trường hợp $e=2$. Với $e \ge 3$, vì $5$ có bậc $2^{e-2}$ modulo $2^e$, nên $1,5,\cdots,5^{2^{e-2}-1}$ đôi một khác nhau. Các số này đều $\equiv 1 \pmod 4$, còn các số đối của chúng đều $\equiv 3 \pmod 4$, nên $\pm 1,\pm 5,\cdots,\pm 5^{2^{e-2}-1}$ đôi một khác nhau modulo $2^e$. Tổng cộng có $2^{e-1}$ số, đúng bằng kích thước hệ thặng dư tối giản modulo $2^e$, nên chúng tạo thành hệ thặng dư tối giản.
 
-然后，处理奇素数幂的情形．
+Tiếp theo xét lũy thừa của số nguyên tố lẻ.
 
-???+ note "引理"
-    对于 $m=p^e$，其中，$p$ 是奇素数且 $e\in\mathbf N_+$，有 $\lambda(m)=p^{e-1}(p-1)$．
+???+ note "Bổ đề"
+    Với $m=p^e$, trong đó $p$ là số nguyên tố lẻ và $e\in\mathbf N_+$, có $\lambda(m)=p^{e-1}(p-1)$.
 
-??? note "证明"
-    首先证明命题对于 $e=1$，即 $m=p$ 是奇素数的情形成立．为此，由 Carmichael 函数的定义可知，与 $p$ 互素的所有整数 $a$ 都是同余方程 $x^{\lambda(p)}\equiv 1\pmod{p}$ 的解．在模 $p$ 的意义下，该方程共有 $p-1$ 个互不相同的解．根据 [Lagrange 定理](./congruence-equation.md#定理-3lagrange-定理) 可知，$p-1\le\lambda(p)$．同时，欧拉定理要求，$\lambda(p)\mid\varphi(p)=p-1$．因此，$\lambda(p)=p-1$．
-    
-    对于 $m=p^e$ 且 $e> 1$ 的情形，可以从证明 $1+p$ 是 $p^{e-1}$ 阶元开始．为此，有
-    
+??? note "Chứng minh"
+    Trước hết xét $e=1$, tức $m=p$ là số nguyên tố lẻ. Theo định nghĩa hàm Carmichael, mọi $a\perp p$ đều là nghiệm của $x^{\lambda(p)}\equiv 1\pmod{p}$. Trong modulo $p$, phương trình này có $p-1$ nghiệm khác nhau. Theo [định lý Lagrange](./congruence-equation.md#定理-3lagrange-定理) suy ra $p-1\le\lambda(p)$. Đồng thời theo định lý Euler, $\lambda(p)\mid\varphi(p)=p-1$. Vậy $\lambda(p)=p-1$.
+
+    Với $m=p^e$ và $e>1$, bắt đầu bằng việc chứng minh $1+p$ có bậc $p^{e-1}$. Ta có
+
     $$
     (1+p)^{p^{e-1}} \equiv 1,\quad (1+p)^{p^{e-2}} \equiv 1 + p^{e-1} \not\equiv 1 \pmod{p^e}.
     $$
-    
-    所以，$\delta_m(1+p)=p^{e-1}$．另外，设模 $p$ 的原根为 $g$，那么，由于 $g^{\delta_m(g)}\equiv 1 \pmod{p}$，所以，由阶的 [性质 2](#ord-prop-2) 可知，$p-1\mid\delta_m(p)$．由 Carmichael 函数的定义和欧拉定理可知
-    
+
+    Do đó $\delta_m(1+p)=p^{e-1}$. Mặt khác, gọi $g$ là nguyên căn modulo $p$, thì vì $g^{\delta_m(g)}\equiv 1 \pmod{p}$, nên theo [Tính chất 2](#ord-prop-2) suy ra $p-1\mid\delta_m(p)$. Theo định nghĩa hàm Carmichael và định lý Euler,
+
     $$
     p^{e-1}(p-1) = [\delta_m(p),p^{e-1}]\mid\lambda(m) \mid \varphi(m) = p^{e-1}(p-1).
     $$
-    
-    因此，$\lambda(m)=p^{e-1}(p-1)$．
 
-将本节的结果简单归纳，就得到 Carmichael 函数的递推公式：
+    Do đó $\lambda(m)=p^{e-1}(p-1)$.
 
-???+ note "定理"
-    对于任意正整数 $m$，有
-    
+Tóm tắt lại, ta có công thức truy hồi của hàm Carmichael:
+
+???+ note "Định lý"
+    Với mọi số nguyên dương $m$, ta có
+
     $$
     \lambda(m) = \begin{cases}
-    \varphi(m), & \text{if }m=1,2,4,p^e\text{ for odd prime }p\text{ and }e \ge 1,\\
-    \frac{1}{2}\varphi(m), &\text{if }m=2^e,~e\ge 3,\\
-    \operatorname{lcm}\{\lambda(p_1^{e_1}),\lambda(p_2^{e_2}),\cdots,\lambda(p_s^{e_s})\}, &\text{if }m = p_1^{e_1}p_2^{e_2}\cdots p_s^{e_s}\text{ for distinct }p_1,p_2,\cdots,p_s.
+    \varphi(m), & \text{nếu }m=1,2,4,p^e\text{ với }p\text{ lẻ và }e \ge 1,\\
+    \frac{1}{2}\varphi(m), &\text{nếu }m=2^e,~e\ge 3,\\
+    \operatorname{lcm}\{\lambda(p_1^{e_1}),\lambda(p_2^{e_2}),\cdots,\lambda(p_s^{e_s})\}, &\text{nếu }m = p_1^{e_1}p_2^{e_2}\cdots p_s^{e_s}\text{ với }p_1,p_2,\cdots,p_s\text{ đôi một khác nhau}.
     \end{cases}
     $$
 
-利用该递推公式可以加强前文的结果：
+Từ công thức truy hồi này có thể suy ra:
 
-???+ note "推论"
-    对于正整数 $m_1,m_2$，有 $\lambda([m_1,m_2])=[\lambda(m_1),\lambda(m_2)]$．
+???+ note "Hệ quả"
+    Với $m_1,m_2$ là số nguyên dương, có $\lambda([m_1,m_2])=[\lambda(m_1),\lambda(m_2)]$.
 
-比较原根和 Carmichael 函数的定义可知，模 $m$ 的原根存在，当且仅当 $\lambda(m)=\varphi(m)$．从 Carmichael 函数的递推公式中，容易归纳出如下结果：
+So sánh định nghĩa nguyên căn và hàm Carmichael, ta thấy nguyên căn modulo $m$ tồn tại khi và chỉ khi $\lambda(m)=\varphi(m)$. Từ công thức truy hồi, dễ dàng suy ra:
 
-???+ note "推论"
-    模 $m$ 的原根存在，当且仅当 $m=1,2,4,p^e,2p^e$，其中，$p$ 是奇素数且 $e\in\mathbf N_+$．
+???+ note "Hệ quả"
+    Nguyên căn modulo $m$ tồn tại khi và chỉ khi $m=1,2,4,p^e,2p^e$, trong đó $p$ là số nguyên tố lẻ và $e\in\mathbf N_+$.
 
-由于本节对于递推公式的证明并没有用到原根存在定理，因此，这就构成了对该定理的又一个证明．
+Vì chứng minh công thức truy hồi ở trên không dùng định lý tồn tại nguyên căn, điều này cung cấp một chứng minh khác cho định lý.
 
-### Carmichael 数
+### Số Carmichael
 
-利用 Carmichael 函数，可以讨论 Carmichael 数（卡迈克尔数，OEIS:[A002997](https://oeis.org/A002997)）的性质与分布．这是 [Fermat 素性测试](./prime.md#fermat-素性测试) 一定无法正确排除的合数．
+Nhờ hàm Carmichael, ta có thể nghiên cứu các tính chất và phân bố của số Carmichael (OEIS:[A002997](https://oeis.org/A002997)). Đây là các hợp số mà phép kiểm tra nguyên tố Fermat [Fermat test](./prime.md#fermat-素性测试) chắc chắn thất bại.
 
-???+ abstract "Carmichael 数"
-    对于合数 $n$，如果对于所有整数 $a\perp n$ 都有同余式 $a^{n-1} \equiv 1 \pmod n$ 成立，就称 $n$ 为 **Carmichael 数**．
+???+ abstract "Số Carmichael"
+    Với hợp số $n$, nếu với mọi $a\perp n$ đều có $a^{n-1} \equiv 1 \pmod n$ thì gọi $n$ là **số Carmichael**.
 
-最小的 Carmichael 数是 $561 = 3 \times 11 \times 17$．
+Số Carmichael nhỏ nhất là $561 = 3 \times 11 \times 17$.
 
-由 Carmichael 函数的定义可知，合数 $n$ 是 Carmichael 数当且仅当 $\lambda(n)\mid n-1$，其中 $\lambda(n)$ 为 Carmichael 函数．进一步地，可以得到如下判断合数 $n$ 是否为 Carmichael 数的方法：
+Theo định nghĩa hàm Carmichael, hợp số $n$ là Carmichael khi và chỉ khi $\lambda(n)\mid n-1$, trong đó $\lambda(n)$ là hàm Carmichael. Hơn nữa, ta có tiêu chuẩn sau:
 
-???+ note "Korselt 判别法[^korselt1899probleme]"
-    合数 $n$ 是 Carmichael 数当且仅当 $n$ 无平方因子且对 $n$ 的任意质因子 $p$ 均有 $(p-1) \mid (n-1)$．
+???+ note "Tiêu chuẩn Korselt[^korselt1899probleme]"
+    Hợp số $n$ là số Carmichael khi và chỉ khi $n$ không có thừa số bình phương và với mọi ước nguyên tố $p$ của $n$ đều có $(p-1) \mid (n-1)$.
 
-??? note "证明"
-    首先证明条件的必要性．假设 $\lambda(n)\mid (n-1)$．检查 Carmichael 函数的递推公式可知，如果 $n$ 有平方因子 $p$，那么，一定有 $p\mid \lambda(n)$．但是 $p\nmid (n-1)$，矛盾．同理，Carmichael 函数的递推公式说明，$(p-1)\mid \lambda(n)$，所以，也有 $(p-1) \mid (n-1)$．
-    
-    然后证明条件的充分性．因为 $n$ 是合数，所以它一定有奇素因子 $p$，因此 $n-1$ 是偶数，$n$ 也就一定是奇数．对于无平方因子的奇合数 $n$，由 Carmichael 函数的递推公式可知，$\lambda(n)=\operatorname{lcm}\{p-1:p\mid n\}$．因此，只要 $(p-1) \mid (n-1)$ 对于所有素因子 $p$ 都成立，就一定有 $\lambda(n)\mid (n-1)$．
+??? note "Chứng minh"
+    Trước hết chứng minh tính cần thiết. Giả sử $\lambda(n)\mid (n-1)$. Kiểm tra công thức truy hồi của hàm Carmichael thấy rằng nếu $n$ có thừa số bình phương $p$, thì $p\mid \lambda(n)$, nhưng $p\nmid (n-1)$, mâu thuẫn. Tương tự, công thức truy hồi cho thấy $(p-1)\mid \lambda(n)$, nên $(p-1)\mid (n-1)$.
 
-从这一判别法出发，可以建立 Carmichael 数的一些简单性质：
+    Tiếp theo chứng minh tính đủ. Vì $n$ là hợp số nên có ước nguyên tố lẻ $p$, do đó $n-1$ là chẵn và $n$ là số lẻ. Với hợp số lẻ không có thừa số bình phương, công thức truy hồi của hàm Carmichael cho biết $\lambda(n)=\operatorname{lcm}\{p-1:p\mid n\}$. Do đó chỉ cần $(p-1)\mid (n-1)$ với mọi ước nguyên tố $p$ thì $\lambda(n)\mid (n-1)$.
 
-???+ note "推论"
-    Carmichael 数是奇数，没有平方因子，而且至少有 $3$ 个不同的素因子．
+Từ tiêu chuẩn này, suy ra các tính chất đơn giản của số Carmichael:
 
-??? note "证明"
-    前两条性质可以直接从 Korselt 判别法及其证明中得到．要得到第三条性质，只需要再证明：互异素数 $p_1,p_2$ 的乘积 $n=p_1p_2$ 一定不是 Carmichael 数．假设 $n=p_1p_2$ 是 Carmichael 数．由 Korselt 判别法可知，$(p_i-1)\mid (n-1)$．但是，有
-    
+???+ note "Hệ quả"
+    Số Carmichael là số lẻ, không có thừa số bình phương, và có ít nhất $3$ thừa số nguyên tố khác nhau.
+
+??? note "Chứng minh"
+    Hai tính chất đầu suy ra trực tiếp từ tiêu chuẩn Korselt và chứng minh của nó. Tính chất thứ ba: chứng minh rằng tích của hai số nguyên tố phân biệt $p_1,p_2$ không thể là số Carmichael. Giả sử $n=p_1p_2$ là số Carmichael. Theo tiêu chuẩn Korselt, $(p_i-1)\mid (n-1)$. Nhưng
+
     $$
     n-1=p_1p_2-1\equiv p_2-1 \pmod{p_1-1}.
     $$
-    
-    因此，$(p_1-1)\mid(p_2-1)$．同理，$(p_2-1)\mid(p_1-1)$．也就是说，$p_1=p_2$．这与假设矛盾．因此，Carmichael 数 $n$ 至少有 $3$ 个互异素因子．
 
-利用解析数论还可以得到 Carmichael 数分布的一些性质．设 $C(n)$ 为小于等于 $n$ 的 Carmichael 数个数．Alford, Granville, and Pomerance[^alford1994infinitely]证明，对于充分大的 $n$，有 $C(n)>n^{2/7}$．由此，Carmichael 数有无限多个．在这之前，Erdős[^erdos1956pseudoprimes]已经证明，$C(n) < n\exp\left(-c\dfrac{\ln n\ln\ln\ln n}{\ln\ln n}\right)$，其中 $c$ 为常数．因此，Carmichael 数的分布（相对于素数来说）十分稀疏．实际上，有[^pinchcarmichael] $C(10^9)=646$，$C(10^{18})=1~401~644$．
+    Do đó $(p_1-1)\mid(p_2-1)$. Tương tự $(p_2-1)\mid(p_1-1)$, suy ra $p_1=p_2$, mâu thuẫn. Vậy số Carmichael phải có ít nhất $3$ ước nguyên tố khác nhau.
 
-## 参考资料与注释
+Dùng số học giải tích có thể suy ra thêm về phân bố số Carmichael. Gọi $C(n)$ là số lượng số Carmichael không vượt quá $n$. Alford, Granville và Pomerance[^alford1994infinitely] chứng minh rằng với $n$ đủ lớn, $C(n)>n^{2/7}$. Do đó có vô hạn số Carmichael. Trước đó, Erdős[^erdos1956pseudoprimes] đã chứng minh $C(n) < n\exp\left(-c\dfrac{\ln n\ln\ln\ln n}{\ln\ln n}\right)$, với $c$ là hằng số. Vì vậy, số Carmichael phân bố rất thưa so với số nguyên tố. Thực tế, có[^pinchcarmichael] $C(10^9)=646$, $C(10^{18})=1~401~644$.
+
+## Tài liệu tham khảo và chú thích
 
 -   [Primitive root modulo n - Wikipedia](https://en.wikipedia.org/wiki/Primitive_root_modulo_n)
 -   [The order of a unit - Course Notes](https://crypto.stanford.edu/pbc/notes/numbertheory/order.html)

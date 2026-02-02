@@ -1,36 +1,36 @@
-## 定义
+## Định nghĩa
 
-前置知识：[阶与原根](./primitive-root.md)．
+Kiến thức trước: [Bậc và căn nguyên thủy](./primitive-root.md).
 
-离散对数的定义方式和对数类似．取有原根的正整数模数 $m$，设其一个原根为 $g$. 对满足 $(a,m)=1$ 的整数 $a$，我们知道必存在唯一的整数 $0\leq k<\varphi(m)$ 使得
+Định nghĩa logarit rời rạc tương tự logarit thường. Lấy mô-đun nguyên dương $m$ có căn nguyên thủy, đặt một căn nguyên thủy là $g$. Với số nguyên $a$ thỏa $(a,m)=1$, ta biết tồn tại duy nhất $0\leq k<\varphi(m)$ sao cho
 
 $$
 g^k\equiv a\pmod m
 $$
 
-我们称这个 $k$ 为以 $g$ 为底，模 $m$ 的离散对数，记作 $k=\operatorname{ind}_g a$，在不引起混淆的情况下可记作 $\operatorname{ind} a$.
+Ta gọi $k$ là logarit rời rạc cơ số $g$ modulo $m$, ký hiệu $k=\operatorname{ind}_g a$, khi không gây nhầm lẫn có thể viết $\operatorname{ind} a$.
 
-显然 $\operatorname{ind}_g 1=0$，$\operatorname{ind}_g g=1$.
+Hiển nhiên $\operatorname{ind}_g 1=0$, $\operatorname{ind}_g g=1$.
 
-## 性质
+## Tính chất
 
-离散对数的性质也和对数有诸多类似之处．
+Tính chất của logarit rời rạc cũng tương tự logarit thường.
 
-???+ note "性质"
-    设 $g$ 是模 $m$ 的原根，$(a,m)=(b,m)=1$，则：
+???+ note "Tính chất"
+    Gọi $g$ là căn nguyên thủy modulo $m$, $(a,m)=(b,m)=1$, thì:
     
     1.  $\operatorname{ind}_g(ab)\equiv\operatorname{ind}_g a+\operatorname{ind}_g b\pmod{\varphi(m)}$
     
-        进而 $(\forall n\in\mathbf{N}),~~\operatorname{ind}_g a^n\equiv n\operatorname{ind}_g a\pmod{\varphi(m)}$
-    2.  若 $g_1$ 也是模 $m$ 的原根，则 $\operatorname{ind}_g a\equiv\operatorname{ind}_{g_1}a \cdot \operatorname{ind}_g g_1\pmod{\varphi(m)}$
+        Suy ra $(\forall n\in\mathbf{N}),~~\operatorname{ind}_g a^n\equiv n\operatorname{ind}_g a\pmod{\varphi(m)}$
+    2.  Nếu $g_1$ cũng là căn nguyên thủy modulo $m$ thì $\operatorname{ind}_g a\equiv\operatorname{ind}_{g_1}a \cdot \operatorname{ind}_g g_1\pmod{\varphi(m)}$
     3.  $a\equiv b\pmod m\iff \operatorname{ind}_g a=\operatorname{ind}_g b$
 
-???+ note "证明"
+???+ note "Chứng minh"
     1.  $g^{\operatorname{ind}_g(ab)}\equiv ab\equiv g^{\operatorname{ind}_g a}g^{\operatorname{ind}_g b}\equiv g^{\operatorname{ind}_g a+\operatorname{ind}_g b}\pmod m$
-    2.  令 $x=\operatorname{ind}_{g_1}a$，则 $a\equiv g_1^x\pmod m$. 又令 $y=\operatorname{ind}_g g_1$，则 $g_1\equiv g^y\pmod m$.
+    2.  Đặt $x=\operatorname{ind}_{g_1}a$ thì $a\equiv g_1^x\pmod m$. Đặt $y=\operatorname{ind}_g g_1$ thì $g_1\equiv g^y\pmod m$.
     
-        故 $a\equiv g^{xy}\pmod m$，即 $\operatorname{ind}_g a\equiv xy\equiv\operatorname{ind}_{g_1}a \cdot \operatorname{ind}_g g_1\pmod{\varphi(m)}$
-    3.  注意到
+        Do đó $a\equiv g^{xy}\pmod m$, tức $\operatorname{ind}_g a\equiv xy\equiv\operatorname{ind}_{g_1}a \cdot \operatorname{ind}_g g_1\pmod{\varphi(m)}$
+    3.  Lưu ý
     
         $$
         \begin{aligned}
@@ -40,78 +40,78 @@ $$
         \end{aligned}
         $$
 
-## 大步小步算法
+## Thuật toán BSGS (bước nhỏ bước lớn)
 
-目前离散对数问题仍不存在多项式时间经典算法（离散对数问题的输入规模是输入数据的位数）．在密码学中，基于这一点人们设计了许多非对称加密算法，如 [Ed25519](https://en.wikipedia.org/wiki/EdDSA#Ed25519)．
+Hiện chưa có thuật toán đa thức thời gian cổ điển cho bài toán logarit rời rạc (kích thước đầu vào là số bit). Trong mật mã, điều này làm nền cho nhiều hệ mật mã bất đối xứng như [Ed25519](https://en.wikipedia.org/wiki/EdDSA#Ed25519).
 
-在算法竞赛中，BSGS（baby-step giant-step，大步小步算法）常用于求解离散对数问题．形式化地说，对 $a,b,m\in\mathbf{Z}^+$，该算法可以在 $O(\sqrt{m})$ 的时间内求解
+Trong lập trình thi đấu, BSGS (baby-step giant-step) thường dùng để giải logarit rời rạc. Cụ thể, với $a,b,m\in\mathbf{Z}^+$, thuật toán giải trong $O(\sqrt{m})$ phương trình
 
 $$
 a^x \equiv b \pmod m
 $$
 
-其中 $a\perp m$．方程的解 $x$ 满足 $0 \le x < m$.（注意 $m$ 不一定是素数）
+trong đó $a\perp m$. Nghiệm $x$ thỏa $0 \le x < m$. (Lưu ý $m$ không nhất thiết là số nguyên tố.)
 
-### 算法描述
+### Mô tả thuật toán
 
-令 $x = A \left \lceil \sqrt m \right \rceil - B$，其中 $0\le A,B \le \left \lceil \sqrt m \right \rceil$，则有 $a^{A\left \lceil \sqrt m \right \rceil -B} \equiv b \pmod m$，稍加变换，则有 $a^{A\left \lceil \sqrt m \right \rceil} \equiv ba^B \pmod m$.
+Đặt $x = A \left \lceil \sqrt m \right \rceil - B$ với $0\le A,B \le \left \lceil \sqrt m \right \rceil$. Khi đó $a^{A\left \lceil \sqrt m \right \rceil -B} \equiv b \pmod m$, suy ra $a^{A\left \lceil \sqrt m \right \rceil} \equiv ba^B \pmod m$.
 
-我们已知的是 $a,b$，所以我们可以先算出等式右边的 $ba^B$ 的所有取值，枚举 $B$，用 `hash`/`map` 存下来，然后逐一计算 $a^{A\left \lceil \sqrt m \right \rceil}$，枚举 $A$，寻找是否有与之相等的 $ba^B$，从而我们可以得到所有的 $x$，$x=A \left \lceil \sqrt m \right \rceil - B$.
+Vì biết $a,b$, ta tính trước mọi giá trị $ba^B$ (duyệt $B$), lưu vào `hash`/`map`, rồi tính $a^{A\left \lceil \sqrt m \right \rceil}$ (duyệt $A$), tìm trùng khớp với $ba^B$. Khi đó $x=A \left \lceil \sqrt m \right \rceil - B$.
 
-注意到 $A,B$ 均小于 $\left \lceil \sqrt m \right \rceil$，所以时间复杂度为 $\Theta\left  (\sqrt m\right )$，用 `map` 则多一个 $\log$.
+Vì $A,B < \left \lceil \sqrt m \right \rceil$, độ phức tạp là $\Theta(\sqrt m)$; dùng `map` thêm một $\log$.
 
-??? note "为什么要求 $a$ 与 $m$ 互质"
-    注意到我们求出的是 $A,B$，我们需要保证从 $a^{A\left \lceil \sqrt m \right \rceil} \equiv ba^B \pmod m$ 可以推回 $a^{A\left \lceil \sqrt m \right \rceil -B} \equiv b \pmod m$，后式是前式左右两边除以 $a^B$ 得到，所以必须有 $a^B \perp m$ 即 $a\perp m$.
+??? note "Vì sao cần $a$ và $m$ nguyên tố cùng nhau"
+    Ta cần từ $a^{A\left \lceil \sqrt m \right \rceil} \equiv ba^B \pmod m$ suy ra $a^{A\left \lceil \sqrt m \right \rceil -B} \equiv b \pmod m$, tức chia hai vế cho $a^B$. Do đó phải có $a^B \perp m$, tức $a\perp m$.
 
-## 扩展 BSGS 算法
+## Thuật toán BSGS mở rộng
 
-对 $a,b,m\in\mathbf{Z}^+$，求解
+Với $a,b,m\in\mathbf{Z}^+$, giải
 
 $$
 a^x\equiv b\pmod m
 $$
 
-其中 $a,m$ 不一定互质．
+trong đó $a,m$ không nhất thiết nguyên tố cùng nhau.
 
-当 $(a, m)=1$ 时，在模 $m$ 意义下 $a$ 存在逆元，因此可以使用 BSGS 算法求解．于是我们想办法让他们变得互质．
+Khi $(a, m)=1$ thì $a$ có nghịch đảo modulo $m$, nên dùng BSGS. Ta biến đổi để chúng trở nên nguyên tố cùng nhau.
 
-具体地，设 $d_1=(a, m)$. 如果 $d_1\nmid b$，则原方程无解．否则我们把方程同时除以 $d_1$，得到
+Cụ thể, đặt $d_1=(a, m)$. Nếu $d_1\nmid b$ thì vô nghiệm. Nếu có, chia hai vế cho $d_1$:
 
 $$
 \frac{a}{d_1}\cdot a^{x-1}\equiv \frac{b}{d_1}\pmod{\frac{m}{d_1}}
 $$
 
-如果 $a$ 和 $\frac{m}{d_1}$ 仍不互质就再除，设 $d_2=\left(a, \frac{m}{d_1}\right)$. 如果 $d_2\nmid \frac{b}{d_1}$，则方程无解；否则同时除以 $d_2$ 得到
+Nếu $a$ và $\frac{m}{d_1}$ vẫn không nguyên tố cùng nhau thì tiếp tục: $d_2=\left(a, \frac{m}{d_1}\right)$. Nếu $d_2\nmid \frac{b}{d_1}$ thì vô nghiệm; nếu có, chia tiếp:
 
 $$
 \frac{a^2}{d_1d_2}\cdot a^{x-2}≡\frac{b}{d_1d_2} \pmod{\frac{m}{d_1d_2}}
 $$
 
-同理，这样不停的判断下去，直到 $a\perp \dfrac{m}{d_1d_2\cdots d_k}$.
+Lặp cho đến khi $a\perp \dfrac{m}{d_1d_2\cdots d_k}$.
 
-记 $D=\prod_{i=1}^kd_i$，于是方程就变成了这样：
+Đặt $D=\prod_{i=1}^kd_i$, phương trình trở thành:
 
 $$
 \frac{a^k}{D}\cdot a^{x-k}\equiv\frac{b}{D} \pmod{\frac{m}{D}}
 $$
 
-由于 $a\perp\dfrac{m}{D}$，于是推出 $\dfrac{a^k}{D}\perp \dfrac{m}{D}$. 这样 $\dfrac{a^k}{D}$ 就有逆元了，于是把它丢到方程右边，这就是一个普通的 BSGS 问题了，于是求解 $x-k$ 后再加上 $k$ 就是原方程的解啦．
+Vì $a\perp\dfrac{m}{D}$ nên $\dfrac{a^k}{D}\perp \dfrac{m}{D}$, do đó có nghịch đảo. Đưa sang vế phải, ta được một bài BSGS chuẩn, giải $x-k$ rồi cộng $k$.
 
-注意，不排除解小于等于 $k$ 的情况，所以在消因子之前做一下 $\Theta(k)$ 枚举，直接验证 $a^i\equiv b \pmod m$，这样就能避免这种情况．
+Lưu ý có thể có nghiệm $\le k$, nên trước khi khử nhân tử hãy kiểm tra $\Theta(k)$ giá trị $a^i\equiv b \pmod m$ để tránh bỏ sót.
 
-## 习题
+## Bài tập
 
--   [SPOJ MOD](https://www.spoj.com/problems/MOD/) 模板
+-   [SPOJ MOD](https://www.spoj.com/problems/MOD/) mẫu
 -   [SDOI2013 随机数生成器](https://www.luogu.com.cn/problem/P3306)
--   [SGU261 Discrete Roots](https://codeforces.com/problemsets/acmsguru/problem/99999/261) 模板
--   [SDOI2011 计算器](https://loj.ac/problem/10214) 模板
--   [Luogu4195【模板】exBSGS/Spoj3105 Mod](https://www.luogu.com.cn/problem/P4195) 模板
+-   [SGU261 Discrete Roots](https://codeforces.com/problemsets/acmsguru/problem/99999/261) mẫu
+-   [SDOI2011 计算器](https://loj.ac/problem/10214) mẫu
+-   [Luogu4195【模板】exBSGS/Spoj3105 Mod](https://www.luogu.com.cn/problem/P4195) mẫu
 -   [Codeforces - Lunar New Year and a Recursive Sequence](https://codeforces.com/contest/1106/problem/F)
--   [LOJ6542 离散对数](https://loj.ac/problem/6542) index calculus 方法，非模板
+-   [LOJ6542 离散对数](https://loj.ac/problem/6542) phương pháp index calculus, không phải mẫu
 
-**本页面部分内容以及代码译自博文 [Дискретное извлечение корня](http://e-maxx.ru/algo/discrete_root) 与其英文翻译版 [Discrete Root](https://cp-algorithms.com/algebra/discrete-root.html)．其中俄文版版权协议为 Public Domain + Leave a Link；英文版版权协议为 CC-BY-SA 4.0．**
+**Một phần nội dung và code của trang này dịch từ [Дискретное извлечение корня](http://e-maxx.ru/algo/discrete_root) và bản dịch tiếng Anh [Discrete Root](https://cp-algorithms.com/algebra/discrete-root.html). Bản tiếng Nga: Public Domain + Leave a Link; bản tiếng Anh: CC-BY-SA 4.0.**
 
-## 参考资料
+## Tài liệu tham khảo
 
 1.  [Discrete logarithm - Wikipedia](https://en.wikipedia.org/wiki/Discrete_logarithm)
 2.  潘承洞，潘承彪．初等数论．

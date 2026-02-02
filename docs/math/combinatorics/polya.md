@@ -342,30 +342,30 @@ $$
 
 只计旋转操作，长度为 $n$ 的项链的空间对称群就是 $C_n$．
 
-??? note "分析"
-    设顶点的集合按照逆时针顺序记为 $\{0,1,\cdots,n-1\}$，则 $r^k(i)=i+k\bmod n$．顶点 $i$ 所在的轮换中的顶点集合就是
+??? note "Phân tích"
+    Gọi các đỉnh theo chiều ngược kim đồng hồ là $\{0,1,\cdots,n-1\}$, thì $r^k(i)=i+k\bmod n$. Tập đỉnh trong cùng vòng của $i$:
     
     $$
     \{i+\ell k\bmod n:\ell\in\mathbf Z\}.
     $$
     
-    显然，$i\equiv i+\ell k\pmod n$ 当且仅当
+    Rõ ràng $i\equiv i+\ell k\pmod n$ khi và chỉ khi
     
     $$
     \frac{n}{\gcd(k,n)}\mid\ell.
     $$
     
-    这意味着，任何顶点 $i$ 所在的轮换长度都是 $\dfrac{n}{\gcd(k,n)}$．因此，置换 $r^k$ 有 $\gcd(k,n)$ 个等长的轮换．考虑在轮换指标的表达式中合并同类项，给定 $d\mid n$，则满足 $\gcd(k,n)=n/d$ 的 $k$ 共计 $\varphi(d)$ 个，它们对应的单项式都是 $t_d^{n/d}$ 的形式，所以可以得到上面的轮换指标表达式．
+    Vậy độ dài vòng là $\dfrac{n}{\gcd(k,n)}$, nên $r^k$ có $\gcd(k,n)$ vòng. Gộp các hạng giống nhau, với mỗi $d\mid n$, số $k$ sao cho $\gcd(k,n)=n/d$ là $\varphi(d)$, cho đơn thức $t_d^{n/d}$, suy ra công thức.
 
-### 二面体群
+### Nhóm dihedral
 
-给定正 $n$ 边形，它的全体旋转和关于对称轴翻转的操作也构成空间对称群，它称为二面体群（dihedral group），记作 $D_{2n}$．将逆时针旋转 $(360/n)^\circ$ 的操作记作 $r$，并将沿某个给定对称轴（比如中心与某个顶点的连线）翻转的操作记作 $s$，则群 $D_{2n}$ 的操作可以写作
+Với đa giác đều $n$ cạnh, tập các phép quay và phản xạ tạo nhóm dihedral $D_{2n}$. Gọi $r$ là quay $(360/n)^\circ$, và $s$ là phản xạ qua trục đối xứng nào đó, thì
 
 $$
 D_{2n}=\{e,r,\cdots,r^{n-1},s,sr,\cdots,sr^{n-1}\}.
 $$
 
-这里，$r^k$ 依然是旋转操作，而 $sr^k$ 虽然是先进行 $k$ 次旋转再沿给定对称轴翻转，但是可以等价地看作沿着另一个对称轴翻转．因此，群 $D_{2n}$ 中共计 $1$ 个恒等变换、$(n-1)$ 个旋转操作和 $n$ 个翻转操作．它对顶点集合和边集合的群作用也有着相同的置换表示．它的轮换指标是
+$r^k$ là quay, $sr^k$ là phản xạ qua một trục khác. Có $1$ phép đồng nhất, $(n-1)$ phép quay và $n$ phép phản xạ. Tác động lên đỉnh và cạnh có biểu diễn giống nhau. Chỉ số vòng:
 
 $$
 Z(D_{2n})=\frac12Z(C_n)+
@@ -375,125 +375,125 @@ Z(D_{2n})=\frac12Z(C_n)+
 \end{cases}
 $$
 
-??? note "分析"
-    群 $D_{2n}$ 中的旋转操作 $r^k$ 的集合（包括恒等变换）的分析和循环群 $C_n$ 如出一辙，关键在于剩下的翻转操作的分析．此时需要对顶点个数 $n$ 的奇偶性分类讨论．
+??? note "Phân tích"
+    Phần quay giống $C_n$, cần phân tích phản xạ theo chẵn/lẻ.
     
-    当 $n=2k+1$ 时，所有的翻转操作的对称轴都是连结顶点和它对面的边的中点的，共计 $n$ 条这样的对称轴．每个翻转操作后，对称轴上的顶点保持不动，而其它顶点成对地交换，因此有 $1$ 个不动点（$1$‑轮换）和 $k$ 个 $2$‑轮换．
+    Nếu $n=2k+1$: các trục phản xạ nối một đỉnh với trung điểm cạnh đối diện, có $n$ trục. Mỗi phản xạ giữ nguyên đỉnh trên trục, các đỉnh còn lại đổi cặp, nên có $1$ vòng độ dài 1 và $k$ vòng độ dài 2.
     
-    当 $n=2k$ 时，有两种对称轴．其中，一半的对称轴是连接相对的顶点的；沿着这样的对称轴翻转，将保持对称轴上的两个顶点不动，而将其余的顶点成对地交换，因此有 $2$ 个不动点（$1$‑轮换）和 $(k-1)$ 个 $2$‑轮换．另一半的对称轴是连接相对的边的中点的；沿着这样的对称轴翻转，将所有顶点都成对地交换，因此有 $k$ 个 $2$‑轮换．
+    Nếu $n=2k$: có hai loại trục. Một nửa đi qua hai đỉnh đối diện, giữ nguyên hai đỉnh trên trục, còn lại đổi cặp, nên có $2$ vòng độ dài 1 và $(k-1)$ vòng độ dài 2. Nửa còn lại đi qua trung điểm hai cạnh đối diện, tất cả đỉnh đổi cặp, nên có $k$ vòng độ dài 2.
     
-    根据这一分析，可以写出上面的轮换指标表达式．
+    Suy ra công thức.
 
-### 对称群
+### Nhóm đối xứng
 
-给定 $n$ 个元素，它上面的全体置换构成群，称为 $n$ 次对称群（symmetric group），记作 $S_n$．它描述了这 $n$ 个顶点能拥有的全部对称性．它也是这些对称操作对顶点集合的作用的置换表示．
+Với $n$ phần tử, tập mọi hoán vị tạo nhóm đối xứng $S_n$. Nó mô tả toàn bộ đối xứng có thể của $n$ đỉnh, cũng là biểu diễn hoán vị trên tập đỉnh.
 
-根据 [置换与排列](../permutation.md#置换的型) 一文的分析，它的轮换指标是
+Theo [hoán vị và sắp xếp](../permutation.md#置换的型), chỉ số vòng:
 
 $$
 Z(S_n)=\sum_{a_1+2\alpha_2+\cdots+n\alpha_n=n}\frac{t_1^{\alpha_1}t_2^{\alpha_2}\cdots t_n^{\alpha_n}}{1^{\alpha_1}2^{\alpha_2}\cdots n^{\alpha_n}\alpha_1!\alpha_2!\cdots\alpha_n!}.
 $$
 
-这里用到了型为 $1^{\alpha_1}2^{\alpha_2}\cdots n^{\alpha_n}$ 的置换的计数是
+Số hoán vị kiểu $1^{\alpha_1}2^{\alpha_2}\cdots n^{\alpha_n}$ là
 
 $$
 \frac{n!}{1^{\alpha_1}2^{\alpha_2}\cdots n^{\alpha_n}\alpha_1!\alpha_2!\cdots\alpha_n!}.
 $$
 
-它满足递推关系
+Thỏa truy hồi:
 
 $$
 Z(S_n)=\frac1n\sum_{k=1}^nt_kZ(S_{n-k}),
 $$
 
-而递推起点是 $Z(S_0)=1$．这一递推关系的组合意义是，要构造长度为 $n$ 的置换，可以首先选取点 $n$ 所在轮换的长度 $k$，再对剩下的 $(n-k)$ 个顶点的集合构造．
+với $Z(S_0)=1$. Ý nghĩa: xây hoán vị độ dài $n$ bằng cách chọn độ dài vòng chứa điểm $n$ là $k$, còn lại $(n-k)$ điểm.
 
-给定 $n$ 个顶点的完全图，则它的空间对称群正是 $S_n$．它对全体顶点的集合的作用的轮换指标就由上文的 $Z(S_n)$ 给出．但是，它对全体边的集合的作用的置换表示并不相同．比如说，集合的大小就不相同，全体边的数目是 $n(n-1)/2$．对于边的情形，需要额外的分析．这里给出简单的例子，一般的情形可参考习题．
+Với đồ thị đầy đủ $n$ đỉnh, nhóm đối xứng là $S_n$; tác động lên đỉnh có chỉ số vòng trên. Nhưng tác động lên cạnh khác (số cạnh $n(n-1)/2$), cần phân tích riêng. Dưới đây là ví dụ.
 
-???+ example "无向简单图计数"
-    计算同构意义下有 $4$ 个顶点的无向简单图的数目．
+???+ example "Đếm đồ thị vô hướng đơn"
+    Đếm số đồ thị vô hướng đơn không đẳng cấu với 4 đỉnh.
 
-??? example "解答"
-    这相当于在有 $4$ 个顶点的完全图上染两种颜色，要求本质不同的染色数目．空间对称群是 $S_4$，现在分析它的边置换群 $S_4^{(2)}$ 的轮换指标．
+??? example "Giải"
+    Đây là bài tô 2 màu cạnh của đồ thị đầy đủ 4 đỉnh. Nhóm đối xứng là $S_4$, xét nhóm hoán vị trên tập cạnh $S_4^{(2)}$:
     
-    -   恒等变换（$1$ 种）：边也保持不动，故对应单项式为 $t_1^6$；
-    -   交换两顶点（$6$ 种）：假设交换 $a$ 和 $b$，则边 $1$ 和边 $3$ 保持不动，同时，边 $2$ 和边 $5$ 对换，边 $4$ 和边 $6$ 对换，故对应单项式为 $6t_1^2t_2^2$；
-    -   轮换三顶点（$8$ 种）：假设轮换是 $(abc)$，则它们之间的连边 $1,2,5$ 也相应轮换，它们和第四点 $d$ 的连边 $4,6,3$ 也相应轮换，故对应单项式为 $8t_3^2$；
-    -   交换两对顶点（$3$ 种）：假设点 $a$ 和点 $b$ 对换，点 $c$ 和点 $d$ 对换，则边 $1$ 和边 $3$ 保持不动，同时，边 $2$ 和边 $4$ 对换，边 $5$ 和边 $6$ 对换，故对应单项式为 $3t_1^2t_2^2$；
-    -   轮换四顶点（$6$ 种）：假设轮换是 $(abcd)$，则其中相邻顶点的连边 $1,2,3,4$ 也相应轮换，相对顶点的连边 $5,6$ 同时对换，故对应的单项式为 $6t_2t_4$．
+    -   Đồng nhất (1 cách): giữ nguyên các cạnh, đơn thức $t_1^6$;
+    -   Đổi chỗ hai đỉnh (6 cách): giả sử đổi $a,b$, thì hai cạnh giữ nguyên, hai cặp cạnh đổi chỗ, đơn thức $6t_1^2t_2^2$;
+    -   Chu trình 3 đỉnh (8 cách): nếu $(abc)$ thì các cạnh tương ứng tạo hai chu trình 3, đơn thức $8t_3^2$;
+    -   Đổi hai cặp đỉnh (3 cách): được $3t_1^2t_2^2$;
+    -   Chu trình 4 đỉnh (6 cách): đơn thức $6t_2t_4$.
     
-    所以，边置换群的轮换指标是
+    Do đó chỉ số vòng:
     
     $$
     Z(S_4^{(2)})=\dfrac{1}{24}(t_1^6+9t_1^2t_2^2+8t_3^2+6t_2t_4).
     $$
     
-    根据 Pólya 计数原理，同构意义下有 $4$ 个顶点的无向简单图的数目是
+    Số đồ thị không đẳng cấu:
     
     $$
     \frac{2^6+9\times 2^4+8\times 2^2+6\times 2^2}{24} = 11.
     $$
 
-### 多面体群
+### Nhóm đa diện
 
-多面体群（polyhedral group）是正多面体的空间对称群．正多面体只有五种：正四面体、正方体、正八面体、正十二面体和正二十面体．如果保持点、棱、面之间的邻接关系，交换点和面，可以得到对偶的正多面体．其中，正四面体和它自身对偶，正方体和正八面体对偶，正十二面体和正二十面体对偶．利用对偶关系，可以简化它们的空间对称群的讨论．
+Nhóm đa diện là nhóm đối xứng của các đa diện đều. Có 5 đa diện đều: tứ diện, lập phương, bát diện, thập nhị diện, nhị thập diện. Đổi chỗ đỉnh và mặt (giữ quan hệ kề) được đa diện đối ngẫu: tứ diện tự đối ngẫu, lập phương đối ngẫu bát diện, thập nhị diện đối ngẫu nhị thập diện. Dùng đối ngẫu để đơn giản hóa phân tích.
 
-只计三维空间中可以进行的旋转操作，它们的空间对称群只有三种．
+Chỉ xét các phép quay trong không gian 3D, có 3 nhóm:
 
--   四面体群（tetrahedral group），即正四面体的空间对称群：
+-   Nhóm tứ diện (tetrahedral group), đối xứng của tứ diện đều:
+    
+    -   Đồng nhất;
+    -   Quay $120^\circ$ và $240^\circ$ quanh trục nối đỉnh với tâm mặt đối diện;
+    -   Quay $180^\circ$ quanh trục nối trung điểm hai cạnh đối.
+    
+    Tổng $1+2\times4+1\times3=12$ phép.
+    
+    Chỉ số vòng:
+    
+    -   Nhóm hoán vị đỉnh và mặt: $\dfrac1{12}\left(t_1^4+8t_1t_3+3t_2^2\right)$;
+    -   Nhóm hoán vị cạnh: $\dfrac1{12}\left(t_1^6+8t_3^2+3t_1^2t_2^2\right)$.
 
-    -   恒等变换；
-    -   绕顶点和对面中心的连线旋转 $120^\circ$ 和 $240^\circ$；
-    -   绕对边的中点的连线旋转 $180^\circ$．
+-   Nhóm bát diện (octahedral group), đối xứng của lập phương (và bát diện):
+    
+    -   Đồng nhất;
+    -   Quay $120^\circ$ và $240^\circ$ quanh trục nối hai đỉnh đối;
+    -   Quay $180^\circ$ quanh trục nối trung điểm hai cạnh đối;
+    -   Quay $90^\circ$,$180^\circ$,$270^\circ$ quanh trục nối tâm hai mặt đối.
+    
+    Tổng $1+2\times 4+1\times 6+3\times 3=24$ phép.
+    
+    Chỉ số vòng cho lập phương:
+    
+    -   Đỉnh: $\dfrac{1}{24}\left(t_1^8+8t_1^2t_3^2+9t_2^4+6t_4^2\right)$;
+    -   Cạnh: $\dfrac{1}{24}\left(t_1^{12}+8t_3^4+6t_1^2t_2^5+6t_4^3+3t_2^6\right)$;
+    -   Mặt: $\dfrac{1}{24}\left(t_1^6+8t_3^2+6t_2^3+6t_1^2t_4+3t_1^2t_2^2\right)$.
+    
+    Với bát diện, đổi vai trò đỉnh và mặt.
 
-    共计 $1+2\times4+1\times3=12$ 个对称操作．
+-   Nhóm nhị thập diện (icosahedral group), đối xứng của thập nhị diện (và nhị thập diện):
+    
+    -   Đồng nhất;
+    -   Quay $120^\circ$ và $240^\circ$ quanh trục nối hai đỉnh đối;
+    -   Quay $180^\circ$ quanh trục nối trung điểm hai cạnh đối;
+    -   Quay $72^\circ$,$144^\circ$,$216^\circ$,$288^\circ$ quanh trục nối tâm hai mặt đối.
+    
+    Tổng $1+2\times 10+1\times 15+6\times 4=60$ phép.
+    
+    Chỉ số vòng cho thập nhị diện:
+    
+    -   Đỉnh: $\dfrac{1}{60}\left(t_1^{20}+20t_1^2t_3^6+15t_2^{10}+24t_5^4\right)$;
+    -   Cạnh: $\dfrac{1}{60}\left(t_1^{30}+20t_3^{10}+15t_1^2t_2^{14}+24t_5^6\right)$;
+    -   Mặt: $\dfrac{1}{60}\left(t_1^{12}+20t_3^4+15t_2^6+24t_1^2t_5^2\right)$.
+    
+    Với nhị thập diện, đổi vai trò đỉnh và mặt.
 
-    它对应的置换群的轮换指标如下．
+Các chỉ số vòng trên chỉ xét tác động lên từng loại đối tượng riêng. Nếu tô đồng thời nhiều loại đối tượng, cần chỉ số vòng liên hợp.
 
-    -   顶点置换群和面置换群：$\dfrac1{12}\left(t_1^4+8t_1t_3+3t_2^2\right)$；
-    -   棱置换群：$\dfrac1{12}\left(t_1^6+8t_3^2+3t_1^2t_2^2\right)$．
+## Bài tập
 
--   八面体群（octahedral group），即正方体（和正八面体）的空间对称群：
+### Bài toán tô màu
 
-    -   恒等变换；
-    -   绕相对顶点的连线旋转 $120^\circ$ 和 $240^\circ$；
-    -   绕相对的棱的中点的连线旋转 $180^\circ$；
-    -   绕相对的面的中心的连线旋转 $90^\circ$，$180^\circ$ 和 $270^\circ$．
-
-    共计 $1+2\times 4+1\times 6+3\times 3=24$ 个对称操作．
-
-    它对应的正方体的置换群的轮换指标如下．
-
-    -   顶点置换群：$\dfrac{1}{24}\left(t_1^8+8t_1^2t_3^2+9t_2^4+6t_4^2\right)$；
-    -   棱置换群：$\dfrac{1}{24}\left(t_1^{12}+8t_3^4+6t_1^2t_2^5+6t_4^3+3t_2^6\right)$；
-    -   面置换群：$\dfrac{1}{24}\left(t_1^6+8t_3^2+6t_2^3+6t_1^2t_4+3t_1^2t_2^2\right)$．
-
-    正八面体的置换群类似，只是要将顶点和面的角色对换．
-
--   二十面体群（icosahedral group），即正十二面体（和正二十面体）的空间对称群：
-
-    -   恒等变换；
-    -   绕相对顶点的连线旋转 $120^\circ$ 和 $240^\circ$；
-    -   绕相对的棱的中点的连线旋转 $180^\circ$；
-    -   绕相对的面的中心的连线旋转 $72^\circ$，$144^\circ$，$216^\circ$ 和 $288^\circ$．
-
-    共计 $1+2\times 10+1\times 15+6\times 4=60$ 个对称操作．
-
-    它对应的正十二面体的置换群的轮换指标如下．
-
-    -   顶点置换群：$\dfrac{1}{60}\left(t_1^{20}+20t_1^2t_3^6+15t_2^{10}+24t_5^4\right)$；
-    -   棱置换群：$\dfrac{1}{60}\left(t_1^{30}+20t_3^{10}+15t_1^2t_2^{14}+24t_5^6\right)$；
-    -   面置换群：$\dfrac{1}{60}\left(t_1^{12}+20t_3^4+15t_2^6+24t_1^2t_5^2\right)$．
-
-    正二十面体的置换群类似，只是要将顶点和面的角色对换．
-
-这里给出的都是对顶点、棱、面等单独的对象作用的置换群的轮换指标．如果要对不同的对象同时染色，需要写出联合的轮换指标．
-
-## 习题
-
-### 染色问题
-
-这些题目只需要分析置换群的结构，并应用 Pólya 计数原理．
+Các bài này chỉ cần phân tích nhóm hoán vị và áp dụng Pólya.
 
 -   [Luogu P4980【模板】Polya 定理](https://www.luogu.com.cn/problem/P4980)
 -   [Luogu P2561 \[AHOI2002\] 黑白瓷砖](https://www.luogu.com.cn/problem/P2561)
@@ -501,33 +501,33 @@ $$
 -   [TRANSP2 - Transposing is Even More Fun](https://www.spoj.com/problems/TRANSP2/)
 -   [Luogu P3307 \[SDOI2013\] 项链](https://www.luogu.com.cn/problem/P3307)
 
-当可以使用的颜色组合受到限制时，需要通过背包 DP 或者组合方法求解对轮换染色的方法数目．
+Khi tổ hợp màu bị ràng buộc, cần dùng DP balo hoặc tổ hợp để đếm cách tô theo vòng.
 
 -   [Luogu P1446 \[HNOI2008\] Cards](https://www.luogu.com.cn/problem/P1446)
 -   [UVA10601 Cubes](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=1542)
 -   [Luogu P4916 \[MtOI2018\] 魔力环](https://www.luogu.com.cn/problem/P4916)
 
-### 图论计数
+### Đếm đồ thị
 
-Pólya 计数原理可以用于 [图论计数](../combinatorics/graph-enumeration.md) 问题，这类问题难点在于图的边置换群的枚举．
+Pólya có thể dùng cho [đếm đồ thị](../combinatorics/graph-enumeration.md), khó ở việc liệt kê nhóm hoán vị trên cạnh.
 
 -   [SGU 282. Isomorphism](https://codeforces.com/problemsets/acmsguru/problem/99999/282)
 -   [Luogu P4727 \[HNOI2009\] 图的同构计数](https://www.luogu.com.cn/problem/P4727)
 -   [Luogu P4128 \[SHOI2006\] 有色图](https://www.luogu.com.cn/problem/P4128)
 
-另一类可以应用 Pólya 计数原理的图论计数问题需要直接操纵生成函数．
+Một nhóm khác cần thao tác trực tiếp trên hàm sinh.
 
 -   [LOJ 6538 烷基计数 加强版 加强版](https://loj.ac/p/6538)
 -   [LOJ 6512「雅礼集训 2018」烷烃计数](https://loj.ac/p/6512)
 -   [Luogu P6597 烯烃计数](https://www.luogu.com.cn/problem/P6597)
 -   [Luogu P5818 \[JSOI2011\] 同分异构体计数](https://www.luogu.com.cn/problem/P5818)
 
-## 参考文献与注释
+## Tài liệu tham khảo và chú thích
 
 -   [Pólya enumeration theorem - Wikipedia](https://en.wikipedia.org/wiki/P%C3%B3lya_enumeration_theorem)
 -   [Notes on Pólya's Enumeration Theorem](https://www.diva-portal.org/smash/get/diva2:324594/FULLTEXT01.pdf)
 -   [Cycle index - Wikipedia](https://en.wikipedia.org/wiki/Cycle_index)
 
-[^perm-group]: 因此，空间对称群 $G$ 可以表示是集合 $X$ 上的置换群，即对称群 $S_X$ 的子群．
+[^perm-group]: Do đó nhóm đối xứng không gian $G$ có thể biểu diễn như nhóm hoán vị trên tập $X$, tức là một nhóm con của nhóm đối xứng $S_X$.
 
-[^g-act]: 严格来说，是子群 $\langle g\rangle\le G$ 的作用．
+[^g-act]: Nghiêm ngặt mà nói, là tác động của nhóm con $\langle g\rangle\le G$.

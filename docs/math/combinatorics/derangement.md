@@ -1,14 +1,14 @@
-## 错位排列
+## Hoán vị sai chỗ
 
-### 定义
+### Định nghĩa
 
-错位排列（derangement）是没有任何元素出现在其有序位置的排列．即，对于 $1\sim n$ 的排列 $P$，如果满足 $P_i\neq i$，则称 $P$ 是 $n$ 的错位排列．
+Hoán vị sai chỗ (derangement) là hoán vị không có phần tử nào ở đúng vị trí. Tức với hoán vị $P$ của $1\sim n$, nếu $P_i\neq i$ thì $P$ là hoán vị sai chỗ của $n$.
 
-例如，三元错位排列有 $\{2,3,1\}$ 和 $\{3,1,2\}$．四元错位排列有 $\{2,1,4,3\}$、$\{2,3,4,1\}$、$\{2,4,1,3\}$、$\{3,1,4,2\}$、$\{3,4,1,2\}$、$\{3,4,2,1\}$、$\{4,1,2,3\}$、$\{4,3,1,2\}$ 和 $\{4,3,2,1\}$．错位排列是没有不动点的排列，即没有长度为 1 的循环．
+Ví dụ, hoán vị sai chỗ bậc 3 có $\{2,3,1\}$ và $\{3,1,2\}$. Bậc 4 có $\{2,1,4,3\}$、$\{2,3,4,1\}$、$\{2,4,1,3\}$、$\{3,1,4,2\}$、$\{3,4,1,2\}$、$\{3,4,2,1\}$、$\{4,1,2,3\}$、$\{4,3,1,2\}$ và $\{4,3,2,1\}$. Hoán vị sai chỗ là hoán vị không có điểm bất động, tức không có chu trình độ dài 1.
 
-### 容斥原理的计算
+### Tính bằng bao hàm–loại trừ
 
-全集 $U$ 即为 $1\sim n$ 的排列，$|U|=n!$；令 $S_i$ 是其中满足 $P_i\neq i$ 的排列．运用补集和 [容斥原理](./inclusion-exclusion-principle.md) 的知识，问题变成求：
+Không gian mẫu $U$ là tất cả hoán vị của $1\sim n$, $|U|=n!$; đặt $S_i$ là tập hoán vị thỏa $P_i\neq i$. Dùng bù và [bao hàm–loại trừ](./inclusion-exclusion-principle.md), bài toán thành:
 
 $$
 \begin{aligned}
@@ -18,19 +18,19 @@ $$
 \end{aligned}
 $$
 
-其中求和的含义是 $1, 2, \cdots, n$ 中取 $a_1, a_2, \cdots, a_k$ 且满足 $a_i<a_{i+1}$．于是
+Tổng trong là chọn $a_1, a_2, \cdots, a_k$ từ $1..n$ sao cho $a_i<a_{i+1}$. Khi đó
 
 $$
 \left|\bigcap_{i=1}^{k}\overline{S_{a_i}}\right|
 $$
 
-表示有 $k$ 个数 $a_1,a_2,\cdots,a_k$ 满足 $P_{a_i}=a_i$，而剩下 $n-k$ 个数的位置任意的排列数，因此：
+là số hoán vị có $k$ vị trí cố định $P_{a_i}=a_i$, còn lại $n-k$ vị trí tùy ý, nên:
 
 $$
 \left|\bigcap_{i=1}^{k}\overline{S_{a_i}}\right|=(n-k)!
 $$
 
-这 $k$ 个数的选择情况共 $\dbinom{n}{k}$ 种，对其求和有：
+Có $\dbinom{n}{k}$ cách chọn $k$ vị trí, nên:
 
 $$
 \begin{aligned}
@@ -41,55 +41,55 @@ $$
 \end{aligned}
 $$
 
-因此 $n$ 个元素的错位排列数为：
+Vậy số hoán vị sai chỗ:
 
 $$
 D_n=n!-n!\sum_{k=1}^n\frac{(-1)^{k-1} }{k!}=n!\sum_{k=0}^n\frac{(-1)^k}{k!}
 $$
 
-错位排列数列的前几项为 $0,1,2,9,44,265$（[OEIS A000166](http://oeis.org/A000166)）．
+Dãy bắt đầu: $0,1,2,9,44,265$ ([OEIS A000166](http://oeis.org/A000166)).
 
-### 递推的计算
+### Tính bằng truy hồi
 
-把错位排列问题具体化，考虑这样一个问题：
+Xét bài toán đặt thư vào phong bì:
 
-$n$ 封不同的信，编号分别是 $1,2,3,4,5$，现在要把这五封信放在编号 $1,2,3,4,5$ 的信封中，要求信封的编号与信的编号不一样．问有多少种不同的放置方法？
+$n$ lá thư đánh số $1,2,3,4,5$ cần đặt vào phong bì $1..5$, yêu cầu số thư khác số phong bì. Hỏi số cách?
 
-假设考虑到第 $n$ 个信封，初始时暂时把第 $n$ 封信放在第 $n$ 个信封中，然后考虑两种情况的递推：
+Xét phong bì $n$, ban đầu đặt thư $n$ vào phong bì $n$, rồi xét hai trường hợp:
 
--   前面 $n-1$ 个信封全部装错；
--   前面 $n-1$ 个信封有一个没有装错其余全部装错．
+-   $n-1$ phong bì trước đều sai chỗ;
+-   $n-1$ phong bì trước có đúng một cái đúng chỗ, còn lại sai.
 
-对于第一种情况，前面 $n-1$ 个信封全部装错：因为前面 $n-1$ 个已经全部装错了，所以第 $n$ 封只需要与前面任一一个位置交换即可，总共有 $D_{n-1}\times (n-1)$ 种情况．
+Trường hợp 1: $n-1$ phong bì trước đều sai, thì thư $n$ chỉ cần đổi chỗ với một vị trí trong $n-1$ vị trí, có $D_{n-1}\times (n-1)$ cách.
 
-对于第二种情况，前面 $n-1$ 个信封有一个没有装错其余全部装错：考虑这种情况的目的在于，若 $n-1$ 个信封中如果有一个没装错，那么把那个没装错的与 $n$ 交换，即可得到一个全错位排列情况．
+Trường hợp 2: có đúng một phong bì đúng chỗ, đổi thư ở đó với thư $n$ sẽ tạo thành một hoán vị sai chỗ bậc $n$.
 
-其他情况，不可能通过一次操作来把它变成一个长度为 $n$ 的错排．
+Các trường hợp khác không thể thành hoán vị sai chỗ bậc $n$ chỉ bằng một phép đổi.
 
-于是可得，错位排列数满足递推关系：
+Do đó:
 
 $$
 D_n=(n-1)(D_{n-1}+D_{n-2})
 $$
 
-这里也给出另一个递推关系：
+Ngoài ra còn có:
 
 $$
 D_n=nD_{n-1}+{(-1)}^n
 $$
 
-### 其他关系
+### Quan hệ khác
 
-错位排列数有一个简单的取整表达式，增长速度与阶乘仅相差常数：
+Số hoán vị sai chỗ có công thức làm tròn đơn giản, tốc độ tăng gần như $n!$:
 
 $$
 D_n=\begin{cases}
-    \left\lceil\frac{n!}{\mathrm{e}}\right\rceil, & \text{if }n\text{ is even}, \\
-    \left\lfloor\frac{n!}{\mathrm{e}}\right\rfloor,            & \text{if }n\text{ is odd}.
+    \left\lceil\frac{n!}{\mathrm{e}}\right\rceil, & \text{n chẵn}, \\
+    \left\lfloor\frac{n!}{\mathrm{e}}\right\rfloor,            & \text{n lẻ}.
 \end{cases}
 $$
 
-随着元素数量的增加，形成错位排列的概率 P 接近：
+Khi $n$ lớn, xác suất một hoán vị là sai chỗ:
 
 $$
 P=\lim_{n\to\infty}\frac{D_n}{n!}=\frac{1}{\mathrm{e}}

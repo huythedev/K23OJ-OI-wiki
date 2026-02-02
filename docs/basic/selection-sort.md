@@ -1,30 +1,30 @@
-本页面将简要介绍选择排序．
+Trang này sẽ giới thiệu ngắn gọn về chọn lọc (Selection Sort).
 
-## 定义
+## Định nghĩa
 
-选择排序（英语：Selection sort）是一种简单直观的排序算法．它的工作原理是每次找出第 $i$ 小的元素（也就是 $A_{i..n}$ 中最小的元素），然后将这个元素与数组第 $i$ 个位置上的元素交换．
+Sắp xếp chọn (Tiếng Anh: Selection sort) là một thuật toán sắp xếp đơn giản và trực quan. Nguyên lý là ở mỗi bước tìm phần tử nhỏ thứ i (tức là phần tử nhỏ nhất trong A_{i..n}), rồi hoán đổi phần tử đó với phần tử tại vị trí i của mảng.
 
 ![selection sort animate example](images/selection-sort-animate.svg)
 
-## 性质
+## Tính chất
 
-### 稳定性
+### Tính ổn định
 
-选择排序的稳定性取决于其具体实现．
+Tính ổn định của selection sort phụ thuộc vào cách triển khai.
 
-倘若使用链表实现，由于链表的任意位置插入和删除均为 $O(1)$，故无需使用 swap（交换两个元素）操作：每次从未排序部分选择最小元素（若有多个，选取第 1 个）后，将其插入到未排序部分的第 1 个元素之前，这样就能够保证稳定性．
+Nếu dùng danh sách liên kết (linked list), vì chèn/xóa ở vị trí bất kỳ có thể là O(1), ta không cần dùng swap; mỗi lần chọn phần tử nhỏ nhất từ phần chưa sắp và chèn nó trước phần đầu của phần chưa sắp sẽ đảm bảo tính ổn định.
 
-假如使用数组实现（OI 中一般的实现方式），由于数组任意位置插入和删除均为 $O(n)$，故只能使用 swap 将未排序部分的元素移到已排序部分．swap 操作使得数组实现的选择排序不稳定．
+Nếu dùng mảng (cách thường dùng trong OI), chèn/xóa ở giữa mảng là O(n), nên thường dùng swap để di chuyển phần tử, dẫn đến lựa chọn mảng của selection sort là không ổn định.
 
-下面给出的实现示例均是基于数组元素的交换，因此均为 **不稳定的**．
+Ví dụ cài đặt dưới đây đều dùng hoán đổi phần tử trong mảng, nên là không ổn định.
 
-### 时间复杂度
+### Độ phức tạp thời gian
 
-选择排序的最优时间复杂度、平均时间复杂度和最坏时间复杂度均为 $O(n^2)$．
+Độ phức tạp thời gian tốt nhất, trung bình và tệ nhất của selection sort đều là O(n^2).
 
-## 代码实现
+## Cài đặt
 
-### 伪代码
+### Pseudocode
 
 $$
 \begin{array}{ll}
@@ -52,7 +52,8 @@ $$
 
 === "Java"
     ```java
-    // arr代码下标从 1 开始索引
+    // filepath: /home/ubuntu/K23OJ-OI-wiki/docs/basic/selection-sort.md
+    // Chỉ số mảng arr bắt đầu từ 1
     static void selection_sort(int[] arr, int n) {
         for (int i = 1; i < n; i++) {
             int ith = i;
@@ -61,7 +62,7 @@ $$
                     ith = j;
                 }
             }
-            // swap
+            // hoán đổi
             int temp = arr[i];
             arr[i] = arr[ith];
             arr[ith] = temp;

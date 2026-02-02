@@ -1,73 +1,73 @@
 author: Peanut-Tang, Early0v0, Vxlimo, GHLinZhengyu, 1196131597
 
-「Meissel–Lehmer 算法」是一种能在亚线性时间复杂度内求出 $1\sim n$ 内质数个数的一种算法．
+"Thuật toán Meissel–Lehmer" là một thuật toán có thể đếm số lượng số nguyên tố trong $1\sim n$ với độ phức tạp thời gian dưới tuyến tính．
 
-## 记号规定
+## Các ký hiệu
 
-$\left[x\right]$ 表示对 $x$ 下取整得到的结果．  
-$p_k$ 表示第 $k$ 个质数，$p_1=2$．  
-$\pi\left(x\right)$ 表示 $1\sim x$ 范围内素数的个数．  
-$\mu\left(x\right)$ 表示莫比乌斯函数．  
-对于集合 $S$，$\# S$ 表示集合 $S$ 的大小．  
-$\delta\left(x\right)$ 表示 $x$ 最小的质因子．  
-$P^+\left(x\right)$ 表示 $x$ 最大的质因子．
+$\left[x\right]$ biểu diễn phần nguyên của $x$．  
+$p_k$ biểu diễn số nguyên tố thứ $k$，$p_1=2$．  
+$\pi\left(x\right)$ biểu diễn số lượng số nguyên tố trong $1\sim x$．  
+$\mu\left(x\right)$ biểu diễn hàm Möbius．  
+Cho tập hợp $S$，$\# S$ biểu diễn số lượng phần tử của $S$．  
+$\delta\left(x\right)$ biểu diễn số nguyên tố nhỏ nhất của $x$．  
+$P^+\left(x\right)$ biểu diễn số nguyên tố lớn nhất của $x$．
 
-## Meissel–Lehmer 算法求 π(x)
+## Thuật toán Meissel–Lehmer đếm $\pi(x)$
 
-定义 $\phi\left(x,a\right)$ 为所有小于 $x$ 的正整数中满足其所有质因子都大于 $p_a$ 的数的个数，即：
+Định nghĩa $\phi\left(x,a\right)$ là số lượng các số nguyên dương nhỏ hơn $x$ mà tất cả các thừa số nguyên tố đều lớn hơn $p_a$，tức là:
 
 $$
 \phi\left(x,a\right)=\#\big\{n\le x\mid n\bmod p=0 \implies p>p_a\big\}\tag{1}
 $$
 
-再定义 $P_k\left(x,a\right)$ 表示为所有小于 $x$ 的正整数中满足可重质因子恰好有 $k$ 个且所有质因子都大于 $p_a$ 的数的个数，即：
+Định nghĩa $P_k\left(x,a\right)$ là số lượng các số nguyên dương nhỏ hơn $x$ mà có đúng $k$ thừa số nguyên tố (tính lặp lại) và tất cả các thừa số nguyên tố đều lớn hơn $p_a$，tức là:
 
 $$
 P_k\left(x,a\right)=\#\big\{n\le x\mid n=q_1q_2\cdots q_k \implies \forall i,q_i>p_a\big\}\tag{2}
 $$
 
-特殊的，我们定义：$P_0\left(x,a\right)=1$，如此便有：
+Đặc biệt，ta định nghĩa: $P_0\left(x,a\right)=1$，vậy ta có:
 
 $$
 \phi\left(x,a\right)=P_0\left(x,a\right)+P_1\left(x,a\right)+\cdots+P_k\left(x,a\right)+\cdots
 $$
 
-这个无限和式实际上是可以表示为有限和式的，因为在 $p_a^k>x$ 时，有 $P_k\left(x,a\right)=0$．
+Dãy vô hạn này thực tế có thể biểu diễn bằng một dãy hữu hạn vì khi $p_a^k>x$ thì $P_k\left(x,a\right)=0$．
 
-设 $y$ 为满足 $x^{1/3}\le y\le x^{1/2}$ 的整数，再记 $a=\pi\left(y\right)$．
+Giả sử $y$ là một số nguyên thỏa mãn $x^{1/3}\le y\le x^{1/2}$，và $a=\pi\left(y\right)$．
 
-在 $k\ge 3$ 时，有 $P_1\left(x,a\right)=\pi\left(x\right)-a$ 与 $P_k\left(x,a\right)=0$，由此我们可以推出：
+Khi $k\ge 3$ thì $P_1\left(x,a\right)=\pi\left(x\right)-a$ và $P_k\left(x,a\right)=0$，vậy ta có:
 
 $$
 \pi\left(x\right)=\phi\left(x,a\right)+a-1-P_2\left(x,a\right)\tag{3}
 $$
 
-这样，计算 $\pi\left(x\right)$ 便可以转化为计算 $\phi\left(x,a\right)$ 与 $P_2\left(x,a\right)$．
+Vậy để tính $\pi\left(x\right)$ ta chỉ cần tính $\phi\left(x,a\right)$ và $P_2\left(x,a\right)$．
 
-## 计算 P₂(x,a)
+## Tính $P_2\left(x,a\right)$
 
-由等式 $\left(2\right)$ 我们可以得出 $P_2\left(x,a\right)$ 等于满足 $y<p\le q$ 且 $pq\le x$ 的质数对 $\left(p,q\right)$ 的个数．
+Từ đẳng thức $\left(2\right)$ ta có $P_2\left(x,a\right)$ bằng số lượng các cặp số nguyên tố $\left(p,q\right)$ thỏa mãn $y<p\le q$ và $pq\le x$．
 
-首先我们注意到 $p\in \left[y+1,\sqrt{x}\right]$．此外，对于每个 $p$，我们都有 $q\in\left[p,x/p\right]$．因此：
+Trước hết ta nhận thấy $p\in \left[y+1,\sqrt{x}\right]$．Ngoài ra，với mỗi $p$ ta đều có $q\in\left[p,x/p\right]$．Vậy:
 
 $$
 P_2\left(x,a\right)=\sum_{y<p\le \sqrt{x}}{\left(\pi\left(\dfrac{x}{p}\right)-\pi\left(p\right)+1\right)}\tag{4}
 $$
 
-当 $p\in \left[y+1,\sqrt{x}\right]$ 时，我们有 $\dfrac{x}{p}\in \left[1,\dfrac{x}{y}\right]$．因此，我们可以筛区间 $\left[1,\dfrac{x}{y}\right]$，然后对于所有的的质数 $p\in \left[y+1,\sqrt{x}\right]$ 计算 $\pi\left(\dfrac{x}{p}\right)-\pi\left(p\right)+1$．为了减少上述算法的空间复杂度，我们可以考虑分块，块长为 $L$．若块长 $L=y$，则我们可以在 $O\left(\dfrac{x}{y}\log{\log{x}}\right)$ 的时间复杂度，$O\left(y\right)$ 的空间复杂度内计算 $P_2\left(x,a\right)$．
+Khi $p\in \left[y+1,\sqrt{x}\right]$ thì $\dfrac{x}{p}\in \left[1,\dfrac{x}{y}\right]$．Vậy ta có thể sàng khoảng $\left[1,\dfrac{x}{y}\right]$，rồi với mọi số nguyên tố $p\in \left[y+1,\sqrt{x}\right]$ tính $\pi\left(\dfrac{x}{p}\right)-\pi\left(p\right)+1$．Để giảm bớt độ phức tạp không gian của thuật toán này，ta có thể chia thành các khối，độ dài khối là $L$．Nếu độ dài khối $L=y$ thì ta có thể tính $P_2\left(x,a\right)$ trong $O\left(\dfrac{x}{y}\log{\log{x}}\right)$ thời gian và $O\left(y\right)$ không gian．
 
-## 计算 ϕ(x,a)
+## Tính $\phi\left(x,a\right)$
 
-对于 $b\le a$，考虑所有不超过 $x$ 的正整数，满足它的所有质因子都大于 $p_{b-1}$．这些数可以被分为两类：
+Với $b\le a$，xem xét tất cả các số nguyên dương không quá $x$ mà tất cả các thừa số nguyên tố đều lớn hơn $p_{b-1}$．Các số này có thể chia thành hai nhóm:
 
-1.  可以被 $p_b$ 整除的；
-2.  不可以被 $p_b$ 整除的．
+1.  Có thể chia hết cho $p_b$；
+2.  Không thể chia hết cho $p_b$．
 
-属于第 $1$ 类的数有 $\phi\left(\dfrac{x}{p_b},b-1\right)$ 个，属于第二类的数有 $\phi\left(x,b\right)$ 个．
+Nhóm thứ $1$ có $\phi\left(\dfrac{x}{p_b},b-1\right)$ phần tử，nhóm thứ $2$ có $\phi\left(x,b\right)$ phần tử．
 
-因此我们得出结论：
+Vậy ta có kết luận:
 
-> **定理 $5.1$：** 函数 $\phi$ 满足下列性质
+> **Định lý $5.1$**: Hàm $\phi$ thỏa mãn các tính chất sau
 >
 > $$
 > \phi\left(u,0\right)=\left[u\right]\tag{5}
@@ -77,7 +77,7 @@ $$
 > \phi\left(x,b\right)=\phi\left(x,b-1\right)-\phi\left(\dfrac{x}{p_b},b-1\right)\tag{6}
 > $$
 
-计算 $\phi\left(x,a\right)$ 的简单方法可以从这个定理推导出来：我们重复使用等式 $\left(7\right)$，知道最后得到 $\phi\left(u,0\right)$．这个过程可以看作从根节点 $\phi\left(x,a\right)$ 开始创建有根二叉树，图 $1$ 画出了这一过程．通过这种方法，我们得到如下公式：
+Cách tính $\phi\left(x,a\right)$ đơn giản có thể suy ra từ định lý này: ta lặp lại đẳng thức $\left(7\right)$ cho đến khi được $\phi\left(u,0\right)$．Quá trình này có thể xem như tạo ra một cây nhị phân có gốc $\phi\left(x,a\right)$，hình $1$ vẽ ra quá trình này．Từ phương pháp này ta có công thức:
 
 $$
 \phi\left(x,a\right)=\sum_{\substack{1\le n\le x\\ P^+\left(n\right)\le y}}{\mu\left(n\right)\left[x/n\right]}
@@ -94,63 +94,63 @@ $$
 \end{gathered}
 $$
 
-上图表示计算 $\phi\left(x,a\right)$ 过程的二叉树：叶子节点权值之和就是 $\phi\left(x,a\right)$．
+Hình trên biểu diễn quá trình tính $\phi\left(x,a\right)$ như một cây nhị phân: tổng các trọng số của các lá là $\phi\left(x,a\right)$．
 
-但是，这样需要计算太多东西．因为 $y\geq x^{1/3}$，仅仅计算为 $3$ 个 不超过 $y$ 质数的乘积的数，如果按照这个方法计算，会有至少 $\dfrac{x}{\log^3 x}$ 个项，没有办法我们对复杂度的需求．
+Nhưng như vậy cần tính quá nhiều thứ．Vì $y\geq x^{1/3}$，chỉ cần tính các tích của $3$ số nguyên tố không quá $y$，nếu theo phương pháp này thì sẽ có ít nhất $\dfrac{x}{\log^3 x}$ hạng mục，không thể đáp ứng nhu cầu về độ phức tạp．
 
-为了限制这个二叉树的「生长」，我们要改变原来的终止条件．这是原来的终止条件．
+Để hạn chế sự "trưởng thành" của cây nhị phân này，ta phải thay đổi điều kiện kết thúc．Điều kiện kết thúc ban đầu là:
 
-> **终止条件 $1$：** 如果 $b=0$，则不要再对节点 $\mu\left(n\right)\phi\left(\dfrac xn,b\right)$ 调用等式 $\left(6\right)$．
+> **Điều kiện kết thúc $1$**: Nếu $b=0$ thì không gọi lại đẳng thức $\left(6\right)$ cho nút $\mu\left(n\right)\phi\left(\dfrac xn,b\right)$．
 
-我们把它改成更强的终止条件：
+Ta thay đổi thành điều kiện kết thúc mạnh hơn:
 
-> **终止条件 $2$：** 如果满足下面 $2$ 个条件中的一个，不要再对节点 $\mu\left(n\right)\phi\left(\dfrac xn,b\right)$ 调用等式 $\left(6\right)$:
+> **Điều kiện kết thúc $2$**: Nếu thỏa mãn một trong hai điều kiện sau thì không gọi lại đẳng thức $\left(6\right)$ cho nút $\mu\left(n\right)\phi\left(\dfrac xn,b\right)$:
 >
-> 1.  $b=0$ 且 $n\le y$；
+> 1.  $b=0$ và $n\le y$；
 > 2.  $n>y$．
 
-我们根据 **终止条件 $2$** 将原二叉树上的叶子分成两种：
+Ta dựa vào **Điều kiện kết thúc $2$** để chia các lá của cây nhị phân thành hai loại:
 
-1.  如果叶子节点 $\mu\left(n\right)\phi\left(\dfrac xn,b\right)$ 满足 $n\le y$，则称这种叶子节点为 **普通叶子**；
-2.  如果叶子节点 $\mu\left(n\right)\phi\left(\dfrac xn,b\right)$ 满足 $n>y$ 且 $n=mp_b\left(m\le y\right)$，则称这种节点为 **特殊叶子**．
+1.  Nếu lá nút $\mu\left(n\right)\phi\left(\dfrac xn,b\right)$ thỏa mãn $n\le y$ thì gọi là **lá bình thường**；
+2.  Nếu lá nút $\mu\left(n\right)\phi\left(\dfrac xn,b\right)$ thỏa mãn $n>y$ và $n=mp_b\left(m\le y\right)$ thì gọi là **lá đặc biệt**．
 
-由此我们得出：
+Vậy ta có:
 
-> **定理 $5.2$：** 我们有：
+> **Định lý $5.2$**: Ta có:
 >
 > $$
 > \phi\left(x,a\right)=S_0+S\tag{7}
 > $$
 >
-> 其中 $S_0$ 表示 **普通叶子** 的贡献：
+> Trong đó $S_0$ biểu diễn **lá bình thường**:
 >
 > $$
 > S_0=\sum_{n\le y}{\mu\left(n\right)\left[\dfrac xn\right]}\tag{8}
 > $$
 >
-> $S$ 表示 **特殊叶子** 的贡献：
+> $S$ biểu diễn **lá đặc biệt**:
 >
 > $$
 > S=\sum_{n/\delta\left(n\right)\le y\le n}{\mu\left(n\right)\phi\left(\dfrac{x}{n},\pi\left(\delta\left(n\right)\right)-1 \right)}\tag{9}
 > $$
 
-计算 $S_0$ 显然是可以在 $O\left(y\log{\log x}\right)$ 的时间复杂度内解决的，现在我们要考虑如何计算 $S$．
+Tính $S_0$ rõ ràng có thể làm trong $O\left(y\log{\log x}\right)$ thời gian．Bây giờ ta cần tính $S$．
 
-## 计算 S
+## Tính $S$
 
-我们有：
+Ta có:
 
 $$
 S=-\sum_{p\le y}{\ \sum_{\substack{\delta\left(m\right)>p\\ m\le y<mp}}{\mu\left(m\right)\phi\left(\dfrac{x}{mp},\pi\left(p\right)-1\right)}}\tag{10}
 $$
 
-我们将这个等式改写为：
+Ta viết lại:
 
 $$
 S=S_1+S_2+S_3
 $$
 
-其中：
+Trong đó:
 
 $$
 S_1=-\sum_{x^{1/3}<p\le y}{\ \sum_{\substack{\delta\left(m\right)>p\\ m\le y<mp}}{\mu\left(m\right)\phi\left(\dfrac{x}{mp},\pi\left(p\right)-1\right)}}
@@ -164,11 +164,11 @@ $$
 S_3=-\sum_{p\le x^{1/4}}{\ \sum_{\substack{\delta\left(m\right)>p\\ m\le y<mp}}{\mu\left(m\right)\phi\left(\dfrac{x}{mp},\pi\left(p\right)-1\right)}}
 $$
 
-注意到计算 $S_1,S_2$ 的和式中涉及到的 $m$ 都是质数，证明如下：
+Chú ý rằng các tổng $S_1,S_2$ có chứa các $m$ đều là số nguyên tố，chứng minh như sau:
 
-> 如果不是这样，因为有 $\delta\left(m\right)>p>x^{1/4}$，所以有 $m>p^2>\sqrt{x}$，这与 $m\le y$ 矛盾，所以原命题成立．
+> Nếu không như vậy，vì có $\delta\left(m\right)>p>x^{1/4}$，vậy có $m>p^2>\sqrt{x}$，điều này mâu thuẫn với $m\le y$，vậy mệnh đề đúng．
 
-更多的，当 $mp>x^{1/2}\ge y$ 时，有 $y\le mp$．因此我们有：
+Ngoài ra，khi $mp>x^{1/2}\ge y$ thì $y\le mp$．Vậy ta có:
 
 $$
 S_1=\sum_{x^{1/3}<p\le y}{\ \sum_{p<q\le y}{\phi\left(\dfrac{x}{pq},\pi\left(p\right)-1\right)}}
@@ -178,45 +178,45 @@ $$
 S_2=\sum_{x^{1/4}<p\le x^{1/3}}{\ \sum_{p<q\le y}{\phi\left(\dfrac{x}{pq},\pi\left(p\right)-1\right)}}
 $$
 
-### 计算 S₁
+### Tính $S_1$
 
-因为：
+Vì:
 
 $$
 \dfrac{x}{pq}<x^{1/3}<p
 $$
 
-所以：
+Vậy:
 
 $$
 \phi\left(\dfrac{x}{pq},\pi\left(p\right)-1\right)=1
 $$
 
-所以计算 $S_1$ 的和式中的项都是 $1$．所以我们实际上要计算质数对 $\left(p,q\right)$ 的个数，满足：$x^{1/3}<p<q\le y$．
+Vậy các hạng mục trong tổng $S_1$ đều bằng $1$．Vậy ta thực sự cần tính số lượng các cặp số nguyên tố $\left(p,q\right)$ thỏa mãn: $x^{1/3}<p<q\le y$．
 
-因此：
+Vậy:
 
 $$
 S_1=\dfrac{\left(\pi\left(y\right)-\pi\left(x^{1/3}\right)\right)\left(\pi\left(y\right)-\pi\left(x^{1/3}\right)-1\right)}{2}
 $$
 
-有了这个等式我们便可以在 $O\left(1\right)$ 的时间内计算 $S_1$．
+Vậy ta có thể tính $S_1$ trong $O\left(1\right)$ thời gian．
 
-### 计算 S₂
+### Tính $S_2$
 
-我们有：
+Ta có:
 
 $$
 S_2=\sum_{x^{1/4}<p\le x^{1/3}}{\ \sum_{p<q\le y}{\phi\left(\dfrac{x}{pq},\pi\left(p\right)-1\right)}}
 $$
 
-我们将 $S_2$ 分成 $q>\dfrac x{p^2}$ 与 $q\le \dfrac x{p^2}$ 两部分：
+Ta chia $S_2$ thành hai phần:
 
 $$
 S_2=U+V
 $$
 
-其中：
+Trong đó:
 
 $$
 U=\sum_{x^{1/4}<p\le x^{1/3}}{\ \sum_{\substack{p<q<y\\q>x/p^2}}{\phi\left(\dfrac{x}{pq},\pi\left(p\right)-1 \right)}}
@@ -226,43 +226,43 @@ $$
 V=\sum_{x^{1/4}<p\le x^{1/3}}{\ \sum_{\substack{p<q<y\\q\le x/p^2}}{\phi\left(\dfrac{x}{pq},\pi\left(p\right)-1 \right)}}
 $$
 
-### 计算 U
+### Tính $U$
 
-由 $q>\dfrac x{p^2}$ 可得 $p^2>\dfrac xq\le \dfrac xy,p>\sqrt{\dfrac xy}$，因此：
+Từ $q>\dfrac x{p^2}$ ta có $p^2>\dfrac xq\le \dfrac xy,p>\sqrt{\dfrac xy}$，vậy:
 
 $$
 U=\sum_{\sqrt{x/y}<p\le x^{1/3}}{\ \sum_{\substack{p<q\le y\\q>x/p^2}}{\phi\left(\dfrac{x}{pq},\pi\left(p\right)-1 \right)}}
 $$
 
-因此：
+Vậy:
 
 $$
 U=\sum_{\sqrt{x/y}<p\le x^{1/3}}{\#\left\{q\mid \dfrac x{p^2}<q\le y \right\}}
 $$
 
-因此：
+Vậy:
 
 $$
 U=\sum_{\sqrt{x/y}<p\le x^{1/3}}{\left(\pi\left(y\right)-\pi\left(\dfrac{x}{p^2} \right) \right)}
 $$
 
-因为有 $\dfrac x{p^2}<y$，所以我们可以预处理出所有的 $\pi\left(t\right)\left(t\le y\right)$，这样我们就可以在 $O\left(y\right)$ 的时间复杂度内计算出 $U$．
+Vì có $\dfrac x{p^2}<y$，vậy ta có thể pre-process tất cả $\pi\left(t\right)\left(t\le y\right)$，vậy ta có thể tính $U$ trong $O\left(y\right)$ thời gian．
 
-### 计算 V
+### Tính $V$
 
-对于计算 $V$ 的和式中的每一项，我们都有 $p\le \dfrac{x}{pq}<x^{1/2}<p^2$．因此：
+Với mỗi hạng mục trong tổng $V$ ta đều có $p\le \dfrac{x}{pq}<x^{1/2}<p^2$．Vậy:
 
 $$
 \phi\left(\dfrac{x}{pq},\pi\left(p\right)-1 \right)=1+\pi\left(\dfrac{x}{pq} \right)-\left(\pi\left(p\right)-1\right)=2-\pi\left(p\right)+\pi\left(\dfrac{x}{pq} \right)
 $$
 
-所以 $V$ 可以被表示为：
+Vậy $V$ có thể biểu diễn như:
 
 $$
 V=V_1+V_2
 $$
 
-其中：
+Trong đó:
 
 $$
 V_1=\sum_{x^{1/4}<p\le x^{1/3}}{\ \sum_{p<q\le \min\left(x/p^2,y\right)}{\left(2-\pi\left(p\right)\right)}}
@@ -272,23 +272,23 @@ $$
 V_2=\sum_{x^{1/4}<p\le x^{1/3}}{\ \sum_{p<q\le \min\left(x/p^2,y\right)}{\pi\left(\dfrac{x}{pq} \right)}}
 $$
 
-预处理出 $\pi\left(t\right)\left(t\le y\right)$ 我们就可以在 $O\left(x^{1/3}\right)$ 的时间复杂度内计算出 $V_1$．
+Pre-process $\pi\left(t\right)\left(t\le y\right)$ ta có thể tính $V_1$ trong $O\left(x^{1/3}\right)$ thời gian．
 
-考虑我们如何加速计算 $V_2$ 的过程．我们可以把 $q$ 的贡献拆分成若干个 $\pi\left(\dfrac{x}{pq} \right)$ 为定值的区间上，这样就只需要计算出每一个区间的长度和从一个区间到下一个区间的 $\pi\left(\dfrac{x}{pq} \right)$ 的改变量．
+Xem xét cách tính $V_2$．Ta có thể chia $q$ thành các đoạn mà mỗi đoạn có $\pi\left(\dfrac{x}{pq} \right)$ là hằng số，vậy chỉ cần tính độ dài mỗi đoạn và sự thay đổi của $\pi\left(\dfrac{x}{pq} \right)$ từ một đoạn sang đoạn tiếp theo．
 
-更准确的说，我们首先将 $V_2$ 分成两个部分，将 $q\le \min\left(\dfrac x{p^2},y\right)$ 这个复杂的条件简化：
+Chính xác hơn，ta chia $V_2$ thành hai phần，rút gọn điều kiện phức tạp:
 
 $$
 V_2=\sum_{x^{1/4}<p\le \sqrt{x/y}}{\ \sum_{p<q\le y}{\pi\left(\dfrac{x}{pq} \right)}}+\sum_{\sqrt{x/y}<p\le x^{1/3}}{\ \sum_{p<q\le x/p^2}{\pi\left(\dfrac{x}{pq} \right)}}
 $$
 
-接着我们把这个式子改写为：
+Tiếp theo ta viết lại:
 
 $$
 V_2=W_1+W_2+W_3+W_4+W_5
 $$
 
-其中：
+Trong đó:
 
 $$
 W_1=\sum_{x^{1/4}<p\le x/y^2}{\ \sum_{p<q\le y}{\pi\left(\dfrac{x}{pq} \right)}}
@@ -310,108 +310,108 @@ $$
 W_5=\sum_{\sqrt{x/y}<p\le x^{1/3}}{\ \sum_{\sqrt{x/p}<q\le x/p^2}{\pi\left(\dfrac{x}{pq} \right)}}
 $$
 
-#### 计算 W₁ 与 W₂
+#### Tính $W_1$ và $W_2$
 
-计算这两个值需要计算满足 $y<\dfrac{x}{pq}<x^{1/2}$ 的 $\pi\left(\dfrac{x}{pq} \right)$ 的值．可以在区间 $[1,\sqrt x]$ 分块筛出．在每个块中我们对于所有满足条件的 $(p,q)$ 都累加 $\pi\left(\dfrac x{pq}\right)$．
+Tính hai giá trị này cần tính các giá trị $\pi\left(\dfrac{x}{pq} \right)$ thỏa mãn $y<\dfrac{x}{pq}<x^{1/2}$．Có thể sàng trong khoảng $[1,\sqrt x]$ phân khối．Trong mỗi khối ta cộng tất cả các $(p,q)$ thỏa mãn điều kiện．
 
-#### 计算 W₃
+#### Tính $W_3$
 
-对于每个 $p$，我们把 $q$ 分成若干个区间，每个区间都满足它们的 $\pi\left(\dfrac x{pq}\right)$ 是定值，每个区间我们都可以 $O(1)$ 计算它的贡献．当我们获得一个新的 $q$ 时，我们用 $\pi(t)$（$t\leq y$）的值表计算 $\pi\left(\dfrac x{pq}\right)$．$y$ 以内的质数表可以给出使得 $\pi(t)<\pi(t+1)=\pi\left(\dfrac x{pq}\right)$ 成立的 $t$．以此类推使得 $\pi\left(\dfrac x{pq}\right)$ 变化的下一个 $q$ 的值．
+Với mỗi $p$ ta chia $q$ thành các đoạn，mỗi đoạn có $\pi\left(\dfrac x{pq}\right)$ là hằng số．Khi ta có một $q$ mới，ta dùng bảng $\pi(t)$ ($t\leq y$) để tính $\pi\left(\dfrac x{pq}\right)$．$y$ trong các số nguyên tố có thể cho ta giá trị $t$ sao cho $\pi(t)<\pi(t+1)=\pi\left(\dfrac x{pq}\right)$．Từ đó ta có thể tìm được giá trị $q$ tiếp theo khiến $\pi\left(\dfrac x{pq}\right)$ thay đổi．
 
-#### 计算 W₄
+#### Tính $W_4$
 
-相比于 $W_3$，$W_4$ 中 $q$ 更小，所以 $\pi\left(\dfrac x{pq}\right)$ 改变得更快．这时候再按照计算 $W_3$ 的方法计算 $W_4$ 就显得没有任何优势．于是我们直接暴力枚举数对 $(p,q)$ 来计算 $W_4$．
+So với $W_3$，$W_4$ có $q$ nhỏ hơn，vậy $\pi\left(\dfrac x{pq}\right)$ thay đổi nhanh hơn．Vậy ta không có lợi thế nào khi dùng phương pháp tính $W_3$ để tính $W_4$．Vậy ta trực tiếp liệt kê các cặp $(p,q)$ để tính $W_4$．
 
-#### 计算 W₅
+#### Tính $W_5$
 
-我们像计算 $W_3$ 那样来计算 $W_5$．
+Ta tính $W_5$ như tính $W_3$．
 
-## 计算 S₃
+## Tính $S_3$
 
-我们使用所有小于 $x^{1/4}$ 的素数一次筛出区间 $\left[1,\dfrac xy\right]$．当我们的筛法进行到 $p_k$ 的时候，我们算出了所有 $m$ 满足没有平方因子并且 $\delta(m)>p_k$ 的 $-\mu(m)\phi\left(\dfrac{x}{mp_k},k-1 \right)$ 值．这个筛法是分块进行的，我们在筛选间隔中维护一个二叉树，以实时维护所有素数筛选到给定素数后的中间结果．这样我们就可以只用 $O(\log x)$ 的时间复杂度求出在筛法进行到某一个值的时候没有被筛到的数的数量．
+Ta dùng tất cả các số nguyên tố nhỏ hơn $x^{1/4}$ để sàng khoảng $\left[1,\dfrac xy\right]$．Khi sàng đến $p_k$ thì ta tính được tất cả các $m$ thỏa mãn không có bình phương nhân tử và $\delta(m)>p_k$．Giá trị $-\mu(m)\phi\left(\dfrac{x}{mp_k},k-1 \right)$．Sàng pháp này là phân khối，ta duy trì một cây nhị phân để thực thời cập nhật kết quả sau mỗi lần sàng．Vậy ta chỉ cần $O(\log x)$ thời gian để tính được số lượng số chưa bị sàng．
 
-## 算法的时空复杂度
+## Độ phức tạp
 
-时空复杂度被如下 $3$ 个过程影响：
+Độ phức tạp bị ảnh hưởng bởi ba quá trình:
 
-1.  计算 $P_2\left(x,a\right)$；
-2.  计算 $W_1,W_2,W_3,W_4,W_5$；
-3.  计算 $S_3$．
+1.  Tính $P_2\left(x,a\right)$；
+2.  Tính $W_1,W_2,W_3,W_4,W_5$；
+3.  Tính $S_3$．
 
-### 计算 P₂(x,y) 的复杂度
+### Tính $P_2\left(x,y\right)$
 
-我们已经知道了这个过程的时间复杂度为 $O\left(\dfrac{x}{y}\log{\log x}\right)$，空间复杂度为 $O\left(y\right)$．
+Ta đã biết độ phức tạp thời gian là $O\left(\dfrac{x}{y}\log{\log x}\right)$，không gian là $O\left(y\right)$．
 
-### 计算 W₁,W₂,W₃,W₄,W₅ 的复杂度
+### Tính $W_1,W_2,W_3,W_4,W_5$
 
-计算 $W_1,W_2$ 所进行的块长度为 $y$ 的筛的时间按复杂度为 $O\left(\sqrt{x}\log{\log x}\right)$，空间复杂度为 $O\left(y\right)$．
+Tính $W_1,W_2$ thực hiện sàng với độ dài khối $y$，độ phức tạp thời gian là $O\left(\sqrt{x}\log{\log x}\right)$，không gian là $O\left(y\right)$．
 
-计算 $W_1$ 所需的时间复杂度为：
+Tính $W_1$ cần:
 
 $$
 \pi\left(\dfrac{x}{y^2} \right)\pi\left(y\right)=O\left(\dfrac{x}{y\log^2 x} \right)
 $$
 
-计算 $W_2$ 的时间复杂度为：
+Tính $W_2$ cần:
 
 $$
 O\left(\sum_{x/y^2<p\le \sqrt{x/y}}{\pi\left(\sqrt{\dfrac xp}\right)} \right)=O\left(\dfrac{x^{3/4}}{y^{1/4}\log^2 x} \right)
 $$
 
-因此，计算 $W_3$ 的时间复杂度为：
+Vậy tính $W_3$ cần:
 
 $$
 O\left(\sum_{x/y^2<p\le \sqrt{x/y}}{\pi\left(\sqrt{\dfrac xp}\right)} \right)=O\left(\dfrac{x^{3/4}}{y^{1/4}\log^2 x} \right)
 $$
 
-计算 $W_4$ 的时间复杂度为：
+Tính $W_4$ cần:
 
 $$
 O\left(\sum_{\sqrt{x/y}<p\le x^{1/3}}{\pi\left(\sqrt{\dfrac xp}\right)} \right)=O\left(\dfrac{x^{2/3}}{\log^2 x} \right)
 $$
 
-计算 $W_5$ 的时间复杂度为：
+Tính $W_5$ cần:
 
 $$
 O\left(\sum_{\sqrt{x/y}<p\le x^{1/3}}{\pi\left(\sqrt{\dfrac xp}\right)} \right)=O\left(\dfrac{x^{2/3}}{\log^2 x} \right)
 $$
 
-### 计算 S₃ 的复杂度
+### Tính $S_3$
 
-对于预处理：由于要快速查询 $\phi(u,b)$ 的值，我们没办法用普通的筛法 $O(1)$ 求出，而是要维护一个数据结构使得每次查询的时间复杂度是 $O(\log x)$，因此时间复杂度为 $O\left(\dfrac{x}{y}\log x\log\log x\right)$．
+Với pre-process：vì cần nhanh chóng truy vấn $\phi(u,b)$，ta không thể dùng sàng thông thường $O(1)$ để tính，mà phải duy trì một cấu trúc dữ liệu để mỗi lần truy vấn có độ phức tạp $O(\log x)$，vậy thời gian là $O\left(\dfrac{x}{y}\log x\log\log x\right)$．
 
-对于求和：对于计算 $S_3$ 和式中的每一项，我们查询上述数据结构，一共 $O\left(\log x\right)$ 次查询．我们还需要计算和式的项数，即二叉树中叶子的个数．所有叶子的形式均为 $\pm\phi\left(\dfrac{x}{mp_b},b-1\right)$，其中 $m\le y,b<\pi(x^{1/4})$．因此，叶子的数目是 $O\left(y\pi\left(x^{1/4}\right)\right)$ 级别的．所以计算 $S_3$ 的总时间复杂度为：
+Với tổng：với mỗi hạng mục trong tổng $S_3$ ta truy vấn cấu trúc dữ liệu một lần，tổng cộng $O\left(\log x\right)$ lần truy vấn．Ta cần tính số lượng hạng mục trong tổng，tức là số lượng lá trong cây nhị phân．Tất cả các lá đều có dạng $\pm\phi\left(\dfrac{x}{mp_b},b-1\right)$，với $m\le y,b<\pi(x^{1/4})$．Vậy số lượng lá là $O\left(y\pi\left(x^{1/4}\right)\right)$ cấp．Vậy tổng thời gian tính $S_3$ là:
 
 $$
 O\left(\dfrac{x}{y}\log x\log\log x+yx^{1/4}\right)
 $$
 
-### 总复杂度
+### Tổng độ phức tạp
 
-这个算法的空间复杂度为 $O\left(y\right)$，时间复杂度为：
+Thuật toán này có không gian phức tạp $O\left(y\right)$，thời gian phức tạp là:
 
 $$
 O\left(\dfrac{x}{y}\log{\log x}+\dfrac{x}{y}\log x\log{\log x}+x^{1/4}y+\dfrac{x^{2/3}}{\log^2{x}} \right)
 $$
 
-我们取 $y=x^{1/3}\log^3{x}\log{\log x}$，就有最优时间复杂度为 $O\left(\dfrac{x^{2/3}}{\log^2 x}\right)$，空间复杂度为 $O\left(x^{1/3}\log^3{x}\log{\log x}\right)$．
+Ta lấy $y=x^{1/3}\log^3{x}\log{\log x}$，vậy thời gian tối ưu là $O\left(\dfrac{x^{2/3}}{\log^2 x}\right)$，không gian là $O\left(x^{1/3}\log^3{x}\log{\log x}\right)$．
 
-## 一些改进
+## Một số cải tiến
 
-我们在这里给出改进方法，以减少算法的常数，提高它的实际效率．
+Ta đưa ra một số cải tiến để giảm hằng số và tăng hiệu suất thực tế．
 
--   在 **终止条件 $2$** 中，我们可以用一个 $z$ 来代替 $y$，其中 $z$ 满足 $z>y$．我们可以证明这样子计算 $S_3$ 的时间复杂度可以优化到：
+-   Trong **Điều kiện kết thúc $2$**，ta có thể dùng một $z$ thay cho $y$，với $z>y$．Ta có thể chứng minh rằng như vậy thời gian tính $S_3$ có thể tối ưu hóa đến:
 
     $$
     O\left(\dfrac{x}{z}\log x\log{\log x}+\dfrac{yx^{1/4}}{\log x}+z^{3/2} \right)
     $$
 
-    这也为通过改变 $z$ 的值来检查计算提供了一个很好的方法．
+    Điều này cũng cho phép kiểm tra tính toán bằng cách thay đổi $z$．
 
--   为了清楚起见，我们在阐述算法的时候选择在 $x^{1/4}$ 处拆分来计算总和 $S$，但实际上我们只需要有 $p\le \dfrac{x}{pq}<p^2$ 就可以计算．我们可以利用这一点，渐近复杂性保持不变．
+-   Để rõ ràng hơn，ta chọn chia ở $x^{1/4}$ để tính tổng $S$，thực tế ta chỉ cần $p\le \dfrac{x}{pq}<p^2$ để tính．Ta có thể dùng điều này để giữ độ phức tạp cận trên．
 
--   用前几个素数 $2,3,5$ 预处理计算可以节省更多的时间．
+-   Dùng các số nguyên tố đầu tiên $2,3,5$ để pre-process có thể tiết kiệm thêm thời gian．
 
-## 参考资料与拓展阅读
+## Tài liệu tham khảo
 
-本文翻译自：[Computing $\pi(x)$: the Meissel, Lehmer, Lagarias, Miller, Odlyzko method](https://dl.acm.org/doi/abs/10.1090/s0025-5718-96-00674-6)
+Bài viết này được dịch từ: [Computing $\pi(x)$: the Meissel, Lehmer, Lagarias, Miller, Odlyzko method](https://dl.acm.org/doi/abs/10.1090/s0025-5718-96-00674-6)

@@ -1,22 +1,22 @@
-C++ 定义了一套完整的只读量定义方法，被 `const` 修饰的变量都是只读量，编译器会在编译期进行冲突检查，避免对只读量的修改，同时可能会执行一些优化．
+C++ định nghĩa một hệ thống hoàn chỉnh để khai báo hằng chỉ-đọc; biến được `const` là chỉ đọc, trình biên dịch sẽ kiểm tra xung đột tại thời điểm biên dịch để tránh sửa đổi, đồng thời có thể tối ưu.
 
-在通常情况下，应该尽可能使用 `const` 修饰变量、参数，提高代码健壮性．
+Thông thường nên dùng `const` cho biến và tham số để tăng độ an toàn và độ rõ ràng của mã.
 
-## `const` 类型限定符
+## Từ khóa loại `const`
 
-### 常量
+### Hằng
 
-const 修饰的变量在初始化后不可改变值
+Biến `const` không thể đổi giá trị sau khi khởi tạo.
 
 ```cpp
-const int a = 0;  // a 的类型为 const int
+const int a = 0;  // a có kiểu const int
 
-// a = 1; // 不能修改常量
+// a = 1; // không thể sửa hằng
 ```
 
-### 常量引用、常量指针
+### Tham chiếu hằng, con trỏ hằng
 
-常量引用和常量指针均限制了对指向的值的修改
+Tham chiếu hằng và con trỏ hằng đều hạn chế việc sửa giá trị được trỏ tới.
 
 ```cpp
 int a = 0;
@@ -25,43 +25,43 @@ const int b = 0;
 int *p1 = &a;
 *p1 = 1;
 const int *p2 = &a;
-// *p2 = 2; // 不能通过常量指针修改变量
-// int *p3 = &b; // 不能用 int* 指向 const int 变量
+// *p2 = 2; // không thể sửa biến thông qua con trỏ hằng
+// int *p3 = &b; // không thể dùng int* trỏ tới biến const int
 const int *p4 = &b;
 
 int &r1 = a;
 r1 = 1;
 const int &r2 = a;
-// r2 = 2; // 不能通过常量引用修改变量
-// int &p3 = b; // 不能用 int& 引用 const int变量
+// r2 = 2; // không thể sửa biến thông qua tham chiếu hằng
+// int &p3 = b; // không thể dùng int& tham chiếu biến const int
 const int &r4 = b;
 ```
 
-另外需要区分开的是常量指针（`const t*`）和指针常量（`t* const`），例如下列声明
+Ngoài ra cần phân biệt con trỏ hằng (`const t*`) và hằng con trỏ (`t* const`), ví dụ:
 
 ```cpp
-int* const p1;  // 指针常量，初始化后指向地址不可改，可更改指向的值
-const int* p2;  // 常量指针，解引用的值不可改，可指向其他 int 变量
-const int* const p3;  // 常量指针常量，值不可改，指向地址不可改
+int* const p1;  // hằng con trỏ: sau khởi tạo không đổi địa chỉ, có thể đổi giá trị trỏ tới
+const int* p2;  // con trỏ hằng: không đổi giá trị khi giải tham chiếu, có thể trỏ tới int khác
+const int* const p3;  // con trỏ hằng kiêm hằng con trỏ: cả giá trị lẫn địa chỉ đều không đổi
 
-// 使用别名能更好提高可读性
+// Dùng alias để tăng độ dễ đọc
 using const_int = const int;
 using ptr_to_const_int = const_int*;
 using const_ptr_to_const_int = const ptr_to_const_int;
 ```
 
-在函数参数里使用 `const` 限定参数类型，可以避免变量被错误地修改，同时增加代码可读性
+Dùng `const` trong tham số hàm giúp tránh sửa nhầm và tăng độ rõ ràng.
 
 ```cpp
 void sum(const std::vector<int> &data, int &total) {
   for (auto iter = data.begin(); iter != data.end(); ++iter)
-    total += *iter;  // iter 是迭代器，解引用后的类型是 const int
+    total += *iter;  // iter là iterator, kiểu sau giải tham chiếu là const int
 }
 ```
 
-## `const` 成员函数
+## Hàm thành viên `const`
 
-类型中 `const` 限定的成员函数，可以用来限制对成员的修改．
+Hàm thành viên có `const` dùng để cấm sửa thành viên.
 
 ```cpp
 #include <iostream>
@@ -74,10 +74,10 @@ struct ConstMember {
   void constFunc1() const { std::cout << "Const Function 1" << std::endl; }
 
   void constFunc2(int ss) const {
-    // func(); // const 成员函数不能调用非 const 成员函数
+    // func(); // hàm const không thể gọi hàm không const
     constFunc1();
 
-    // s = ss; // const 成员函数不能修改成员变量
+    // s = ss; // hàm const không thể sửa biến thành viên
   }
 };
 
@@ -85,33 +85,33 @@ int main() {
   int b = 1;
   ConstMember c{};
   const ConstMember d = c;
-  // d.func(); // 常量不能调用非 const 成员函数
+  // d.func(); // đối tượng const không thể gọi hàm không const
   d.constFunc2(b);
   return 0;
 }
 ```
 
-## 常量表达式 `constexpr`（C++11）
+## Biểu thức hằng `constexpr` (C++11)
 
-常量表达式是指编译时能计算出结果的表达式，`constexpr` 则要求编译器能在编译时求得函数或变量的值．
+Biểu thức hằng là biểu thức có thể tính tại thời điểm biên dịch; `constexpr` yêu cầu trình biên dịch tính được giá trị của hàm hoặc biến tại thời điểm biên dịch.
 
-编译时计算能允许更好的优化，比如将结果硬编码到汇编中，消除运行时计算开销．与 `const` 的带来的优化不同，当 `constexpr` 修饰的变量满足常量表达式的条件，就强制要求编译器在编译时计算出结果而非运行时．
+Tính tại compile-time cho phép tối ưu tốt hơn, ví dụ nhúng trực tiếp kết quả vào mã máy, bỏ chi phí tính runtime. Khác với tối ưu do `const`, khi `constexpr` thỏa điều kiện biểu thức hằng, trình biên dịch **bắt buộc** tính ở compile-time.
 
-???+ note "更直观的理解是把 `const` 理解成「只读」，`constexpr` 理解成「不可变」"
+???+ note "Hiểu trực quan: `const` là “chỉ đọc”, `constexpr` là “bất biến”"
     ```cpp
-    constexpr int a = 10;  // 直接定义常量
+    constexpr int a = 10;  // khai báo hằng trực tiếp
     
     constexpr int FivePlus(int x) { return 5 + x; }
     
     void test(const int x) {
-      std::array<int, x> c1;            // 错误，x在编译时不可知
-      std::array<int, FivePlus(6)> c2;  // 可行，FivePlus编译时可知
+      std::array<int, x> c1;            // lỗi, x không biết tại compile-time
+      std::array<int, FivePlus(6)> c2;  // được, FivePlus biết tại compile-time
     }
     ```
 
-以下例子很好说明了 `const` 和 `constexpr` 的区别，代码使用递归实现计算斐波那契数列，并用控制流输出．
+Ví dụ sau minh họa rõ sự khác biệt giữa `const` và `constexpr`, dùng đệ quy tính Fibonacci và in ra:
 
-???+ note "实现"
+???+ note "Cài đặt"
     ```cpp
     #include <iostream>
     
@@ -133,7 +133,7 @@ int main() {
     }
     ```
 
-???+ note "编译后的可能的汇编代码（使用 Compiler Explorer，Clang 19）"
+???+ note "Ví dụ mã máy sau biên dịch (Compiler Explorer, Clang 19)"
     ```nasm
     fib1(unsigned int):
             push    r14
@@ -164,11 +164,11 @@ int main() {
             push    rbx
             push    rax
             mov     edi, 9
-            call    fib1(unsigned int) # `v1` 的初始化进行了函数调用
+            call    fib1(unsigned int) # khởi tạo `v1` có gọi hàm
             mov     ebx, eax
             mov     r14, qword ptr [rip + std::__1::cout@GOTPCREL]
             mov     rdi, r14
-            mov     esi, 55 # `v0` 被最终计算结果替代
+            mov     esi, 55 # `v0` được thay bằng kết quả tính sẵn
             call    std::__1::basic_ostream<char, std::__1::char_traits<char>>::operator<<(unsigned int)@PLT
             mov     byte ptr [rsp + 7], 32
             lea     rsi, [rsp + 7]
@@ -176,7 +176,7 @@ int main() {
             mov     rdi, r14
             call    std::__1::basic_ostream<char, std::__1::char_traits<char>>& std::__1::__put_character_sequence[abi:ne200000]<char, std::__1::char_traits<char>>(std::__1::basic_ostream<char, std::__1::char_traits<char>>&, char const*, unsigned long)
             mov     rdi, r14
-            mov     esi, ebx # 读取了变量值
+            mov     esi, ebx # đọc giá trị biến
             call    std::__1::basic_ostream<char, std::__1::char_traits<char>>::operator<<(unsigned int)@PLT
             xor     eax, eax
             add     rsp, 8
@@ -185,17 +185,17 @@ int main() {
             ret
     ```
 
-`constexpr` 修饰的 `fib0` 函数在唯一的调用处用了常量参数，使得整个函数仅在编译期运行．由于函数没有运行时执行，编译器也就判断不需要生成汇编代码．
+Hàm `fib0` được gọi với tham số hằng, nên toàn bộ chạy ở compile-time. Do không chạy ở runtime, trình biên dịch có thể bỏ phát sinh mã máy của hàm.
 
-在同时注意到汇编中，`v0` 没有初始化代码，在调用 `cout` 输出 `v0` 的代码中，`v0` 已被最终结算结果替代，说明变量值已在编译时求出，优化掉了运行时运算．
-而 `v1` 的初始化还是普通的 `fib1` 递归调用．
+Đồng thời, `v0` không có mã khởi tạo; khi in ra, `v0` đã được thay bằng kết quả cuối cùng, cho thấy giá trị đã được tính tại compile-time.
+Còn `v1` vẫn là lời gọi đệ quy thông thường.
 
-所以 `constexpr` 可以用来替换宏定义的常量，规避 [宏定义的风险](./basic.md#define-命令)．
+Vì vậy `constexpr` có thể dùng thay cho macro hằng, tránh [rủi ro của macro](./basic.md#define-命令).
 
-算法题中可以使用 `constexpr` 存储数据规模较小的变量，以消除对应的运行时计算开销．尤为常见在「[打表](../contest/dictionary.md)」技巧中，使用 `constexpr` 修饰的数组等容器存储答案．
+Trong bài toán thuật toán, có thể dùng `constexpr` để lưu biến có kích thước nhỏ, giúp loại bỏ chi phí tính toán runtime. Đặc biệt thường gặp trong kỹ thuật "[đánh bảng](../contest/dictionary.md)" khi dùng `constexpr` cho mảng/lưu đáp án.
 
-???+ note "编译时计算量过大会导致编译错误"
-    编译器会限制编译时计算的开销，如果计算量过大会导致无法通过编译，应该考虑使用 `const`．
+???+ note "Tính toán compile-time quá lớn sẽ gây lỗi biên dịch"
+    Trình biên dịch giới hạn chi phí tính compile-time; nếu quá lớn sẽ không biên dịch được, khi đó nên dùng `const`.
     
     ```cpp
     #include <iostream>
@@ -214,7 +214,7 @@ int main() {
     }
     ```
 
-???+ note "使用 constexpr 时 Clang 给出的编译错误"
+???+ note "Lỗi biên dịch của Clang khi dùng constexpr"
     ```text
     <source>:10:20: error: constexpr variable 'v' must be initialized by a constant expression
         10 |     constexpr auto v = fib(32);
@@ -228,7 +228,7 @@ int main() {
     <source>:6:25: note: in call to ...
     ```
 
-## 参考资料
+## Tài liệu tham khảo
 
 -   [C++ 关键字——const](https://zh.cppreference.com/w/cpp/keyword/const)
 -   [C++ 关键字——constexpr](https://zh.cppreference.com/w/cpp/keyword/constexpr)

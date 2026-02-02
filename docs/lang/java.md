@@ -1,106 +1,106 @@
-## 关于 Java
+## Về Java
 
-Java 是一种广泛使用的计算机编程语言，拥有 **跨平台**、**面向对象**、**泛型编程** 的特性，广泛应用于企业级 Web 应用开发和移动应用开发．
+Java là một ngôn ngữ lập trình được sử dụng rộng rãi, có các đặc tính **đa nền tảng**, **hướng đối tượng**, **lập trình generic**, được ứng dụng rộng rãi trong phát triển Web doanh nghiệp và ứng dụng di động.
 
-## 环境安装
+## Cài đặt môi trường
 
-参见 [JDK](../tools/compiler.md#jdk)．
+Tham khảo [JDK](../tools/compiler.md#jdk).
 
-## 基本语法
+## Cú pháp cơ bản
 
-### 主函数
+### Hàm main
 
-Java 类似 C/C++ 语言，需要一个函数（在面向对象中，这被称为方法）作为程序执行的入口点．
+Java tương tự C/C++, cần một hàm (trong lập trình hướng đối tượng gọi là phương thức) làm điểm vào thực thi của chương trình.
 
-Java 的主函数的格式是固定的，形如：
+Định dạng hàm main của Java là cố định, dạng:
 
 ```java
 class Test {
     public static void main(String[] args) {
-        // 程序的代码
+        // Mã của chương trình
     }
 }
 ```
 
-一个打包的 Java 程序（名称一般是 `*.jar`）中可以有很多个类似的函数，但是当运行这个程序的时候，只有其中一个函数会被运行，这是定义在 `Jar` 的 `Manifest` 文件中的，在 OI 比赛中一般用不到关于它的知识．
+Một chương trình Java đã đóng gói (thường có tên `*.jar`) có thể có nhiều hàm như vậy, nhưng khi chạy chương trình, chỉ một hàm được chạy — hàm này được khai báo trong tệp `Manifest` của `Jar`. Trong các kỳ thi OI, thường không cần kiến thức này.
 
-### 注释
+### Chú thích
 
-和 C/C++ 一样，Java 使用 `//` 和 `/* */` 分别注释单行和多行．
+Giống C/C++, Java dùng `//` và `/* */` để chú thích một dòng và nhiều dòng.
 
-### 基本数据类型
+### Kiểu dữ liệu cơ bản
 
-|   类型名   |   意义  |
+|   Tên kiểu   |   Ý nghĩa  |
 | :-----: | :---: |
-| boolean |  布尔类型 |
-|   byte  |  字节类型 |
-|   char  |  字符型  |
-|  double | 双精度浮点 |
-|  float  | 单精度浮点 |
-|   int   |   整型  |
-|   long  |  长整型  |
-|  short  |  短整型  |
-|   null  |   空   |
+| boolean |  Kiểu boolean |
+|   byte  |  Kiểu byte |
+|   char  |  Kiểu ký tự  |
+|  double | Số thực dấu chấm động double |
+|  float  | Số thực dấu chấm động float |
+|   int   |   Số nguyên  |
+|   long  |  Số nguyên dài |
+|  short  |  Số nguyên ngắn |
+|   null  |   Rỗng   |
 
-### 声明变量
+### Khai báo biến
 
 ```java
-int a = 12; // 设置 a 为整数类型,并给 a 赋值为 12
-String str = "Hello, OI-wiki"; // 声明字符串变量 str
+int a = 12; // Đặt a là kiểu int, và gán giá trị 12
+String str = "Hello, OI-wiki"; // Khai báo biến chuỗi str
 char ch = 'W';
 double PI = 3.1415926;
 ```
 
-### final 关键字
+### Từ khóa final
 
-`final` 含义是这是最终的、不可更改的结果，被 `final` 修饰的变量只能被赋值一次，赋值后不再改变．
+`final` mang ý nghĩa là kết quả cuối cùng, không thể thay đổi; biến được `final` chỉ có thể gán một lần, sau đó không đổi.
 
 ```java
 final double PI = 3.1415926;
 ```
 
-### 数组
+### Mảng
 
 ```java
-// 有十个元素的整数类型数组
-// 其语法格式为 数据类型[] 变量名 = new 数据类型[数组大小]
+// Mảng số nguyên có mười phần tử
+// Cú pháp: kiểu_dữ_liệu[] tên_biến = new kiểu_dữ_liệu[kích_thước_mảng]
 int[] ary = new int[10];
 ```
 
-### 字符串
+### Chuỗi
 
--   字符串是 Java 一个内置的类．
+-   Chuỗi là một lớp (class) có sẵn trong Java.
 
 ```java
-// 最为简单的构造一个字符串变量的方法如下
+// Cách đơn giản nhất để tạo biến chuỗi
 String a = "Hello";
 
-// 还可以使用字符数组构造一个字符串变量
+// Cũng có thể dùng mảng ký tự để tạo chuỗi
 char[] stringArray = { 'H', 'e', 'l', 'l', 'o' };
 String s = new String(stringArray);
 ```
 
-### 包和导入包
+### Gói và nhập gói
 
-Java 中的类（`Class`）都被放在一个个包（`package`）里面．在一个包里面不允许有同名的类．在类的第一行通常要说明这个类是属于哪个包的．例如：
+Các lớp (Class) trong Java đều nằm trong các gói (package). Trong một gói không cho phép có hai lớp trùng tên. Dòng đầu tiên của lớp thường khai báo lớp thuộc gói nào, ví dụ:
 
 ```java
 package org.oi-wiki.tutorial;
 ```
 
-包的命名规范一般是：`项目所有者的顶级域.项目所有者的二级域.项目名称`．
+Quy ước đặt tên gói thường là: `miền_cấp_1_của_chủ_dự_án.miền_cấp_2_của_chủ_dự_án.tên_dự_án`.
 
-通过 `import` 关键字来导入不在本类所属的包下面的类．例如下面要用到的 `Scanner`：
+Dùng từ khóa `import` để nhập các lớp không cùng gói với lớp hiện tại, ví dụ `Scanner`:
 
 ```java
 import java.util.Scanner;
 ```
 
-如果想要导入某包下面所有的类，只需要把这个语句最后的分号前的类名换成 `*`．
+Nếu muốn nhập tất cả các lớp trong một gói, chỉ cần thay tên lớp cuối bằng `*` trước dấu chấm phẩy.
 
-### 输入
+### Nhập
 
-可以通过 `Scanner` 类来处理命令行输入．
+Có thể dùng lớp `Scanner` để xử lý nhập từ dòng lệnh.
 
 ```java
 package org.oiwiki.tutorial;
@@ -109,7 +109,7 @@ import java.util.Scanner;
 
 class Test {
     public static void main(String[] args) {
-        Scanner scan = new Scanner(System.in); // System.in 是输入流
+        Scanner scan = new Scanner(System.in); // System.in là luồng nhập
         int a = scan.nextInt();
         double b = scan.nextDouble();
         String c = scan.nextLine();
@@ -117,16 +117,16 @@ class Test {
 }
 ```
 
-### 输出
+### Xuất
 
-可以对变量进行格式化输出．
+Có thể định dạng khi in các biến.
 
-|  符号  |   意义  |
+|  Ký hiệu  |   Ý nghĩa  |
 | :--: | :---: |
-| `%f` |  浮点类型 |
-| `%s` | 字符串类型 |
-| `%d` |  整数类型 |
-| `%c` |  字符类型 |
+| `%f` |  Kiểu số thực |
+| `%s` | Kiểu chuỗi |
+| `%d` |  Kiểu số nguyên |
+| `%c` |  Kiểu ký tự |
 
 ```java
 class Test {
@@ -143,19 +143,19 @@ class Test {
 }
 ```
 
-### 控制语句
+### Câu lệnh điều khiển
 
-Java 的流程控制语句与 C++ 是基本相同的．
+Cấu trúc điều khiển luồng trong Java gần như tương tự C++.
 
-#### 选择
+#### Rẽ nhánh
 
 -   if
 
 ```java
 class Test {
     public static void main(String[] args) {
-        if ( /* 判断条件 */ ){
-            // 条件成立时执行这里面的代码
+        if ( /* Điều kiện */ ){
+            // Thực thi khi điều kiện đúng
         }
     }
 }
@@ -166,10 +166,10 @@ class Test {
 ```java
 class Test {
     public static void main(String[] args) {
-        if ( /* 判断条件 */ ) {
-            // 条件成立时执行这里面的代码
+        if ( /* Điều kiện */ ) {
+            // Thực thi khi điều kiện đúng
         } else {
-            // 条件不成立时执行这里面的代码
+            // Thực thi khi điều kiện sai
         }
     }
 }
@@ -180,12 +180,12 @@ class Test {
 ```java
 class Test {
     public static void main(String[] args) {
-        if ( /* 判断条件 */ ) {
-            //判断条件成立执行这里面的代码
-        } else if ( /* 判断条件2 */ ) {
-            // 判断条件2成立执行这里面的代码
+        if ( /* Điều kiện */ ) {
+            // Thực thi khi điều kiện 1 đúng
+        } else if ( /* Điều kiện 2 */ ) {
+            // Thực thi khi điều kiện 2 đúng
         } else {
-          // 上述条件都不成立执行这里面的代码
+          // Thực thi khi các điều kiện đều sai
         }
     }
 }
@@ -196,43 +196,43 @@ class Test {
 ```java
 class Test {
     public static void main(String[] args) {
-        switch ( /* 表达式 */ ){
-          case /* 值 1 */:
-              // 当表达式取得的值符合值 1 执行此段代码
-              break; // 如果不加上 break 语句,会让程序按顺序往下执行直到 break
-          case /* 值 2 */:
-              // 当表达式取得的值符合值 2 执行此段代码
+        switch ( /* Biểu thức */ ){
+          case /* Giá trị 1 */:
+              // Khi biểu thức có giá trị phù hợp giá trị 1 thì chạy đoạn này
+              break; // Nếu không có break, chương trình sẽ chạy tiếp các case phía dưới
+          case /* Giá trị 2 */:
+              // Khi biểu thức có giá trị phù hợp giá trị 2 thì chạy đoạn này
               break;
           default:
-              // 当表达式不符合上面列举的值的时候执行这里面的代码
+              // Khi biểu thức không khớp các giá trị đã liệt kê thì chạy đoạn này
         }
     }
 }
 ```
 
-#### 循环
+#### Vòng lặp
 
 -   for
 
-`for` 关键字有两种使用方法，其中第一种是普通的 `for` 循环，形式如下：
+Từ khóa `for` có hai cách dùng. Cách thứ nhất là vòng lặp `for` thông thường:
 
 ```java
 class Test {
     public static void main(String[] args) {
-        for ( /* 初始化 */; /* 循环的判断条件 */; /* 每次循环后执行的步骤 */ ) {
-            // 当循环的条件成立执行循环体内代码
+        for ( /* Khởi tạo */; /* Điều kiện lặp */; /* Bước sau mỗi vòng */ ) {
+            // Khi điều kiện đúng thì thực thi vòng lặp
         }
     }
 }
 ```
 
-第二种是类似 C++ 的 `foreach` 使用方法，用于循环数组或者集合中的数据，相当于把上一种方式中的循环变量隐藏起来了，形式如下：
+Cách thứ hai là kiểu `foreach` như C++, dùng để lặp qua mảng hoặc tập hợp, tương đương việc ẩn biến lặp ở cách trên:
 
 ```java
 class Test {
     public static void main(String[] args) {
-        for ( /* 元素类型X */ /* 元素名Y */ : /* 集合Z */ ) {
-            // 这个语句块的每一次循环时，元素Y分别是集合Z中的一个元素．
+        for ( /* Kiểu phần tử X */ /* Tên phần tử Y */ : /* Tập hợp Z */ ) {
+            // Mỗi vòng lặp, Y là một phần tử trong Z.
         }
     }
 }
@@ -243,8 +243,8 @@ class Test {
 ```java
 class Test {
     public static void main(String[] args) {
-        while ( /* 判定条件 */ ) {
-            // 条件成立时执行循环体内代码
+        while ( /* Điều kiện */ ) {
+            // Khi điều kiện đúng thì thực thi
         }
     }
 }
@@ -256,19 +256,19 @@ class Test {
 class Test {
     public static void main(String[] args) {
         do {
-          // 需要执行的代码
-        } while ( /* 循环判断条件 */ );
+          // Mã cần thực thi
+        } while ( /* Điều kiện lặp */ );
     }
 }
 ```
 
-## 注意事项
+## Lưu ý
 
-### 类名与文件名一致
+### Tên lớp trùng tên tệp
 
-创建  Java 源程序需要类名和文件名一致才能编译通过，否则编译器会提示找不到类．通常该文件名会在具体 OJ 中指定．
+Khi tạo chương trình Java, cần tên lớp và tên tệp trùng nhau mới biên dịch được, nếu không trình biên dịch sẽ báo không tìm thấy lớp. Thông thường tên tệp được OJ chỉ định.
 
-例：
+Ví dụ:
 
 `Add.java`
 
@@ -280,4 +280,4 @@ class Add {
 }
 ```
 
-在该文件中需使用 `Add` 为类名方可编译通过．
+Trong tệp này phải dùng `Add` làm tên lớp mới biên dịch được.

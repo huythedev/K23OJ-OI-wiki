@@ -1,10 +1,10 @@
-贝尔数 $B_n$ 以埃里克·坦普尔·贝尔命名，是组合数学中的一组整数数列，开首是（[OEIS A000110](https://oeis.org/A000110)）：
+Số Bell $B_n$ được đặt theo tên Eric Temple Bell, là một dãy số nguyên trong tổ hợp, mở đầu như sau ([OEIS A000110](https://oeis.org/A000110)):
 
 $$
 B_0 = 1,B_1 = 1,B_2=2,B_3=5,B_4=15,B_5=52,B_6=203,\dots
 $$
 
-$B_n$ 是基数为 $n$ 的集合的划分方法的数目．集合 $S$ 的一个划分是定义为 $S$ 的两两不相交的非空子集的族，它们的并是 $S$．例如 $B_3 = 5$ 因为 3 个元素的集合 ${a, b, c}$ 有 5 种不同的划分方法：
+$B_n$ là số cách phân hoạch một tập có lực lượng $n$ phần tử. Một phân hoạch của tập $S$ được định nghĩa là một họ các tập con không rỗng, đôi một rời nhau, hợp lại bằng $S$. Ví dụ $B_3 = 5$ vì tập gồm 3 phần tử ${a, b, c}$ có 5 cách phân hoạch khác nhau:
 
 $$
 \begin{aligned}
@@ -16,46 +16,45 @@ $$
 \end{aligned}
 $$
 
-$B_0$ 是 1 因为空集正好有 1 种划分方法．
+$B_0$ bằng 1 vì tập rỗng có đúng 1 cách phân hoạch.
 
-## 递推公式
+## Công thức truy hồi
 
-贝尔数适合递推公式：
+Số Bell thỏa mãn truy hồi:
 
 $$
 B_{n+1}=\sum_{k=0}^n\binom{n}{k}B_{k}
 $$
 
-证明：
+Chứng minh:
 
-$B_{n+1}$ 是含有 $n+1$ 个元素集合的划分个数，设 $B_n$ 的集合为 $\{b_1,b_2,b_3,\dots,b_n\}$，$B_{n+1}$ 的集合为 $\{b_1,b_2,b_3,\dots,b_n,b_{n+1}\}$，那么可以认为 $B_{n+1}$ 是有 $B_{n}$ 增添了一个 $b_{n+1}$ 而产生的，考虑元素 $b_{n+1}$．
+$B_{n+1}$ là số phân hoạch của tập có $n+1$ phần tử. Gọi tập của $B_n$ là $\{b_1,b_2,b_3,\dots,b_n\}$, tập của $B_{n+1}$ là $\{b_1,b_2,b_3,\dots,b_n,b_{n+1}\}$. Có thể xem $B_{n+1}$ được tạo ra bằng cách thêm $b_{n+1}$ vào các phân hoạch của $B_n$, xét phần tử $b_{n+1}$:
 
--   假如它被单独分到一类，那么还剩下 $n$ 个元素，这种情况下划分数为 $\dbinom{n}{n}B_{n}$;
+-   Nếu nó đứng riêng một lớp, còn lại $n$ phần tử, số cách là $\dbinom{n}{n}B_{n}$;
 
--   假如它和某 1 个元素分到一类，那么还剩下 $n-1$ 个元素，这种情况下划分数为 $\dbinom{n}{n-1}B_{n-1}$；
+-   Nếu nó cùng 1 phần tử khác vào một lớp, còn lại $n-1$ phần tử, số cách là $\dbinom{n}{n-1}B_{n-1}$;
 
--   假如它和某 2 个元素分到一类，那么还剩下 $n-2$ 个元素，这种情况下划分数为 $\dbinom{n}{n-2}B_{n-2}$；
+-   Nếu nó cùng 2 phần tử khác vào một lớp, còn lại $n-2$ phần tử, số cách là $\dbinom{n}{n-2}B_{n-2}$;
 
 -   ……
 
-以此类推就得到了上面的公式．
+Suy ra công thức trên.
 
-每个贝尔数都是相应的 [第二类斯特林数](./stirling.md#第二类斯特林数stirling-number) 的和．
-因为第二类斯特林数是把基数为 $n$ 的集合划分为正好 $k$ 个非空集的方法数目．
+Mỗi số Bell là tổng của các [Số Stirling loại hai](./stirling.md#第二类斯特林数stirling-number) tương ứng, vì số Stirling loại hai là số cách phân hoạch tập có $n$ phần tử thành đúng $k$ tập con không rỗng.
 
 $$
 B_{n} = \sum_{k=0}^n{n\brace k}
 $$
 
-## 贝尔三角形
+## Tam giác Bell
 
-用以下方法构造一个三角矩阵（形式类似杨辉三角形）：
+Dựng một tam giác (tương tự tam giác Pascal) như sau:
 
--   $a_{0,0} = 1$；
--   对于 $n \ge 1$，第 $n$ 行首项等于上一行的末项，即 $a_{n,0}=a_{n-1,n-1}$；
--   对于 $m,n \ge 1$，第 $n$ 行第 $m$ 项等于它左边和左上角两个数之和，即 $a_{n,m}=a_{n,m-1}+a_{n-1,m-1}$．
+-   $a_{0,0} = 1$;
+-   Với $n \ge 1$, phần tử đầu dòng $n$ bằng phần tử cuối dòng trước: $a_{n,0}=a_{n-1,n-1}$;
+-   Với $m,n \ge 1$, phần tử thứ $m$ của dòng $n$ bằng tổng phần tử bên trái và chéo trái trên: $a_{n,m}=a_{n,m-1}+a_{n-1,m-1}$.
 
-部分结果如下：
+Một phần kết quả:
 
 $$
 \begin{aligned}
@@ -69,9 +68,9 @@ $$
 \end{aligned}
 $$
 
-每行的首项是贝尔数．可以利用这个三角形来递推求出贝尔数．
+Phần tử đầu mỗi dòng là số Bell. Có thể dùng tam giác này để truy hồi số Bell.
 
-??? note "参考实现"
+??? note "Tham khảo cài đặt"
     === "C++"
         ```cpp
         constexpr int MAXN = 2000 + 5;
@@ -101,9 +100,9 @@ $$
                     bell[i][j] = bell[i - 1][j - 1] + bell[i][j - 1]
         ```
 
-## 指数生成函数
+## Hàm sinh mũ
 
-考虑贝尔数的指数生成函数及其导函数：
+Xét hàm sinh mũ của số Bell và đạo hàm của nó:
 
 $$
 \begin{aligned}
@@ -113,32 +112,32 @@ $$
 \end{aligned}
 $$
 
-根据贝尔数的递推公式可以得到：
+Từ công thức truy hồi của số Bell, ta có:
 
 $$
 \frac{B_{n+1}}{n!} = \sum_{k = 0}^{n}\frac{1}{(n-k)!}\frac{B_{k}}{k!}
 $$
 
-这是一个卷积的式子，因此有：
+Đây là một tích chập, nên:
 
 $$
 \hat B'(x) = \mathrm{e}^x \hat B(x)
 $$
 
-这是一个微分方程，解得：
+Đây là phương trình vi phân, nghiệm:
 
 $$
 \hat B(x) = \exp\left(\mathrm{e}^x + C\right)
 $$
 
-最后当 $x = 0$ 时 $\hat B(x) = 1$，带入后解得 $C = -1$，得到贝尔数指数生成函数的封闭形式：
+Thay $x = 0$ thì $\hat B(x) = 1$, suy ra $C = -1$, được dạng đóng:
 
 $$
 \hat B(x) = \exp\left(\mathrm{e}^x - 1\right)
 $$
 
-预处理出 $\mathrm{e}^x - 1$ 的前 $n$ 项后做一次 [多项式 exp](../poly/elementary-func.md#多项式对数函数--指数函数) 即可得出贝尔数前 $n$ 项，时间复杂度瓶颈在多项式 exp，可做到 $O(n \log n)$ 的时间复杂度．
+Tiền xử lý $\mathrm{e}^x - 1$ đến $n$ hạng rồi thực hiện [exp đa thức](../poly/elementary-func.md#多项式对数函数--指数函数) sẽ thu được $n$ hạng đầu của số Bell, nút thắt ở exp đa thức, đạt $O(n \log n)$.
 
-## 参考文献
+## Tài liệu tham khảo
 
 <https://en.wikipedia.org/wiki/Bell_number>

@@ -1,16 +1,16 @@
-## 引入
+## Giới thiệu
 
-范德蒙德卷积是一种合并组合数的式子，主要应用于组合数学的公式推导．
+Tích chập Vandermonde là một đẳng thức gộp các tổ hợp, chủ yếu dùng trong suy luận công thức tổ hợp.
 
-## 范德蒙德卷积公式
+## Công thức Vandermonde
 
 $$
 \sum_{i=0}^k\binom{n}{i}\binom{m}{k-i}=\binom{n+m}{k}
 $$
 
-### 证明
+### Chứng minh
 
-考虑用二项式定理证明：
+Xét chứng minh bằng nhị thức Newton:
 
 $$
 \begin{aligned}
@@ -21,74 +21,74 @@ $$
 \end{aligned}
 $$
 
-即有：
+Suy ra:
 
 $$
 \binom{n+m}{k}=\sum_{r=0}^k\binom{n}{r}\binom{m}{k-r}
 $$
 
-若考虑其组合意义证明：
+Nếu xét ý nghĩa tổ hợp:
 
-在一个大小为 $n+m$ 的集合中取出 $k$ 个数，可以等于把大小为 $n+m$ 的集合拆成两个集合，大小分别为 $n$ 与 $m$，然后从 $n$ 中取出 $i$ 个数，从 $m$ 中取出 $k-i$ 个数的方案数．由于我们有了对于 $i$ 的枚举，于是只需要考虑一种拆法，因为不同的拆法之间是等价的．
+Trong một tập kích thước $n+m$ chọn $k$ phần tử tương đương với việc chia tập thành hai phần kích thước $n$ và $m$, rồi chọn $i$ phần tử từ phần $n$ và $k-i$ từ phần $m$. Do ta đã liệt kê $i$, chỉ cần xét một cách chia vì các cách chia là tương đương.
 
-## 推论
+## Hệ quả
 
-### 推论 1 及证明
+### Hệ quả 1 và chứng minh
 
 $$
 \sum_{i=-r}^{s}\binom{n}{r+i}\binom{m}{s-i}=\binom{n+m}{r+s}
 $$
 
-证明与原公式证明相似．
+Chứng minh tương tự công thức gốc.
 
-### 推论 2 及证明
+### Hệ quả 2 và chứng minh
 
 $$
 \sum_{i=1}^n\binom{n}{i}\binom{n}{i-1}=\binom{2n}{n-1}
 $$
 
-根据基础的组合数学知识推导，有：
+Từ kiến thức tổ hợp cơ bản:
 
 $$
 \sum_{i=1}^n\binom{n}{i}\binom{n}{i-1}=\sum_{i=0}^{n-1}\binom{n}{i+1}\binom{n}{i}=\sum_{i=0}^{n-1}\binom{n}{n-1-i}\binom{n}{i}=\binom{2n}{n-1}
 $$
 
-### 推论 3 及证明
+### Hệ quả 3 và chứng minh
 
 $$
 \sum_{i=0}^n\binom{n}{i}^2=\binom{2n}{n}
 $$
 
-根据基础的组合数学知识推导，有：
+Từ kiến thức tổ hợp cơ bản:
 
 $$
 \sum_{i=0}^n\binom{n}{i}^2=\sum_{i=0}^n\binom{n}{i}\binom{n}{n-i}=\binom{2n}{n}
 $$
 
-### 推论 4 及证明
+### Hệ quả 4 và chứng minh
 
 $$
 \sum_{i=0}^m\binom{n}{i}\binom{m}{i}=\binom{n+m}{m}
 $$
 
-根据基础的组合数学知识推导，有：
+Từ kiến thức tổ hợp cơ bản:
 
 $$
 \sum_{i=0}^m\binom{n}{i}\binom{m}{i}=\sum_{i=0}^m\binom{n}{i}\binom{m}{m-i}=\binom{n+m}{m}
 $$
 
-其中 $\binom{n+m}{m}$ 是我们较为熟悉的网格图路径计数的方案数．所以我们可以考虑其组合意义的证明．
+Trong đó $\binom{n+m}{m}$ là số đường đi trên lưới quen thuộc. Do đó có thể chứng minh bằng ý nghĩa tổ hợp.
 
-在一张网格图中，从 $(0,0)$ 走到 $(n,m)$ 共走 $n+m$ 步．规定 $(0,0)$ 位于网格图左上角，其中向下走了 $n$ 步，向右走了 $m$ 步，方案数为 $\binom{n+m}{m}$．
+Trên một lưới, từ $(0,0)$ đến $(n,m)$ đi $n+m$ bước. Quy ước $(0,0)$ ở góc trên trái, đi xuống $n$ bước, sang phải $m$ bước, số cách là $\binom{n+m}{m}$.
 
-换个视角，我们将 $n+m$ 步拆成两部分走，先走 $n$ 步，再走 $m$ 步，那么 $n$ 步中若有 $i$ 步向右，则 $m$ 步中就有 $m-i$ 步向右，故得证．
+Góc nhìn khác: tách $n+m$ bước thành hai phần, đi $n$ bước rồi đi $m$ bước. Trong $n$ bước có $i$ bước sang phải thì $m$ bước có $m-i$ bước sang phải, chứng minh xong.
 
-## 习题
+## Bài tập
 
 -   [CF785D Anton and School - 2](https://codeforces.com/problemset/problem/785/D)
 
 -   [洛谷 P2791 幼儿园篮球题](https://www.luogu.com.cn/problem/P2791)
 
-## 参考资料与注释
+## Tài liệu tham khảo và chú thích
 
 1.  [Vandermonde's Convolution Formula](https://www.cut-the-knot.org/arithmetic/algebra/VandermondeConvolution.shtml)

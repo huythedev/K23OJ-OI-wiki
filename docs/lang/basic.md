@@ -1,190 +1,191 @@
-## 代码框架
+## Khung mã
 
-如果你不想深究背后的原理，初学时可以直接将这个「框架」背下来：
+Nếu bạn không muốn đi sâu nguyên lý, lúc mới học có thể thuộc lòng “khung” này:
 
 ```cpp
 #include <cstdio>
 #include <iostream>
 
 int main() {
-  // do something...
+  // làm gì đó...
   return 0;
 }
 ```
 
-??? note "什么是 include？"
-    `#include` 其实是一个预处理命令，意思为将一个文件「放」在这条语句处，被「放」的文件被称为头文件．也就是说，在编译时，编译器会「复制」头文件 `iostream` 中的内容，「粘贴」到 `#include <iostream>` 这条语句处．这样，你就可以使用 `iostream` 中提供的 `std::cin`、`std::cout`、`std::endl` 等对象了．
+??? note "include là gì?"
+    `#include` thực chất là một lệnh tiền xử lý, nghĩa là chèn nội dung của một tệp vào vị trí câu lệnh này. Tệp được “chèn” được gọi là header. Nói cách khác, khi biên dịch, trình biên dịch sẽ “sao chép” nội dung của header `iostream` và “dán” vào vị trí câu lệnh `#include <iostream>`. Nhờ vậy, bạn có thể dùng các đối tượng `std::cin`、`std::cout`、`std::endl` do `iostream` cung cấp.
     
-    如果你学过 C 语言，你会发现目前我们接触的 C++ 中的头文件一般都不带 `.h` 后缀，而那些 C 语言中的头文件 `xx.h` 都变成了 `cxx`，如 `stdio.h` 变成了 `cstdio`．因为 C++ 为了和 C 保持兼容，都直接使用了 C 语言中的头文件，为了区分 C++ 的头文件和 C 的头文件，使用了 `c` 前缀．
+    Nếu bạn học C, sẽ thấy header trong C++ thường không có hậu tố `.h`, còn các header C kiểu `xx.h` sẽ thành `cxx`, ví dụ `stdio.h` thành `cstdio`. Vì C++ tương thích với C nên vẫn dùng các header C, nhưng thêm tiền tố `c` để phân biệt.
     
-    一般来说，应当根据你需要编写的 C++ 程序的需要来确定你要 `#include` 哪些头文件．但如果你 `#include` 了多余的头文件，只会增加编译时间，几乎不会对运行时间造成影响．目前我们只接触到了 `iostream` 和 `cstdio` 两个头文件，如果你只需要 `scanf` 和 `printf`，就可以不用 `#include <iostream>`．
+    Nói chung, hãy `#include` đúng những header mà chương trình cần. Nếu `#include` thừa, chỉ tăng thời gian biên dịch, hầu như không ảnh hưởng thời gian chạy. Hiện ta chỉ dùng `iostream` và `cstdio`; nếu chỉ cần `scanf` và `printf` thì không cần `#include <iostream>`.
     
-    可以 `#include` 自己写的头文件吗？答案是，可以．
+    Có thể `#include` header tự viết không? Có.
     
-    你可以自己写一个头文件，如：`myheader.h`．然后，将其放到和你的代码相同的目录里，再 `#include "myheader.h"` 即可．需要注意的是，自定义的头文件需要使用引号而非尖括号．当然，你也可以使用编译命令 `-I <header_file_path>` 来告诉编译器在哪找头文件，就不需要将头文件放到和代码相同的目录里了．
+    Bạn có thể tự viết một header, ví dụ `myheader.h`, đặt cùng thư mục với code, rồi `#include "myheader.h"`. Lưu ý: header tự viết dùng dấu ngoặc kép, không dùng ngoặc nhọn. Hoặc bạn có thể dùng tùy chọn biên dịch `-I <header_file_path>` để báo cho trình biên dịch nơi tìm header, khi đó không cần đặt cùng thư mục.
 
-??? note "什么是 `main()`？"
-    可以理解为程序运行时就会执行 `main()` 中的代码．
+??? note "main() là gì?"
+    Có thể hiểu khi chương trình chạy, nó sẽ thực thi code trong `main()`.
     
-    实际上，`main` 函数是由系统或外部程序调用的．如，你在命令行中调用了你的程序，也就是调用了你程序中的 `main` 函数（在此之前先完成了全局 [变量](./var.md) 的构造）．
+    Thực tế, hàm `main` do hệ thống hoặc chương trình bên ngoài gọi. Ví dụ bạn gọi chương trình ở dòng lệnh thì tức là gọi `main` (trước đó sẽ hoàn tất khởi tạo [biến](./var.md) toàn cục).
     
-    最后的 `return 0;` 表示程序运行成功．默认情况下，程序结束时返回 0 表示一切正常，否则返回值表示错误代码（在 Windows 下这个错误代码的十六进制可以通过 [Windows Error Codes 网站](https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-erref/) 进行查询）．这个值返回给谁呢？其实就是调用你写的程序的系统或外部程序，它会在你的程序结束时接收到这个返回值．如果不写 `return` 语句的话，程序正常结束默认返回值也是 0．
+    Dòng `return 0;` cuối biểu thị chương trình chạy thành công. Mặc định, kết thúc với 0 là bình thường, giá trị khác 0 là mã lỗi (trên Windows có thể tra mã lỗi ở [Windows Error Codes](https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-erref/)). Giá trị này trả về cho hệ thống hoặc chương trình gọi. Nếu không viết `return`, mặc định vẫn trả 0.
     
-    在 C 或 C++ 中，程序的返回值不为 0 会导致运行时错误（RE）．
+    Trong C/C++, chương trình trả về giá trị khác 0 sẽ gây lỗi chạy (RE).
 
-## 注释
+## Chú thích
 
-在 C++ 代码中，注释有两种写法：
+Trong C++, có hai kiểu chú thích:
 
-1.  行内注释
+1.  Chú thích dòng
 
-    以 `//` 开头，行内位于其后的内容全部为注释．
+    Bắt đầu bằng `//`, toàn bộ phần sau trên cùng dòng là chú thích.
 
-2.  注释块
+2.  Khối chú thích
 
-    以 `/*` 开头，`*/` 结尾，中间的内容全部为注释，可以跨行．
+    Bắt đầu `/*`, kết thúc `*/`, phần giữa là chú thích, có thể nhiều dòng.
 
-注释对程序运行没有影响，可以用来解释程序的意思，还可以在让某段代码不执行（但是依然保留在源文件里）．
+Chú thích không ảnh hưởng chạy, dùng để giải thích ý nghĩa chương trình, hoặc vô hiệu hóa một đoạn code (nhưng vẫn giữ trong file nguồn).
 
-在工程开发中，注释可以便于日后维护、他人阅读．
+Trong phát triển dự án, chú thích giúp bảo trì và đọc hiểu.
 
-在 OI 中，很少有人写许多注释，但注释可以便于在写代码的时候理清思路，或者便于日后复习．而且，如果要写题解、教程的话，适量的注释可以便于读者阅读，理解代码的意图．希望各位同学能养成写注释的好习惯．
+Trong OI, ít người viết nhiều chú thích, nhưng chú thích giúp làm rõ ý tưởng khi viết, và giúp ôn tập. Khi viết bài giải, tutorial, chú thích vừa đủ sẽ giúp người đọc hiểu ý đồ code. Hy vọng mọi người có thói quen viết chú thích tốt.
 
-## 输入与输出
+## Nhập và xuất
 
-### `cin` 与 `cout`
+### `cin` và `cout`
 
 ```cpp
 #include <iostream>
 
 int main() {
-  int x, y;                          // 声明变量
-  std::cin >> x >> y;                // 读入 x 和 y
-  std::cout << y << std::endl << x;  // 输出 y，换行，再输出 x
-  return 0;                          // 结束主函数
+  int x, y;                          // khai báo biến
+  std::cin >> x >> y;                // đọc x và y
+  std::cout << y << std::endl << x;  // in y, xuống dòng, rồi in x
+  return 0;                          // kết thúc hàm main
 }
 ```
 
-???+ note "什么是变量？"
-    可以参考 [变量](./var.md) 页面．
+???+ note "Biến là gì?"
+    Có thể tham khảo trang [biến](./var.md).
 
-???+ note "什么是 `std`？"
-    std 是 C++ 标准库所使用的 **命名空间**．使用命名空间是为了避免重名．
+???+ note "std là gì?"
+    std là **không gian tên** (namespace) của thư viện chuẩn C++.
     
-    关于命名空间的详细知识，可以参考 [命名空间](./namespace.md) 页面．
+    Về namespace xem thêm tại [namespace](./namespace.md).
 
-### `scanf` 与 `printf`
+### `scanf` và `printf`
 
-`scanf` 与 `printf` 其实是 C 语言提供的函数．大多数情况下，它们的速度比 `cin` 和 `cout` 更快，并且能够方便地控制输入输出格式．
+`scanf` và `printf` là hàm của C. Thường chúng nhanh hơn `cin`/`cout`, và dễ kiểm soát định dạng.
 
-???+ note "读入输出优化"
-    `cin`/`cout` 和 `scanf`/`prinf` 的具体差别和读入输出优化，请参考 [读入、输出优化](../contest/io.md) 页面．
+???+ note "Tối ưu nhập xuất"
+    Khác biệt `cin`/`cout` và `scanf`/`printf` cũng như tối ưu I/O, xem trang [tối ưu nhập xuất](../contest/io.md).
 
 ```cpp
 #include <cstdio>
 
 int main() {
   int x, y;
-  scanf("%d%d", &x, &y);   // 读入 x 和 y
-  printf("%d\n%d", y, x);  // 输出 y，换行，再输出 x
+  scanf("%d%d", &x, &y);   // đọc x và y
+  printf("%d\n%d", y, x);  // in y, xuống dòng, rồi in x
   return 0;
 }
 ```
 
-其中，`%d` 表示读入/输出的变量是一个有符号整型（`int` 型）的变量．
+Trong đó `%d` biểu thị biến kiểu số nguyên có dấu (`int`).
 
-类似地：
+Tương tự:
 
-1.  `%s` 表示字符串．
-2.  `%c` 表示字符．
-3.  `%lf` 表示双精度浮点数 (`double`)．
-4.  `%lld` 表示长整型 (`long long`)．根据系统不同，也可能是 `%I64d`．
-5.  `%u` 表示无符号整型  (`unsigned int`)．
-6.  `%llu` 表示无符号长整型 (`unsigned long long`)，也可能是 `%I64u`．
+1.  `%s` là chuỗi.
+2.  `%c` là ký tự.
+3.  `%lf` là số thực double.
+4.  `%lld` là số nguyên dài (`long long`), tùy hệ có thể là `%I64d`.
+5.  `%u` là số nguyên không dấu (`unsigned int`).
+6.  `%llu` là số nguyên dài không dấu (`unsigned long long`), có thể là `%I64u`.
 
-除了类型标识符以外，还有一些控制格式的方式．许多都不常用，选取两个常用的列举如下：
+Ngoài ký hiệu kiểu, còn các cách điều khiển định dạng. Hai cách phổ biến:
 
-1.  `%1d` 表示长度为 1 的整型．在读入时，即使没有空格也可以逐位读入数字．在输出时，若指定的长度大于数字的位数，就会在数字前用空格填充．若指定的长度小于数字的位数，就没有效果．
-2.  `%.6lf`，用于输出，保留六位小数．
+1.  `%1d` biểu thị độ dài 1. Khi đọc, dù không có khoảng trắng vẫn đọc từng chữ số. Khi in, nếu độ rộng lớn hơn số chữ số thì sẽ đệm khoảng trắng; nhỏ hơn thì không hiệu lực.
+2.  `%.6lf` dùng khi in, giữ 6 chữ số thập phân.
 
-这两种运算符的相应地方都可以填入其他数字，例如 `%.3lf` 表示保留三位小数．
+Hai toán tử này có thể thay bằng số khác, ví dụ `%.3lf` là giữ 3 chữ số.
 
-??? note "「双精度浮点数」，「长整型」是什么"
-    这些表示变量的类型．和上面一样，会留到 [变量](./var.md) 中统一讲解．
+??? note "“Số thực double”, “số nguyên dài” là gì"
+    Đây là kiểu dữ liệu; sẽ nói ở [biến](./var.md).
 
-??? note "为什么 `scanf` 中有 `&` 运算符？"
-    在这里，`&` 实际上是取址运算符，返回的是变量在内存中的地址．而 scanf 接收的参数就是变量的地址．具体可能要在 [指针](./pointer.md) 才能完全清楚地说明，现在只需要记下来就好了．
+??? note "Vì sao `scanf` có toán tử `&`?"
+    Ở đây `&` là toán tử lấy địa chỉ, trả về địa chỉ của biến. `scanf` nhận địa chỉ. Chi tiết xem [con trỏ](./pointer.md), hiện chỉ cần nhớ.
 
-??? note "什么是 `\n`？"
-    `\n` 是一种 **转义字符**，表示换行．
+??? note "`\n` là gì?"
+    `\n` là **ký tự escape**, nghĩa là xuống dòng.
     
-    转义字符用来表示一些无法直接输入的字符，如由于字符串字面量中无法换行而无法直接输入的换行符，由于有特殊含义而无法输入的引号，由于表示转义字符而无法输入的反斜杠．
+    Ký tự escape dùng để biểu diễn ký tự không thể gõ trực tiếp, như xuống dòng trong chuỗi, dấu nháy có ý nghĩa đặc biệt, hoặc dấu gạch chéo ngược.
     
-    常用的转义字符有：
+    Các escape phổ biến:
     
-    1.  `\t` 表示制表符．
+    1.  `\t` là tab.
     
-    2.  `\\` 表示 `\`．
+    2.  `\\` là `\`.
     
-    3.  `\"` 表示 `"`．
+    3.  `\"` là `"`.
     
-    4.  `\0` 表示空字符，用来表示 C 风格字符串的结尾．
+    4.  `\0` là ký tự rỗng, kết thúc chuỗi kiểu C.
     
-    5.  `\r` 表示回车．Linux 中换行符为 `\n`，Windows 中换行符为 `\r\n`．在 OI 中，如果输出需要换行，使用 `\n` 即可．但读入时，如果使用逐字符读入，可能会由于换行符造成一些问题，需要注意．例如，`gets` 将 `\n` 作为字符串结尾，这时候如果换行符是 `\r\n`，`\r` 就会留在字符串结尾．
+    5.  `\r` là carriage return. Trên Linux, xuống dòng là `\n`, Windows là `\r\n`. Trong OI, khi cần xuống dòng dùng `\n` là đủ. Nhưng khi đọc từng ký tự, cần chú ý vì ký tự xuống dòng có thể gây vấn đề. Ví dụ `gets` coi `\n` là kết thúc chuỗi; nếu xuống dòng là `\r\n` thì `\r` sẽ còn ở cuối chuỗi.
     
-    6.  特殊地，`%%` 表示 `%`，只能用在 `printf` 或 `scanf` 中，在其他字符串字面量中只需要简单使用 `%` 就好了．
+    6.  Đặc biệt, `%%` biểu thị ký tự `%`, chỉ dùng trong `printf` hoặc `scanf`. Ở chuỗi khác, chỉ cần `%`.
     
-    ??? note "什么是字面量？"
-        「字面量」是在代码里直接作为一个值的程序段，例如 `3` 就是一个 `int` 字面量，`'c'` 就是一个 char 字面量．我们上面写的程序中的 `"hello world"` 也是一个字符串字面量．
+    ??? note "Literal là gì?"
+        “Literal” là đoạn code trực tiếp biểu diễn một giá trị, ví dụ `3` là literal kiểu `int`, `'c'` là literal kiểu `char`. `"hello world"` cũng là literal chuỗi.
         
-        不加解释、毫无来由的字面量又被称为「魔术数」（magic number），如果代码需要被人阅读的话，这是一种十分不被推荐的行为．
+        Literal vô cớ, không giải thích, còn gọi là “magic number”, không được khuyến khích nếu code cần người đọc.
 
-## 一些扩展内容
+## Một số nội dung mở rộng
 
-### C++ 中的空白字符
+### Ký tự trắng trong C++
 
-在 C++ 中，所有空白字符（空格、制表符、换行），多个或是单个，都被视作是一样的．（当然，引号中视作字符串的一部分的不算．）
+Trong C++, mọi ký tự trắng (dấu cách, tab, xuống dòng) đều được xem như nhau (trừ trong chuỗi).
 
-因此，你可以自由地使用任何代码风格（除了行内注释、字符串字面量与预处理命令必须在单行内），例如：
+Vì vậy bạn có thể dùng bất kỳ phong cách mã nào (trừ chú thích dòng, chuỗi literal và lệnh tiền xử lý phải nằm trên một dòng), ví dụ:
 
 ```cpp
 --8<-- "docs/lang/code/basic/basic_1.cpp:main"
 ```
 
-当然，这么做是不被推荐的．
+Tất nhiên không khuyến khích.
 
-一种也被广泛使用但与 **OI Wiki** 要求的码风不同的代码风格：
+Một phong cách khác phổ biến nhưng không giống yêu cầu của **OI Wiki**:
 
 ```cpp
 --8<-- "docs/lang/code/basic/basic_2.cpp:main"
 ```
 
-### `#define` 命令
+### Lệnh `#define`
 
-`#define` 是一种预处理命令，用于定义宏，本质上是文本替换．例如：
+`#define` là lệnh tiền xử lý để định nghĩa macro, bản chất là thay thế văn bản. Ví dụ:
 
 ```cpp
 #include <iostream>
 #define n 233
 
-// n 不是变量，而是编译器会将代码中所有 n 文本替换为 233，但是作为标识符一部分的
-// n 的就不会被替换，如 fn 不会被替换成 f233，同样，字符串内的也不会被替换
+// n không phải biến, mà trình biên dịch sẽ thay mọi văn bản n thành 233,
+// nhưng nếu n là một phần của định danh thì không bị thay, ví dụ fn không thành f233,
+// tương tự, trong chuỗi cũng không thay.
 
 int main() {
-  std::cout << n;  // 输出 233
+  std::cout << n;  // in 233
   return 0;
 }
 ```
 
-??? note "什么是标识符？"
-    标识符就是可以用作变量名的一组字符．例如，`abcd` 和 `abc1` 都是合法的标识符，而 `1a` 和 `c+b` 都不是合法的标识符．
+??? note "Định danh là gì?"
+    Định danh là chuỗi ký tự dùng làm tên biến. Ví dụ `abcd` và `abc1` hợp lệ, còn `1a` và `c+b` không hợp lệ.
     
-    标识符由英文字母、下划线开头，中间只允许出现英文字母、下划线和数字．值得注意的是，关键字（如 `int`,`for`,`if`）不能用作标识符．
+    Định danh bắt đầu bằng chữ cái hoặc `_`, sau đó chỉ được dùng chữ cái, `_` và chữ số. Lưu ý: từ khóa (`int`,`for`,`if`) không thể làm định danh.
 
-??? note "什么是预处理命令？"
-    预处理命令就是预处理器所接受的命令，用于对代码进行初步的文本变换，比如 文件包含操作 `#include` 和 处理宏 `#define` 等，对 GCC 而言，默认不会保留预处理阶段的输出 `.i` 文件．可以用 `-E` 选项保留输出文件．
+??? note "Lệnh tiền xử lý là gì?"
+    Lệnh tiền xử lý là lệnh mà bộ tiền xử lý nhận để biến đổi văn bản sơ bộ, ví dụ `#include` và `#define`. Với GCC, mặc định không giữ output giai đoạn tiền xử lý `.i`; có thể dùng `-E`.
 
-宏可以带参数，带参数的宏可以像函数一样使用：
+Macro có thể có tham số, dùng như hàm:
 
 ```cpp
 #include <iostream>
@@ -192,45 +193,45 @@ int main() {
 #define square(x) ((x) * (x))
 
 int main() {
-  std::cout << sum(1, 2) << ' ' << 2 * sum(3, 5) << std::endl;  // 输出 3 16
+  std::cout << sum(1, 2) << ' ' << 2 * sum(3, 5) << std::endl;  // in 3 16
 }
 ```
 
-但是带参数的宏和函数有区别．因为宏是文本替换，所以会引发许多问题．如：
+Nhưng macro có tham số khác hàm, vì là thay thế văn bản nên gây lỗi. Ví dụ:
 
 ```cpp
 #include <iostream>
 #define sum(x, y) x + y
-// 这里应当为 #define sum(x, y) ((x) + (y))
+// nên viết: #define sum(x, y) ((x) + (y))
 #define square(x) ((x) * (x))
 
 int main() {
   std::cout << sum(1, 2) << ' ' << 2 * sum(3, 5) << std::endl;
-  // 输出为 3 11，因为 #define 是文本替换，后面的语句被替换为了 2 * 3 + 5
+  // in 3 11, vì #define chỉ thay văn bản, câu lệnh thành 2 * 3 + 5
   int i = 1;
   std::cout << square(++i) << ' ' << i;
-  // 输出未定义，因为 ++i 被执行了两遍
-  // 而同一个语句中多次修改同一个变量是未定义行为（有例外）
+  // kết quả không xác định vì ++i bị thực hiện hai lần
+  // và trong cùng một biểu thức, sửa cùng biến nhiều lần là undefined (có ngoại lệ)
 }
 ```
 
-使用 `#define` 是有风险的（由于 `#define` 作用域是整个程序，因此可能导致文本被意外地替换，需要使用 `#undef` 及时取消定义），因此应谨慎使用．较为推荐的做法是：使用 `const` 限定符声明常量，使用函数代替宏．
+Dùng `#define` có rủi ro (phạm vi toàn chương trình, dễ thay nhầm, cần `#undef`), nên thận trọng. Khuyến nghị: dùng `const` để khai báo hằng, dùng hàm thay macro.
 
-但是，在 OI 中，`#define` 依然有用武之处（以下两种是不被推荐的用法，会降低代码的规范性）：
+Tuy vậy, trong OI, `#define` vẫn có chỗ dùng (hai cách sau không khuyến khích vì giảm tính chuẩn):
 
-1.  `#define int long long`+`signed main()`．通常用于避免忘记开 long long 导致的错误，或是调试时排除忘开 long long 导致错误的可能性．（也可能导致增大常数甚至 TLE，或者因为爆空间而 MLE）
-2.  `#define For(i, l, r) for (int i = (l); i <= (r); ++i)`、`#define pb push_back`、`#define mid ((l + r) / 2)`，用于减短代码长度．
+1.  `#define int long long` + `signed main()` để tránh quên `long long` khi debug (có thể tăng hằng số thời gian, TLE, hoặc MLE).
+2.  `#define For(i, l, r) for (int i = (l); i <= (r); ++i)`、`#define pb push_back`、`#define mid ((l + r) / 2)` để rút ngắn code.
 
-不过，`#define` 也有优点，比如结合 `#ifdef` 等预处理指令有奇效，比如：
+Ngoài ra, `#define` kết hợp `#ifdef` rất hữu ích, ví dụ:
 
 ```cpp
 #ifdef LINUX
-// code for linux
+// code cho Linux
 #else
-// code for other OS
+// code cho OS khác
 #endif
 ```
 
-可以在编译的时候通过 `-DLINUX` 来控制编译出的代码，而无需修改源文件．这还有一个优点：通过 `-DLINUX` 编译出的可执行文件里并没有其他操作系统的代码，那些代码在预处理的时候就已经被删除了．
+Khi biên dịch có thể dùng `-DLINUX` để điều khiển code mà không cần sửa file. Ưu điểm: file thực thi không chứa code cho OS khác vì đã bị tiền xử lý loại bỏ.
 
-`#define` 还能使用 `#`、`##` 运算符，极大地方便调试．
+`#define` còn hỗ trợ toán tử `#`、`##`, rất tiện cho debug.

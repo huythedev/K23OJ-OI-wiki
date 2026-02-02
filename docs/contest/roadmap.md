@@ -1,235 +1,235 @@
-???+ note "提示"
-    本文章正在编辑讨论中，欢迎补充更进一步的学习路线或在评论区提出你的想法！
+???+ note "Gợi ý"
+    Bài viết này đang trong quá trình biên tập và thảo luận, rất hoan nghênh bổ sung lộ trình học sâu hơn hoặc nêu ý kiến tại phần bình luận!
 
-本文将会介绍算法竞赛的学习路线．
+Bài viết này sẽ giới thiệu lộ trình học lập trình thi đấu.
 
-该学习路线既是新手学习算法竞赛知识的指南，也是一份复习清单．
+Lộ trình này vừa là hướng dẫn cho người mới, vừa là danh sách ôn tập.
 
-## 1 C++ 语言基础
+## 1 Nền tảng ngôn ngữ C++
 
-先从 C++ 语法学起，一步一步来．
+Bắt đầu từ cú pháp C++, đi từng bước một.
 
 ### 1.1 Hello, World!
 
-以一句 `Hello, World!`，开始算法竞赛之旅吧！
+Với câu `Hello, World!`, hãy bắt đầu hành trình lập trình thi đấu!
 
-同时了解一下 C++ 的源程序的大致框架是什么样子的．
+Đồng thời tìm hiểu sơ bộ khung chương trình C++.
 
 -   [Hello, World!](../lang/helloworld.md)
--   [C++ 语法基础](../lang/basic.md)
+-   [Cơ sở cú pháp C++](../lang/basic.md)
 
-### 1.2 变量与运算
+### 1.2 Biến và phép toán
 
-计算机出现的最初目的就是计算．因此我们先学习如何完成一些简单的运算任务吧．
+Mục đích ban đầu của máy tính là tính toán. Vì vậy hãy học cách thực hiện các phép tính đơn giản.
 
--   [变量](../lang/var.md)
--   [运算](../lang/op.md)
+-   [Biến](../lang/var.md)
+-   [Phép toán](../lang/op.md)
 
-### 1.3 流程控制
+### 1.3 Điều khiển luồng
 
-#### 1.3.1 分支结构
+#### 1.3.1 Cấu trúc rẽ nhánh
 
-有的时候，我们需要在不同的条件下，选择执行不同的语句，这时候我们就需要借助分支语句．
+Khi cần lựa chọn câu lệnh theo điều kiện, ta cần các câu lệnh rẽ nhánh.
 
--   [分支](../lang/branch.md)
+-   [Rẽ nhánh](../lang/branch.md)
 
-分支语句包括下面几种：
+Các câu lệnh rẽ nhánh gồm:
 
--   if 语句
--   if-else 语句
--   if-elif-else 语句
--   switch 语句
+-   if
+-   if-else
+-   if-elif-else
+-   switch
 
-#### 1.3.2 循环结构
+#### 1.3.2 Cấu trúc lặp
 
-将若干条语句重复执行多次，就需要用到循环语句．
+Lặp lại một nhóm câu lệnh nhiều lần sẽ dùng vòng lặp.
 
--   [循环](../lang/loop.md)
+-   [Vòng lặp](../lang/loop.md)
 
-循环语句包括下面几种：
+Các vòng lặp gồm:
 
--   for 语句
--   while 语句
--   do-while 语句
+-   for
+-   while
+-   do-while
 
-### 1.4 数组与结构体
+### 1.4 Mảng và cấu trúc
 
-数组用于存储大量相同类型的数据．而结构体则可以将若干变量捆绑起来．
+Mảng dùng để lưu nhiều dữ liệu cùng kiểu. Cấu trúc (struct) có thể gộp nhiều biến.
 
--   [数组](../lang/array.md)
--   [结构体](../lang/struct.md)
+-   [Mảng](../lang/array.md)
+-   [Cấu trúc](../lang/struct.md)
 
-### 1.5 函数与递归
+### 1.5 Hàm và đệ quy
 
-使用函数来让程序变得模块化，降低实现成本．
+Dùng hàm để chương trình có tính mô-đun, giảm chi phí triển khai.
 
-递归则是新手入门的一道坎，「自己调用自己」听起来并不是那么容易理解，不过仔细深究根本，就会发现「自己调用自己」和「自己调用别人」并没有本质差别．
+Đệ quy là “cửa ải” của người mới. “Tự gọi chính mình” nghe khó hiểu, nhưng nếu đi sâu sẽ thấy không khác về bản chất so với “gọi hàm khác”.
 
--   [函数](../lang/func.md)
--   [递归 & 分治](../basic/divide-and-conquer.md)
+-   [Hàm](../lang/func.md)
+-   [Đệ quy & chia để trị](../basic/divide-and-conquer.md)
 
-## 2 CSP-J 入门级
+## 2 CSP-J Mức nhập môn
 
-### 2.1 枚举与模拟
+### 2.1 Liệt kê và mô phỏng
 
-从现在开始，你已经会使用 C++ 语言完成一些简单的任务了，但是这远远不够．
+Từ đây bạn đã có thể dùng C++ cho các tác vụ đơn giản, nhưng vẫn chưa đủ.
 
-为了做对一些简单的题目，你需要学会通过枚举或模拟脑海中的逻辑，来实现代码．这看起来并不是很高效，但有的时候很管用．
+Để giải các bài dễ, bạn cần biết liệt kê hoặc mô phỏng logic trong đầu để hiện thực hóa. Dù không tối ưu, cách này đôi khi rất hiệu quả.
 
--   [枚举](../basic/enumerate.md)
--   [模拟](../basic/simulate.md)
+-   [Liệt kê](../basic/enumerate.md)
+-   [Mô phỏng](../basic/simulate.md)
 
-### 2.2 递归与分治
+### 2.2 Đệ quy và chia để trị
 
-递归是指函数定义中不断调用自己的方法；而分治则是不断将这一个问题分解为若干子问题，求解后合并的操作．
+Đệ quy là khi hàm tự gọi lại chính nó; chia để trị là chia bài toán thành các bài con, giải rồi hợp nhất.
 
--   [递归 & 分治](../basic/divide-and-conquer.md)
+-   [Đệ quy & chia để trị](../basic/divide-and-conquer.md)
 
-### 2.3 字符串
+### 2.3 Chuỗi
 
-在做信息学题目时，经常会碰到的一个数据类型就是字符串，你需要学习一些用于操作字符串的 STL 函数．当然，模拟也是解决字符串问题的好方法．
+Trong bài tin học, kiểu dữ liệu chuỗi rất thường gặp. Bạn cần học các hàm STL thao tác chuỗi; ngoài ra, mô phỏng cũng là cách tốt.
 
--   [字符串基础](../string/basic.md)
--   [STL 函数](../string/lib-func.md)
+-   [Cơ sở chuỗi](../string/basic.md)
+-   [Hàm STL](../string/lib-func.md)
 
-### 2.4 排序
+### 2.4 Sắp xếp
 
-当你获得了一组数据时，如何将他们从无序变成有序也是个很重要的问题．在你没有思路的时候，不妨考虑一下将数组排个序吧．这也是接下来的很多算法的基础．
+Khi có một dãy dữ liệu, làm sao sắp xếp từ vô thứ tự thành có thứ tự là vấn đề quan trọng. Khi bí ý tưởng, hãy thử sắp xếp. Đây cũng là nền tảng của nhiều thuật toán khác.
 
-排序的方法有点多，但理解后记住它们并不难．
+Có nhiều phương pháp sắp xếp, nhưng hiểu rồi thì không khó nhớ.
 
--   [排序简介](../basic/sort-intro.md)
--   [选择排序](../basic/selection-sort.md)
--   [冒泡排序](../basic/bubble-sort.md)
--   [插入排序](../basic/insertion-sort.md)
--   [计数排序](../basic/counting-sort.md)
--   [基数排序](../basic/radix-sort.md)
--   [快速排序](../basic/quick-sort.md)
--   [归并排序](../basic/merge-sort.md)
--   [堆排序](../basic/heap-sort.md)
--   [桶排序](../basic/bucket-sort.md)
--   [排序相关 STL](../basic/stl-sort.md)
+-   [Giới thiệu sắp xếp](../basic/sort-intro.md)
+-   [Sắp xếp chọn](../basic/selection-sort.md)
+-   [Sắp xếp nổi bọt](../basic/bubble-sort.md)
+-   [Sắp xếp chèn](../basic/insertion-sort.md)
+-   [Sắp xếp đếm](../basic/counting-sort.md)
+-   [Sắp xếp cơ số](../basic/radix-sort.md)
+-   [Sắp xếp nhanh](../basic/quick-sort.md)
+-   [Sắp xếp trộn](../basic/merge-sort.md)
+-   [Sắp xếp vun đống](../basic/heap-sort.md)
+-   [Sắp xếp theo xô](../basic/bucket-sort.md)
+-   [STL liên quan đến sắp xếp](../basic/stl-sort.md)
 
-NOI 大纲中入门级只要求学习选择、冒泡、插入排序，共三个排序算法，但是其余的难度也并不大，且初赛中可能涉及，故一并列出．
+Trong đề cương NOI, mức nhập môn chỉ yêu cầu chọn, nổi bọt, chèn (3 thuật toán). Nhưng các phương pháp khác không quá khó và có thể xuất hiện ở vòng sơ khảo, nên liệt kê luôn.
 
-### 2.5 二分与倍增
+### 2.5 Tìm kiếm nhị phân và倍增
 
-二分查找，本质上是运用分治的思想，不断减少查找范围的大小，直至找到答案．但是需要注意，这个查找方式必须应用在有序的数据结构中．
+Tìm kiếm nhị phân là áp dụng tư duy chia để trị để thu hẹp phạm vi đến khi có đáp án. Lưu ý cần dữ liệu có thứ tự.
 
--   [二分](../basic/binary.md)
+-   [Nhị phân](../basic/binary.md)
 
-而倍增则不同，它是不断翻倍，以把线性范畴内的处理转化为对数级，大大优化时间复杂度．（这个知识点需要一点数学基础，暂时跳过也问题不大）
+“倍增” (binary lifting) thì khác: liên tục nhân đôi để biến xử lý tuyến tính thành log, tối ưu độ phức tạp. (Điểm này cần chút nền tảng toán, tạm thời bỏ qua cũng không sao)
 
 -   [倍增](../basic/binary-lifting.md)
 
-### 2.6 搜索
+### 2.6 Tìm kiếm
 
-在入门组，搜索的题目常常会在迷宫类题目中出现，一般会有地图类的数据；此外，搜索也十分常用于高效地枚举构造合法解的情况，亦可用于骗分．
+Ở mức nhập môn, bài tìm kiếm thường gặp trong bài mê cung với dữ liệu dạng bản đồ; ngoài ra còn dùng để liệt kê cấu hình hợp lệ, hoặc “ăn điểm” nhanh.
 
-#### 2.6.1 深度优先搜索（DFS）
+#### 2.6.1 Tìm kiếm theo chiều sâu (DFS)
 
-深度优先搜索指利用递归函数方便地实现暴力枚举的算法，与图论中的 DFS 算法有一定相似之处，但并不完全相同．
+DFS dùng đệ quy để duyệt vét cạn; có điểm giống DFS trong đồ thị nhưng không hoàn toàn trùng.
 
--   [DFS（搜索）](../search/dfs.md)
+-   [DFS (tìm kiếm)](../search/dfs.md)
 
-#### 2.6.2 广度优先搜索（BFS）
+#### 2.6.2 Tìm kiếm theo chiều rộng (BFS)
 
-将每一个状态设计为图中的一个点，可以展开地毯式搜索．
+Mỗi trạng thái xem như một đỉnh trong đồ thị, có thể mở rộng theo kiểu “trải thảm”.
 
--   [BFS（搜索）](../search/bfs.md)
+-   [BFS (tìm kiếm)](../search/bfs.md)
 
-#### 2.6.3 搜索优化
+#### 2.6.3 Tối ưu tìm kiếm
 
-很多题目都可以用 DFS 来解决，而这个算法的复杂度显然是无法通过的．因此，需要一些优化使它跑得更快．这样的优化能够减少不可能成功的尝试，称为「剪枝」．BFS 相关的优化就要更加灵活了，但是基本思路和这里是一样的．
+Nhiều bài có thể giải bằng DFS, nhưng độ phức tạp quá lớn. Do đó cần tối ưu, gọi là “cắt tỉa”. Với BFS cũng tương tự, nhưng linh hoạt hơn.
 
--   [DFS 剪枝优化](../search/opt.md)
+-   [Tối ưu cắt tỉa DFS](../search/opt.md)
 
-### 2.7 数据结构入门
+### 2.7 Nhập môn cấu trúc dữ liệu
 
-#### 2.7.1 线性数据结构
+#### 2.7.1 Cấu trúc dữ liệu tuyến tính
 
-数组，链表，队列，栈，都是线性结构．巧用这些结构可以做出不少方便的事情．
+Mảng, danh sách liên kết, hàng đợi, ngăn xếp đều là tuyến tính. Tận dụng tốt sẽ rất tiện.
 
--   [栈](../ds/stack.md)
--   [队列](../ds/queue.md)
--   [链表](../ds/linked-list.md)
+-   [Ngăn xếp](../ds/stack.md)
+-   [Hàng đợi](../ds/queue.md)
+-   [Danh sách liên kết](../ds/linked-list.md)
 
-#### 2.7.2 复杂数据结构
+#### 2.7.2 Cấu trúc dữ liệu phức tạp
 
--   [树及二叉树](../graph/tree-basic.md)
--   [图的概念](../graph/concept.md)
--   [图的存储](../graph/save.md)
+-   [Cây và cây nhị phân](../graph/tree-basic.md)
+-   [Khái niệm đồ thị](../graph/concept.md)
+-   [Lưu trữ đồ thị](../graph/save.md)
 
-### 2.8 动态规划入门
+### 2.8 Nhập môn quy hoạch động
 
-动态规划（Dynamic Programming, DP）是一种通过把原问题分解为相对简单的子问题的方式求解复杂问题的方法．
+Quy hoạch động (Dynamic Programming, DP) là phương pháp giải bài toán phức tạp bằng cách tách thành các bài con đơn giản.
 
-由于动态规划并不是某种具体的算法，而是一种解决特定问题的方法，因此它会出现在各式各样的数据结构中，与之相关的题目种类也更为繁杂．
+DP không phải một thuật toán cụ thể mà là một phương pháp giải; vì thế nó xuất hiện trong nhiều chủ đề.
 
--   [动态规划简介](../dp/index.md)
+-   [Giới thiệu DP](../dp/index.md)
 
-#### 2.8.1 背包问题
+#### 2.8.1 Bài toán ba lô
 
-即给出一个有限制容量的背包，选择放入若干有容量和价值的物品，求解如何放置能使得价值总和最大．这是阻挡很多 OIer 的第一道坎，从这里开始，算法就有些难以理解．
+Cho ba lô giới hạn dung tích và các vật có trọng lượng, giá trị, chọn sao cho tổng giá trị lớn nhất. Đây là “cửa ải” đầu tiên của nhiều OIer.
 
--   [背包 DP](../dp/knapsack.md)
+-   [DP ba lô](../dp/knapsack.md)
 
-#### 2.8.2 线性动态规划
+#### 2.8.2 DP tuyến tính
 
-在动态规划中，最难的部分之一就是设计状态，需要用到构造相关技巧．当你写出了状态和状态转移方程之后，完成一道动态规划的题目就不难了．
+Khó nhất trong DP là thiết kế trạng thái, cần kỹ thuật xây dựng. Khi đã có trạng thái và công thức chuyển, bài DP thường không quá khó.
 
--   [构造](../basic/construction.md)
--   [动态规划基础](../dp/basic.md)
+-   [Xây dựng](../basic/construction.md)
+-   [DP cơ bản](../dp/basic.md)
 
-记忆化搜索是一种通过记录已经遍历过的状态的信息，从而避免对同一状态重复遍历的搜索实现方式．有的题目也可以使用记忆化搜索来降低思维难度．
+Tìm kiếm có ghi nhớ (memoization) là lưu trạng thái đã duyệt để tránh lặp. Nhiều bài có thể dùng cách này để giảm độ khó tư duy.
 
-因为记忆化搜索确保了每个状态只访问一次，它也是一种常见的动态规划实现方式．
+Vì mỗi trạng thái chỉ duyệt một lần, đây cũng là cách triển khai DP phổ biến.
 
--   [记忆化搜索](../dp/memo.md)
+-   [Tìm kiếm có ghi nhớ](../dp/memo.md)
 
-#### 2.8.3 复杂动态规划
+#### 2.8.3 DP phức tạp
 
-区间类动态规划是线性动态规划的扩展，它在分阶段地划分问题时，与阶段中元素出现的顺序和由前一阶段的哪些元素合并而来有很大的关系．
+DP đoạn là mở rộng của DP tuyến tính, phụ thuộc mạnh vào thứ tự và cách gộp phần tử giữa các giai đoạn.
 
--   [区间 DP](../dp/interval.md)
+-   [DP đoạn](../dp/interval.md)
 
-### 2.9 数学
+### 2.9 Toán
 
-#### 2.9.1 高精度算法
+#### 2.9.1 Số lớn
 
-就算是 long long（或 int64）还不够怎么办？用高精度算法．本质上就是模拟了四则运算．
+Nếu `long long` chưa đủ, dùng số lớn: mô phỏng bốn phép tính.
 
--   [高精度计算](../math/bignum.md)
+-   [Tính toán số lớn](../math/bignum.md)
 
-#### 2.9.2 进制转换
+#### 2.9.2 Đổi cơ số
 
-在计算机中，除了二进制，比较常用的还有八进制和十六进制．有的时候学会运用正确的进制对解题也有很大帮助．
+Ngoài nhị phân, còn hay dùng bát phân và thập lục phân. Đổi cơ số đôi khi rất hữu ích.
 
--   [进位制](../math/base.md)
+-   [Hệ cơ số](../math/base.md)
 
-#### 2.9.3 位操作
+#### 2.9.3 Phép toán bit
 
-位操作就是基于整数的二进制表示进行的运算．由于计算机内部就是以二进制来存储数据，位操作是相当快的．
+Phép toán bit dựa trên biểu diễn nhị phân, rất nhanh.
 
-基本的位操作共 6 种，分别为按位与、按位或、按位异或、按位取反、左移和右移．
+6 phép cơ bản: AND, OR, XOR, NOT, dịch trái, dịch phải.
 
--   [位操作](../math/bit.md)
+-   [Phép toán bit](../math/bit.md)
 
-#### 2.9.4 数论
+#### 2.9.4 Số học
 
--   [数论基础](../math/number-theory/basic.md)
--   [素数](../math/number-theory/prime.md)
--   [筛法](../math/number-theory/sieve.md)
--   [最大公因数](../math/number-theory/gcd.md)
--   [欧拉函数](../math/number-theory/euler-totient.md)
--   [分解质因数](../math/number-theory/pollard-rho.md)
+-   [Cơ sở số học](../math/number-theory/basic.md)
+-   [Số nguyên tố](../math/number-theory/prime.md)
+-   [Sàng](../math/number-theory/sieve.md)
+-   [Ước chung lớn nhất](../math/number-theory/gcd.md)
+-   [Hàm Euler](../math/number-theory/euler-totient.md)
+-   [Phân tích thừa số nguyên tố](../math/number-theory/pollard-rho.md)
 
-#### 2.9.5 组合计数
+#### 2.9.5 Tổ hợp đếm
 
--   [排列组合](../math/combinatorics/combination.md)
--   [抽屉原理](../math/combinatorics/drawer-principle.md)
--   [容斥原理](../math/combinatorics/inclusion-exclusion-principle.md)
+-   [Chỉnh hợp, tổ hợp](../math/combinatorics/combination.md)
+-   [Nguyên lý Dirichlet](../math/combinatorics/drawer-principle.md)
+-   [Bao hàm - loại trừ](../math/combinatorics/inclusion-exclusion-principle.md)
 
 ***
 
-至此，你就学习完了入门组范畴内的所有算法，但是想要掌握它们，你需要继续进行足够数量的刷题，以巩固你所学到的知识点．
+Đến đây bạn đã hoàn thành phần nhập môn, nhưng để thành thạo bạn cần luyện tập đủ nhiều bài để củng cố kiến thức.

@@ -1,105 +1,105 @@
 author: i-Yirannn, Xeonacid, ouuan
 
-## 介绍
+## Giới thiệu
 
-`std::bitset` 是标准库中的一个存储 `0/1` 的大小不可变容器．严格来讲，它并不属于 STL．
+`std::bitset` là container kích thước cố định lưu `0/1`. Nói строго, nó không thuộc STL.
 
-??? note "bitset 与 STL"
+??? note "bitset và STL"
     > The C++ standard library provides some special container classes, the so-called container adapters (stack, queue, priority queue). In addition, a few classes provide a container-like interface (for example, strings, bitsets, and valarrays). All these classes are covered separately.1 Container adapters and bitsets are covered in Chapter 12.
     >
     > The C++ standard library provides not only the containers for the STL framework but also some containers that fit some special needs and provide simple, almost self-explanatory, interfaces. You can group these containers into either the so-called container adapters, which adapt standard STL containers to fit special needs, or a bitset, which is a containers for bits or Boolean values. There are three standard container adapters: stacks, queues, and priority queues. In priority queues, the elements are sorted automatically according to a sorting criterion. Thus, the "next" element of a priority queue is the element with the "highest" value. A bitset is a bitfield with an arbitrary but fixed number of bits. Note that the C++ standard library also provides a special container with a variable size for Boolean values: vector.
     
-    ——摘自《The C++ Standard Library 2nd Edition》
+    ——Trích từ “The C++ Standard Library 2nd Edition”
     
-    由此看来，`bitset` 并不属于 STL，而是一种标准库中的 "Special Container"．事实上，它作为一种容器，也并不满足 STL 容器的要求．说它是适配器，它也并不依赖于其它 STL 容器作为底层实现．
+    Từ đó thấy `bitset` không thuộc STL mà là “Special Container” trong thư viện chuẩn. Thực tế, nó cũng không thỏa yêu cầu của container STL. Nó không phải adapter và cũng không phụ thuộc container STL khác làm nền.
 
-由于内存地址是按字节即 `byte` 寻址，而非比特 `bit`，一个 `bool` 类型的变量，虽然只能表示 `0/1`, 但是也占了 1 byte 的内存．
+Do bộ nhớ được địa chỉ theo byte, không theo bit; một biến `bool` chỉ biểu diễn `0/1` nhưng chiếm 1 byte.
 
-`bitset` 就是通过固定的优化，使得一个字节的八个比特能分别储存 8 位的 `0/1`．
+`bitset` tối ưu để 8 bit trong 1 byte lưu 8 giá trị `0/1`.
 
-对于一个 4 字节的 `int` 变量，在只存 `0/1` 的意义下，`bitset` 占用空间只是其 $\frac{1}{32}$，计算一些信息时，所需时间也是其 $\frac 1{32}$．
+Với biến `int` 4 byte, nếu chỉ lưu `0/1`, `bitset` tốn $\frac{1}{32}$ bộ nhớ, và thời gian xử lý cũng khoảng $\frac 1{32}$.
 
-在某些情况下通过 `bitset` 可以优化程序的运行效率．至于其优化的是复杂度还是常数，要看计算复杂度的角度．一般 `bitset` 的复杂度有以下几种记法：（设原复杂度为 $O(n)$）
+Trong một số trường hợp, `bitset` tối ưu hiệu năng. Việc tối ưu là giảm độ phức tạp hay hằng số tùy góc nhìn. Độ phức tạp thường viết:
 
-1.  $O(n)$，这种记法认为 `bitset` 完全没有优化复杂度．
-2.  $O(\frac n{32})$，这种记法不太严谨（复杂度中不应出现常数），但体现了 `bitset` 能将所需时间优化至 $\frac 1{32}$．
-3.  $O(\frac n w)$，其中 $w=32$（计算机的位数），这种记法较为普遍接受．
-4.  $O(\frac n {\log w})$，其中 $w$ 为计算机一个整型变量的大小．
+1.  $O(n)$, coi như không tối ưu.
+2.  $O(\frac n{32})$, không nghiêm ngặt (không nên có hằng số), nhưng thể hiện tối ưu $\frac 1{32}$.
+3.  $O(\frac n w)$, với $w=32$, cách viết phổ biến.
+4.  $O(\frac n {\log w})$, với $w$ là số bit của một biến nguyên.
 
-另外，`vector` 的一个特化 `vector<bool>` 的储存方式同 `bitset` 一样，区别在于其支持动态开空间，`bitset` 则和我们一般的静态数组一样，是在编译时就开好了的．然而，`bitset` 有一些好用的库函数，不仅方便，而且有时可以实现 SIMD 进而减小常数．另外，`vector<bool>` 的部分表现和 `vector` 不一致（如对 `std::vector<bool> vec` 来说，`&vec[0] + i` 不等于 `&vec[i]`）．因此，一般不使用 `vector<bool>`．
+Ngoài ra, `vector<bool>` có cách lưu giống `bitset`, khác ở chỗ hỗ trợ cấp phát động. Nhưng `bitset` có nhiều hàm tiện, đôi khi hỗ trợ SIMD giảm hằng số. `vector<bool>` còn có hành vi khác `vector` (ví dụ `&vec[0] + i` không bằng `&vec[i]`). Vì vậy thường không dùng `vector<bool>`.
 
-## 使用
+## Cách dùng
 
-参见 [std::bitset - cppreference.com](https://en.cppreference.com/w/cpp/utility/bitset)．
+Xem [std::bitset - cppreference.com](https://en.cppreference.com/w/cpp/utility/bitset).
 
-### 头文件
+### Header
 
 ```cpp
 #include <bitset>
 ```
 
-### 指定大小
+### Chỉ định kích thước
 
 ```cpp
-std::bitset<1000> bs;  // a bitset with 1000 bits
+std::bitset<1000> bs;  // bitset 1000 bit
 ```
 
-### 构造函数
+### Hàm dựng
 
--   `bitset()`: 每一位都是 `false`．
--   `bitset(unsigned long val)`: 设为 `val` 的二进制形式．
--   `bitset(const string& str)`: 设为 $01$ 串 `str`．
+-   `bitset()`: mọi bit là `false`.
+-   `bitset(unsigned long val)`: đặt theo nhị phân của `val`.
+-   `bitset(const string& str)`: đặt theo chuỗi $01$ `str`.
 
-### 运算符
+### Toán tử
 
--   `operator []`: 访问其特定的一位．
+-   `operator []`: truy cập một bit.
 
--   `operator ==`/`operator !=`: 比较两个 `bitset` 内容是否完全一样．
+-   `operator ==`/`operator !=`: so sánh hai `bitset`.
 
--   `operator &`/`operator &=`/`operator |`/`operator |=`/`operator ^`/`operator ^=`/`operator ~`: 进行按位与/或/异或/取反操作．
+-   `operator &`/`operator &=`/`operator |`/`operator |=`/`operator ^`/`operator ^=`/`operator ~`: AND/OR/XOR/NOT.
 
-    注意：**`bitset` 只能与 `bitset` 进行位运算**，若要和整型进行位运算，要先将整型转换为 `bitset`．
+    Lưu ý: **`bitset` chỉ có thể làm phép bit với `bitset`**; muốn làm với số nguyên phải chuyển sang `bitset`.
 
--   `operator <<`/`operator >>`/`operator <<=`/`operator >>=`: 进行二进制左移/右移．
+-   `operator <<`/`operator >>`/`operator <<=`/`operator >>=`: dịch trái/phải.
 
-此外，`bitset` 还提供了 C++ 流式 IO 的支持，这意味着你可以通过 `cin/cout` 进行输入输出．
+`bitset` cũng hỗ trợ I/O kiểu stream, nên có thể dùng `cin/cout`.
 
-### 成员函数
+### Hàm thành viên
 
--   `count()`: 返回 `true` 的数量．
--   `size()`: 返回 `bitset` 的大小．
--   `test(pos)`: 它和 `vector` 中的 `at()` 的作用是一样的，和 `[]` 运算符的区别就是越界检查．
--   `any()`: 若存在某一位是 `true` 则返回 `true`，否则返回 `false`．
--   `none()`: 若所有位都是 `false` 则返回 `true`，否则返回 `false`．
--   `all()`: 若所有位都是 `true` 则返回 `true`，否则返回 `false`．
--   1.  `set()`: 将整个 `bitset` 设置成 `true`．
-    2.  `set(pos, val = true)`: 将某一位设置成 `true`/`false`．
--   1.  `reset()`: 将整个 `bitset` 设置成 `false`．
-    2.  `reset(pos)`: 将某一位设置成 `false`．相当于 `set(pos, false)`．
--   1.  `flip()`: 翻转每一位．（$0\leftrightarrow1$，相当于异或一个全是 $1$ 的 `bitset`）
-    2.  `flip(pos)`: 翻转某一位．
--   `to_string()`: 返回转换成的字符串表达．
--   `to_ulong()`: 返回转换成的 `unsigned long` 表达（`long` 在 NT 及 32 位 POSIX 系统下与 `int` 一样，在 64 位 POSIX 下与 `long long` 一样）．
--   `to_ullong()`:（**C++11** 起）返回转换成的 `unsigned long long` 表达．
+-   `count()`: số bit `true`.
+-   `size()`: kích thước `bitset`.
+-   `test(pos)`: giống `at()` của `vector`, khác `[]` ở chỗ kiểm tra biên.
+-   `any()`: có bit `true` nào không.
+-   `none()`: tất cả đều `false`.
+-   `all()`: tất cả đều `true`.
+-   1.  `set()`: đặt toàn bộ `true`.
+    2.  `set(pos, val = true)`: đặt một bit `true`/`false`.
+-   1.  `reset()`: đặt toàn bộ `false`.
+    2.  `reset(pos)`: đặt một bit `false` (tương đương `set(pos, false)`).
+-   1.  `flip()`: đảo tất cả bit ($0\leftrightarrow1$).
+    2.  `flip(pos)`: đảo một bit.
+-   `to_string()`: trả về chuỗi.
+-   `to_ulong()`: trả về `unsigned long` (`long` trên NT/32-bit POSIX như `int`, trên 64-bit POSIX như `long long`).
+-   `to_ullong()`: (từ **C++11**) trả về `unsigned long long`.
 
-另外，libstdc++ 中有一些较为实用的内部成员函数[^bitset1]：
+Ngoài ra, libstdc++ có một số hàm nội bộ[^bitset1]:
 
--   `_Find_first()`: 返回 `bitset` 第一个 `true` 的下标，若没有 `true` 则返回 `bitset` 的大小．
--   `_Find_next(pos)`: 返回 `pos` 后面（下标严格大于 `pos` 的位置）第一个 `true` 的下标，若 `pos` 后面没有 `true` 则返回 `bitset` 的大小．
+-   `_Find_first()`: trả về vị trí `true` đầu tiên, nếu không có trả về kích thước.
+-   `_Find_next(pos)`: trả về vị trí `true` đầu tiên sau `pos` (chỉ số > `pos`), nếu không có trả về kích thước.
 
-## 应用
+## Ứng dụng
 
-### [「LibreOJ β Round #2」贪心只能过样例](https://loj.ac/problem/515)
+### [“LibreOJ β Round #2”贪心只能过样例](https://loj.ac/problem/515)
 
-这题可以用 dp 做，转移方程很简单：
+Bài này có thể dùng dp, chuyển trạng thái:
 
-$f(i,j)$ 表示前 $i$ 个数的平方和能否为 $j$，那么 $f(i,j)=\bigvee\limits_{k=a}^bf(i-1,j-k^2)$（或起来）．
+$f(i,j)$ là với $i$ số đầu, tổng bình phương có thể bằng $j$ hay không, thì $f(i,j)=\bigvee\limits_{k=a}^bf(i-1,j-k^2)$.
 
-但如果直接做的话是 $O(n^5)$ 的，（看起来）过不了．
+Nếu làm trực tiếp là $O(n^5)$, (trông có vẻ) không qua được.
 
-发现可以用 `bitset` 优化，左移再或起来就好了：
+Dùng `bitset` để tối ưu, dịch trái và OR là được:
 
-??? note "提交记录：[std::bitset](https://loj.ac/submission/395274)"
+??? note "Bản nộp: [std::bitset](https://loj.ac/submission/395274)"
     ```cpp
     #include <bitset>
     #include <cstdio>
@@ -133,9 +133,9 @@ $f(i,j)$ 表示前 $i$ 个数的平方和能否为 $j$，那么 $f(i,j)=\bigvee\
     }
     ```
 
-由于 libstdc++ 的实现为压 `__CHAR_BIT__ * sizeof(unsigned long)` 位的[^bitset2]，在一些平台中其为 $32$．所以，可以手写 `bitset`（只需要支持左移后或起来这一种操作）压 $64$ 位（`__CHAR_BIT__ * sizeof(unsigned long long)`）来进一步优化：
+Vì libstdc++ nén theo `__CHAR_BIT__ * sizeof(unsigned long)`[^bitset2], trên vài nền tảng là $32$. Có thể tự viết `bitset` (chỉ cần hỗ trợ dịch trái rồi OR) nén $64$ bit (`__CHAR_BIT__ * sizeof(unsigned long long)`) để tối ưu thêm:
 
-??? note "提交记录：[手写 bitset](https://loj.ac/submission/395619)"
+??? note "Bản nộp: [bitset tự viết](https://loj.ac/submission/395619)"
     ```cpp
     #include <cstdio>
     #include <iostream>
@@ -188,9 +188,9 @@ $f(i,j)$ 表示前 $i$ 个数的平方和能否为 $j$，那么 $f(i,j)=\bigvee\
     }
     ```
 
-另外，加了几个剪枝的暴力也能过：
+Ngoài ra, vét cạn kèm vài cắt tỉa cũng qua được:
 
-??? note "提交记录：[加了几个剪枝的暴力](https://loj.ac/submission/395673)"
+??? note "Bản nộp: [Vét cạn có cắt tỉa](https://loj.ac/submission/395673)"
     ```cpp
     #include <cstdio>
     #include <iostream>
@@ -238,42 +238,42 @@ $f(i,j)$ 表示前 $i$ 个数的平方和能否为 $j$，那么 $f(i,j)=\bigvee\
 
 ### [CF1097F Alex and a TV Show](https://codeforces.com/contest/1097/problem/F)
 
-#### 题意
+#### Đề bài
 
-给你 $n$ 个可重集，四种操作：
+Cho $n$ đa tập, 4 thao tác:
 
-1.  把某个可重集设为一个数．
-2.  把某个可重集设为另外两个可重集加起来．
-3.  把某个可重集设为从另外两个可重集中各选一个数的 $\gcd$．即：$A=\{\gcd(x,y)|x\in B,y\in C\}$．
-4.  询问某个可重集中某个数的个数，**在模 2 意义下**．
+1.  Gán một đa tập bằng một số.
+2.  Gán một đa tập bằng tổng của hai đa tập khác.
+3.  Gán một đa tập bằng $\gcd$ của mỗi cặp phần tử lấy từ hai đa tập khác: $A=\{\gcd(x,y)|x\in B,y\in C\}$.
+4.  Hỏi số lần xuất hiện của một số trong một đa tập, **trong mô-đun 2**.
 
-可重集个数 $10^5$，操作个数 $10^6$，值域 $7000$．
+Số đa tập $10^5$, số thao tác $10^6$, giá trị tối đa $7000$.
 
-#### 做法
+#### Cách làm
 
-看到「在模 $2$ 意义下」，可以想到用 `bitset` 维护每个可重集．
+Thấy “mod 2” có thể nghĩ đến `bitset` để lưu mỗi đa tập.
 
-这样的话，操作 $1$ 直接设，操作 $2$ 就是异或（因为模 $2$），操作 $4$ 就是直接查，但 .. 操作 $3$ 怎么办？
+Khi đó, thao tác 1 là gán trực tiếp, thao tác 2 là XOR (vì mod 2), thao tác 4 là truy vấn. Nhưng thao tác 3 thì sao?
 
-我们可以尝试维护每个可重集的所有约数构成的可重集，这样的话，操作 $3$ 就是直接按位与．
+Có thể lưu đa tập các ước của mỗi đa tập. Khi đó thao tác 3 là AND.
 
-我们可以把值域内每个数的约数构成的 `bitset` 预处理出来，这样操作 $1$ 就解决了．操作 $2$ 仍然是异或．
+Ta tiền xử lý `bitset` các ước của mỗi số trong phạm vi, thao tác 1 giải quyết được, thao tác 2 vẫn là XOR.
 
-现在的问题是，如何通过一个可重集的约数构成的可重集得到该可重集中某个数的个数．
+Vấn đề là từ đa tập ước $A'$ suy ra số lần xuất hiện của $x$ trong đa tập $A$.
 
-令原可重集为 $A$，其约数构成的可重集为 $A'$，我们要求 $A$ 中 $x$ 的个数，用 [莫比乌斯反演](../../math/number-theory/mobius.md) 推一推：
+Gọi đa tập gốc là $A$, đa tập ước là $A'$. Cần số lần $x$ xuất hiện trong $A$, dùng [Möbius inversion](../../math/number-theory/mobius.md):
 
 $$
 \begin{aligned}&\sum\limits_{i\in A}[\frac i x=1]\\=&\sum\limits_{i\in A}\sum\limits_{d|\frac i x}\mu(d)\\=&\sum\limits_{d\in A',x|d}\mu(\frac d x)\end{aligned}
 $$
 
-由于是模 $2$ 意义下，$-1$ 和 $1$ 是一样的，只用看 $\frac d x$ 有没有平方因子即可．所以，可以对值域内每个数预处理出其倍数中除以它不含平方因子的位置构成的 `bitset`，求答案的时候先按位与再 `count()` 就好了．
+Vì là mod 2, $-1$ và $1$ như nhau, chỉ cần xem $\frac d x$ có thừa số bình phương không. Do đó, tiền xử lý cho mỗi $x$ một `bitset` gồm các bội của $x$ mà chia cho $x$ không có thừa số bình phương. Khi hỏi, AND rồi `count()`.
 
-这样的话，单次询问复杂度就是 $O(\frac v w)$（$v=7000,\,w=32$）．
+Độ phức tạp mỗi truy vấn $O(\frac v w)$ ($v=7000,\,w=32$).
 
-至于预处理的部分，$O(v\sqrt v)$ 或者 $O(v^2)$ 预处理比较简单，$\log$ 预处理就如下面代码所示，复杂度为调和级数，所以是 $O(v\log v)$．
+Tiền xử lý có thể $O(v\sqrt v)$ hoặc $O(v^2)$ cho đơn giản; cách $\log$ như dưới có độ phức tạp cấp điều hòa nên là $O(v\log v)$.
 
-??? note "参考代码"
+??? note "Mã tham khảo"
     ```cpp
     #include <bitset>
     #include <cctype>
@@ -351,52 +351,52 @@ $$
     }
     ```
 
-### 与埃氏筛结合
+### Kết hợp với sàng Eratosthenes
 
-由于 `bitset` 快速的连续读写效率，使得它非常适合用于与 [埃氏筛](../../math/number-theory/sieve.md#埃拉托斯特尼筛法) 结合打质数表．
+Do `bitset` có khả năng đọc/ghi liên tiếp rất nhanh, nó rất phù hợp để kết hợp với [sàng Eratosthenes](../../math/number-theory/sieve.md#埃拉托斯特尼筛法).
 
-使用的方式也很简单，只需要将埃氏筛中的布尔数组替换成 `bitset` 即可．
+Cách dùng đơn giản: thay mảng bool trong sàng bằng `bitset`.
 
-??? note "速度测试"
-    使用 [Quick C++ Benchmarks](https://quick-bench.com) 进行测试，编译器采用 `GCC 13.2`，编译参数为 `-std=c++20 -O2`．
+??? note "Kiểm thử tốc độ"
+    Dùng [Quick C++ Benchmarks](https://quick-bench.com), compiler `GCC 13.2`, tham số `-std=c++20 -O2`.
     
-    | 算法                            | 函数名                      |
+    | Thuật toán                            | Tên hàm                      |
     | ----------------------------- | ------------------------ |
-    | 埃氏筛 + C 风格布尔数组，不存储筛出来的素数      | `Eratosthenes_CArray`    |
-    | 埃氏筛 +`vector<bool>`，不存储筛出来的素数 | `Eratosthenes_vector`    |
-    | 埃氏筛 +`bitset`，不存储筛出来的素数       | `Eratosthenes_bitset`    |
-    | 埃氏筛 + C 风格布尔数组，存储筛出来的素数       | `Eratosthenes_CArray_sp` |
-    | 埃氏筛 +`vector<bool>`，存储筛出来的素数  | `Eratosthenes_vector_sp` |
-    | 埃氏筛 +`bitset`，存储筛出来的素数        | `Eratosthenes_bitset_sp` |
-    | 欧拉筛 + C 风格布尔数组                | `Euler_CArray`           |
-    | 欧拉筛 +`vector<bool>`           | `Euler_vector`           |
-    | 欧拉筛 +`bitset`                 | `Euler_bitset`           |
+    | Sàng Eratosthenes + mảng bool C, không lưu prime      | `Eratosthenes_CArray`    |
+    | Sàng Eratosthenes +`vector<bool>`, không lưu prime | `Eratosthenes_vector`    |
+    | Sàng Eratosthenes +`bitset`, không lưu prime       | `Eratosthenes_bitset`    |
+    | Sàng Eratosthenes + mảng bool C, lưu prime       | `Eratosthenes_CArray_sp` |
+    | Sàng Eratosthenes +`vector<bool>`, lưu prime  | `Eratosthenes_vector_sp` |
+    | Sàng Eratosthenes +`bitset`, lưu prime        | `Eratosthenes_bitset_sp` |
+    | Sàng Euler + mảng bool C                | `Euler_CArray`           |
+    | Sàng Euler +`vector<bool>`           | `Euler_vector`           |
+    | Sàng Euler +`bitset`                 | `Euler_bitset`           |
     
-    -   当埃氏筛 **存储** 筛出来的素数时：
+    -   Khi sàng Eratosthenes **lưu** prime:
     
-        -   $N=5 \times 10^7 + 1$ 时的 [测试结果](https://quick-bench.com/q/iQL9FhsZ6PVV81HKABsidRw8hB8)：
+        -   $N=5 \times 10^7 + 1$ [kết quả](https://quick-bench.com/q/iQL9FhsZ6PVV81HKABsidRw8hB8):
     
             ![](./images/bitset-5e7sp.png)
-        -   $N=10^8 + 1$ 时的 [测试结果](https://quick-bench.com/q/pwEamEFUW-6nXeXEALRsYPd8FWI)：
+        -   $N=10^8 + 1$ [kết quả](https://quick-bench.com/q/pwEamEFUW-6nXeXEALRsYPd8FWI):
     
             ![](./images/bitset-1e8sp.png)
-    -   当埃氏筛 **不存储** 筛出来的素数时：
+    -   Khi sàng Eratosthenes **không lưu** prime:
     
-        -   $N=5 \times 10^7 + 1$ 时的 [测试结果](https://quick-bench.com/q/rg2mCUxT02a44w9fWvHtZoNTJyU)：
+        -   $N=5 \times 10^7 + 1$ [kết quả](https://quick-bench.com/q/rg2mCUxT02a44w9fWvHtZoNTJyU):
     
             ![](./images/bitset-5e7.png)
-        -   $N=10^8 + 1$ 时的 [测试结果](https://quick-bench.com/q/lusNWxWsR0VXoRBof7uBtqfvJuY)：
+        -   $N=10^8 + 1$ [kết quả](https://quick-bench.com/q/lusNWxWsR0VXoRBof7uBtqfvJuY):
     
             ![](./images/bitset-1e8.png)
     
-    从测试结果中可知：
+    Từ kết quả:
     
-    1.  时间复杂度 $O(n \log \log n)$ 的埃氏筛在使用 `bitset` 或 `vector<bool>` 优化后，性能甚至超过时间复杂度 $O(n)$ 的欧拉筛；
-    2.  欧拉筛使用 `bitset` 或 `vector<bool>` 后的优化效果在大多数情况下均不明显；
-    3.  `bitset` 的优化效果略强于 `vector<bool>`．
+    1.  Sàng Eratosthenes $O(n \log \log n)$ khi tối ưu bằng `bitset` hoặc `vector<bool>` còn nhanh hơn sàng Euler $O(n)$;
+    2.  Sàng Euler dùng `bitset` hoặc `vector<bool>` thường không cải thiện nhiều;
+    3.  `bitset` nhỉnh hơn `vector<bool>`.
 
-??? note "参考代码"
-    需安装 [google/benchmark](https://github.com/google/benchmark)．
+??? note "Mã tham khảo"
+    Cần cài [google/benchmark](https://github.com/google/benchmark).
     
     ```cpp
     #include <benchmark/benchmark.h>
@@ -583,20 +583,20 @@ $$
     BENCHMARK_MAIN();
     ```
 
-### 与树分块结合
+### Kết hợp với phân khối trên cây
 
-`bitset` 与树分块结合可以解决一类求树上多条路径信息并的问题，详见 [数据结构/树分块](../../ds/tree-decompose.md)．
+`bitset` kết hợp phân khối trên cây giải được các bài toán tổng hợp thông tin trên nhiều đường đi; xem [Cấu trúc dữ liệu/Phân khối trên cây](../../ds/tree-decompose.md).
 
-### 与莫队结合
+### Kết hợp với Mo's algorithm
 
-详见 [杂项/莫队配合 bitset](../../misc/mo-algo-with-bitset.md)．
+Xem [Khác/莫队配合 bitset](../../misc/mo-algo-with-bitset.md).
 
-### 计算高维偏序
+### Tính thứ tự từng chiều cao
 
-详见 [FHR 课件](https://github.com/OI-wiki/libs/blob/master/lang/csl/FHR-分块bitset求高维偏序.pdf)．
+Xem [slide FHR](https://github.com/OI-wiki/libs/blob/master/lang/csl/FHR-分块bitset求高维偏序.pdf).
 
-## 参考资料与注释
+## Tài liệu tham khảo và chú thích
 
 [^bitset1]: [libstdc++: SGI STL extensions](https://gcc.gnu.org/onlinedocs/libstdc++/libstdc++-html-USERS-4.4/a00994.html#g32541eb0d6581b915af48b5a51006dff)
 
-[^bitset2]: [libstdc++: std::bitset<\_Nb> Class Template Reference](https://gcc.gnu.org/onlinedocs/libstdc++/libstdc++-html-USERS-4.4/a00219.html)
+[^bitset2]: [libstdc++: std::bitset<_Nb> Class Template Reference](https://gcc.gnu.org/onlinedocs/libstdc++/libstdc++-html-USERS-4.4/a00219.html)

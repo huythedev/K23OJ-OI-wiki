@@ -1,73 +1,73 @@
 author: cutekibry, woruo27, Backl1ght, c-forrest
 
-**博弈论**（game theory）是经济学的一个分支，主要研究具有竞争或对抗性质的个体，在特定规则下所产生的各种行为．博弈论关注博弈中个体的预期行为与实际行为，并研究其最优策略．
+**Lý thuyết trò chơi** (game theory) là một nhánh của kinh tế học, nghiên cứu hành vi của các cá nhân có tính cạnh tranh/đối kháng dưới các luật lệ nhất định, và nghiên cứu chiến lược tối ưu của họ．
 
-通俗地讲，博弈论主要研究的是：在一个游戏中，进行游戏的多位玩家如何选择策略．
+Nói đơn giản, lý thuyết trò chơi nghiên cứu: trong một trò chơi, các người chơi chọn chiến lược như thế nào．
 
-## 基础概念
+## Khái niệm cơ bản
 
-本节将简要介绍博弈论中的一些常见概念．
+Phần này giới thiệu ngắn gọn một số khái niệm thường gặp．
 
-### 合作/非合作博弈
+### Trò chơi hợp tác/phi hợp tác
 
-**合作博弈**（cooperative game）是指参与者可以结成联盟、相互合作的博弈．在这类博弈中，个体的不合作行为往往会受到某种外部机制的惩罚．与之相对，**非合作博弈**（noncooperative game）中并不存在这样的机制，因此，参与者要么无法结成联盟，要么只能依赖可信的威胁机制维持合作．
+**Trò chơi hợp tác** (cooperative game) là trò chơi mà người tham gia có thể lập liên minh, hợp tác với nhau．Trong loại này, hành vi không hợp tác thường bị một cơ chế bên ngoài trừng phạt．Ngược lại, **trò chơi phi hợp tác** (noncooperative game) không có cơ chế như vậy, nên người tham gia либо không thể liên minh, либо chỉ có thể dựa vào đe dọa đáng tin để duy trì hợp tác．
 
-相比合作博弈，非合作博弈的研究更为系统和成熟．本文讨论的所有博弈均为非合作博弈．
+So với trò chơi hợp tác, trò chơi phi hợp tác được nghiên cứu hệ thống và mature hơn．Bài viết này chỉ thảo luận trò chơi phi hợp tác．
 
-### 对称/非对称博弈
+### Trò chơi đối xứng/phi đối xứng
 
-在 **对称博弈**（symmetric game）中，不同参与者在做出相同行为时获得的收益是相同的，也就是说，收益只取决于行为本身，而与行为者的身份无关．不满足这一条件的博弈称为 **非对称博弈**（asymmetric game）．
+Trong **trò chơi đối xứng** (symmetric game), các người chơi nhận được lợi ích như nhau khi thực hiện cùng một hành động, tức lợi ích chỉ phụ thuộc vào hành động, không phụ thuộc vào danh tính người chơi．Không thỏa điều kiện này gọi là **trò chơi phi đối xứng** (asymmetric game)．
 
-### 零和/非零和博弈
+### Trò chơi tổng bằng không/khác không
 
-主页面：[零和博弈](./zero-sum-game.md)
+Trang chính: [Trò chơi tổng bằng không](./zero-sum-game.md)
 
-**零和博弈**（zero-sum game）指的是无论各方采取何种行为，所有参与者的收益总和始终为零．通常讨论的零和博弈涉及两名参与者，此时，一方的收益必然是另一方的损失．相对地，**非零和博弈**（non-zero-sum game）允许多方共赢或共输，包括 **正和博弈**（positive-sum game）和 **负和博弈**（negative-sum game）等．
+**Trò chơi tổng bằng không** (zero-sum game) là trò chơi mà tổng lợi ích của mọi người tham gia luôn bằng 0．Thường xét hai người, khi đó lợi ích của một bên là tổn thất của bên kia．Ngược lại, **trò chơi tổng khác không** (non-zero-sum game) cho phép cả hai cùng thắng hoặc cùng thua, gồm **trò chơi tổng dương** (positive-sum game) và **trò chơi tổng âm** (negative-sum game), v.v．
 
-### 同时/序贯博弈
+### Trò chơi đồng thời/tuần tự
 
-在 **同时博弈**（simulatenous game）中，所有参与者在不知道他人选择的前提下同时做出决策．例如剪刀石头布就是一个典型的同时博弈．这类博弈常用收益矩阵表示，并通常不涉及时间的概念．
+Trong **trò chơi đồng thời** (simulatenous game), tất cả người chơi ra quyết định đồng thời khi không biết lựa chọn của người khác．Ví dụ kéo-búa-bao là trò chơi đồng thời điển hình．Loại này thường dùng ma trận lợi ích và không nhấn mạnh thời gian．
 
-与此相对的是 **序贯博弈**（sequential game），即参与者依次行动．需要注意的是，后行动者至少能够观察到部分先行动者的行为，否则先后顺序将毫无意义．序贯博弈通常借助博弈树来刻画．
+Ngược lại là **trò chơi tuần tự** (sequential game), nơi người chơi hành động lần lượt．Cần lưu ý: người đi sau phải quan sát được ít nhất một phần hành vi của người đi trước,否则 thứ tự vô nghĩa．Trò chơi tuần tự thường mô tả bằng cây trò chơi．
 
-### 完美/不完美信息博弈
+### Trò chơi thông tin hoàn hảo/không hoàn hảo
 
-**完美信息**（perfect information）指参与者在任意时刻做出决策时，完全了解此前所有事件的发生情况，包括游戏初始状态．例如象棋、围棋等属于完美信息博弈；而麻将、扑克则是不完美信息博弈，因为玩家无法获知他人的手牌．完美信息通常用于描述序贯博弈；由于在同时博弈中玩家彼此无法得知对方即将采取的行动，因此通常认为同时博弈不是完美信息博弈．
+**Thông tin hoàn hảo** (perfect information) nghĩa là tại mọi thời điểm ra quyết định, người chơi biết đầy đủ mọi sự kiện đã xảy ra, bao gồm trạng thái ban đầu．Cờ vua, cờ vây là thông tin hoàn hảo; mạt chược, poker là không hoàn hảo vì không biết bài đối thủ．Thông tin hoàn hảo thường dùng cho trò chơi tuần tự; vì trong trò chơi đồng thời người chơi không biết hành động sắp tới của đối thủ, nên thường xem trò chơi đồng thời là không hoàn hảo．
 
-### 完全/不完全信息博弈
+### Trò chơi thông tin đầy đủ/không đầy đủ
 
-**完全信息**（complete information）是指所有参与者对博弈结构本身（包括各方可选决策和最终收益）有完全了解，且这些信息为公共知识（common knowledge）．与之相对的是不完全信息博弈，其中某些博弈要素（如对手的可选决策或收益函数）对参与者来说是未知的．
+**Thông tin đầy đủ** (complete information) nghĩa là mọi người chơi biết đầy đủ cấu trúc trò chơi (tập hành động và lợi ích), và các thông tin này là kiến thức chung (common knowledge)．Ngược lại là thông tin không đầy đủ, khi một số yếu tố (như hành động khả dĩ hoặc hàm lợi ích của đối thủ) là unknown．
 
-值得注意的是，「完全信息」和「完美信息」是两个独立概念，互不包含．例如，麻将是一种完全信息但不完美信息的博弈，因其规则和收益是公开的，但牌面信息并不透明；而某些具有隐藏目标、但行为全程公开的游戏，则属于完美信息但不完全信息的博弈．
+Đáng chú ý, “thông tin đầy đủ” và “thông tin hoàn hảo” là hai khái niệm độc lập．Ví dụ, mạt chược là trò chơi thông tin đầy đủ nhưng không hoàn hảo vì luật và lợi ích công khai nhưng bài không minh bạch; một số trò chơi mục tiêu ẩn nhưng hành động công khai là hoàn hảo nhưng không đầy đủ．
 
-## 组合博弈论
+## Lý thuyết trò chơi tổ hợp
 
-在算法竞赛中，最常见的博弈类型是 **组合博弈**（combinatorial game）．该术语通常指那些因状态数量巨大而难以求解的博弈．正因为一般的组合博弈相当复杂，组合博弈论主要关注以下类型：两人轮流行动的、完美信息、无随机因素的博弈．象棋、围棋等都是典型的组合博弈．
+Trong thi đấu thuật toán, loại trò chơi thường gặp nhất là **trò chơi tổ hợp** (combinatorial game)．Thuật ngữ này thường chỉ những trò chơi có không gian trạng thái lớn nên khó giải．Vì trò chơi tổ hợp tổng quát rất phức tạp, lý thuyết trò chơi tổ hợp chủ yếu quan tâm đến các trò chơi: hai người luân phiên, thông tin hoàn hảo, không ngẫu nhiên．Cờ vua, cờ vây là ví dụ điển hình．
 
-### 公平组合博弈
+### Trò chơi tổ hợp công bằng
 
-主页面：[公平组合博弈](./impartial-game.md)
+Trang chính: [Trò chơi tổ hợp công bằng](./impartial-game.md)
 
-**公平博弈**（impartial game）指满足如下条件的组合博弈：
+**Trò chơi công bằng** (impartial game) là trò chơi tổ hợp thỏa:
 
--   在任意确定状态下，所有参与者可选择的行动完全相同，仅取决于当前状态，与身份无关；
--   博弈中的同一个状态不可能多次抵达，博弈以参与者无法行动为结束，且博弈一定会在有限步后以非平局结束．
+-   Ở mọi trạng thái, tập hành động của các người chơi hoàn toàn giống nhau, chỉ phụ thuộc vào trạng thái, không phụ thuộc danh tính；
+-   Một trạng thái không thể lặp lại, trò chơi kết thúc khi người chơi không thể hành động, và luôn kết thúc sau hữu hạn bước với kết quả không hòa．
 
-公平博弈总是对称博弈．
+Trò chơi công bằng luôn là trò chơi đối xứng．
 
-### 非公平组合博弈
+### Trò chơi tổ hợp không công bằng
 
-主页面：[非公平组合博弈](./partizan-game.md)
+Trang chính: [Trò chơi tổ hợp không công bằng](./partizan-game.md)
 
-与公平博弈相对的概念是 **非公平博弈**（partizan game），即参与者在某一状态下可采取的行动依赖其身份．大多数棋类游戏（如国际象棋、中国象棋、围棋、五子棋等）都是非公平博弈，因为参与者只能操作自己的棋子．
+Khái niệm đối lập là **trò chơi không công bằng** (partizan game), nơi hành động hợp lệ phụ thuộc vào danh tính người chơi．Hầu hết trò chơi cờ (cờ vua, cờ tướng, cờ vây, gomoku, v.v.) đều là không công bằng vì người chơi chỉ điều khiển quân của mình．
 
-### 正常/反常博弈
+### Trò chơi chuẩn/phản thường
 
-组合博弈中，通常的胜利者是博弈结束前，最后一名采取行动的参与者．这称为 **正常博弈**（normal game）．与之相对应的是 **反常博弈**（misère game），即博弈结束前，最后一名采取行动的参与者是失败者．
+Trong trò chơi tổ hợp, người thắng thường là người thực hiện bước đi cuối cùng．Đó là **trò chơi chuẩn** (normal game)．Ngược lại là **trò chơi phản thường** (misère game), nơi người thực hiện bước đi cuối cùng là người thua．
 
-公平和非公平组合博弈都可以是正常或反常博弈．
+Cả trò chơi công bằng và không công bằng đều có thể là chuẩn hoặc phản thường．
 
-## 参考资料
+## Tài liệu tham khảo
 
 -   [Game theory - Wikipedia](https://en.wikipedia.org/wiki/Game_theory)
 -   [Combinatorial game theory - Wikipedia](https://en.wikipedia.org/wiki/Combinatorial_game_theory)

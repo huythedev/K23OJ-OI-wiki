@@ -762,14 +762,14 @@ Pascal 在上个世纪后半叶是门很流行的语言，它早于 C 语言，�
 
 |       | Pascal     | C++            |
 | ----- | ---------- | -------------- |
-| 绝对值   | `abs(a)`   | `abs(a)`（整数）   |
-| 绝对值   | `abs(a)`   | `fabs(a)`（浮点数） |
+| 绝对值   | `abs(a)`   | `abs(a)` (int) |
+| 绝对值   | `abs(a)`   | `fabs(a)` (float) |
 | $a^b$ | N/A[^ref1] | `pow(a, b)`    |
-| 截断取整  | `trunc(a)` | `trunc(a)`     |
-| 近似取整  | `round(a)` | `round(a)`     |
+| 截断取整  | `trunc(a)` | `trunc(a)` |
+| 近似取整  | `round(a)` | `round(a)` |
 
 [^ref1]: Extended Pascal 中有 `a**b`，不过需要导入 `Math` 库．
 
 其他函数请参考：
 
--   [常用数学函数 - cppreference.com](https://zh.cppreference.com/w/cpp/numeric/math)
+-   [Hàm toán thường dùng - cppreference](https://zh.cppreference.com/w/cpp/numeric/math)

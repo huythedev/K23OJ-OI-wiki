@@ -1,43 +1,43 @@
-本页面将简要介绍排序算法．
+Trang này sẽ giới thiệu ngắn gọn về các thuật toán sắp xếp.
 
-## 定义
+## Định nghĩa
 
-**排序算法**（英语：Sorting algorithm）是一种将一组特定的数据按某种顺序进行排列的算法．排序算法多种多样，性质也大多不同．
+**Thuật toán sắp xếp** (Tiếng Anh: Sorting algorithm) là thuật toán sắp xếp một tập dữ liệu theo một thứ tự nhất định. Có nhiều thuật toán với đặc điểm khác nhau.
 
-## 性质
+## Tính chất
 
-### 稳定性
+### Tính ổn định
 
-稳定性是指相等的元素经过排序之后相对顺序是否发生了改变．
+Tính ổn định hỏi rằng các phần tử bằng nhau có giữ thứ tự tương đối ban đầu sau khi sắp xếp hay không.
 
-拥有稳定性这一特性的算法会让原本有相等键值的纪录维持相对次序，即如果一个排序算法是稳定的，当有两个相等键值的纪录 $R$ 和 $S$，且在原本的列表中 $R$ 出现在 $S$ 之前，在排序过的列表中 $R$ 也将会是在 $S$ 之前．
+Thuật toán ổn định giữ thứ tự tương đối của các bản ghi có khóa bằng nhau: nếu R xuất hiện trước S trong dãy gốc và khóa R = S, thì sau khi sắp xếp R vẫn đứng trước S.
 
-基数排序、计数排序、插入排序、冒泡排序、归并排序是稳定排序．
+Các thuật toán ổn định: Radix sort, Counting sort, Insertion sort, Bubble sort, Merge sort.
 
-选择排序、堆排序、快速排序、希尔排序不是稳定排序．
+Các thuật toán không ổn định: Selection sort, Heap sort, Quick sort, Shell sort.
 
-### 时间复杂度
+### Độ phức tạp thời gian
 
-主页面：[复杂度](./complexity.md)
+Trang chính: [Độ phức tạp](./complexity.md)
 
-时间复杂度用来衡量一个算法的运行时间和输入规模的关系，通常用 $O$ 表示．
+Độ phức tạp thời gian đo mối quan hệ giữa thời gian chạy và kích thước đầu vào, thường ký hiệu bằng O.
 
-简单计算复杂度的方法一般是统计「简单操作」的执行次数，有时候也可以直接数循环的层数来近似估计．
+Phương pháp đơn giản là đếm số lần thực hiện các "thao tác cơ bản" hoặc đếm số lớp vòng lặp để ước lượng.
 
-时间复杂度分为最优时间复杂度、平均时间复杂度和最坏时间复杂度．OI 竞赛中要考虑的一般是最坏时间复杂度，因为它代表的是算法运行水平的下界，在评测中不会出现更差的结果了．
+Phân loại độ phức tạp: tốt nhất, trung bình, tệ nhất. Trong OI thường quan tâm đến tệ nhất vì đó là ràng buộc đảm bảo kết quả trên bộ test.
 
-基于比较的排序算法的时间复杂度下限是 $O(n\log n)$ 的．
+Mốc dưới của các thuật toán so sánh là O(n log n).
 
-当然也有不是 $O(n\log n)$ 的．例如，[计数排序](./counting-sort.md) 的时间复杂度是 $O(n+w)$，其中 $w$ 代表输入数据的值域大小．
+Tuy nhiên vẫn có các thuật toán tốt hơn trong các điều kiện đặc biệt, ví dụ [Counting sort](./counting-sort.md) có độ phức tạp O(n + w) với w là phạm vi giá trị.
 
-以下是几种排序算法的比较．
+Dưới đây là đồ thị so sánh một số thuật toán sắp xếp.
 
 ![几种排序算法的比较](images/sort-intro-1.apng)
 
-### 空间复杂度
+### Độ phức tạp không gian
 
-与时间复杂度类似，空间复杂度用来描述算法空间消耗的规模．一般来说，空间复杂度越小，算法越好．
+Tương tự thời gian, độ phức tạp không gian mô tả lượng bộ nhớ cần thiết. Thường độ phức tạp không gian nhỏ hơn là tốt hơn.
 
-## 外部链接
+## Liên kết ngoài
 
 -   [排序算法 - 维基百科，自由的百科全书](https://zh.wikipedia.org/wiki/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95)

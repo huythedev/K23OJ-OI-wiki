@@ -1,81 +1,81 @@
 author: Ir1d, cqnuljs, akakw1, MingqiHuang, Chrogeek, henrytbtrue, Planet6174, StudyingFather
 
-## 文件的概念
+## Khái niệm tệp
 
-文件是根据特定的目的而收集在一起的有关数据的集合．C/C++ 把每一个文件都看成是一个有序的字节流，每个文件都是以 **文件结束标志**（EOF）结束，如果要操作某个文件，程序应该首先打开该文件，每当一个文件被打开后（请记得关闭打开的文件），该文件就和一个流关联起来，这里的流实际上是一个字节序列．
+Tệp là tập hợp dữ liệu được thu thập theo mục đích nhất định. C/C++ coi mỗi tệp là một luồng byte có thứ tự, mỗi tệp kết thúc bằng **dấu kết thúc tệp** (EOF). Khi thao tác với tệp, chương trình cần mở tệp trước; mỗi khi tệp được mở (nhớ đóng sau khi dùng), tệp sẽ gắn với một luồng; luồng thực chất là một dãy byte.
 
-C/C++ 将文件分为文本文件和二进制文件．文本文件就是简单的文本文件（重点），另外二进制文件就是特殊格式的文件或者可执行代码文件等．
+C/C++ chia tệp thành tệp văn bản và tệp nhị phân. Tệp văn bản là văn bản thông thường (trọng tâm), còn tệp nhị phân là tệp định dạng đặc biệt hoặc tệp thực thi.
 
-## 文件的操作步骤
+## Các bước thao tác tệp
 
-1、打开文件，将文件指针指向文件，决定打开文件类型；  
-2、对文件进行读、写操作（比赛中主要用到的操作，其他一些操作暂时不写）；  
-3、在使用完文件后，关闭文件．
+1、Mở tệp, đưa con trỏ tệp trỏ vào tệp, quyết định chế độ mở;  
+2、Đọc/ghi tệp (trong thi đấu chủ yếu dùng, thao tác khác tạm không đề cập);  
+3、Dùng xong thì đóng tệp.
 
-## `freopen` 函数
+## Hàm `freopen`
 
-### 函数简介
+### Giới thiệu
 
-函数用于将指定输入输出流以指定方式重定向到文件，包含于头文件 `stdio.h (cstdio)` 中，该函数可以在不改变代码原貌的情况下改变输入输出环境，但使用时应当保证流是可靠的．
+Hàm dùng để chuyển hướng luồng vào/ra tiêu chuẩn đến tệp theo chế độ chỉ định, nằm trong `stdio.h (cstdio)`. Hàm này cho phép đổi môi trường I/O mà không cần sửa code. Khi dùng phải đảm bảo luồng đáng tin cậy.
 
-函数主要有三种方式：读、写和附加．
+Có ba chế độ chính: đọc, ghi, thêm.
 
-### 命令格式
+### Cú pháp
 
 ```cpp
 FILE* freopen(const char* filename, const char* mode, FILE* stream);
 ```
 
-### 参数说明
+### Tham số
 
--   `filename`: 要打开的文件名
--   `mode`: 文件打开的模式，表示文件访问的权限
--   `stream`: 文件指针，通常使用标准文件流 (`stdin/stdout`) 或标准错误输出流 (`stderr`)
--   返回值：文件指针，指向被打开文件
+-   `filename`: tên tệp cần mở
+-   `mode`: chế độ mở, xác định quyền truy cập
+-   `stream`: con trỏ tệp, thường là luồng chuẩn (`stdin/stdout`) hoặc lỗi (`stderr`)
+-   Giá trị trả về: con trỏ tệp trỏ tới tệp đã mở
 
-### 文件打开格式（选读）
+### Chế độ mở (tùy đọc)
 
--   `r`：以只读方式打开文件，文件必须存在，只允许读入数据 **（常用）**
--   `r+`：以读/写方式打开文件，文件必须存在，允许读/写数据
--   `rb`：以只读方式打开二进制文件，文件必须存在，只允许读入数据
--   `rb+`：以读/写方式打开二进制文件，文件必须存在，允许读/写数据
--   `rt+`：以读/写方式打开文本文件，允许读/写数据
--   `w`：以只写方式打开文件，文件不存在会新建文件，否则清空内容，只允许写入数据 **（常用）**
--   `w+`：以读/写方式打开文件，文件不存在将新建文件，否则清空内容，允许读/写数据
--   `wb`：以只写方式打开二进制文件，文件不存在将会新建文件，否则清空内容，只允许写入数据
--   `wb+`：以读/写方式打开二进制文件，文件不存在将新建文件，否则清空内容，允许读/写数据
--   `a`：以只写方式打开文件，文件不存在将新建文件，写入数据将被附加在文件末尾（保留 EOF 符）
--   `a+`：以读/写方式打开文件，文件不存在将新建文件，写入数据将被附加在文件末尾（不保留 EOF 符）
--   `at+`：以读/写方式打开文本文件，写入数据将被附加在文件末尾
--   `ab+`：以读/写方式打开二进制文件，写入数据将被附加在文件末尾
+-   `r`: mở chỉ đọc, tệp phải tồn tại, chỉ đọc **(phổ biến)**
+-   `r+`: đọc/ghi, tệp phải tồn tại
+-   `rb`: chỉ đọc nhị phân, tệp phải tồn tại
+-   `rb+`: đọc/ghi nhị phân, tệp phải tồn tại
+-   `rt+`: đọc/ghi văn bản
+-   `w`: chỉ ghi, tệp không tồn tại sẽ tạo mới, nếu tồn tại sẽ xóa nội dung **(phổ biến)**
+-   `w+`: đọc/ghi, tệp không tồn tại tạo mới, nếu tồn tại xóa nội dung
+-   `wb`: chỉ ghi nhị phân, tệp không tồn tại tạo mới, nếu tồn tại xóa nội dung
+-   `wb+`: đọc/ghi nhị phân, tệp không tồn tại tạo mới, nếu tồn tại xóa nội dung
+-   `a`: chỉ ghi, tệp không tồn tại tạo mới, dữ liệu ghi sẽ thêm vào cuối (giữ EOF)
+-   `a+`: đọc/ghi, tệp không tồn tại tạo mới, dữ liệu ghi thêm cuối (không giữ EOF)
+-   `at+`: đọc/ghi văn bản, dữ liệu ghi thêm cuối
+-   `ab+`: đọc/ghi nhị phân, dữ liệu ghi thêm cuối
 
-### 使用方法
+### Cách dùng
 
-读入文件内容：
+Đọc từ tệp:
 
 ```cpp
 freopen("data.in", "r", stdin);
-// data.in 就是读取的文件名，要和可执行文件放在同一目录下
+// data.in là tên tệp đọc, đặt cùng thư mục với file thực thi
 ```
 
-输出到文件：
+Ghi ra tệp:
 
 ```cpp
 freopen("data.out", "w", stdout);
-// data.out 就是输出文件的文件名，和可执行文件在同一目录下
+// data.out là tên tệp ghi, đặt cùng thư mục với file thực thi
 ```
 
-关闭标准输入/输出流
+Đóng luồng chuẩn:
 
 ```cpp
 fclose(stdin);
 fclose(stdout);
 ```
 
-??? note "注"
-    `printf/scanf/cin/cout` 等函数默认使用 `stdin/stdout`，将 `stdin/stdout` 重定向后，这些函数将输入/输出到被定向的文件
+??? note "Ghi chú"
+    `printf/scanf/cin/cout` mặc định dùng `stdin/stdout`; sau khi chuyển hướng, các hàm này sẽ đọc/ghi vào tệp đã chuyển hướng.
 
-### 模板
+### Mẫu
 
 ```cpp
 #include <cstdio>
@@ -85,7 +85,7 @@ int main(void) {
   freopen("data.in", "r", stdin);
   freopen("data.out", "w", stdout);
   /*
-  中间的代码不需要改变，直接使用 cin 和 cout 即可
+  Phần code giữa không cần đổi, chỉ cần dùng cin và cout
   */
   fclose(stdin);
   fclose(stdout);
@@ -93,75 +93,75 @@ int main(void) {
 }
 ```
 
-## `fopen` 函数（选读）
+## Hàm `fopen` (tùy đọc)
 
-函数大致与 `freopen` 相同，函数将打开指定文件并返回打开文件的指针
+Hàm gần giống `freopen`, mở tệp và trả về con trỏ tệp
 
-### 函数原型
+### Nguyên mẫu
 
 ```cpp
 FILE* fopen(const char* path, const char* mode)
 ```
 
-各项参数含义同 `freopen`
+Ý nghĩa tham số như `freopen`.
 
-### 可用读写函数（基本）
+### Hàm đọc/ghi cơ bản
 
 -   `fread/fwrite`
 -   `fgetc/fputc`
 -   `fscanf/fprintf`
 -   `fgets/fputs`
 
-### 使用方式
+### Cách dùng
 
 ```cpp
-FILE *in, *out;  // 定义文件指针
+FILE *in, *out;  // khai báo con trỏ tệp
 in = fopen("data.in", "r");
 out = fopen("data.out", "w");
 /*
-do what you want to do
+làm những gì cần làm
 */
 fclose(in);
 fclose(out);
 ```
 
-## C++ 的 `ifstream/ofstream` 文件输入输出流
+## Luồng vào/ra tệp C++ `ifstream/ofstream`
 
-### 使用方法
+### Cách dùng
 
-读入文件内容：
+Đọc tệp:
 
 ```cpp
 ifstream fin("data.in");
-// data.in 就是读取文件的相对位置或绝对位置
+// data.in là đường dẫn tương đối hoặc tuyệt đối
 ```
 
-输出到文件：
+Ghi tệp:
 
 ```cpp
 ofstream fout("data.out");
-// data.out 就是输出文件的相对位置或绝对位置
+// data.out là đường dẫn tương đối hoặc tuyệt đối
 ```
 
-关闭标准输入/输出流
+Đóng luồng:
 
 ```cpp
 fin.close();
 fout.close();
 ```
 
-### 模板
+### Mẫu
 
 ```cpp
 #include <fstream>
-using namespace std;  // 两个类型都在 std 命名空间里
+using namespace std;  // cả hai kiểu đều trong std
 
 ifstream fin("data.in");
 ofstream fout("data.out");
 
 int main(void) {
   /*
-  中间的代码改变 cin 为 fin ，cout 为 fout 即可
+  Ở giữa chỉ cần đổi cin thành fin, cout thành fout
   */
   fin.close();
   fout.close();
@@ -169,6 +169,6 @@ int main(void) {
 }
 ```
 
-## 参考资料
+## Tài liệu tham khảo
 
 1.  信息学奥赛一本通

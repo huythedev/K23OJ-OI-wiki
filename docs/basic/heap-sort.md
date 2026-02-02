@@ -1,26 +1,26 @@
-本页面将简要介绍堆排序．
+Trang này sẽ giới thiệu ngắn gọn về thuật toán Heap Sort.
 
-## 定义
+## Định nghĩa
 
-堆排序（英语：Heapsort）是指利用 [二叉堆](../ds/binary-heap.md) 这种数据结构所设计的一种排序算法．堆排序的适用数据结构为数组．
+Heap sort (Tiếng Anh: Heapsort) là thuật toán sắp xếp sử dụng cấu trúc dữ liệu [cây nhị phân dạng heap](../ds/binary-heap.md). Heap sort hoạt động trên mảng.
 
-## 过程
+## Quá trình
 
-堆排序的本质是建立在堆上的选择排序．
+Bản chất của heap sort là một dạng selection sort dựa trên heap.
 
-### 排序
+### Sắp xếp
 
-首先建立大顶堆，然后将堆顶的元素取出，作为最大值，与数组尾部的元素交换，并维持残余堆的性质；
+Trước hết xây dựng một max-heap (đỉnh là phần tử lớn nhất), sau đó lấy phần tử đỉnh của heap làm giá trị lớn nhất, hoán đổi với phần tử ở cuối mảng và duy trì tính chất heap của phần còn lại;
 
-之后将堆顶的元素取出，作为次大值，与数组倒数第二位元素交换，并维持残余堆的性质；
+Tiếp tục lấy đỉnh heap làm giá trị lớn thứ hai, hoán đổi với phần tử ở vị trí kế cuối mảng và duy trì tính chất heap của phần còn lại;
 
-以此类推，在第 $n-1$ 次操作后，整个数组就完成了排序．
+Lặp như vậy, sau $n-1$ lần thao tác, toàn bộ mảng sẽ được sắp xếp.
 
-### 在数组上建立二叉堆
+### Xây dựng binary heap trên mảng
 
-从根节点开始，依次将每一层的节点排列在数组里．
+Sắp xếp các nút theo thứ tự các tầng từ gốc xuống, lưu trong mảng.
 
-于是有数组中下标为 `i` 的节点，对应的父结点、左子结点和右子结点如下：
+Vì vậy, với nút có chỉ số `i` trong mảng, chỉ số của nút cha, nút con trái và nút con phải như sau:
 
 ```cpp
 iParent(i) = (i - 1) / 2;
@@ -28,35 +28,35 @@ iLeftChild(i) = 2 * i + 1;
 iRightChild(i) = 2 * i + 2;
 ```
 
-## 性质
+## Tính chất
 
-### 稳定性
+### Tính ổn định
 
-同选择排序一样，由于其中交换位置的操作，所以是不稳定的排序算法．
+Cũng như selection sort, vì có các phép hoán vị nên đây không phải là thuật toán ổn định.
 
-### 时间复杂度
+### Độ phức tạp thời gian
 
-堆排序的最优时间复杂度、平均时间复杂度、最坏时间复杂度均为 $O(n\log n)$．
+Độ phức tạp tốt nhất, trung bình và tồi nhất của heap sort đều là $O(n\log n)$.
 
-### 空间复杂度
+### Độ phức tạp không gian
 
-由于可以在输入数组上建立堆，所以这是一个原地算法．
+Vì có thể xây heap trực tiếp trên mảng đầu vào nên đây là thuật toán in-place.
 
-## 实现
+## Cài đặt
 
 === "C++"
     ```cpp
     void sift_down(int arr[], int start, int end) {
-      // 计算父结点和子结点的下标
+      // Tính chỉ số của nút cha và nút con
       int parent = start;
       int child = parent * 2 + 1;
-      while (child <= end) {  // 子结点下标在范围内才做比较
-        // 先比较两个子结点大小，选择最大的
+      while (child <= end) {  // Chỉ so sánh khi chỉ số nút con còn trong phạm vi
+        // So sánh hai nút con, chọn nút lớn hơn
         if (child + 1 <= end && arr[child] < arr[child + 1]) child++;
-        // 如果父结点比子结点大，代表调整完毕，直接跳出函数
+        // Nếu nút cha lớn hơn hoặc bằng nút con thì đã cân chỉnh xong, thoát hàm
         if (arr[parent] >= arr[child])
           return;
-        else {  // 否则交换父子内容，子结点再和孙结点比较
+        else {  // Nếu không thì hoán đổi cha và con, rồi tiếp tục so sánh từ vị trí con
           swap(arr[parent], arr[child]);
           parent = child;
           child = parent * 2 + 1;
@@ -65,9 +65,9 @@ iRightChild(i) = 2 * i + 2;
     }
     
     void heap_sort(int arr[], int len) {
-      // 从最后一个节点的父节点开始 sift down 以完成堆化 (heapify)
+      // Bắt đầu từ cha của nút cuối cùng và sift down để hoàn thành heapify
       for (int i = (len - 1 - 1) / 2; i >= 0; i--) sift_down(arr, i, len - 1);
-      // 先将第一个元素和已经排好的元素前一位做交换，再重新调整（刚调整的元素之前的元素），直到排序完毕
+      // Hoán đổi phần tử đầu với phần tử cuối vùng chưa sắp, rồi sift_down vùng còn lại, lặp đến khi xong
       for (int i = len - 1; i > 0; i--) {
         swap(arr[0], arr[i]);
         sift_down(arr, 0, i - 1);
@@ -78,29 +78,29 @@ iRightChild(i) = 2 * i + 2;
 === "Python"
     ```python
     def sift_down(arr, start, end):
-        # 计算父结点和子结点的下标
+        # Tính chỉ số của nút cha và nút con
         parent = int(start)
         child = int(parent * 2 + 1)
-        while child <= end:  # 子结点下标在范围内才做比较
-            # 先比较两个子结点大小，选择最大的
+        while child <= end:  # Chỉ so sánh khi chỉ số nút con còn trong phạm vi
+            # So sánh hai nút con, chọn nút lớn hơn
             if child + 1 <= end and arr[child] < arr[child + 1]:
                 child += 1
-            # 如果父结点比子结点大，代表调整完毕，直接跳出函数
+            # Nếu nút cha lớn hơn hoặc bằng nút con thì đã cân chỉnh xong, thoát hàm
             if arr[parent] >= arr[child]:
                 return
-            else:  # 否则交换父子内容，子结点再和孙结点比较
+            else:  # Nếu không thì hoán đổi cha và con, rồi tiếp tục so sánh từ vị trí con
                 arr[parent], arr[child] = arr[child], arr[parent]
                 parent = child
                 child = int(parent * 2 + 1)
     
     
     def heap_sort(arr, len):
-        # 从最后一个节点的父节点开始 sift down 以完成堆化 (heapify)
+        # Bắt đầu từ cha của nút cuối cùng và sift down để hoàn thành heapify
         i = (len - 1 - 1) / 2
         while i >= 0:
             sift_down(arr, i, len - 1)
             i -= 1
-        # 先将第一个元素和已经排好的元素前一位做交换，再重新调整（刚调整的元素之前的元素），直到排序完毕
+        # Hoán đổi phần tử đầu với phần tử cuối vùng chưa sắp, rồi sift_down vùng còn lại, lặp đến khi xong
         i = len - 1
         while i > 0:
             arr[0], arr[i] = arr[i], arr[0]
@@ -108,6 +108,6 @@ iRightChild(i) = 2 * i + 2;
             i -= 1
     ```
 
-## 外部链接
+## Liên kết ngoài
 
 -   [堆排序 - 维基百科，自由的百科全书](https://zh.wikipedia.org/wiki/%E5%A0%86%E6%8E%92%E5%BA%8F)

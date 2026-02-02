@@ -1,22 +1,22 @@
 author: inkydragon, TravorLZH, YOYO-UIAT, wood3, shuzhouliu, Mr-Python-in-China, HeRaNO, weilycoder
 
-## 素数筛法
+## Sàng số nguyên tố
 
-### 引入
+### Giới thiệu
 
-如果我们想要知道小于等于 $n$ 有多少个素数呢？
+Nếu chúng ta muốn biết có bao nhiêu số nguyên tố không vượt quá $n$ thì sao?
 
-一个自然的想法是对于小于等于 $n$ 的每个数进行一次质数检验．这种暴力的做法显然不能达到最优复杂度．
+Một ý tưởng tự nhiên là kiểm tra tính nguyên tố cho từng số không vượt quá $n$. Cách vét cạn này hiển nhiên không đạt độ phức tạp tối ưu.
 
-### 埃拉托斯特尼筛法
+### Sàng Eratosthenes
 
-#### 过程
+#### Quy trình
 
-考虑这样一件事情：对于任意一个大于 $1$ 的正整数 $n$，那么它的 $x$ 倍就是合数（$x > 1$）．利用这个结论，我们可以避免很多次不必要的检测．
+Xét một điều như sau: với mọi số nguyên dương $n > 1$, mọi bội số của nó với $x > 1$ đều là hợp số. Dựa vào kết luận này, ta có thể tránh nhiều lần kiểm tra không cần thiết.
 
-如果我们从小到大考虑每个数，然后同时把当前这个数的所有（比自己大的）倍数记为合数，那么运行结束的时候没有被标记的数就是素数了．
+Nếu ta xét các số theo thứ tự tăng dần, đồng thời đánh dấu tất cả các bội (lớn hơn chính nó) của số hiện tại là hợp số, thì khi kết thúc, các số chưa bị đánh dấu chính là số nguyên tố.
 
-#### 实现
+#### Cài đặt
 
 === "C++"
     ```cpp
@@ -31,9 +31,9 @@ author: inkydragon, TravorLZH, YOYO-UIAT, wood3, shuzhouliu, Mr-Python-in-China,
           prime.push_back(i);
           if ((long long)i * i > n) continue;
           for (int j = i * i; j <= n; j += i)
-            // 因为从 2 到 i - 1 的倍数我们之前筛过了，这里直接从 i
-            // 的倍数开始，提高了运行速度
-            is_prime[j] = false;  // 是 i 的倍数的均不是素数
+            // Vì các bội từ 2 đến i - 1 đã được sàng trước đó, ở đây bắt đầu
+            // từ bội của i để tăng tốc
+            is_prime[j] = false;  // Bội của i đều không phải là số nguyên tố
         }
       }
     }
@@ -58,28 +58,28 @@ author: inkydragon, TravorLZH, YOYO-UIAT, wood3, shuzhouliu, Mr-Python-in-China,
                     is_prime[j] = False
     ```
 
-以上为 **Eratosthenes 筛法**（埃拉托斯特尼筛法，简称埃氏筛法），时间复杂度是 $O(n\log\log n)$．
+Đây là **sàng Eratosthenes** (Eratosthenes sieve, gọi tắt là sàng Eratosthenes), có độ phức tạp thời gian $O(n\log\log n)$.
 
-???+ note "证明"
-    现在我们就来看看推导过程：
+???+ note "Chứng minh"
+    Bây giờ ta xét quá trình suy luận:
     
-    如果每一次对数组的操作花费 1 个单位时间，则时间复杂度为：
+    Nếu mỗi lần thao tác trên mảng tốn 1 đơn vị thời gian, thì độ phức tạp thời gian là:
     
     $$
     O\left(\sum_{k=1}^{\pi(n)}{\frac{n}{p_k}}\right)=O\left(n\sum_{k=1}^{\pi(n)}{\frac{1}{p_k}}\right)
     $$
     
-    其中 $p_k$ 表示第 $k$ 小的素数，$\pi(n)$ 表示 $\le n$ 的素数个数．$\sum_{k=1}^{\pi(n)}$ 表示第一层 for 循环，其中累加上界 $\pi(n)$ 为 `if (prime[i])` 进入 true 分支的次数；$\frac{n}{p_k}$ 表示第二层 for 循环的执行次数．
+    Trong đó $p_k$ là số nguyên tố nhỏ thứ $k$, $\pi(n)$ là số lượng số nguyên tố $\le n$. $\sum_{k=1}^{\pi(n)}$ biểu diễn vòng for ngoài cùng, trong đó cận trên $\pi(n)$ là số lần nhánh true của `if (prime[i])`; $\frac{n}{p_k}$ là số lần thực hiện của vòng for bên trong.
     
-    根据 Mertens 第二定理，存在常数 $B_1$ 使得：
+    Theo định lý thứ hai của Mertens, tồn tại hằng số $B_1$ sao cho:
     
     $$
     \sum_{k=1}^{\pi(n)}{\frac{1}{p_k}}=\log\log n+B_1+O\left(\frac{1}{\log n}\right)
     $$
     
-    所以 **Eratosthenes 筛法** 的时间复杂度为 $O(n\log\log n)$．接下来我们证明 Mertens 第二定理的弱化版本 $\sum_{k\le\pi(n)}1/p_k=O(\log\log n)$：
+    Vì vậy **sàng Eratosthenes** có độ phức tạp thời gian $O(n\log\log n)$. Tiếp theo ta chứng minh phiên bản yếu của định lý Mertens thứ hai $\sum_{k\le\pi(n)}1/p_k=O(\log\log n)$:
     
-    根据 $\pi(n)=\Theta(n/\log n)$，可知第 $n$ 个素数的大小为 $\Theta(n\log n)$．于是就有
+    Theo $\pi(n)=\Theta(n/\log n)$, suy ra số nguyên tố thứ $n$ có kích thước $\Theta(n\log n)$. Do đó:
     
     $$
     \begin{aligned}
@@ -90,11 +90,11 @@ author: inkydragon, TravorLZH, YOYO-UIAT, wood3, shuzhouliu, Mr-Python-in-China,
     \end{aligned}
     $$
     
-    当然，上面的做法效率仍然不够高效，应用下面几种方法可以稍微提高算法的执行效率．
+    Dĩ nhiên, cách làm trên vẫn chưa đủ tối ưu; áp dụng các phương pháp dưới đây có thể cải thiện hiệu năng.
 
-#### 筛至平方根
+#### Sàng đến căn bậc hai
 
-显然，要找到直到 $n$ 为止的所有素数，仅对不超过 $\sqrt n$ 的素数进行筛选就足够了．
+Rõ ràng, để tìm tất cả số nguyên tố không vượt quá $n$, chỉ cần sàng với các số nguyên tố không vượt quá $\sqrt n$ là đủ.
 
 === "C++"
     ```cpp
@@ -104,7 +104,7 @@ author: inkydragon, TravorLZH, YOYO-UIAT, wood3, shuzhouliu, Mr-Python-in-China,
     void Eratosthenes(int n) {
       is_prime[0] = is_prime[1] = false;
       for (int i = 2; i <= n; ++i) is_prime[i] = true;
-      // i * i <= n 说明 i <= sqrt(n)
+      // i * i <= n nghĩa là i <= sqrt(n)
       for (int i = 2; i * i <= n; ++i) {
         if (is_prime[i])
           for (int j = i * i; j <= n; j += i) is_prime[j] = false;
@@ -124,8 +124,8 @@ author: inkydragon, TravorLZH, YOYO-UIAT, wood3, shuzhouliu, Mr-Python-in-China,
         is_prime[0] = is_prime[1] = False
         for i in range(2, n + 1):
             is_prime[i] = True
-        # 让 i 循环到 <= sqrt(n)
-        for i in range(2, isqrt(n) + 1):  # `isqrt` 是 Python 3.8 新增的函数
+        # Cho i chạy đến <= sqrt(n)
+        for i in range(2, isqrt(n) + 1):  # `isqrt` là hàm mới trong Python 3.8
             if is_prime[i]:
                 for j in range(i * i, n + 1, i):
                     is_prime[j] = False
@@ -134,37 +134,37 @@ author: inkydragon, TravorLZH, YOYO-UIAT, wood3, shuzhouliu, Mr-Python-in-China,
                 prime.append(i)
     ```
 
-这种优化不会影响渐近时间复杂度，实际上重复以上证明，我们将得到 $n \ln \ln \sqrt n + o(n)$，根据对数的性质，它们的渐近相同，但操作次数会明显减少．
+Tối ưu này không ảnh hưởng đến độ phức tạp tiệm cận; nếu lặp lại chứng minh ở trên, ta thu được $n \ln \ln \sqrt n + o(n)$, theo tính chất logarit thì chúng tiệm cận như nhau, nhưng số phép toán sẽ giảm đáng kể.
 
-#### 只筛奇数
+#### Chỉ sàng số lẻ
 
-因为除 2 以外的偶数都是合数，所以我们可以直接跳过它们，只用关心奇数就好．
+Vì mọi số chẵn khác 2 đều là hợp số, ta có thể bỏ qua chúng, chỉ cần quan tâm đến số lẻ.
 
-首先，这样做能让我们内存需求减半；其次，所需的操作大约也减半．
+Cách này giúp giảm một nửa nhu cầu bộ nhớ; đồng thời số thao tác cũng giảm khoảng một nửa.
 
-#### 减少内存的占用
+#### Giảm mức sử dụng bộ nhớ
 
-我们注意到筛选时只需要 `bool` 类型的数组．`bool` 数组的一个元素一般占用 $1$ 字节（即 $8$ 比特），但是存储一个布尔值只需要 $1$ 个比特就足够了．
+Ta nhận thấy khi sàng chỉ cần mảng kiểu `bool`. Một phần tử `bool` thường chiếm 1 byte (8 bit), nhưng lưu một giá trị boolean chỉ cần 1 bit.
 
-我们可以使用 [位操作](../bit.md) 的相关知识，将每个布尔值压到一个比特位中，这样我们仅需使用 $n$ 比特（即 $\dfrac n 8$ 字节）而非 $n$ 字节，可以显著减少内存占用．这种方式被称为「位级压缩」．
+Ta có thể dùng kiến thức [bit thao tác](../bit.md) để nén mỗi boolean vào một bit, khi đó chỉ cần $n$ bit (tức $\dfrac n 8$ byte) thay vì $n$ byte, giúp giảm bộ nhớ đáng kể. Cách này gọi là “nén mức bit”.
 
-值得一提的是，存在自动执行位级压缩的数据结构，如 C++ 中的 `vector<bool>` 和 `bitset<>`．
+Đáng chú ý, tồn tại các cấu trúc dữ liệu tự động thực hiện nén mức bit, như `vector<bool>` và `bitset<>` trong C++.
 
-另外，`vector<bool>` 和 `bitset<>` 对程序有常数优化，时间复杂度 $O(n \log \log n)$ 的埃氏筛在使用 `bitset<>` 或 `vector<bool>` 优化后，性能甚至超过时间复杂度 $O(n)$ 的欧拉筛．
+Ngoài ra, `vector<bool>` và `bitset<>` còn có tối ưu hằng số; sàng Eratosthenes với độ phức tạp $O(n \log \log n)$ khi dùng `bitset<>` hoặc `vector<bool>` có thể nhanh hơn cả sàng Euler có độ phức tạp $O(n)$.
 
-参见 [bitset: 与埃氏筛结合](../../lang/csl/bitset.md#与埃氏筛结合)．
+Xem thêm [bitset: kết hợp với sàng Eratosthenes](../../lang/csl/bitset.md#与埃氏筛结合).
 
-#### 分块筛选
+#### Sàng theo khối
 
-由优化「筛至平方根」可知，不需要一直保留整个 `is_prime[1...n]` 数组．为了进行筛选，只保留到 $\sqrt n$ 的素数就足够了，即 `prime[1...sqrt(n)]`．并将整个范围分成块，每个块分别进行筛选．这样，我们就不必同时在内存中保留多个块，而且 CPU 可以更好地处理缓存．
+Từ tối ưu “sàng đến căn bậc hai”, ta thấy không cần giữ toàn bộ mảng `is_prime[1...n]`. Để sàng, chỉ cần giữ các số nguyên tố đến $\sqrt n$, tức `prime[1...sqrt(n)]`. Đồng thời chia toàn bộ miền thành các khối, mỗi khối được sàng riêng. Nhờ đó, ta không cần giữ nhiều khối cùng lúc trong bộ nhớ, và CPU có thể tận dụng cache tốt hơn.
 
-设 $s$ 是一个常数，它决定了块的大小，那么我们就有了 $\lceil {\frac n s} \rceil$ 个块，而块 $k$($k = 0 \dots \lfloor {\frac n s} \rfloor$) 包含了区间 $[ks, ks + s - 1]$ 中的数字．我们可以依次处理块，也就是说，对于每个块 $k$，我们将遍历所有质数（从 $1$ 到 $\sqrt n$）并使用它们进行筛选．
+Gọi $s$ là hằng số quyết định kích thước khối, khi đó có $\lceil {\frac n s} \rceil$ khối, và khối $k$($k = 0 \dots \lfloor {\frac n s} \rfloor$) chứa các số trong đoạn $[ks, ks + s - 1]$. Ta xử lý từng khối theo thứ tự: với mỗi khối $k$, ta duyệt mọi số nguyên tố (từ $1$ đến $\sqrt n$) và dùng chúng để sàng.
 
-值得注意的是，我们在处理第一个数字时需要稍微修改一下策略：首先，应保留 $[1, \sqrt n]$ 中的所有的质数；第二，数字 $0$ 和 $1$ 应该标记为非素数．在处理最后一个块时，不应该忘记最后一个数字 $n$ 并不一定位于块的末尾．
+Lưu ý khi xử lý khối đầu tiên, cần điều chỉnh một chút: thứ nhất, phải giữ tất cả số nguyên tố trong $[1, \sqrt n]$; thứ hai, số 0 và 1 phải được đánh dấu là không nguyên tố. Khi xử lý khối cuối, không nên quên rằng số cuối cùng $n$ không nhất thiết nằm ở cuối khối.
 
-以下实现使用块筛选来计算小于等于 $n$ 的质数数量．
+Cài đặt sau dùng sàng theo khối để đếm số lượng số nguyên tố không vượt quá $n$.
 
-???+ note "实现"
+???+ note "Cài đặt"
     ```cpp
     int count_primes(int n) {
       constexpr static int S = 10000;
@@ -196,19 +196,19 @@ author: inkydragon, TravorLZH, YOYO-UIAT, wood3, shuzhouliu, Mr-Python-in-China,
     }
     ```
 
-分块筛法的渐近时间复杂度与埃氏筛法是一样的（除非块非常小），但是所需的内存将缩小为 $O(\sqrt{n} + S)$，并且有更好的缓存结果．
-另一方面，对于每一对块和区间 $[1, \sqrt{n}]$ 中的素数都要进行除法，而对于较小的块来说，这种情况要糟糕得多．
-因此，在选择常数 $S$ 时要保持平衡．
+Độ phức tạp tiệm cận của sàng theo khối giống sàng Eratosthenes (trừ khi khối quá nhỏ), nhưng bộ nhớ cần dùng sẽ giảm xuống $O(\sqrt{n} + S)$ và hiệu quả cache tốt hơn.
+Mặt khác, với mỗi cặp khối và các số nguyên tố trong $[1, \sqrt{n}]$ đều phải thực hiện phép chia; với các khối nhỏ thì điều này sẽ tệ hơn.
+Vì vậy cần cân bằng khi chọn hằng số $S$.
 
-块大小 $S$ 取 $10^4$ 到 $10^5$ 之间，可以获得最佳的速度．
+Kích thước khối $S$ lấy trong khoảng $10^4$ đến $10^5$ thường cho tốc độ tốt nhất.
 
-### 线性筛法
+### Sàng tuyến tính
 
-埃氏筛法仍有优化空间，它会将一个合数重复多次标记．有没有什么办法省掉无意义的步骤呢？答案是肯定的．
+Sàng Eratosthenes vẫn còn có thể tối ưu, vì nó đánh dấu một hợp số nhiều lần. Có cách nào loại bỏ các bước thừa không? Câu trả lời là có.
 
-如果能让每个合数都只被标记一次，那么时间复杂度就可以降到 $O(n)$ 了．
+Nếu đảm bảo mỗi hợp số chỉ bị đánh dấu đúng một lần, thì độ phức tạp thời gian có thể giảm xuống $O(n)$.
 
-???+ note "实现"
+???+ note "Cài đặt"
     === "C++"
         ```cpp
         vector<int> pri;
@@ -224,10 +224,11 @@ author: inkydragon, TravorLZH, YOYO-UIAT, wood3, shuzhouliu, Mr-Python-in-China,
               not_prime[i * pri_j] = true;
               if (i % pri_j == 0) {
                 // i % pri_j == 0
-                // 换言之，i 之前被 pri_j 筛过了
-                // 由于 pri 里面质数是从小到大的，所以 i 乘上其他的质数的结果一定会被
-                // pri_j 的倍数筛掉，就不需要在这里先筛一次，所以这里直接 break
-                // 掉就好了
+                // Nói cách khác, i đã được sàng bởi pri_j trước đó
+                // Vì các số nguyên tố trong pri được sắp tăng dần, nên i nhân với
+                // các số nguyên tố lớn hơn sẽ chắc chắn bị sàng bởi bội của pri_j,
+                // nên không cần sàng lại ở đây, chỉ cần break
+                // là đủ
                 break;
               }
             }
@@ -239,12 +240,14 @@ author: inkydragon, TravorLZH, YOYO-UIAT, wood3, shuzhouliu, Mr-Python-in-China,
         ```python
         pri = []
         not_prime = [False] * N
+        mu = [0] * N
         
         
         def pre(n):
             for i in range(2, n + 1):
                 if not not_prime[i]:
                     pri.append(i)
+                    mu[i] = -1
                 for pri_j in pri:
                     if i * pri_j > n:
                         break
@@ -252,26 +255,27 @@ author: inkydragon, TravorLZH, YOYO-UIAT, wood3, shuzhouliu, Mr-Python-in-China,
                     if i % pri_j == 0:
                         """
                         i % pri_j == 0
-                        换言之，i 之前被 pri_j 筛过了
-                        由于 pri 里面质数是从小到大的，所以 i 乘上其他的质数的结果一定会被
-                        pri_j 的倍数筛掉，就不需要在这里先筛一次，所以这里直接 break
-                        掉就好了
+                        Nói cách khác, i đã được sàng bởi pri_j trước đó
+                        Vì các số nguyên tố trong pri được sắp tăng dần, nên i nhân với
+                        các số nguyên tố lớn hơn sẽ chắc chắn bị sàng bởi bội của pri_j,
+                        nên không cần sàng lại ở đây, chỉ cần break
+                        là đủ
                         """
                         break
         ```
 
-上面的这种 **线性筛法** 也称为 **Euler 筛法**（欧拉筛法）．
+Cách làm trên là **sàng tuyến tính** (còn gọi là **sàng Euler**).
 
 ???+ note "Note"
-    注意到筛法求素数的同时也得到了每个数的最小质因子．
+    Lưu ý rằng trong quá trình sàng tìm số nguyên tố, ta cũng thu được ước nguyên tố nhỏ nhất của mỗi số.
 
-## 筛法求欧拉函数
+## Sàng tính hàm Euler
 
-注意到在线性筛中，每一个合数都是被最小的质因子筛掉．比如设 $p_1$ 是 $n$ 的最小质因子，$n' = \frac{n}{p_1}$，那么线性筛的过程中 $n$ 通过 $n' \times p_1$ 筛掉．
+Lưu ý rằng trong sàng tuyến tính, mỗi hợp số bị sàng bởi ước nguyên tố nhỏ nhất. Ví dụ, đặt $p_1$ là ước nguyên tố nhỏ nhất của $n$, $n' = \frac{n}{p_1}$, thì trong quá trình sàng tuyến tính, $n$ bị sàng bởi $n' \times p_1$.
 
-观察线性筛的过程，我们还需要处理两个部分，下面对 $n' \bmod p_1$ 分情况讨论．
+Quan sát quá trình sàng tuyến tính, ta còn cần xử lý hai trường hợp theo $n' \bmod p_1$.
 
-如果 $n' \bmod p_1 = 0$，那么 $n'$ 包含了 $n$ 的所有质因子．
+Nếu $n' \bmod p_1 = 0$, thì $n'$ chứa tất cả các ước nguyên tố của $n$.
 
 $$
 \begin{aligned}
@@ -281,7 +285,7 @@ $$
 \end{aligned}
 $$
 
-那如果 $n' \bmod p_1 \neq 0$ 呢，这时 $n'$ 和 $p_1$ 是互质的，根据欧拉函数性质，我们有：
+Nếu $n' \bmod p_1 \neq 0$ thì $n'$ và $p_1$ nguyên tố cùng nhau. Theo tính chất của hàm Euler:
 
 $$
 \begin{aligned}
@@ -290,7 +294,7 @@ $$
 \end{aligned}
 $$
 
-### 实现
+### Cài đặt
 
 === "C++"
     ```cpp
@@ -341,23 +345,23 @@ $$
                 phi[i * pri_j] = phi[i] * phi[pri_j]
     ```
 
-## 筛法求莫比乌斯函数
+## Sàng tính hàm Möbius
 
-### 定义
+### Định nghĩa
 
-根据莫比乌斯函数的定义，设 $n$ 是一个合数，$p_1$ 是 $n$ 的最小质因子，$n'=\frac{n}{p_1}$，有：
+Theo định nghĩa hàm Möbius, đặt $n$ là hợp số, $p_1$ là ước nguyên tố nhỏ nhất của $n$, $n'=\frac{n}{p_1}$, ta có:
 
 $$
 \mu(n)=
 \begin{cases}
     0 & n' \bmod p_1 = 0\\\\
-    -\mu(n') & \text{otherwise}
+    -\mu(n') & \text{ngược lại}
 \end{cases}
 $$
 
-若 $n$ 是质数，有 $\mu(n)=-1$．
+Nếu $n$ là số nguyên tố thì $\mu(n)=-1$.
 
-### 实现
+### Cài đặt
 
 === "C++"
     ```cpp
@@ -408,25 +412,25 @@ $$
                 mu[i * pri_j] = -mu[i]
     ```
 
-## 筛法求约数个数
+## Sàng tính số lượng ước
 
-用 $d_i$ 表示 $i$ 的约数个数，$num_i$ 表示 $i$ 的最小质因子出现次数．
+Dùng $d_i$ biểu diễn số lượng ước của $i$, $num_i$ biểu diễn số lần xuất hiện của ước nguyên tố nhỏ nhất của $i$.
 
-### 约数个数定理
+### Định lý số lượng ước
 
-定理：若 $n=\prod_{i=1}^m p_i^{c_i}$ 则 $d_i=\prod_{i=1}^m (c_i+1)$．
+Định lý: Nếu $n=\prod_{i=1}^m p_i^{c_i}$ thì $d_i=\prod_{i=1}^m (c_i+1)$.
 
-证明：我们知道 $p_i^{c_i}$ 的约数有 $p_i^0,p_i^1,\dots ,p_i^{c_i}$ 共 $c_i+1$ 个，根据乘法原理，$n$ 的约数个数就是 $\prod_{i=1}^m (c_i+1)$．
+Chứng minh: Ta biết $p_i^{c_i}$ có các ước $p_i^0,p_i^1,\dots ,p_i^{c_i}$, tổng cộng $c_i+1$ ước. Theo nguyên lý nhân, số lượng ước của $n$ là $\prod_{i=1}^m (c_i+1)$.
 
-### 实现
+### Cài đặt
 
-因为 $d_i$ 是积性函数，所以可以使用线性筛．
+Vì $d_i$ là hàm nhân tính, nên có thể dùng sàng tuyến tính.
 
-在这里简单介绍一下线性筛实现原理．
+Ở đây giới thiệu ngắn gọn nguyên lý cài đặt sàng tuyến tính:
 
-1.  当 $i$ 为质数时，$\textit{num}_i \gets 1,\textit{d}_i \gets 2$，同时设 $q = \left\lfloor \dfrac {i}{p} \right\rfloor$，其中 $p$ 为 $i$ 的最小质因子．
-2.  当 $p$ 为 $q$ 的质因子时，$\textit{num}_i \gets \textit{num}_q + 1,\textit{d}_i \gets \dfrac{\textit{d}_q}{\textit{num}_i} \times (\textit{num}_i + 1)$．
-3.  当 $p,q$ 互质时，$\textit{num}_i \gets 1,\textit{d}_i \gets \textit{d}_q \times (\textit{num}_i+1)$．
+1.  Khi $i$ là số nguyên tố: $\textit{num}_i \gets 1,\textit{d}_i \gets 2$, đồng thời đặt $q = \left\lfloor \dfrac {i}{p} \right\rfloor$, trong đó $p$ là ước nguyên tố nhỏ nhất của $i$.
+2.  Khi $p$ là ước của $q$: $\textit{num}_i \gets \textit{num}_q + 1,\textit{d}_i \gets \dfrac{\textit{d}_q}{\textit{num}_i} \times (\textit{num}_i + 1)$.
+3.  Khi $p, q$ nguyên tố cùng nhau: $\textit{num}_i \gets 1,\textit{d}_i \gets \textit{d}_q \times (\textit{num}_i+1)$.
 
 === "C++"
     ```cpp
@@ -484,11 +488,11 @@ $$
                 d[i * pri_j] = d[i] * 2
     ```
 
-## 筛法求约数和
+## Sàng tính tổng ước
 
-$f_i$ 表示 $i$ 的约数和，$g_i$ 表示 $i$ 的最小质因子的 $p^0+p^1+p^2+\dots p^k$.
+$f_i$ biểu diễn tổng các ước của $i$, $g_i$ biểu diễn $p^0+p^1+p^2+\dots p^k$ với $p$ là ước nguyên tố nhỏ nhất.
 
-### 实现
+### Cài đặt
 
 === "C++"
     ```cpp
@@ -546,20 +550,20 @@ $f_i$ 表示 $i$ 的约数和，$g_i$ 表示 $i$ 的最小质因子的 $p^0+p^1+
                 g[i * pri_j] = 1 + pri_j
     ```
 
-## 一般的积性函数
+## Hàm nhân tính tổng quát
 
-假如一个 [积性函数](./basic.md#积性函数)  $f$ 满足：对于任意质数 $p$ 和正整数 $k$，可以在关于 $k$ 的低次多项式时间内计算 $f(p^k)$，那么可以在 $O(n)$ 时间内筛出 $f(1),f(2),\dots,f(n)$ 的值．
+Giả sử một [hàm nhân tính](./basic.md#积性函数) $f$ thỏa: với mọi số nguyên tố $p$ và số nguyên dương $k$, có thể tính $f(p^k)$ trong thời gian đa thức bậc thấp theo $k$, thì có thể sàng các giá trị $f(1),f(2),\dots,f(n)$ trong $O(n)$.
 
-设合数 $n$ 的质因子分解是 $\prod_{i=1}^k p_i^{\alpha_i}$，其中 $p_1<p_2<\dots<p_k$ 为质数，我们在线性筛中记录 $g_n=p_1^{\alpha_1}$，假如 $n$ 被 $x\cdot p$ 筛掉（$p$ 是质数），那么 $g$ 满足如下递推式：
+Giả sử phân tích thừa số nguyên tố của hợp số $n$ là $\prod_{i=1}^k p_i^{\alpha_i}$, trong đó $p_1<p_2<\dots<p_k$ là các số nguyên tố; ta lưu $g_n=p_1^{\alpha_1}$ trong sàng tuyến tính. Nếu $n$ bị sàng bởi $x\cdot p$ (với $p$ là số nguyên tố), thì $g$ thỏa mãn:
 
 $$
 g_n=
 \begin{cases}
     g_x\cdot p & x\bmod p=0\\\\
-    p & \text{otherwise}
+    p & \text{ngược lại}
 \end{cases}
 $$
 
-假如 $n=g_n$，说明 $n$ 就是某个质数的次幂，可以 $O(1)$ 计算 $f(n)$；否则，$f(n)=f(\frac{n}{g_n})\cdot f(g_n)$．
+Nếu $n=g_n$ thì $n$ là lũy thừa của một số nguyên tố, có thể tính $f(n)$ trong $O(1)$; ngược lại, $f(n)=f(\frac{n}{g_n})\cdot f(g_n)$.
 
-**本节部分内容译自博文 [Решето Эратосфена](http://e-maxx.ru/algo/eratosthenes_sieve) 与其英文翻译版 [Sieve of Eratosthenes](https://cp-algorithms.com/algebra/sieve-of-eratosthenes.html)．其中俄文版版权协议为 Public Domain + Leave a Link；英文版版权协议为 CC-BY-SA 4.0．**
+**Một phần nội dung của mục này được dịch từ bài viết [Решето Эратосфена](http://e-maxx.ru/algo/eratosthenes_sieve) và bản dịch tiếng Anh [Sieve of Eratosthenes](https://cp-algorithms.com/algebra/sieve-of-eratosthenes.html). Bản tiếng Nga có giấy phép Public Domain + Leave a Link; bản tiếng Anh có giấy phép CC-BY-SA 4.0.**

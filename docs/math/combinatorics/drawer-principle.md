@@ -1,30 +1,30 @@
-## 定义
+## Định nghĩa
 
-抽屉原理，亦称鸽巢原理（the pigeonhole principle）．
+Nguyên lý hộp (pigeonhole principle).
 
-它常被用于证明存在性证明和求最坏情况下的解．
+Nó thường dùng để chứng minh tồn tại và tìm nghiệm trong trường hợp xấu nhất.
 
-## 简单情况
+## Trường hợp đơn giản
 
-将 $n+1$ 个物体，划分为 $n$ 组，那么有至少一组有两个（或以上）的物体．
+Chia $n+1$ vật vào $n$ nhóm, thì ít nhất một nhóm có từ hai vật trở lên.
 
-这个定理看起来比较显然，证明方法考虑反证法：假如每个分组有至多 $1$ 个物体，那么最多有 $1\times n$ 个物体，而实际上有 $n+1$ 个物体，矛盾．
+Định lý này khá hiển nhiên; chứng minh bằng phản chứng: nếu mỗi nhóm có nhiều nhất 1 vật thì tổng tối đa là $1\times n$, nhưng thực tế có $n+1$, mâu thuẫn.
 
-## 推广
+## Mở rộng
 
-将 $n$ 个物体，划分为 $k$ 组，那么至少存在一个分组，含有大于或等于 $\left \lceil \dfrac{n}{k} \right \rceil$ 个物品．
+Chia $n$ vật thành $k$ nhóm, thì tồn tại một nhóm có ít nhất $\left \lceil \dfrac{n}{k} \right \rceil$ vật.
 
-推广的形式也可以使用反证法证明：若每个分组含有小于 $\left \lceil \dfrac{n}{k} \right \rceil$ 个物体，则其总和 $S\leq (\left \lceil \dfrac{n}{k} \right \rceil -1 ) \times k=k\left\lceil \dfrac{n}{k} \right\rceil-k < k(\dfrac{n}{k}+1)-k=n$ 矛盾．
+Có thể chứng minh bằng phản chứng: nếu mỗi nhóm có ít hơn $\left \lceil \dfrac{n}{k} \right \rceil$ vật thì tổng $S\leq (\left \lceil \dfrac{n}{k} \right \rceil -1 ) \times k=k\left\lceil \dfrac{n}{k} \right\rceil-k < k(\dfrac{n}{k}+1)-k=n$ mâu thuẫn.
 
-此外，划分还可以弱化为覆盖结论不变．  
-给定集合 $S$, 一个 $S$ 的非空子集构成的簇 $\{A_1,A_2\ldots A_k\}$
+Ngoài ra, “phân chia” có thể nới lỏng thành “phủ” mà kết luận không đổi.  
+Cho tập $S$, một họ con không rỗng $\{A_1,A_2\ldots A_k\}$
 
--   若满足 $\bigcup_{i=1}^k A_i$ 则称为 $S$ 的一个覆盖（cover）
--   若一个覆盖还满足 $i\neq j\to A_i\cap A_j=\varnothing$ 则称为 $S$ 的一个划分．
+-   Nếu $\bigcup_{i=1}^k A_i$ thì gọi là một phủ (cover) của $S$
+-   Nếu một phủ còn thỏa $i\neq j\to A_i\cap A_j=\varnothing$ thì gọi là một phân hoạch (partition) của $S$.
 
-鸽巢原理可以有如下叙述：对于 $S$ 的一个覆盖 $\{A_1,A_2\ldots A_k\}$ 有至少一个集合 $A_i$ 满足 $\left\vert A_i \right\vert \geq \left\lceil \dfrac{\left\vert S \right\vert}{k} \right\rceil$．
+Nguyên lý hộp có thể phát biểu: với một phủ $\{A_1,A_2\ldots A_k\}$ của $S$ luôn có ít nhất một tập $A_i$ sao cho $\left\vert A_i \right\vert \geq \left\lceil \dfrac{\left\vert S \right\vert}{k} \right\rceil$.
 
-## 参考文献
+## Tài liệu tham khảo
 
 -   [Wikipedia: Pigeonhole principle](https://en.wikipedia.org/wiki/Pigeonhole_principle)
 -   *Discrete Mathematics and Its Applications*: Chapter 6, Section 1

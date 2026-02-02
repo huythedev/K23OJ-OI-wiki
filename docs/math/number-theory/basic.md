@@ -1,355 +1,355 @@
-本文对于数论的开头部分做一个简介．
+Bài viết này giới thiệu phần mở đầu của số học.
 
-## 整除
+## Tính chia hết
 
-???+ note "定义"
-    设 $a,b\in\mathbf{Z}$，$a\ne 0$．如果 $\exists q\in\mathbf{Z}$，使得 $b=aq$，那么就说 $b$ 可被 $a$  **整除**，记作 $a\mid b$；$b$ 不被 $a$ 整除记作 $a\nmid b$．
+???+ note "Định nghĩa"
+    Cho $a,b\in\mathbf{Z}$, $a\ne 0$. Nếu $\exists q\in\mathbf{Z}$ sao cho $b=aq$, thì nói rằng $b$ **chia hết** cho $a$, ký hiệu $a\mid b$; nếu không chia hết thì ký hiệu $a\nmid b$.
 
-整除的性质：
+Tính chất của chia hết:
 
 -   $a\mid b\iff-a\mid b\iff a\mid-b\iff|a|\mid|b|$
 -   $a\mid b\land b\mid c\implies a\mid c$
 -   $a\mid b\land a\mid c\iff\forall x,y\in\mathbf{Z}, a\mid(xb+yc)$
 -   $a\mid b\land b\mid a\implies b=\pm a$
--   设 $m\ne0$，那么 $a\mid b\iff ma\mid mb$．
--   设 $b\ne0$，那么 $a\mid b\implies|a|\le|b|$．
--   设 $a\ne0,b=qa+c$，那么 $a\mid b\iff a\mid c$．
+-   Với $m\ne0$ thì $a\mid b\iff ma\mid mb$.
+-   Với $b\ne0$ thì $a\mid b\implies|a|\le|b|$.
+-   Với $a\ne0,b=qa+c$ thì $a\mid b\iff a\mid c$.
 
-### 约数
+### Ước số
 
-???+ note "定义"
-    若 $a\mid b$，则称 $b$ 是 $a$ 的 **倍数**，$a$ 是 $b$ 的 **约数**．
+???+ note "Định nghĩa"
+    Nếu $a\mid b$ thì $b$ là **bội số** của $a$, và $a$ là **ước số** của $b$.
 
-$0$ 是所有非 $0$ 整数的倍数．对于整数 $b\ne0$，$b$ 的约数只有有限个．
+$0$ là bội số của mọi số nguyên khác $0$. Với số nguyên $b\ne0$, $b$ chỉ có hữu hạn ước số.
 
-平凡约数（平凡因数）：对于整数 $b\ne0$，$\pm1$、$\pm b$ 是 $b$ 的平凡约数．当 $b=\pm1$ 时，$b$ 只有两个平凡约数．
+Ước tầm thường (nhân tử tầm thường): với số nguyên $b\ne0$, $\pm1$ và $\pm b$ là các ước tầm thường của $b$. Khi $b=\pm1$ thì $b$ chỉ có hai ước tầm thường.
 
-对于整数 $b\ne 0$，$b$ 的其他约数称为真约数（真因数、非平凡约数、非平凡因数）．
+Với số nguyên $b\ne 0$, các ước còn lại gọi là ước thực (nhân tử thực, ước không tầm thường, nhân tử không tầm thường).
 
-约数的性质：
+Tính chất của ước:
 
--   设整数 $b\ne0$．当 $d$ 遍历 $b$ 的全体约数的时候，$\dfrac{b}{d}$ 也遍历 $b$ 的全体约数．
--   设整数 $b\gt 0$，则当 $d$ 遍历 $b$ 的全体正约数的时候，$\dfrac{b}{d}$ 也遍历 $b$ 的全体正约数．
+-   Với số nguyên $b\ne0$. Khi $d$ chạy qua toàn bộ ước của $b$, thì $\dfrac{b}{d}$ cũng chạy qua toàn bộ ước của $b$.
+-   Với số nguyên $b\gt 0$. Khi $d$ chạy qua toàn bộ ước dương của $b$, thì $\dfrac{b}{d}$ cũng chạy qua toàn bộ ước dương của $b$.
 
-在具体问题中，**如果没有特别说明，约数总是指正约数．**
+Trong bài toán cụ thể, **nếu không có chỉ định đặc biệt thì “ước” luôn hiểu là ước dương.**
 
-## 带余数除法
+## Phép chia có dư
 
-???+ note "余数"
-    设 $a,b$ 为两个给定的整数，$a\ne0$．设 $d$ 是一个给定的整数．那么，一定存在唯一的一对整数 $q$ 和 $r$，满足 $b=qa+r,d\le r<|a|+d$．
+???+ note "Số dư"
+    Cho $a,b$ là hai số nguyên, $a\ne0$. Cho $d$ là một số nguyên bất kỳ. Khi đó luôn tồn tại duy nhất một cặp số nguyên $q$ và $r$ sao cho $b=qa+r, d\le r<|a|+d$.
 
-无论整数 $d$ 取何值，$r$ 统称为余数．$a\mid b$ 等价于 $a\mid r$．
+Bất kể $d$ nhận giá trị nào, $r$ đều được gọi là số dư. $a\mid b$ tương đương với $a\mid r$.
 
-一般情况下，$d$ 取 $0$，此时等式 $b=qa+r,0\le r<|a|$ 称为带余数除法（带余除法）．这里的余数 $r$ 称为最小非负余数．
+Thông thường, $d$ lấy $0$, khi đó đẳng thức $b=qa+r,0\le r<|a|$ gọi là phép chia có dư. Số dư $r$ khi đó gọi là số dư không âm nhỏ nhất.
 
-余数往往还有两种常见取法：
+Số dư còn có hai cách chọn thông dụng:
 
--   绝对最小余数：$d$ 取 $a$ 的绝对值的一半的相反数．即 $b=qa+r,-\dfrac{|a|}{2}\le r<|a|-\dfrac{|a|}{2}$．
--   最小正余数：$d$ 取 $1$．即 $b=qa+r,1\le r<|a|+1$．
+-   Số dư tuyệt đối nhỏ nhất: $d$ lấy đối của nửa giá trị tuyệt đối của $a$, tức $b=qa+r,-\dfrac{|a|}{2}\le r<|a|-\dfrac{|a|}{2}$.
+-   Số dư dương nhỏ nhất: $d$ lấy $1$, tức $b=qa+r,1\le r<|a|+1$.
 
-带余数除法的余数只有最小非负余数．**如果没有特别说明，余数总是指最小非负余数．**
+Trong phép chia có dư, số dư luôn là số dư không âm nhỏ nhất. **Nếu không nói rõ, “số dư” luôn hiểu là số dư không âm nhỏ nhất.**
 
-余数的性质：
+Tính chất của số dư:
 
--   任一整数被正整数 $a$ 除后，余数一定是且仅是 $0$ 到 $(a-1)$ 这 $a$ 个数中的一个．
--   相邻的 $a$ 个整数被正整数 $a$ 除后，恰好取到上述 $a$ 个余数．特别地，一定有且仅有一个数被 $a$ 整除．
+-   Một số nguyên khi chia cho số nguyên dương $a$ thì số dư chắc chắn là và chỉ là một trong $a$ số $0$ đến $(a-1)$.
+-   $a$ số nguyên liên tiếp khi chia cho số nguyên dương $a$ thì đúng bằng sẽ nhận đủ $a$ số dư trên. Đặc biệt, có và chỉ có một số chia hết cho $a$.
 
-## 最大公约数与最小公倍数
+## Ước chung lớn nhất và bội chung nhỏ nhất
 
-关于公约数、公倍数、最大公约数与最小公倍数，四个名词的定义，见 [最大公约数](./gcd.md)．
+Về định nghĩa ước chung, bội chung, ước chung lớn nhất và bội chung nhỏ nhất, xem [Ước chung lớn nhất](./gcd.md).
 
 ???+ warning "Warning"
-    一些作者认为 $0$ 和 $0$ 的最大公约数无定义，其余作者一般将其视为 $0$．C++ STL 的实现中采用后者，即认为 $0$ 和 $0$ 的最大公约数为 $0$[^gcdcpp]．
+    Một số tác giả cho rằng $\gcd(0,0)$ là không xác định, số khác thường lấy bằng $0$. Cài đặt trong C++ STL chọn cách sau, tức $\gcd(0,0)=0$[^gcdcpp].
 
-最大公约数有如下性质：
+Ước chung lớn nhất có các tính chất:
 
--   $(a_1,\dots,a_n)=(|a_1|,\dots,|a_n|)$；
--   $(a,b)=(b,a)$；
--   若 $a\ne 0$，则 $(a,0)=(a,a)=|a|$；
--   $(bq+r,b)=(r,b)$；
--   $(a_1,\dots,a_n)=((a_1,a_2),a_3,\dots,a_n)$．进而 $\forall 1<k<n-1,~(a_1,\dots,a_n)=((a_1,\dots,a_k),(a_{k+1},\dots,a_n))$；
--   对不全为 $0$ 的整数 $a_1,\dots,a_n$ 和非零整数 $m$，$(ma_1,\dots,ma_n)=|m|(a_1,\dots,a_n)$；
--   对不全为 $0$ 的整数 $a_1,\dots,a_n$，若 $(a_1,\dots,a_n)=d$，则 $(a_1/d,\dots,a_n/d)=1$；
--   $(a^n,b^n)=(a,b)^n$．
+-   $(a_1,\dots,a_n)=(|a_1|,\dots,|a_n|)$;
+-   $(a,b)=(b,a)$;
+-   Nếu $a\ne 0$ thì $(a,0)=(a,a)=|a|$;
+-   $(bq+r,b)=(r,b)$;
+-   $(a_1,\dots,a_n)=((a_1,a_2),a_3,\dots,a_n)$. Suy ra $\forall 1<k<n-1,~(a_1,\dots,a_n)=((a_1,\dots,a_k),(a_{k+1},\dots,a_n))$;
+-   Với các số nguyên không đồng thời bằng $0$ là $a_1,\dots,a_n$ và số nguyên khác $0$ $m$, $(ma_1,\dots,ma_n)=|m|(a_1,\dots,a_n)$;
+-   Với các số nguyên không đồng thời bằng $0$ $a_1,\dots,a_n$, nếu $(a_1,\dots,a_n)=d$ thì $(a_1/d,\dots,a_n/d)=1$;
+-   $(a^n,b^n)=(a,b)^n$.
 
-最大公约数还有如下与互素相关的性质：
+Ước chung lớn nhất còn có các tính chất liên quan đến nguyên tố cùng nhau:
 
--   若 $b|ac$ 且 $(a,b)=1$，则 $b\mid c$；
--   若 $b|c$、$a|c$ 且 $(a,b)=1$，则 $ab\mid c$；
--   若 $(a,b)=1$，则 $(a,bc)=(a,c)$；
--   若 $(a_i,b_j)=1,~\forall 1\leq i\leq n,1\leq j\leq m$，则 $\left(\prod_i a_i,\prod_j b_j\right)=1$．特别地，若 $(a,b)=1$，则 $(a^n,b^m)=1$；
--   对整数 $a_1,\dots,a_n$，若 $\exists v\in \mathbf{Z},~\prod_i a_i=v^m$，且 $(a_i,a_j)=1,~\forall i\ne j$，则 $\forall 1\leq i\leq n,~\sqrt[m]{a_i}\in\mathbf{Z}$．
+-   Nếu $b|ac$ và $(a,b)=1$ thì $b\mid c$;
+-   Nếu $b|c$ và $a|c$ và $(a,b)=1$ thì $ab\mid c$;
+-   Nếu $(a,b)=1$ thì $(a,bc)=(a,c)$;
+-   Nếu $(a_i,b_j)=1,~\forall 1\leq i\leq n,1\leq j\leq m$ thì $\left(\prod_i a_i,\prod_j b_j\right)=1$. Đặc biệt, nếu $(a,b)=1$ thì $(a^n,b^m)=1$;
+-   Với các số nguyên $a_1,\dots,a_n$, nếu $\exists v\in \mathbf{Z},~\prod_i a_i=v^m$, và $(a_i,a_j)=1,~\forall i\ne j$ thì $\forall 1\leq i\leq n,~\sqrt[m]{a_i}\in\mathbf{Z}$.
 
-最小公倍数有如下性质：
+Bội chung nhỏ nhất có các tính chất:
 
--   $[a_1,\dots,a_n]=[|a_1|,\dots,|a_n|]$；
--   $[a,b]=[b,a]$；
--   若 $a\ne 0$，则 $[a,1]=[a,a]=|a|$；
--   若 $a\mid b$，则 $[a,b]=|b|$；
--   $[a_1,\dots,a_n]=[[a_1,a_2],a_3,\dots,a_n]$．进而 $\forall 1<k<n-1,~[a_1,\dots,a_n]=[[a_1,\dots,a_k],[a_{k+1},\dots,a_n]]$；
--   若 $a_i\mid m,~\forall 1\leq i\leq n$，则 $[a_1,\dots,a_n]\mid m$；
--   $[ma_1,\dots,ma_n]=|m|[a_1,\dots,a_n]$；
--   $[a,b,c][ab,bc,ca]=[a,b][b,c][c,a]$；
--   $[a^n,b^n]=[a,b]^n$．
+-   $[a_1,\dots,a_n]=[|a_1|,\dots,|a_n|]$;
+-   $[a,b]=[b,a]$;
+-   Nếu $a\ne 0$ thì $[a,1]=[a,a]=|a|$;
+-   Nếu $a\mid b$ thì $[a,b]=|b|$;
+-   $[a_1,\dots,a_n]=[[a_1,a_2],a_3,\dots,a_n]$. Suy ra $\forall 1<k<n-1,~[a_1,\dots,a_n]=[[a_1,\dots,a_k],[a_{k+1},\dots,a_n]]$;
+-   Nếu $a_i\mid m,~\forall 1\leq i\leq n$ thì $[a_1,\dots,a_n]\mid m$;
+-   $[ma_1,\dots,ma_n]=|m|[a_1,\dots,a_n]$;
+-   $[a,b,c][ab,bc,ca]=[a,b][b,c][c,a]$;
+-   $[a^n,b^n]=[a,b]^n$.
 
-最大公约数和最小公倍数可以组合出很多奇妙的等式，如：
+ƯCLN và BCNN có thể kết hợp cho ra nhiều đẳng thức thú vị, ví dụ:
 
--   $(a,b)[a,b]=|ab|$；
--   $(ab,bc,ca)[a,b,c]=|abc|$；
--   $\dfrac{(a,b,c)^2}{(a,b)(b,c)(a,c)}=\dfrac{[a,b,c]^2}{[a,b][b,c][a,c]}$．
+-   $(a,b)[a,b]=|ab|$;
+-   $(ab,bc,ca)[a,b,c]=|abc|$;
+-   $\dfrac{(a,b,c)^2}{(a,b)(b,c)(a,c)}=\dfrac{[a,b,c]^2}{[a,b][b,c][a,c]}$.
 
-这些性质均可通过定义或 [唯一分解定理](#算术基本定理) 证明，其中使用唯一分解定理的证明更容易理解．
+Các tính chất này đều có thể chứng minh từ định nghĩa hoặc từ [định lý phân tích duy nhất](#算术基本定理); cách dùng định lý phân tích duy nhất thường dễ hiểu hơn.
 
-### 互素
+### Nguyên tố cùng nhau
 
-???+ note "定义"
-    若 $(a_1,a_2)=1$，则称 $a_1$ 和 $a_2$  **互素**（**既约**）．
+???+ note "Định nghĩa"
+    Nếu $(a_1,a_2)=1$ thì gọi $a_1$ và $a_2$ **nguyên tố cùng nhau** (**tối giản**).
     
-    若 $(a_1,\ldots,a_k)=1$，则称 $a_1,\ldots,a_k$  **互素**（**既约**）．
+    Nếu $(a_1,\ldots,a_k)=1$ thì gọi $a_1,\ldots,a_k$ **nguyên tố cùng nhau** (**tối giản**).
 
-多个整数互素，不一定两两互素．例如 $6$、$10$ 和 $15$ 互素，但是任意两个都不互素．
+Nhiều số nguyên cùng nguyên tố không nhất thiết từng đôi nguyên tố cùng nhau. Ví dụ $6$, $10$ và $15$ nguyên tố cùng nhau, nhưng mọi cặp đều không nguyên tố cùng nhau.
 
-互素的性质与最大公约数理论：裴蜀定理（Bézout's identity）．见 [裴蜀定理](./bezouts.md)．
+Tính chất của nguyên tố cùng nhau và lý thuyết ƯCLN: định lý Bézout. Xem [Định lý Bézout](./bezouts.md).
 
-### 辗转相除法
+### Thuật toán Euclid
 
-辗转相除法是一种算法，也称 Euclid 算法．见 [最大公约数](./gcd.md)．
+Thuật toán Euclid còn gọi là thuật toán chia liên tiếp. Xem [Ước chung lớn nhất](./gcd.md).
 
-## 素数与合数
+## Số nguyên tố và hợp số
 
-关于素数的算法见 [素数](./prime.md)．
+Về thuật toán liên quan số nguyên tố xem [Số nguyên tố](./prime.md).
 
-???+ note "定义"
-    设整数 $p\ne0,\pm1$．如果 $p$ 除了平凡约数外没有其他约数，那么称 $p$ 为 **素数**（**不可约数**）．
+???+ note "Định nghĩa"
+    Cho số nguyên $p\ne0,\pm1$. Nếu $p$ ngoài các ước tầm thường không có ước nào khác, thì $p$ là **số nguyên tố** (**số bất khả quy**).
     
-    若整数 $a\ne0,\pm 1$ 且 $a$ 不是素数，则称 $a$ 为 **合数**．
+    Nếu số nguyên $a\ne0,\pm 1$ và $a$ không phải số nguyên tố thì $a$ là **hợp số**.
 
-$p$ 和 $-p$ 总是同为素数或者同为合数．**如果没有特别说明，素数总是指正的素数．**
+$p$ và $-p$ luôn cùng là nguyên tố hoặc cùng là hợp số. **Nếu không nói rõ, “số nguyên tố” luôn hiểu là số nguyên tố dương.**
 
-整数的因数是素数，则该素数称为该整数的素因数（素约数）．
+Một ước nguyên tố của số nguyên được gọi là ước nguyên tố (thừa số nguyên tố) của số đó.
 
-素数与合数的简单性质：
+Một số tính chất đơn giản:
 
--   大于 $1$ 的整数 $a$ 是合数，等价于 $a$ 可以表示为整数 $d$ 和 $e$（$1<d,e<a$）的乘积．
--   如果素数 $p$ 有大于 $1$ 的约数 $d$，那么 $d=p$．
--   大于 $1$ 的整数 $a$ 一定可以表示为素数的乘积．
--   对于合数 $a$，一定存在素数 $p\le\sqrt{a}$ 使得 $p\mid a$．
--   素数有无穷多个．
--   所有大于 $3$ 的素数都可以表示为 $6n\pm 1$ 的形式[^ref1]．
+-   Số nguyên $a>1$ là hợp số khi và chỉ khi $a$ viết được thành tích $de$ với $1<d,e<a$.
+-   Nếu số nguyên tố $p$ có ước $d>1$ thì $d=p$.
+-   Mọi số nguyên $a>1$ đều viết được thành tích các số nguyên tố.
+-   Với hợp số $a$, tồn tại số nguyên tố $p\le\sqrt{a}$ sao cho $p\mid a$.
+-   Có vô hạn số nguyên tố.
+-   Mọi số nguyên tố lớn hơn $3$ đều có dạng $6n\pm 1$[^ref1].
 
-## 算术基本定理
+## Định lý cơ bản của số học
 
-???+ note "算术基本引理"
-    设 $p$ 是素数，$p\mid a_1a_2$，那么 $p\mid a_1$ 和 $p\mid a_2$ 至少有一个成立．
+???+ note "Bổ đề cơ bản"
+    Cho $p$ là số nguyên tố, $p\mid a_1a_2$ thì $p\mid a_1$ hoặc $p\mid a_2$.
 
-算术基本引理的逆命题稍加修改也可以得到素数的另一种定义．
+Mệnh đề đảo của bổ đề trên nếu sửa nhẹ cũng cho một định nghĩa khác của số nguyên tố.
 
-???+ note "素数的另一种定义"
-    对整数 $p\ne 0,\pm 1$，若对任意满足 $p\mid a_1a_2$ 的整数 $a_1,a_2$ 均有 $p\mid a_1$ 或 $p\mid a_2$ 成立，则称 $p$ 是素数．
+???+ note "Định nghĩa khác của số nguyên tố"
+    Với số nguyên $p\ne 0,\pm 1$, nếu với mọi $a_1,a_2$ thỏa $p\mid a_1a_2$ đều suy ra $p\mid a_1$ hoặc $p\mid a_2$, thì $p$ là số nguyên tố.
 
 ??? tip "Tip"
-    这个定义的动机可以从 [素理想](../algebra/ring-theory.md#素理想) 中找到．
+    Động cơ của định nghĩa này có thể xem ở [ideal nguyên tố](../algebra/ring-theory.md#素理想).
 
-???+ note "算术基本定理（唯一分解定理）"
-    设正整数 $a$，那么必有表示：
+???+ note "Định lý cơ bản của số học (phân tích duy nhất)"
+    Cho số nguyên dương $a$, luôn có biểu diễn:
     
     $$
     a=p_1p_2\cdots p_s
     $$
     
-    其中 $p_j(1\le j\le s)$ 是素数．并且在不计次序的意义下，该表示唯一．
+    trong đó $p_j(1\le j\le s)$ là các số nguyên tố. Hơn nữa, theo nghĩa không xét thứ tự, biểu diễn là duy nhất.
 
-???+ note "标准素因数分解式"
-    将上述表示中，相同的素数合并，可得：
+???+ note "Dạng phân tích thừa số nguyên tố chuẩn"
+    Gộp các thừa số nguyên tố trùng nhau, được:
     
     $$
     a={p_1}^{\alpha_1}{p_2}^{\alpha_2}\cdots{p_s}^{\alpha_s},p_1<p_2<\cdots<p_s
     $$
     
-    称为正整数 $a$ 的标准素因数分解式．
+    gọi là dạng phân tích thừa số nguyên tố chuẩn của số nguyên dương $a$.
 
-算术基本定理和算术基本引理，两个定理是等价的．
+Định lý cơ bản và bổ đề cơ bản là tương đương nhau.
 
-## 同余
+## Đồng dư
 
-???+ note "定义"
-    设整数 $m\ne0$．若 $m\mid(a-b)$，称 $m$ 为 **模数**（**模**），$a$ 同余于 $b$ 模 $m$，$b$ 是 $a$ 对模 $m$ 的 **剩余**．记作 $a\equiv b\pmod m$．
+???+ note "Định nghĩa"
+    Cho số nguyên $m\ne0$. Nếu $m\mid(a-b)$ thì gọi $m$ là **mô-đun** (**mod**), $a$ đồng dư với $b$ theo mô-đun $m$, $b$ là **số dư** của $a$ theo mô-đun $m$. Ký hiệu $a\equiv b\pmod m$.
     
-    否则，$a$ 不同余于 $b$ 模 $m$，$b$ 不是 $a$ 对模 $m$ 的剩余．记作 $a\not\equiv b\pmod m$．
+    Nếu không, $a$ không đồng dư với $b$ theo mô-đun $m$, $b$ không phải số dư của $a$ theo mô-đun $m$. Ký hiệu $a\not\equiv b\pmod m$.
     
-    这样的等式，称为模 $m$ 的同余式，简称 **同余式**．
+    Các đẳng thức như vậy gọi là đồng dư theo mô-đun $m$, gọi tắt là **đồng dư**.
 
-根据整除的性质，上述同余式也等价于 $a\equiv b\pmod{(-m)}$．
+Theo tính chất chia hết, đồng dư trên cũng tương đương với $a\equiv b\pmod{(-m)}$.
 
-后文中，如果没有特别说明，模数总是 **正整数**．
+Về sau nếu không nói rõ, mô-đun luôn là **số nguyên dương**.
 
-式中的 $b$ 是 $a$ 对模 $m$ 的剩余，这个概念与余数完全一致．通过限定 $b$ 的范围，相应的有 $a$ 对模 $m$ 的最小非负剩余、绝对最小剩余、最小正剩余．
+Trong biểu thức, $b$ là số dư của $a$ theo mô-đun $m$, khái niệm này trùng với số dư trong phép chia. Bằng cách giới hạn phạm vi của $b$, ta có số dư không âm nhỏ nhất, số dư tuyệt đối nhỏ nhất, số dư dương nhỏ nhất.
 
-同余的性质：
+Tính chất của đồng dư:
 
--   同余是 [等价关系](../order-theory.md#二元关系)，即同余具有
-    -   自反性：$a\equiv a\pmod m$．
-    -   对称性：若 $a\equiv b\pmod m$，则 $b\equiv a\pmod m$．
-    -   传递性：若 $a\equiv b\pmod m,b\equiv c\pmod m$，则 $a\equiv c\pmod m$．
--   线性运算：若 $a,b,c,d\in\mathbf{Z},m\in\mathbf{N}^*,a\equiv b\pmod m,c\equiv d\pmod m$ 则有：
-    -   $a\pm c\equiv b\pm d\pmod m$．
-    -   $a\times c\equiv b\times d\pmod m$．
--   设 $f(x)=\sum_{i=0}^n a_ix^i$ 和 $g(x)=\sum_{i=0}^n b_ix^i$ 是两个整系数多项式，$m\in\mathbf{N}^*$，且 $a_i\equiv b_i\pmod m,~0\leq i\leq n$，则对任意整数 $x$ 均有 $f(x)\equiv g(x)\pmod m$．进而若 $s\equiv t\pmod m$，则 $f(s)\equiv g(t)\pmod m$．
--   若 $a,b\in\mathbf{Z},k,m\in\mathbf{N}^*,a\equiv b\pmod m$, 则 $ak\equiv bk\pmod{mk}$．
--   若 $a,b\in\mathbf{Z},d,m\in\mathbf{N}^*,d\mid a,d\mid b,d\mid m$，则当 $a\equiv b\pmod m$ 成立时，有 $\dfrac{a}{d}\equiv\dfrac{b}{d}\left(\bmod\;{\dfrac{m}{d}}\right)$．
--   若 $a,b\in\mathbf{Z},d,m\in\mathbf{N}^*,d\mid m$，则当 $a\equiv b\pmod m$ 成立时，有 $a\equiv b\pmod d$．
--   若 $a,b\in\mathbf{Z},d,m\in\mathbf{N}^*$，则当 $a\equiv b\pmod m$ 成立时，有 $(a,m)=(b,m)$．若 $d$ 能整除 $m$ 及 $a,b$ 中的一个，则 $d$ 必定能整除 $a,b$ 中的另一个．
+-   Đồng dư là [quan hệ tương đương](../order-theory.md#二元关系), tức có:
+    -   Phản xạ: $a\equiv a\pmod m$.
+    -   Đối xứng: nếu $a\equiv b\pmod m$ thì $b\equiv a\pmod m$.
+    -   Bắc cầu: nếu $a\equiv b\pmod m,b\equiv c\pmod m$ thì $a\equiv c\pmod m$.
+-   Phép toán tuyến tính: nếu $a,b,c,d\in\mathbf{Z},m\in\mathbf{N}^*,a\equiv b\pmod m,c\equiv d\pmod m$ thì:
+    -   $a\pm c\equiv b\pm d\pmod m$.
+    -   $a\times c\equiv b\times d\pmod m$.
+-   Cho $f(x)=\sum_{i=0}^n a_ix^i$ và $g(x)=\sum_{i=0}^n b_ix^i$ là hai đa thức hệ số nguyên, $m\in\mathbf{N}^*$, và $a_i\equiv b_i\pmod m,~0\leq i\leq n$, thì với mọi số nguyên $x$ đều có $f(x)\equiv g(x)\pmod m$. Suy ra nếu $s\equiv t\pmod m$ thì $f(s)\equiv g(t)\pmod m$.
+-   Nếu $a,b\in\mathbf{Z},k,m\in\mathbf{N}^*,a\equiv b\pmod m$ thì $ak\equiv bk\pmod{mk}$.
+-   Nếu $a,b\in\mathbf{Z},d,m\in\mathbf{N}^*,d\mid a,d\mid b,d\mid m$ và $a\equiv b\pmod m$ thì $\dfrac{a}{d}\equiv\dfrac{b}{d}\left(\bmod\;{\dfrac{m}{d}}\right)$.
+-   Nếu $a,b\in\mathbf{Z},d,m\in\mathbf{N}^*,d\mid m$ và $a\equiv b\pmod m$ thì $a\equiv b\pmod d$.
+-   Nếu $a,b\in\mathbf{Z},d,m\in\mathbf{N}^*$ và $a\equiv b\pmod m$ thì $(a,m)=(b,m)$. Nếu $d$ chia $m$ và chia một trong $a,b$ thì $d$ cũng chia số còn lại.
 
-还有性质是乘法逆元．见 [乘法逆元](./inverse.md)．
+Còn có tính chất về nghịch đảo nhân. Xem [nghịch đảo nhân](./inverse.md).
 
-## 同余类与剩余系
+## Lớp đồng dư và hệ thặng dư
 
-为方便讨论，对集合 $A,B$ 和元素 $r$，我们引入如下记号：
+Để thuận tiện, với hai tập $A,B$ và phần tử $r$, dùng ký hiệu:
 
--   $r+A:=\{r+a:a\in A\}$；
--   $rA:=\{ra:a\in A\}$；
--   $A+B:=\{a+b:a\in A,b\in B\}$；
--   $AB:=\{ab:a\in A,b\in B\}$．
+-   $r+A:=\{r+a:a\in A\}$;
+-   $rA:=\{ra:a\in A\}$;
+-   $A+B:=\{a+b:a\in A,b\in B\}$;
+-   $AB:=\{ab:a\in A,b\in B\}$.
 
-???+ note "同余类"
-    对非零整数 $m$，把全体整数分成 $|m|$ 个两两不交的集合，且同一个集合中的任意两个数模 $m$ 均同余，我们把这 $|m|$ 个集合均称为模 $m$ 的 **同余类** 或 **剩余类**．用 $r\bmod m$ 表示含有整数 $r$ 的模 $m$ 的同余类．
+???+ note "Lớp đồng dư"
+    Với số nguyên khác $0$ $m$, chia toàn bộ các số nguyên thành $|m|$ tập con đôi một không giao nhau, sao cho mọi hai số trong cùng một tập đều đồng dư theo mô-đun $m$. Mỗi tập như vậy gọi là **lớp đồng dư** hoặc **lớp thặng dư** theo mô-đun $m$. Dùng $r\bmod m$ để chỉ lớp đồng dư chứa số nguyên $r$.
     
-    不难证明对任意非零整数 $m$，上述划分方案一定存在且唯一．
+    Không khó chứng minh với mọi $m\ne0$, cách chia trên tồn tại và là duy nhất.
 
-由同余类的定义可知：
+Từ định nghĩa lớp đồng dư:
 
--   $r\bmod m=\{r+km:k\in\mathbf{Z}\}$；
--   $r\bmod m=s\bmod m\iff r\equiv s\pmod m$；
--   对任意 $r,s\in\mathbf{Z}$，要么 $r\bmod m=s\bmod m$，要么 $(r\bmod m)\cap (s\bmod m)=\varnothing$；
--   若 $m_1\mid m$，则对任意整数 $r$ 均有 $r+m\mathbf{Z}\subseteq r+m_1\mathbf{Z}$．
+-   $r\bmod m=\{r+km:k\in\mathbf{Z}\}$;
+-   $r\bmod m=s\bmod m\iff r\equiv s\pmod m$;
+-   Với mọi $r,s\in\mathbf{Z}$, hoặc $r\bmod m=s\bmod m$, hoặc $(r\bmod m)\cap (s\bmod m)=\varnothing$;
+-   Nếu $m_1\mid m$ thì với mọi số nguyên $r$ đều có $r+m\mathbf{Z}\subseteq r+m_1\mathbf{Z}$.
 
-注意到同余是等价关系，所以同余类即为同余关系的等价类．
+Vì đồng dư là quan hệ tương đương nên lớp đồng dư chính là lớp tương đương của quan hệ đồng dư.
 
-我们把模 $m$ 的同余类全体构成的集合记为 $\mathbf{Z}_m$，即
+Tập hợp các lớp đồng dư theo mô-đun $m$ ký hiệu $\mathbf{Z}_m$, tức
 
 $$
 \mathbf{Z}_m:=\{r\bmod m:0\leq r<m\}
 $$
 
-不难发现：
+Dễ thấy:
 
--   对任意整数 $a$，$a+\mathbf{Z}_m=\mathbf{Z}_m$；
--   对任意与 $m$ 互质的整数 $b$，$b\mathbf{Z}_m=\mathbf{Z}_m$．
+-   Với mọi số nguyên $a$, $a+\mathbf{Z}_m=\mathbf{Z}_m$;
+-   Với mọi số nguyên $b$ nguyên tố cùng $m$, $b\mathbf{Z}_m=\mathbf{Z}_m$.
 
-由 [商群](../algebra/group-theory.md#商群) 的定义可知 $\mathbf{Z}_m=\mathbf{Z}/m\mathbf{Z}$，所以有时我们也会用 $\mathbf{Z}/m\mathbf{Z}$ 表示 $\mathbf{Z}_m$．
+Theo định nghĩa [nhóm thương](../algebra/group-theory.md#商群), $\mathbf{Z}_m=\mathbf{Z}/m\mathbf{Z}$, nên đôi khi cũng viết $\mathbf{Z}/m\mathbf{Z}$ để chỉ $\mathbf{Z}_m$.
 
-由 [抽屉原理](../combinatorics/drawer-principle.md) 可知：
+Theo [nguyên lý Dirichlet (ngăn kéo)](../combinatorics/drawer-principle.md):
 
--   任取 $m+1$ 个整数，必有两个整数模 $m$ 同余．
--   存在 $m$ 个两两模 $m$ 不同余的整数．
+-   Chọn $m+1$ số nguyên bất kỳ, luôn có hai số đồng dư theo mô-đun $m$.
+-   Tồn tại $m$ số nguyên đôi một không đồng dư theo mô-đun $m$.
 
-由此我们给出完全剩余系的定义：
+Từ đó định nghĩa hệ thặng dư hoàn chỉnh:
 
-???+ note "（完全）剩余系"
-    对 $m$ 个整数 $a_1,a_2,\dots,a_m$，若对任意的数 $x$，有且仅有一个数 $a_i$ 使得 $x$ 与 $a_i$ 模 $m$ 同余，则称这 $m$ 个整数 $a_1,a_2,\dots,a_m$ 为模 $m$ 的 **完全剩余系**，简称 **剩余系**．
+???+ note "Hệ thặng dư (hoàn chỉnh)"
+    Với $m$ số nguyên $a_1,a_2,\dots,a_m$, nếu với mọi số $x$, tồn tại duy nhất một số $a_i$ sao cho $x$ đồng dư với $a_i$ theo mô-đun $m$, thì $a_1,a_2,\dots,a_m$ là **hệ thặng dư hoàn chỉnh** theo mô-đun $m$ (gọi tắt là **hệ thặng dư**).
 
-我们还可以定义模 $m$ 的：
+Ta cũng có thể định nghĩa các hệ thặng dư theo mô-đun $m$:
 
--   最小非负（完全）剩余系：$0,\dots,m-1$；
--   最小正（完全）剩余系：$1,\dots,m$；
--   绝对最小（完全）剩余系：$-\lfloor m/2\rfloor,\dots,-\lfloor -m/2\rfloor-1$；
--   最大非正（完全）剩余系：$-m+1,\dots,0$；
--   最大负（完全）剩余系：$-m,\dots,-1$．
+-   Hệ thặng dư không âm nhỏ nhất: $0,\dots,m-1$;
+-   Hệ thặng dư dương nhỏ nhất: $1,\dots,m$;
+-   Hệ thặng dư tuyệt đối nhỏ nhất: $-\lfloor m/2\rfloor,\dots,-\lfloor -m/2\rfloor-1$;
+-   Hệ thặng dư không dương lớn nhất: $-m+1,\dots,0$;
+-   Hệ thặng dư âm lớn nhất: $-m,\dots,-1$.
 
-若无特殊说明，一般我们只用最小非负剩余系．
+Nếu không nói rõ, ta chỉ dùng hệ thặng dư không âm nhỏ nhất.
 
-我们注意到如下命题成立：
+Ta chú ý mệnh đề sau:
 
--   在模 $m$ 的任意一个同余类中，任取两个整数 $a_1,a_2$ 均有 $(a_1,m)=(a_2,m)$．
+-   Trong cùng một lớp đồng dư theo mô-đun $m$, lấy bất kỳ hai số nguyên $a_1,a_2$ thì $(a_1,m)=(a_2,m)$.
 
-考虑同余类 $r\bmod m$，若 $(r,m)=1$，则该同余类的所有元素均与 $m$ 互质，这说明我们也许可以通过类似方式得知所有与 $m$ 互质的整数构成的集合的结构．
+Xét lớp đồng dư $r\bmod m$, nếu $(r,m)=1$ thì mọi phần tử của lớp đều nguyên tố cùng $m$, do đó ta có thể tìm cấu trúc của tập các số nguyên cùng nguyên tố với $m$ theo cách tương tự.
 
-???+ note "既约同余类"
-    对同余类 $r\bmod m$，若 $(r,m)=1$，则称该同余类为 **既约同余类** 或 **既约剩余类**．
+???+ note "Lớp đồng dư tối giản"
+    Với lớp đồng dư $r\bmod m$, nếu $(r,m)=1$ thì gọi là **lớp đồng dư tối giản** hoặc **lớp thặng dư tối giản**.
     
-    我们把模 $m$ 既约剩余类的个数记作 $\varphi(m)$，称其为 [Euler 函数](./euler-totient.md)．
+    Số lớp đồng dư tối giản theo mô-đun $m$ ký hiệu $\varphi(m)$, gọi là [hàm Euler](./euler-totient.md).
 
-我们把模 $m$ 的既约同余类全体构成的集合记为 $\mathbf{Z}_m^*$，即
+Tập các lớp đồng dư tối giản theo mô-đun $m$ ký hiệu $\mathbf{Z}_m^*$:
 
 $$
 \mathbf{Z}_m^*:=\{r\bmod m:0\leq r<m,(r,m)=1\}
 $$
 
 ???+ warning "Warning"
-    对于任意的整数 $a$ 和与 $m$ 互质的整数 $b$，$b\mathbf{Z}_m^*=\mathbf{Z}_m^*$，但是 $a+\mathbf{Z}_m^*$ 不一定为 $\mathbf{Z}_m^*$．这一点与 $\mathbf{Z}_m$ 不同．
+    Với mọi số nguyên $a$ và số nguyên $b$ nguyên tố cùng $m$, ta có $b\mathbf{Z}_m^*=\mathbf{Z}_m^*$, nhưng $a+\mathbf{Z}_m^*$ không nhất thiết bằng $\mathbf{Z}_m^*$. Điều này khác với $\mathbf{Z}_m$.
 
-由 [抽屉原理](../combinatorics/drawer-principle.md) 可知：
+Theo [nguyên lý ngăn kéo](../combinatorics/drawer-principle.md):
 
--   任取 $\varphi(m)+1$ 个与 $m$ 互质的整数，必有两个整数模 $m$ 同余．
--   存在 $\varphi(m)$ 个与 $m$ 互质且两两模 $m$ 不同余的整数．
+-   Lấy $\varphi(m)+1$ số nguyên đều nguyên tố cùng $m$, luôn có hai số đồng dư theo mô-đun $m$.
+-   Tồn tại $\varphi(m)$ số nguyên nguyên tố cùng $m$ và đôi một không đồng dư theo mô-đun $m$.
 
-由此我们给出既约剩余系的定义：
+Từ đó định nghĩa hệ thặng dư tối giản:
 
-???+ note "既约剩余系"
-    对 $t=\varphi(m)$ 个整数 $a_1,a_2,\dots,a_t$，若 $(a_i,m)=1,~\forall 1\leq i\leq t$，且对任意满足 $(x,m)=1$ 的数 $x$，有且仅有一个数 $a_i$ 使得 $x$ 与 $a_i$ 模 $m$ 同余，则称这 $t$ 个整数 $a_1,a_2,\dots,a_t$ 为模 $m$ 的 **既约剩余系**、**缩剩余系** 或 **简化剩余系**．
+???+ note "Hệ thặng dư tối giản"
+    Với $t=\varphi(m)$ số nguyên $a_1,a_2,\dots,a_t$, nếu $(a_i,m)=1,~\forall 1\leq i\leq t$, và với mọi $x$ thỏa $(x,m)=1$, tồn tại duy nhất một $a_i$ sao cho $x$ đồng dư với $a_i$ theo mô-đun $m$, thì $a_1,a_2,\dots,a_t$ là **hệ thặng dư tối giản**, **hệ thặng dư rút gọn** hoặc **hệ thặng dư giản lược** theo mô-đun $m$.
 
-类似地，我们也可以定义最小非负既约剩余系等概念．
+Tương tự, ta có thể định nghĩa hệ thặng dư tối giản không âm nhỏ nhất, v.v.
 
-若无特殊说明，一般我们只用最小非负既约剩余系．
+Nếu không nói rõ, ta chỉ dùng hệ thặng dư tối giản không âm nhỏ nhất.
 
-### 剩余系的复合
+### Ghép hệ thặng dư
 
-对正整数 $m$，我们有如下定理：
+Với số nguyên dương $m$, ta có định lý:
 
--   若 $m=m_1m_2,~1\leq m_1,m_2$，令 $Z_{m_1},Z_{m_2}$ 分别为模 $m_1,m_2$ 的 **完全** 剩余系，则对任意与 $m_1$ 互质的 $a$ 均有：
+-   Nếu $m=m_1m_2,~1\leq m_1,m_2$, đặt $Z_{m_1},Z_{m_2}$ lần lượt là hệ thặng dư **hoàn chỉnh** theo mô-đun $m_1,m_2$, thì với mọi $a$ nguyên tố cùng $m_1$ đều có:
 
     $$
     Z_m=aZ_{m_1}+m_1Z_{m_2}.
     $$
 
-    为模 $m$ 的 **完全** 剩余系．进而，若 $m=\prod_{i=1}^k m_i,~1\leq m_1,m_2,\dots,m_k$，令 $Z_{m_1},\dots,Z_{m_k}$ 分别为模 $m_1,\dots,m_k$ 的 **完全** 剩余系，则：
+    là hệ thặng dư **hoàn chỉnh** theo mô-đun $m$. Suy ra, nếu $m=\prod_{i=1}^k m_i,~1\leq m_1,m_2,\dots,m_k$, đặt $Z_{m_1},\dots,Z_{m_k}$ là các hệ thặng dư **hoàn chỉnh** tương ứng thì:
 
     $$
     Z_m=\sum_{i=1}^k\left(\prod_{j=1}^{i-1}m_j\right)Z_{m_i}.
     $$
 
-    为模 $m$ 的 **完全** 剩余系．
+    là hệ thặng dư **hoàn chỉnh** theo mô-đun $m$.
 
-???+ note "证明"
-    只需证明对任意满足 $ax+m_1y\equiv ax'+m_1y'\pmod{m_1m_2}$ 的 $x,x'\in Z_{m_1}$，$y,y'\in Z_{m_2}$，都有：
+???+ note "Chứng minh"
+    Chỉ cần chứng minh với mọi $x,x'\in Z_{m_1}$, $y,y'\in Z_{m_2}$ thỏa $ax+m_1y\equiv ax'+m_1y'\pmod{m_1m_2}$ đều có:
     
     $$
     ax+m_1y=ax'+m_1y'.
     $$
     
-    实际上，由 $m_1\mid m_1m_2$，我们有 $ax+m_1y\equiv ax'+m_1y'\pmod{m_1}$，进而 $ax\equiv ax'\pmod{m_1}$，由 $(a,m_1)=1$ 可知 $x\equiv x'\pmod{m_1}$，进而有 $x=x'$．
+    Thật vậy, do $m_1\mid m_1m_2$ nên $ax+m_1y\equiv ax'+m_1y'\pmod{m_1}$, suy ra $ax\equiv ax'\pmod{m_1}$. Từ $(a,m_1)=1$ suy ra $x\equiv x'\pmod{m_1}$, do đó $x=x'$.
     
-    进一步，$m_1y\equiv m_1y'\pmod{m_1m_2}$，则 $y\equiv y'\pmod{m_2}$，即 $y=y'$．
+    Hơn nữa, $m_1y\equiv m_1y'\pmod{m_1m_2}$ nên $y\equiv y'\pmod{m_2}$, tức $y=y'$.
     
-    因此，
+    Vì vậy,
     
     $$
     ax+m_1y=ax'+m_1y'.
     $$
 
--   若 $m=m_1m_2,~1\leq m_1,m_2,(m_1,m_2)=1$，令 $Z_{m_1}^*,Z_{m_2}^*$ 分别为模 $m_1,m_2$ 的 **既约** 剩余系，则：
+-   Nếu $m=m_1m_2,~1\leq m_1,m_2,(m_1,m_2)=1$, đặt $Z_{m_1}^*,Z_{m_2}^*$ lần lượt là hệ thặng dư **tối giản** theo mô-đun $m_1,m_2$, thì:
 
     $$
     Z_m^*=m_2Z_{m_1}^*+m_1Z_{m_2}^*.
     $$
 
-    为模 $m$ 的 **既约** 剩余系．
+    là hệ thặng dư **tối giản** theo mô-đun $m$.
 
 ???+ tip "Tip"
-    该定理等价于证明 Euler 函数为 [积性函数](#积性函数)．
+    Định lý này tương đương với việc chứng minh hàm Euler là [hàm tích](#积性函数).
 
-???+ note "证明"
-    令 $Z_{m_1},Z_{m_2}$ 分别为模 $m_1,m_2$ 的完全剩余系，我们已经证明了
+???+ note "Chứng minh"
+    Gọi $Z_{m_1},Z_{m_2}$ là các hệ thặng dư hoàn chỉnh theo mô-đun $m_1,m_2$. Ta đã chứng minh
     
     $$
     Z_m=m_2Z_{m_1}+m_1Z_{m_2}
     $$
     
-    为模 $m$ 的完全剩余系．令 $M=\{a\in Z_m:(a,m)=1\}\subseteq Z_m$，显然 $M$ 为模 $m$ 的既约剩余系，所以我们只需证明 $M=Z_m^*$ 即可．
+    là hệ thặng dư hoàn chỉnh theo mô-đun $m$. Đặt $M=\{a\in Z_m:(a,m)=1\}\subseteq Z_m$, hiển nhiên $M$ là hệ thặng dư tối giản theo mô-đun $m$, nên chỉ cần chứng minh $M=Z_m^*$.
     
-    显然 $Z_m^*\subseteq Z_m$．
+    Rõ ràng $Z_m^*\subseteq Z_m$.
     
-    任取 $m_2x+m_1y\in M$，其中 $x\in Z_{m_1}$ 且 $y\in Z_{m_2}$，有 $(m_2x+m_1y,m_1m_2)=1$，由 $(m_1,m_2)=1$ 可得
+    Lấy $m_2x+m_1y\in M$, với $x\in Z_{m_1}$ và $y\in Z_{m_2}$, ta có $(m_2x+m_1y,m_1m_2)=1$. Từ $(m_1,m_2)=1$ suy ra
     
     $$
     1=(m_2x+m_1y,m_1)=(m_2x,m_1)=(x,m_1),
@@ -359,9 +359,9 @@ $$
     1=(m_2x+m_1y,m_2)=(m_1y,m_2)=(y,m_2).
     $$
     
-    因此可得 $x\in Z_{m_1}^*$ 且 $y\in Z_{m_2}^*$，即 $M\subseteq Z_m^*$．
+    Do đó $x\in Z_{m_1}^*$ và $y\in Z_{m_2}^*$, tức $M\subseteq Z_m^*$.
     
-    任取 $m_2x+m_1y\in Z_m^*$，其中 $x\in Z_{m_1}^*$ 且 $y\in Z_{m_2}^*$，有 $(x,m_1)=1$ 且 $(y,m_2)=1$，由 $(m_1,m_2)=1$ 可得
+    Lấy $m_2x+m_1y\in Z_m^*$, với $x\in Z_{m_1}^*$ và $y\in Z_{m_2}^*$, ta có $(x,m_1)=1$ và $(y,m_2)=1$. Từ $(m_1,m_2)=1$ suy ra
     
     $$
     (m_2x+m_1y,m_1)=(m_2x,m_1)=(x,m_1)=1,
@@ -371,30 +371,30 @@ $$
     (m_2x+m_1y,m_2)=(m_1y,m_2)=(x,m_2)=1,
     $$
     
-    因此可得 $(m_2x+m_1y,m_1m_2)=1$，即 $Z_m^*\subseteq M$．
+    Do đó $(m_2x+m_1y,m_1m_2)=1$, tức $Z_m^*\subseteq M$.
     
-    综上所述，
+    Tóm lại,
     
     $$
     Z_m^*=m_2Z_{m_1}^*+m_1Z_{m_2}^*.
     $$
     
-    为模 $m$ 的 **既约** 剩余系．
+    là hệ thặng dư **tối giản** theo mô-đun $m$.
 
-## 数论函数
+## Hàm số học
 
-数论函数（也称算术函数）指定义域为正整数的函数．数论函数也可以视作一个数列．
+Hàm số học (còn gọi là hàm số học) là hàm có miền xác định là các số nguyên dương. Hàm số học cũng có thể xem như một dãy số.
 
-### 积性函数
+### Hàm tích
 
-???+ note "定义"
-    在数论中，若函数 $f(n)$ 满足 $f(1)=1$，且 $f(xy)=f(x)f(y)$ 对任意互质的 $x, y \in\mathbf{N}^*$ 都成立，则 $f(n)$ 为 **积性函数**．
+???+ note "Định nghĩa"
+    Trong số học, nếu hàm $f(n)$ thỏa $f(1)=1$ và $f(xy)=f(x)f(y)$ với mọi $x, y \in\mathbf{N}^*$ nguyên tố cùng nhau, thì $f(n)$ là **hàm tích**.
     
-    在数论中，若函数 $f(n)$ 满足 $f(1)=1$ 且 $f(xy)=f(x)f(y)$ 对任意的 $x, y \in\mathbf{N}^*$ 都成立，则 $f(n)$ 为 **完全积性函数**．
+    Nếu $f(n)$ thỏa $f(1)=1$ và $f(xy)=f(x)f(y)$ với mọi $x, y \in\mathbf{N}^*$ thì $f(n)$ là **hàm tích hoàn toàn**.
 
-#### 性质
+#### Tính chất
 
-若 $f(x)$ 和 $g(x)$ 均为积性函数，则以下函数也为积性函数：
+Nếu $f(x)$ và $g(x)$ đều là hàm tích, thì các hàm sau cũng là hàm tích:
 
 $$
 \begin{aligned}
@@ -405,126 +405,126 @@ h(x)&=\sum_{d\mid x}f(d)g\left(\dfrac{x}{d}\right)
 \end{aligned}
 $$
 
-对正整数 $x$，设其唯一质因数分解为 $x=\prod p_i^{k_i}$，其中 $p_i$ 为质数．
+Với số nguyên dương $x$, phân tích thừa số nguyên tố duy nhất $x=\prod p_i^{k_i}$, trong đó $p_i$ là số nguyên tố.
 
-若 $F(x)$ 为积性函数，则有 $F(x)=\prod F(p_i^{k_i})$．
+Nếu $F(x)$ là hàm tích thì $F(x)=\prod F(p_i^{k_i})$.
 
-若 $F(x)$ 为完全积性函数，则有 $F(x)=\prod F(p_i^{k_i})=\prod F(p_i)^{k_i}$．
+Nếu $F(x)$ là hàm tích hoàn toàn thì $F(x)=\prod F(p_i^{k_i})=\prod F(p_i)^{k_i}$.
 
-#### 例子
+#### Ví dụ
 
--   单位函数：$\varepsilon(n)=[n=1]$．（完全积性）
--   恒等函数：$\operatorname{id}_k(n)=n^k$，$\operatorname{id}_{1}(n)$ 通常简记作 $\operatorname{id}(n)$．（完全积性）
--   常数函数：$1(n)=1$．（完全积性）
--   除数函数：$\sigma_{k}(n)=\sum_{d\mid n}d^{k}$．$\sigma_{0}(n)$ 通常简记作 $d(n)$ 或 $\tau(n)$，$\sigma_{1}(n)$ 通常简记作 $\sigma(n)$．
--   欧拉函数：$\varphi(n)=\sum_{i=1}^n[(i,n)=1]$．
--   莫比乌斯函数：$\mu(n)=\begin{cases}1&n=1\\0&\exists d>1,d^{2}\mid n\\(-1)^{\omega(n)}&\text{otherwise}\end{cases}$，其中 $\omega(n)$ 表示 $n$ 的本质不同质因子个数．
+-   Hàm đơn vị: $\varepsilon(n)=[n=1]$. (tích hoàn toàn)
+-   Hàm đồng nhất: $\operatorname{id}_k(n)=n^k$, $\operatorname{id}_{1}(n)$ thường viết tắt $\operatorname{id}(n)$. (tích hoàn toàn)
+-   Hàm hằng: $1(n)=1$. (tích hoàn toàn)
+-   Hàm ước: $\sigma_{k}(n)=\sum_{d\mid n}d^{k}$. $\sigma_{0}(n)$ thường viết tắt $d(n)$ hoặc $\tau(n)$, $\sigma_{1}(n)$ thường viết tắt $\sigma(n)$.
+-   Hàm Euler: $\varphi(n)=\sum_{i=1}^n[(i,n)=1]$.
+-   Hàm Möbius: $\mu(n)=\begin{cases}1&n=1\\0&\exists d>1,d^{2}\mid n\\(-1)^{\omega(n)}&\text{otherwise}\end{cases}$, trong đó $\omega(n)$ là số lượng thừa số nguyên tố phân biệt của $n$.
 
-### 加性函数
+### Hàm cộng tính
 
-???+ note "定义"
-    在数论中，若函数 $f(n)$ 满足 $f(1)=0$ 且 $f(xy)=f(x)+f(y)$ 对任意互质的 $x, y \in\mathbf{N}^*$ 都成立，则 $f(n)$ 为 **加性函数**．
+???+ note "Định nghĩa"
+    Trong số học, nếu $f(n)$ thỏa $f(1)=0$ và $f(xy)=f(x)+f(y)$ với mọi $x, y \in\mathbf{N}^*$ nguyên tố cùng nhau, thì $f(n)$ là **hàm cộng tính**.
     
-    在数论中，若函数 $f(n)$ 满足 $f(1)=0$ 且 $f(xy)=f(x)+f(y)$ 对任意的 $x, y \in\mathbf{N}^*$ 都成立，则 $f(n)$ 为 **完全加性函数**．
+    Nếu $f(n)$ thỏa $f(1)=0$ và $f(xy)=f(x)+f(y)$ với mọi $x, y \in\mathbf{N}^*$ thì $f(n)$ là **hàm cộng tính hoàn toàn**.
 
-???+ warning "加性函数"
-    本节中的加性函数指数论上的加性函数 (Additive function)，应与代数中的 Additive map 做区分．
+???+ warning "Hàm cộng tính"
+    “Hàm cộng tính” ở đây là Additive function trong số học, cần phân biệt với Additive map trong đại số.
 
-#### 性质
+#### Tính chất
 
-对正整数 $x$，设其唯一质因数分解为 $x=\prod p_i^{k_i}$，其中 $p_i$ 为质数．
+Với số nguyên dương $x$, phân tích thừa số nguyên tố duy nhất $x=\prod p_i^{k_i}$, trong đó $p_i$ là số nguyên tố.
 
-若 $F(x)$ 为加性函数，则有 $F(x)=\sum F(p_i^{k_i})$．
+Nếu $F(x)$ là hàm cộng tính thì $F(x)=\sum F(p_i^{k_i})$.
 
-若 $F(x)$ 为完全加性函数，则有 $F(x)=\sum F(p_i^{k_i})=\sum F(p_i)\cdot k_i$．
+Nếu $F(x)$ là hàm cộng tính hoàn toàn thì $F(x)=\sum F(p_i^{k_i})=\sum F(p_i)\cdot k_i$.
 
-#### 例子
+#### Ví dụ
 
-为方便叙述，令所有质数组成的集合为 $\mathbf P$.
+Để tiện, ký hiệu tập các số nguyên tố là $\mathbf P$.
 
--   素因数分解中 $p$ 的重数：$\nu_p(n) = \max\{k\in\mathbf N: p^k\mid n\}$，其中，$p\in\mathbf P$．（完全加性）
--   所有质因子数目：$\Omega(n)=\sum_{p \in\mathbf P} \nu_p(n)$．（完全加性）
--   相异质因子数目：$\omega(n)=\sum_{p \in\mathbf P} [p \mid n]$．
--   所有质因子之和：$a_0(n)=\sum_{p \in\mathbf P} \nu_p(n)\cdot p$．（完全加性）
--   相异质因子之和：$a_1(n)=\sum_{p \in\mathbf P} [p \mid n] \cdot p$．
+-   Số mũ của $p$ trong phân tích thừa số nguyên tố: $\nu_p(n) = \max\{k\in\mathbf N: p^k\mid n\}$, với $p\in\mathbf P$. (cộng tính hoàn toàn)
+-   Tổng số thừa số nguyên tố (kể bội): $\Omega(n)=\sum_{p \in\mathbf P} \nu_p(n)$. (cộng tính hoàn toàn)
+-   Số thừa số nguyên tố phân biệt: $\omega(n)=\sum_{p \in\mathbf P} [p \mid n]$.
+-   Tổng các thừa số nguyên tố (kể bội): $a_0(n)=\sum_{p \in\mathbf P} \nu_p(n)\cdot p$. (cộng tính hoàn toàn)
+-   Tổng các thừa số nguyên tố phân biệt: $a_1(n)=\sum_{p \in\mathbf P} [p \mid n] \cdot p$.
 
-## 取整函数
+## Hàm lấy phần nguyên
 
-对于实数 $x$，定义 **下取整函数**（floor function）和 **上取整函数**（ceiling function）分别为
+Với số thực $x$, định nghĩa **hàm lấy phần nguyên dưới** (floor) và **hàm lấy phần nguyên trên** (ceiling):
 
 $$
 \lfloor x\rfloor = \max\{k\in\mathbf Z:k\le x\},~\lceil x\rceil = \min\{k\in\mathbf Z:k\ge x\}.
 $$
 
-利用下取整函数，一个实数可以分解为整数部分和小数部分：$x = \lfloor x\rfloor + \{x\}$．其中，$\{x\}$ 表示 $x$ 的小数部分．
+Dùng hàm floor, ta có thể tách một số thực thành phần nguyên và phần thập phân: $x = \lfloor x\rfloor + \{x\}$. Trong đó $\{x\}$ là phần thập phân của $x$.
 
-取整函数有如下基本性质：（$x\in\mathbf R,~n\in\mathbf Z$）
+Hàm lấy phần nguyên có các tính chất cơ bản: ($x\in\mathbf R,~n\in\mathbf Z$)
 
--   $x\in\mathbf Z \iff x = \lfloor x\rfloor = \lceil x\rceil$．
--   $\lceil x\rceil - \lfloor x\rfloor = [x\notin\mathbf Z]$．
--   $x - 1 < \lfloor x\rfloor \le x \le \lceil x\rceil < x + 1$．
--   $\lfloor -x\rfloor = -\lceil x\rceil,~\lceil -x\rceil = -\lfloor x\rfloor$．
--   $\lfloor x + n\rfloor = \lfloor x\rfloor + n,~\lceil x + n\rceil = \lceil x \rceil + n$．
--   $\lfloor x\rfloor$ 和 $\lceil x\rceil$ 都是关于 $x$ 的单调弱增函数．
+-   $x\in\mathbf Z \iff x = \lfloor x\rfloor = \lceil x\rceil$.
+-   $\lceil x\rceil - \lfloor x\rfloor = [x\notin\mathbf Z]$.
+-   $x - 1 < \lfloor x\rfloor \le x \le \lceil x\rceil < x + 1$.
+-   $\lfloor -x\rfloor = -\lceil x\rceil,~\lceil -x\rceil = -\lfloor x\rfloor$.
+-   $\lfloor x + n\rfloor = \lfloor x\rfloor + n,~\lceil x + n\rceil = \lceil x \rceil + n$.
+-   $\lfloor x\rfloor$ và $\lceil x\rceil$ đều là các hàm đơn điệu không giảm theo $x$.
 
-证明关于下（上）取整函数的等式经常用到如下等价形式：（$x\in\mathbf R,~n\in\mathbf Z$）
+Chứng minh các đẳng thức với floor/ceiling thường dùng các dạng tương đương sau: ($x\in\mathbf R,~n\in\mathbf Z$)
 
--   $\lfloor x\rfloor = n \iff n \le x < n + 1 \iff x - 1 < n \le x$．
--   $\lceil x\rceil = n \iff n - 1 < x \le n \iff x \le n < x + 1$．
+-   $\lfloor x\rfloor = n \iff n \le x < n + 1 \iff x - 1 < n \le x$.
+-   $\lceil x\rceil = n \iff n - 1 < x \le n \iff x \le n < x + 1$.
 
-证明关于下（上）取整函数的不等式经常用到如下等价形式：（$x\in\mathbf R,~n\in\mathbf Z$）
+Chứng minh bất đẳng thức với floor/ceiling thường dùng các dạng tương đương sau: ($x\in\mathbf R,~n\in\mathbf Z$)
 
--   $x < n \iff \lfloor x\rfloor < n$．
--   $n < x \iff n < \lceil x\rceil$．
--   $x \le n \iff \lceil x\rceil \le n$．
--   $n \le x \iff n \le \lfloor x\rfloor$．
+-   $x < n \iff \lfloor x\rfloor < n$.
+-   $n < x \iff n < \lceil x\rceil$.
+-   $x \le n \iff \lceil x\rceil \le n$.
+-   $n \le x \iff n \le \lfloor x\rfloor$.
 
-涉及和、差的性质如下：（$x,y\in\mathbf R$）
+Tính chất liên quan đến tổng và hiệu: ($x,y\in\mathbf R$)
 
--   $\lfloor x\rfloor + \lfloor y\rfloor \le \lfloor x + y\rfloor \le \lfloor x\rfloor + \lfloor y\rfloor + 1$，且恰有一个等号成立．
--   $\lceil x\rceil +\lceil y\rceil -1\leq \lceil x+y\rceil \leq \lceil x\rceil +\lceil y\rceil$，且恰有一个等号成立．
--   $\lfloor|x - y|\rfloor \le |\lfloor x\rfloor - \lfloor y\rfloor| \le \lceil|x - y|\rceil$．
--   $\lfloor|x - y|\rfloor \le |\lceil x\rceil - \lceil y\rceil| \le \lceil|x-y|\rceil$．
+-   $\lfloor x\rfloor + \lfloor y\rfloor \le \lfloor x + y\rfloor \le \lfloor x\rfloor + \lfloor y\rfloor + 1$, và chỉ có một dấu bằng đúng.
+-   $\lceil x\rceil +\lceil y\rceil -1\leq \lceil x+y\rceil \leq \lceil x\rceil +\lceil y\rceil$, và chỉ có một dấu bằng đúng.
+-   $\lfloor|x - y|\rfloor \le |\lfloor x\rfloor - \lfloor y\rfloor| \le \lceil|x - y|\rceil$.
+-   $\lfloor|x - y|\rfloor \le |\lceil x\rceil - \lceil y\rceil| \le \lceil|x-y|\rceil$.
 
-涉及商的性质如下：（$x\in\mathbf R,~n\in\mathbf Z,~m\in\mathbf Z_+$）
+Tính chất liên quan đến thương: ($x\in\mathbf R,~n\in\mathbf Z,~m\in\mathbf Z_+$)
 
--   $\left\lceil\dfrac{n}{m}\right\rceil = \left\lfloor\dfrac{n+m-1}{m}\right\rfloor,~\left\lfloor\dfrac{n}{m}\right\rfloor = \left\lceil\dfrac{n-m+1}{m}\right\rceil$．
--   $\left\lfloor\dfrac{x + n}{m} \right\rfloor = \left\lfloor\dfrac{\lfloor x\rfloor + n}{m} \right\rfloor,~\left\lceil\dfrac{x + n}{m} \right\rceil = \left\lceil\dfrac{\lceil x\rceil + n}{m} \right\rceil$．
--   $\left\lfloor\dfrac{\lfloor x/n\rfloor}{m}\right\rfloor = \left\lfloor\dfrac{x}{nm}\right\rfloor,~\left\lceil\dfrac{\lceil x/n\rceil}{m}\right\rceil = \left\lceil\dfrac{x}{nm}\right\rceil$．
--   对于 $x > 0$，有 $\displaystyle\left\lfloor\dfrac{x}{m}\right\rfloor = \sum_{k=1}^{\lfloor x\rfloor}[m\mid k]$．
+-   $\left\lceil\dfrac{n}{m}\right\rceil = \left\lfloor\dfrac{n+m-1}{m}\right\rfloor,~\left\lfloor\dfrac{n}{m}\right\rfloor = \left\lceil\dfrac{n-m+1}{m}\right\rceil$.
+-   $\left\lfloor\dfrac{x + n}{m} \right\rfloor = \left\lfloor\dfrac{\lfloor x\rfloor + n}{m} \right\rfloor,~\left\lceil\dfrac{x + n}{m} \right\rceil = \left\lceil\dfrac{\lceil x\rceil + n}{m} \right\rceil$.
+-   $\left\lfloor\dfrac{\lfloor x/n\rfloor}{m}\right\rfloor = \left\lfloor\dfrac{x}{nm}\right\rfloor,~\left\lceil\dfrac{\lceil x/n\rceil}{m}\right\rceil = \left\lceil\dfrac{x}{nm}\right\rceil$.
+-   Với $x > 0$, $\displaystyle\left\lfloor\dfrac{x}{m}\right\rfloor = \sum_{k=1}^{\lfloor x\rfloor}[m\mid k]$.
 
-其中，第二条和第三条性质都可以看作是如下结论的直接推论：
+Trong đó, tính chất thứ hai và thứ ba đều là hệ quả trực tiếp của kết luận sau:
 
--   设 $f$ 为连续单增函数，且只要 $f(x)\in\mathbf Z$，就有 $x\in\mathbf Z$，那么
+-   Cho $f$ là hàm liên tục, tăng đơn điệu, và nếu $f(x)\in\mathbf Z$ thì $x\in\mathbf Z$, khi đó
 
     $$
     \lfloor f(x)\rfloor = \lfloor f(\lfloor x\rfloor)\rfloor,~ \lceil f(x)\rceil = \lceil f(\lceil x\rceil)\rceil.
     $$
 
-    ??? note "证明"
-        由对称性，只需要证明第一个等式．如果 $x$ 是整数，那么命题显然．否则，$\lfloor x\rfloor < x$．由 $f$ 和下取整函数的单调性可知，$\lfloor f(x)\rfloor \ge \lfloor f(\lfloor x\rfloor)\rfloor$．如果等号不成立，那么设 $y = \lfloor f(x)\rfloor$，它满足 $\lfloor f(\lfloor x\rfloor)\rfloor < y \le \lfloor f(x)\rfloor$，这等价于 $f(\lfloor x\rfloor) < y \le f(x)$．由 $f$ 的连续性可知，存在 $\lfloor x\rfloor < x_0 \le x$ 使得 $f(x_0)=y$．因为 $y\in\mathbf Z$，所以 $x_0\in\mathbf Z$，这与 $\lfloor x\rfloor$ 的定义矛盾．故而，等号成立，即 $\lfloor f(x)\rfloor = \lfloor f(\lfloor x\rfloor)\rfloor$．
+    ??? note "Chứng minh"
+        Do tính đối xứng, chỉ cần chứng minh đẳng thức đầu. Nếu $x$ là số nguyên thì hiển nhiên. Ngược lại, $\lfloor x\rfloor < x$. Từ tính đơn điệu của $f$ và floor, suy ra $\lfloor f(x)\rfloor \ge \lfloor f(\lfloor x\rfloor)\rfloor$. Nếu không bằng nhau, đặt $y = \lfloor f(x)\rfloor$, ta có $\lfloor f(\lfloor x\rfloor)\rfloor < y \le \lfloor f(x)\rfloor$, tương đương $f(\lfloor x\rfloor) < y \le f(x)$. Do $f$ liên tục, tồn tại $\lfloor x\rfloor < x_0 \le x$ sao cho $f(x_0)=y$. Vì $y\in\mathbf Z$ nên $x_0\in\mathbf Z$, mâu thuẫn với định nghĩa của $\lfloor x\rfloor$. Vậy dấu bằng đúng, tức $\lfloor f(x)\rfloor = \lfloor f(\lfloor x\rfloor)\rfloor$.
 
-最后是一组关于带有取整函数的求和式的结论：（$x\in\mathbf R,~n\in\mathbf Z,~m\in\mathbf Z_+$）
+Cuối cùng là một nhóm công thức tổng có chứa floor/ceiling: ($x\in\mathbf R,~n\in\mathbf Z,~m\in\mathbf Z_+$)
 
--   $n = \left\lfloor\dfrac{n}{2}\right\rfloor + \left\lceil\dfrac{n}{2}\right\rceil$．
--   $n = \left\lfloor\dfrac{n}{m} \right\rfloor + \left\lfloor\dfrac{n+1}{m} \right\rfloor + \cdots + \left\lfloor\dfrac{n+m-1}{m} \right\rfloor$．
--   $n = \left\lceil\dfrac{n}{m} \right\rceil + \left\lceil\dfrac{n-1}{m} \right\rceil + \cdots + \left\lceil\dfrac{n-m+1}{m} \right\rceil$．
--   $\lfloor mx\rfloor = \lfloor x\rfloor + \left\lfloor x+\dfrac{1}{m}\right\rfloor + \cdots + \left\lfloor x+\dfrac{m-1}{m}\right\rfloor$．
--   $\lceil mx\rceil = \lceil x\rceil + \left\lceil x - \dfrac{1}{m}\right\rceil + \cdots + \left\lceil x - \dfrac{m-1}{m}\right\rceil$．
--   当 $m\perp n$ 时，$\displaystyle\sum_{k=1}^{m-1}\left\lfloor\dfrac{kn}{m}\right\rfloor=\dfrac{1}{2}(n-1)(m-1)$．
--   当 $m\perp n$ 时，$\displaystyle\sum_{k=1}^{m-1}\left\lceil\dfrac{kn}{m}\right\rceil=\dfrac{1}{2}(n+1)(m-1)$．
+-   $n = \left\lfloor\dfrac{n}{2}\right\rfloor + \left\lceil\dfrac{n}{2}\right\rceil$.
+-   $n = \left\lfloor\dfrac{n}{m} \right\rfloor + \left\lfloor\dfrac{n+1}{m} \right\rfloor + \cdots + \left\lfloor\dfrac{n+m-1}{m} \right\rfloor$.
+-   $n = \left\lceil\dfrac{n}{m} \right\rceil + \left\lceil\dfrac{n-1}{m} \right\rceil + \cdots + \left\lceil\dfrac{n-m+1}{m} \right\rceil$.
+-   $\lfloor mx\rfloor = \lfloor x\rfloor + \left\lfloor x+\dfrac{1}{m}\right\rfloor + \cdots + \left\lfloor x+\dfrac{m-1}{m}\right\rfloor$.
+-   $\lceil mx\rceil = \lceil x\rceil + \left\lceil x - \dfrac{1}{m}\right\rceil + \cdots + \left\lceil x - \dfrac{m-1}{m}\right\rceil$.
+-   Khi $m\perp n$, $\displaystyle\sum_{k=1}^{m-1}\left\lfloor\dfrac{kn}{m}\right\rfloor=\dfrac{1}{2}(n-1)(m-1)$.
+-   Khi $m\perp n$, $\displaystyle\sum_{k=1}^{m-1}\left\lceil\dfrac{kn}{m}\right\rceil=\dfrac{1}{2}(n+1)(m-1)$.
 
-这些乃至更一般的类似形式求和式的推导可以参考 [类欧几里得算法](./euclidean.md) 页面．
+Các công thức tổng kiểu này và tổng quát hơn có thể tham khảo ở trang [Thuật toán kiểu Euclid](./euclidean.md).
 
-取整函数的更多性质以及应用可以参考如下页面：
+Các tính chất và ứng dụng khác của hàm floor/ceiling:
 
--   取模运算：$n\bmod m = n - \left\lfloor\dfrac{n}{m}\right\rfloor m$．它可以用于 [优化整数取模运算](./mod-arithmetic.md#相关算法)．
--   利用 Gauss 引理证明 [二次互反律](./quad-residue.md#二次互反律)．
--   [数论分块](./sqrt-decomposition.md)，尤其是它的性质证明部分．
--   计算阶乘中素数因子幂次的 [Legendre 公式](./factorial.md#legendre-公式)．
--   [Beatty 数列](../game-theory/impartial-game.md#wythoff-游戏)、Rayleigh 定理以及 Wythoff 博弈．
+-   Phép lấy mod: $n\bmod m = n - \left\lfloor\dfrac{n}{m}\right\rfloor m$, dùng để [tối ưu phép lấy mod số nguyên](./mod-arithmetic.md#相关算法).
+-   Dùng bổ đề Gauss chứng minh [luật tương hỗ bậc hai](./quad-residue.md#二次互反律).
+-   [Chia khối số học](./sqrt-decomposition.md), đặc biệt là phần chứng minh tính chất.
+-   Tính bậc của thừa số nguyên tố trong giai thừa theo [công thức Legendre](./factorial.md#legendre-公式).
+-   [Dãy Beatty](../game-theory/impartial-game.md#wythoff-游戏), định lý Rayleigh và trò chơi Wythoff.
 
-## 参考资料与注释
+## Tài liệu tham khảo và chú thích
 
 -   潘承洞，潘承彪．初等数论．北京大学出版社．
 -   [Floor and ceiling functions - Wikipedia](https://en.wikipedia.org/wiki/Floor_and_ceiling_functions)

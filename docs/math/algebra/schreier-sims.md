@@ -454,6 +454,6 @@ $$
 
 [^subgroup-chain]: 参见 [Cameron, P. J., Solomon, R., & Turull, A. (1989). Chains of subgroups in symmetric groups. Journal of algebra, 127(2), 340-352.](https://www.sciencedirect.com/science/article/pii/0021869389902561)
 
-[^siftee]: 这并不是什么严格的术语，在不同的英文文献中可能称作 siftee 或者 sifted element．
+[^siftee]: 这并不是什么严格的术语，在不同的英文文献中可能称作 siftee 或者 sifted element.
 
-[^knuth-complexity]: Knuth 的论文给出的上界还要再少一个对数因子，这需要对群的稳定化子链的基础轨道长度做更仔细的估计．
+[^knuth-complexity]: Knuth 的论文给出的上界还要再少一个对数因子，这需要对群的稳定化子链的基础轨道长度做更仔细的估计.

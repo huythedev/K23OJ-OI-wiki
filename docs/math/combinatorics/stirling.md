@@ -1,36 +1,36 @@
-## 第二类斯特林数（Stirling Number）
+## Số Stirling loại hai (Stirling Number)
 
-??? note "为什么先介绍第二类斯特林数"
-    虽然被称作「第二类」，第二类斯特林数却在斯特林的相关著作和具体数学中被首先描述，同时也比第一类斯特林数常用得多．
+??? note "Vì sao giới thiệu số Stirling loại hai trước"
+    Dù được gọi là “loại hai”, số Stirling loại hai lại được mô tả trước trong các tác phẩm của Stirling và trong toán học cụ thể, đồng thời được dùng phổ biến hơn loại một.
 
-**第二类斯特林数**（斯特林子集数）$\begin{Bmatrix}n\\ k\end{Bmatrix}$，也可记做 $S(n,k)$，表示将 $n$ 个两两不同的元素，划分为 $k$ 个互不区分的非空子集的方案数．
+**Số Stirling loại hai** (số phân hoạch con) $\begin{Bmatrix}n\\ k\end{Bmatrix}$, cũng ký hiệu $S(n,k)$, là số cách chia $n$ phần tử phân biệt thành $k$ tập con không rỗng, không phân biệt.
 
-### 递推式
+### Công thức truy hồi
 
 $$
 \begin{Bmatrix}n\\ k\end{Bmatrix}=\begin{Bmatrix}n-1\\ k-1\end{Bmatrix}+k\begin{Bmatrix}n-1\\ k\end{Bmatrix}
 $$
 
-边界是 $\begin{Bmatrix}n\\ 0\end{Bmatrix}=[n=0]$．
+Điều kiện biên $\begin{Bmatrix}n\\ 0\end{Bmatrix}=[n=0]$.
 
-考虑用组合意义来证明．
+Chứng minh bằng ý nghĩa tổ hợp:
 
-我们插入一个新元素时，有两种方案：
+Khi thêm một phần tử mới, có hai cách:
 
--   将新元素单独放入一个子集，有 $\begin{Bmatrix}n-1\\ k-1\end{Bmatrix}$ 种方案；
--   将新元素放入一个现有的非空子集，有 $k\begin{Bmatrix}n-1\\ k\end{Bmatrix}$ 种方案．
+-   Đặt phần tử mới thành một tập con riêng: $\begin{Bmatrix}n-1\\ k-1\end{Bmatrix}$;
+-   Chèn phần tử mới vào một tập con có sẵn: $k\begin{Bmatrix}n-1\\ k\end{Bmatrix}$.
 
-根据加法原理，将两式相加即可得到递推式．
+Cộng lại là truy hồi.
 
-### 通项公式
+### Công thức tường minh
 
 $$
 \begin{Bmatrix}n\\m\end{Bmatrix}=\sum\limits_{i=0}^m\dfrac{(-1)^{m-i}i^n}{i!(m-i)!}
 $$
 
-使用容斥原理证明该公式．设将 $n$ 个两两不同的元素，划分到 $i$ 个两两不同的集合（允许空集）的方案数为 $G_i$，将 $n$ 个两两不同的元素，划分到 $i$ 个两两不同的非空集合（不允许空集）的方案数为 $F_i$．
+Dùng nguyên lý bao hàm – loại trừ. Gọi số cách chia $n$ phần tử phân biệt vào $i$ hộp phân biệt (cho phép rỗng) là $G_i$, và vào $i$ hộp phân biệt không rỗng là $F_i$.
 
-显然
+Rõ ràng:
 
 $$
 \begin{aligned}
@@ -39,7 +39,7 @@ G_i&=\sum\limits_{j=0}^i\binom{i}{j}F_j
 \end{aligned}
 $$
 
-根据二项式反演
+Theo đảo nhị thức:
 
 $$
 \begin{aligned}
@@ -49,21 +49,21 @@ F_i&=\sum\limits_{j=0}^{i}(-1)^{i-j}\binom{i}{j}G_j\\
 \end{aligned}
 $$
 
-考虑 $F_i$ 与 $\begin{Bmatrix}n\\i\end{Bmatrix}$ 的关系．第二类斯特林数要求集合之间互不区分，因此 $F_i$ 正好就是 $\begin{Bmatrix}n\\i\end{Bmatrix}$ 的 $i!$ 倍．于是
+Số Stirling loại hai không phân biệt các hộp, nên $F_i$ bằng $i!$ lần $\begin{Bmatrix}n\\i\end{Bmatrix}$. Do đó:
 
 $$
 \begin{Bmatrix}n\\m\end{Bmatrix}=\dfrac{F_m}{m!}=\sum\limits_{i=0}^m\dfrac{(-1)^{m-i}i^n}{i!(m-i)!}
 $$
 
-### 同一行第二类斯特林数的计算
+### Tính các số Stirling loại hai cùng hàng
 
-「同一行」的第二类斯特林数指的是，有着不同的 $i$，相同的 $n$ 的一系列 $\begin{Bmatrix}n\\i\end{Bmatrix}$．求出同一行的所有第二类斯特林数，就是对 $i=0..n$ 求出了将 $n$ 个不同元素划分为 $i$ 个非空集的方案数．
+“Cùng hàng” nghĩa là cùng $n$ và $i$ chạy $0..n$. Tính toàn bộ số Stirling loại hai cùng hàng tức là tính số cách chia $n$ phần tử thành $i$ tập con không rỗng.
 
-根据上面给出的通项公式，卷积计算即可．该做法的时间复杂度为 $O(n \log n)$．
+Theo công thức tường minh, có thể dùng tích chập, đạt $O(n \log n)$.
 
-下面的代码使用了名为 `poly` 的多项式类，仅供参考．
+Đoạn code dưới dùng lớp đa thức `poly`, chỉ để tham khảo.
 
-??? note "实现"
+??? note "Cài đặt"
     ```cpp
     #ifndef _FEISTDLIB_POLY_
     #define _FEISTDLIB_POLY_
@@ -643,7 +643,7 @@ $$
     #endif
     ```
 
-???+ note "实现"
+???+ note "Cài đặt"
     ```cpp
     int main() {
       scanf("%d", &n);
@@ -662,21 +662,21 @@ $$
     }
     ```
 
-### 同一列第二类斯特林数的计算
+### Tính các số Stirling loại hai cùng cột
 
-「同一列」的第二类斯特林数指的是，有着不同的 $i$，相同的 $k$ 的一系列 $\begin{Bmatrix}i\\k\end{Bmatrix}$．求出同一列的所有第二类斯特林数，就是对 $i=0..n$ 求出了将 $i$ 个不同元素划分为 $k$ 个非空集的方案数．
+“Cùng cột” nghĩa là cùng $k$ và $i$ chạy $0..n$. Tính toàn bộ các số $\begin{Bmatrix}i\\k\end{Bmatrix}$.
 
-利用指数型生成函数计算．
+Dùng hàm sinh mũ.
 
-一个盒子装 $i$ 个物品且盒子非空的方案数是 $[i>0]$．我们可以写出它的指数型生成函数为 $F(x)=\sum\limits_{i=1}^{+\infty}\dfrac{x^i}{i!} = \mathrm{e}^x-1$．经过之前的学习，我们明白 $F^k(x)$ 就是 $i$ 个有标号物品放到 $k$ 个有标号盒子里的指数型生成函数，那么除掉 $k!$ 就是 $i$ 个有标号物品放到 $k$ 个无标号盒子里的指数型生成函数．
+Một hộp chứa $i$ vật và không rỗng có số cách là $[i>0]$. Hàm sinh mũ là $F(x)=\sum\limits_{i=1}^{+\infty}\dfrac{x^i}{i!} = \mathrm{e}^x-1$. Khi đó $F^k(x)$ là EGF của việc phân $i$ vật có nhãn vào $k$ hộp có nhãn, chia cho $k!$ để bỏ nhãn hộp.
 
-$\begin{Bmatrix}i\\k\end{Bmatrix}=\dfrac{\left[\dfrac{x^i}{i!}\right]F^k(x)}{k!}$，$O(n\log n)$ 计算多项式幂即可．
+$\begin{Bmatrix}i\\k\end{Bmatrix}=\dfrac{\left[\dfrac{x^i}{i!}\right]F^k(x)}{k!}$, tính lũy thừa đa thức $O(n\log n)$.
 
-另外，$\exp F(x)=\sum\limits_{i=0}^{+\infty}\dfrac{F^i(x)}{i!}$ 就是 $i$ 个有标号物品放到任意多个无标号盒子里的指数型生成函数（EXP 通过每项除以一个 $i!$ 去掉了盒子的标号）．这其实就是贝尔数的生成函数．
+Ngoài ra, $\exp F(x)=\sum\limits_{i=0}^{+\infty}\dfrac{F^i(x)}{i!}$ là EGF của việc phân $i$ vật có nhãn vào số hộp không nhãn bất kỳ (EXP chia mỗi hạng cho $i!$ để bỏ nhãn hộp). Đây chính là hàm sinh của số Bell.
 
-这里涉及到很多「有标号」「无标号」的内容，注意辨析．
+Lưu ý phân biệt “có nhãn/không nhãn”.
 
-???+ note "实现"
+???+ note "Cài đặt"
     ```cpp
     int main() {
       scanf("%d%d", &n, &k);
@@ -692,60 +692,60 @@ $\begin{Bmatrix}i\\k\end{Bmatrix}=\dfrac{\left[\dfrac{x^i}{i!}\right]F^k(x)}{k!}
     }
     ```
 
-## 第一类斯特林数（Stirling Number）
+## Số Stirling loại một (Stirling Number)
 
-**第一类斯特林数**（斯特林轮换数）$\begin{bmatrix}n\\ k\end{bmatrix}$，也可记做 $s(n,k)$，表示将 $n$ 个两两不同的元素，划分为 $k$ 个互不区分的非空轮换的方案数．
+**Số Stirling loại một** (số hoán vị vòng) $\begin{bmatrix}n\\ k\end{bmatrix}$, cũng ký hiệu $s(n,k)$, là số cách chia $n$ phần tử phân biệt thành $k$ vòng không phân biệt, không rỗng.
 
-一个轮换就是一个首尾相接的环形排列．我们可以写出一个轮换 $[A,B,C,D]$，并且我们认为 $[A,B,C,D]=[B,C,D,A]=[C,D,A,B]=[D,A,B,C]$，即，两个可以通过旋转而互相得到的轮换是等价的．注意，我们不认为两个可以通过翻转而相互得到的轮换等价，即 $[A,B,C,D]\neq[D,C,B,A]$．
+Một vòng là một hoán vị vòng. Ví dụ một vòng $[A,B,C,D]$ và ta coi $[A,B,C,D]=[B,C,D,A]=[C,D,A,B]=[D,A,B,C]$, tức các vòng quay là tương đương. Không coi đối xứng gương là tương đương: $[A,B,C,D]\neq[D,C,B,A]$.
 
-### 递推式
+### Công thức truy hồi
 
 $$
 \begin{bmatrix}n\\ k\end{bmatrix}=\begin{bmatrix}n-1\\ k-1\end{bmatrix}+(n-1)\begin{bmatrix}n-1\\ k\end{bmatrix}
 $$
 
-边界是 $\begin{bmatrix}n\\ 0\end{bmatrix}=[n=0]$．
+Điều kiện biên $\begin{bmatrix}n\\ 0\end{bmatrix}=[n=0]$.
 
-该递推式的证明可以考虑其组合意义．
+Chứng minh bằng ý nghĩa tổ hợp:
 
-我们插入一个新元素时，有两种方案：
+Khi thêm một phần tử mới, có hai cách:
 
--   将该新元素置于一个单独的轮换中，共有 $\begin{bmatrix}n-1\\ k-1\end{bmatrix}$ 种方案；
--   将该元素插入到任何一个现有的轮换中，共有 $(n-1)\begin{bmatrix}n-1\\ k\end{bmatrix}$ 种方案．
+-   Đặt phần tử mới thành một vòng riêng: $\begin{bmatrix}n-1\\ k-1\end{bmatrix}$;
+-   Chèn phần tử mới vào một vòng có sẵn: $(n-1)\begin{bmatrix}n-1\\ k\end{bmatrix}$.
 
-根据加法原理，将两式相加即可得到递推式．
+Cộng lại là truy hồi.
 
-### 通项公式
+### Công thức tường minh
 
-第一类斯特林数没有实用的通项公式．
+Số Stirling loại một không có công thức tường minh hữu dụng.
 
-### 同一行第一类斯特林数的计算
+### Tính các số Stirling loại một cùng hàng
 
-类似第二类斯特林数，我们构造同行第一类斯特林数的生成函数，即
+Tương tự loại hai, dựng hàm sinh:
 
 $F_n(x)=\sum\limits_{i=0}^n\begin{bmatrix}n\\i\end{bmatrix}x^i$
 
-根据递推公式，不难写出
+Từ truy hồi:
 
 $F_n(x)=(n-1)F_{n-1}(x)+xF_{n-1}(x)$
 
-于是
+Suy ra:
 
 $F_n(x)=\prod\limits_{i=0}^{n-1}(x+i)=\dfrac{(x+n-1)!}{(x-1)!}$
 
-这其实是 $x$ 的 $n$ 次上升阶乘幂，记做 $x^{\overline n}$．这个东西自然是可以暴力分治乘 $O(n\log^2n)$ 求出的，但用上升幂相关做法可以 $O(n\log n)$ 求出，详情见 [多项式平移 | 连续点值平移](../poly/shift.md#同一行第一类无符号-stirling-数)．
+Đây là lũy thừa tăng $x^{\overline n}$. Có thể chia để trị $O(n\log^2 n)$ hoặc dùng kỹ thuật liên quan đến lũy thừa tăng $O(n\log n)$, xem [Dời đa thức | Dời điểm liên tiếp](../poly/shift.md#同一行第一类无符号-stirling-数).
 
-### 同一列第一类斯特林数的计算
+### Tính các số Stirling loại một cùng cột
 
-仿照第二类斯特林数的计算，我们可以用指数型生成函数解决该问题．注意，由于递推公式和行有关，我们不能利用递推公式计算同列的第一类斯特林数．
+Tương tự loại hai, dùng hàm sinh mũ. Do truy hồi theo hàng nên không dùng truy hồi để tính theo cột.
 
-显然，单个轮换的指数型生成函数为
+Hàm sinh mũ của một vòng:
 
 $F(x)=\sum\limits_{i=1}^n\dfrac{(i-1)!x^i}{i!}=\sum\limits_{i=1}^n\dfrac{x^i}{i}$
 
-它的 $k$ 次幂就是 $\begin{bmatrix}i\\k\end{bmatrix}$ 的指数型生成函数，$O(n\log n)$ 计算即可．
+Lũy thừa bậc $k$ là EGF của $\begin{bmatrix}i\\k\end{bmatrix}$, tính $O(n\log n)$.
 
-???+ note "实现"
+???+ note "Cài đặt"
     ```cpp
     int main() {
       scanf("%d%d", &n, &k);
@@ -762,63 +762,61 @@ $F(x)=\sum\limits_{i=1}^n\dfrac{(i-1)!x^i}{i!}=\sum\limits_{i=1}^n\dfrac{x^i}{i}
     }
     ```
 
-## 应用
+## Ứng dụng
 
-### 上升幂与普通幂的相互转化
+### Chuyển đổi giữa lũy thừa tăng và lũy thừa thường
 
-我们记上升阶乘幂 $x^{\overline{n}}=\prod_{k=0}^{n-1} (x+k)$．
+Ký hiệu $x^{\overline{n}}=\prod_{k=0}^{n-1} (x+k)$.
 
-则可以利用下面的恒等式将上升幂转化为普通幂：
+Ta có:
 
 $$
 x^{\overline{n}}=\sum_{k} \begin{bmatrix}n\\ k\end{bmatrix} x^k
 $$
 
-如果将普通幂转化为上升幂，则有下面的恒等式：
+Chuyển ngược:
 
 $$
 x^n=\sum_{k} \begin{Bmatrix}n\\ k\end{Bmatrix} (-1)^{n-k} x^{\overline{k}}
 $$
 
-### 下降幂与普通幂的相互转化
+### Chuyển đổi giữa lũy thừa giảm và lũy thừa thường
 
-我们记下降阶乘幂 $x^{\underline{n}}=\dfrac{x!}{(x-n)!}=\prod_{k=0}^{n-1} (x-k)$．
+Ký hiệu $x^{\underline{n}}=\dfrac{x!}{(x-n)!}=\prod_{k=0}^{n-1} (x-k)$.
 
-则可以利用下面的恒等式将普通幂转化为下降幂：
+Ta có:
 
 $$
 x^n=\sum_{k} \begin{Bmatrix}n\\ k\end{Bmatrix} x^{\underline{k}}
 $$
 
-如果将下降幂转化为普通幂，则有下面的恒等式：
+Chuyển ngược:
 
 $$
 x^{\underline{n}}=\sum_{k} \begin{bmatrix}n\\ k\end{bmatrix} (-1)^{n-k} x^k
 $$
 
-### 多项式下降阶乘幂表示与多项式点值表示的关系
+### Liên hệ giữa biểu diễn lũy thừa giảm và biểu diễn theo điểm
 
-在这里，多项式的下降阶乘幂表示就是用
+Một đa thức biểu diễn theo lũy thừa giảm:
 
 $$
 f(x)=\sum\limits_{i=0}^nb_i{x^{\underline{i}}}
 $$
 
-的形式表示一个多项式，而点值表示就是用 $n+1$ 个点
+Biểu diễn theo điểm là $n+1$ điểm:
 
 $$
 (i,a_i),i=0..n
 $$
 
-来表示一个多项式．
-
-显然，下降阶乘幂 $b$ 和点值 $a$ 间满足这样的关系：
+Hai dạng liên hệ:
 
 $$
 a_k=\sum\limits_{i=0}^{n}b_ik^{\underline{i}}
 $$
 
-即
+tức
 
 $$
 \begin{aligned}
@@ -826,15 +824,15 @@ a_k&=\sum\limits_{i=0}^{n}\dfrac{b_ik!}{(k-i)!}\\\dfrac{a_k}{k!}&=\sum\limits_{i
 \end{aligned}
 $$
 
-这是一个卷积形式的式子，我们可以在 $O(n\log n)$ 的时间复杂度内完成点值和下降阶乘幂的互相转化．
+Đây là một tích chập, có thể đổi qua lại trong $O(n\log n)$.
 
-## 习题
+## Bài tập
 
 -   [HDU3625 Examining the Rooms](https://acm.hdu.edu.cn/showproblem.php?pid=3625)
 -   [UOJ540 联合省选 2020 组合数问题](https://uoj.ac/problem/540)
 -   [UOJ269 清华集训 2016 如何优雅地求和](https://uoj.ac/problem/269)
 
-## 参考资料与注释
+## Tài liệu tham khảo và chú thích
 
 1.  [Stirling Number of the First Kind - Wolfram MathWorld](http://mathworld.wolfram.com/StirlingNumberoftheFirstKind.html)
 2.  [Stirling Number of the Second Kind - Wolfram MathWorld](http://mathworld.wolfram.com/StirlingNumberoftheSecondKind.html)

@@ -1,152 +1,152 @@
 author: ouuan, Henry-ZHR, StudyingFather, ChungZH, xyf007, Cryflmind, oierlinch
 
-## 出题前的准备
+## Chuẩn bị trước khi ra đề
 
-### 具备一定的水平
+### Có trình độ nhất định
 
-一方面，一个人自己出题，很难出出难度大于自身水平的题目，一定的 OI 水平有助于想到更加优质的 idea 并想出优秀的做法；另一方面，OI 水平在一定程度上代表着 OI 资历，见识过更多的题目的选手也会对「好题」拥有自己的见解．
+Một mặt, tự ra đề thì rất khó ra bài khó hơn trình độ của chính mình; trình độ OI nhất định giúp nghĩ ra idea tốt hơn và lời giải hay hơn. Mặt khác, trình độ OI phần nào phản ánh thâm niên OI; những người đã gặp nhiều đề cũng có quan niệm riêng về “đề hay”.
 
-### 抱有认真负责的态度
+### Có thái độ nghiêm túc, có trách nhiệm
 
-出题是给别人做的，比起展示自己，更多是为了是服务他人．算法竞赛是选手之间的竞赛，而不是出题人与做题人之间的较量．因此，出题不应以考倒选手为目标（当然，适当的防 AK 与良好的区分度也是非常重要的），而应当让选手能在比赛中有所收获．花费足够的时间精力去学习如何出题并认真负责地出题非常重要．
+Ra đề là để người khác làm, không phải để phô diễn bản thân, mà là phục vụ người khác. Thi thuật toán là cuộc thi giữa thí sinh, không phải cuộc đấu giữa ra đề và người làm. Vì vậy, ra đề không nên lấy việc “đánh đố” làm mục tiêu (tất nhiên chống AK và có độ phân hóa tốt cũng rất quan trọng), mà nên giúp thí sinh thu được điều gì đó trong cuộc thi. Dành đủ thời gian công sức để học cách ra đề và ra đề một cách nghiêm túc là rất quan trọng.
 
-### 做好耗费大量时间的准备
+### Chuẩn bị cho việc tốn nhiều thời gian
 
-如果想要认真地出题，就必然要花费大量的时间．如果不做好心理准备，可能导致比赛准备匆忙，质量不过关，也可能在事后由于没有将时间花费在学习上而懊悔．但出题也可以带来很多美好的回忆，如果真的对出题抱有兴趣，并做好了充分的心理准备，出题带来的收获也能够弥补那些花费的时间．
+Muốn ra đề nghiêm túc thì bắt buộc phải tốn nhiều thời gian. Nếu không chuẩn bị tâm lý, có thể dẫn tới chuẩn bị vội vàng, chất lượng kém, hoặc hối hận vì không dành thời gian cho học tập. Nhưng ra đề cũng mang lại nhiều ký ức đẹp; nếu thật sự hứng thú và đã chuẩn bị tâm lý đầy đủ, thu hoạch từ việc ra đề có thể bù lại thời gian bỏ ra.
 
-### 认真阅读本文的内容
+### Đọc kỹ nội dung bài viết này
 
-本文从如何出题、如何把题出好两个方面对整个出题流程进行了介绍．对于想要出题的人来说，认真阅读本文一定能够受益匪浅．
+Bài viết giới thiệu toàn bộ quy trình ra đề từ hai khía cạnh: cách ra đề và cách ra đề hay. Với người muốn ra đề, đọc kỹ bài này chắc chắn có ích.
 
-## 题目内容
+## Nội dung đề
 
-出一道题，idea，即题目本质的内容，是题目的灵魂，也是出题的第一步．
+Ra một đề, idea — tức nội dung bản chất của bài — là linh hồn của đề, đồng thời là bước đầu tiên.
 
-### idea 的来源
+### Nguồn idea
 
-1.  受到已有题目的启发（但不能照搬或无意义地加强，如：序列题目搬到仙人掌上）．
-2.  受到学过的知识点的启发（但不能毫无联系地拼凑知识点）．
-3.  从生活/游戏中受到启发（但注意不要把游戏出成大模拟）．
-4.  不知道为什么，就是想到了一道题．
+1.  Được gợi ý từ đề có sẵn (nhưng không được sao chép hoặc tăng cường vô nghĩa, ví dụ: chuyển bài dãy sang xương rồng).
+2.  Được gợi ý từ kiến thức đã học (nhưng không được chắp vá vô liên hệ).
+3.  Được gợi ý từ đời sống/game (nhưng chú ý đừng biến thành mô phỏng lớn).
+4.  Không rõ vì sao, просто nảy ra một bài.
 
-### 什么样的 idea 是不好的
+### Idea nào là không tốt
 
-#### 关于原题
+#### Về “đề gốc”
 
-原题大致可分为完全一致、几乎一致和做法一致三种．
+Đề gốc có thể chia thành ba loại: hoàn toàn trùng, gần trùng, và trùng lời giải.
 
--   完全一致：使用一题的 AC 代码可以 AC 另一题．
--   几乎一致：由一题的 AC 代码改动至另一题的 AC 代码可以由一个不会该题的人完成．
--   做法一致：核心思路、做法一致，但代码实现上、不那么关键的细节上有差异．
+-   Hoàn toàn trùng: dùng AC code của một bài có thể AC bài kia.
+-   Gần trùng: sửa AC code của một bài sang AC code của bài khác có thể do người không biết bài làm được.
+-   Trùng lời giải: tư tưởng/lời giải lõi giống nhau, nhưng khác ở hiện thực hoặc chi tiết không quan trọng.
 
-这三种原题自下而上为包含关系．
+Ba loại này có quan hệ bao hàm từ dưới lên.
 
-以下情况不应出现：
+Các trường hợp không nên xuất hiện:
 
-1.  在明知有「几乎一致」的原题的情况下出原题．
-2.  由于未使用搜索引擎查找导致自己不清楚有原题，从而出了「几乎一致」的原题．
-3.  在「做法一致」的原题广为人知（如：NOIP、NOI 原题）时出原题．
-4.  在带有选拔性的考试的非送分题中出现「做法一致」的原题．
+1.  Biết rõ có “gần trùng” mà vẫn ra đề gốc.
+2.  Do không tra cứu nên không biết có đề gốc, từ đó ra “gần trùng”.
+3.  “Trùng lời giải” đã quá nổi tiếng (ví dụ: NOIP/NOI gốc) mà vẫn ra.
+4.  Trong bài có tính chọn lọc (không phải cho điểm), xuất hiện “trùng lời giải”.
 
-以下情况最好不要出现：
+Các trường hợp最好不要出现:
 
-1.  在明知有至少为「做法一致」的原题的情况下出原题．
-2.  由于未使用搜索引擎查找导致自己不清楚有原题，从而出了「做法一致」的原题．
-3.  在任何情况下出「几乎一致」的原题．
+1.  Biết rõ至少为 “trùng lời giải” mà vẫn ra đề gốc.
+2.  Do không tra cứu nên không biết có đề gốc, từ đó ra “trùng lời giải”.
+3.  Bất kỳ情况下都 ra “gần trùng”.
 
-可以放宽要求的例外情况：
+Những ngoại lệ có thể nới:
 
-1.  校内模拟赛．
-2.  以专题训练为目的的模拟赛．
-3.  难度较低的比赛，或是定位为送分题的题目．
+1.  Thi thử trong trường.
+2.  Thi thử theo专题训练.
+3.  Cuộc thi难度较低，hoặc定位为送分题。
 
-#### 关于毒瘤题
+#### Về “đề độc”
 
-「毒瘤题」是一个非常模糊而主观的观念，在这只是引用一些前人关于此的探讨，加以自己的一些理解．这个话题是非常开放的，欢迎大家来发表自己的观点．
+“Đề độc” là khái niệm mơ hồ và chủ quan; ở đây chỉ trích dẫn một số thảo luận trước đó kèm hiểu biết của bản thân. Chủ đề này rất mở, hoan nghênh mọi người nêu quan điểm.
 
-> 一道好题不应该是两道题拼在一起，一道好题会有自己的 idea——而它应该不加过多包装地突出这个 idea．
+> Một đề hay không nên là hai đề ghép lại; đề hay có idea của riêng nó — và应该突出 idea đó mà không包装 quá nhiều。
 >
-> 一道好题应该新颖．真正的好题，应该是能让人脑洞出新的好题的好题．
+> Một đề hayShould be novel. Truly good problems are those that can inspire new problems.
 >
 > ——[vfk《UOJ 精神之源流》][1]
 
-例子：[「XR-1」柯南家族](https://www.luogu.com.cn/problem/P5346)，做法的前后两部分完全割裂，前半部分为 [「模板」树上后缀排序](https://www.luogu.com.cn/problem/P5353)，后半部分是经典树上问题．就算是随意输入树的点权，依然可以做第二部分，前后部分没有联系．
+Ví dụ：[「XR-1」柯南家族](https://www.luogu.com.cn/problem/P5346)，hai nửa lời giải tách rời hoàn toàn: nửa đầu là [“mẫu” sắp xếp hậu tố trên cây](https://www.luogu.com.cn/problem/P5353)，nửa sau là bài cây经典. Dù nhập trọng số cây tùy ý vẫn làm được phần hai; hai phần không liên hệ.
 
-> 一类 OI 题以数学为主，无论是题目描述还是做法都是数学题的特征，并且解法中不含算法相关的知识点，这类 OI 题目统称为纯数学题．
+> Một loại đề OI lấy toán làm chủ, từ mô tả đến lời giải đều mang tính toán, và không chứa kiến thức thuật toán; loại này gọi chung là đề toán thuần.
 >
 > ——[王天懿《论偏题的危害》][2]
 
-经典例子：[NOIP2017 小凯的疑惑](https://uoj.ac/problem/329)
+Ví dụ kinh điển：[NOIP2017 小凯的疑惑](https://uoj.ac/problem/329)
 
-OI 中的数学题与其它数学题的区别，也是体现 OI 本质的一个特点，是 OI 中的数学题往往重点不在答案 **是什么**，而在如何 **加快** 答案的计算．如果一道题考察的重点是「怎么算」而非「怎么快速计算」，这样的数学题一般都是不适合出在 OI 中的．
+Khác biệt giữa toán trong OI và toán thuần là: trọng tâm không phải **đáp án là gì** mà là làm sao **tăng tốc** tính đáp án. Nếu trọng tâm là “tính thế nào” chứ không phải “tính nhanh thế nào”, thì thường không phù hợp ra trong OI.
 
-> 一部分偏题中牵涉到了大学物理的内容，导致选手在面对这些从未接触过物理知识点时变得不知所措，造成了知识上的隔膜．
+> Một số đề偏题涉及 vật lý đại học, khiến thí sinh面对 kiến thức chưa từng học mà bối rối, tạo ra隔阂 về kiến thức.
 >
 > ——[王天懿《论偏题的危害》][2]
 
-经典例子：[「清华集训 2015」多边形下海](https://uoj.ac/problem/159)
+Ví dụ kinh điển：[「清华集训 2015」多边形下海](https://uoj.ac/problem/159)
 
-不止是物理，OI 题目中不应过多涉及到其它学科的知识，如果涉及应当给予详细的解释，不应使其它学科的知识作为解题的重大障碍．
+Không chỉ vật lý, đề OI không nên涉及 quá多 kiến thức môn khác; nếu涉及 phải解释 chi tiết, không nên để kiến thức đó trở thành rào cản lớn.
 
-> 一道好题无论难度如何，都应该具有自己的思维难度，需要选手去思考并发现一些性质．
+> Một đề hay dù难度如何 đều nên có độ难 tư duy, cần thí sinh思考 và发现性质.
 >
-> 一道好题的代码可以长，但一定不是通过强行嵌套或者增加条件而让代码变长，而是长得自然，让人感觉这个题的代码就应该是这么长．
+> Code của đề hay có thể dài, nhưng không phải do强行嵌套 hoặc tăng条件 mà dài; nó dài một cáchNatural, khiến người ta感觉 code “đúng là nên dài vậy”.
 >
 > ——[王天懿《论偏题的危害》][2]
 
-经典例子：[「SDOI2010」猪国杀](https://loj.ac/problem/2885)，[「集训队互测 2015」未来程序·改](https://uoj.ac/problem/98)
+Ví dụ kinh điển：[「SDOI2010」猪国杀](https://loj.ac/problem/2885)，[「集训队互测 2015」未来程序·改](https://uoj.ac/problem/98)
 
-在一般的 OI 比赛中，思维难度应占主要部分．当然，如 THUWC/THUSC 的 Day 2+ 那样的工程题也有其存在的道理——毕竟体验营的目的除了考察选手的算法设计能力，还有和大学学习对接的工程代码以及文档学习能力．但在一般的 OI 比赛中，考察更多的应当还是算法设计与思维能力．
+Trong các kì OI thông thường, độ khó tư duy nên chiếm chính. Dĩ nhiên, dạng工程题 như THUWC/THUSC Day 2+ cũng有意义 — vì体验营除了考算法 còn考工程代码与文档学习能力. Nhưng trong OI thông thường, chủ yếu vẫn là thuật toán và tư duy.
 
-## 题面
+## Đề bài
 
-### 使用 LaTeX 书写公式
+### Dùng LaTeX viết công thức
 
-网上有很多 LaTeX 的教程，如：
+Có nhiều教程 LaTeX, ví dụ:
 
 -   [LaTeX 入门](../tools/latex.md#图表)
 -   [LaTeX 数学公式大全](https://www.luogu.com.cn/blog/IowaBattleship/latex-gong-shi-tai-quan)
 -   [LaTeX 各种命令，符号](https://blog.csdn.net/anxiaoxi45/article/details/39449445)
 
-使用时请注意 [LaTeX 公式的格式要求](../intro/format.md)．
+Khi dùng hãy注意 [格式要求](../intro/format.md).
 
-### 题目背景
+### Bối cảnh đề
 
-题目背景最好尽量简短．在题目背景较长时，应当与题目描述分开．
+Bối cảnh nên尽量简短. Nếu dài, nên tách khỏi mô tả đề.
 
-需要绝对避免题目背景严重影响题意的理解．
+Tuyệt đối tránh bối cảnh làm ảnh hưởng nghiêm trọng đến hiểu题意.
 
-必要时，可以提供与背景结合的题目描述与简洁的题目描述两个版本．
+必要时 có thể提供两版本: gắn bối cảnh và bản mô tả简洁.
 
-### 题目描述
+### Mô tả đề
 
-简而言之，题目描述需要 **清晰易懂**．
+Nói ngắn gọn: mô tả đề phải **rõ ràng, dễ hiểu**.
 
-题面中的每个可能不被理解的定义都应得到解释，不应凭空冒出未加定义的概念．例如：在 [CF1172D Nauuo and Portals](https://codeforces.com/problemset/problem/1172/D) 中，你必须在题面中解释什么是「传送门」．
+Mọi định nghĩa có thể không hiểu phải được giải thích, không nên出现概念 chưa định nghĩa. Ví dụ: trong [CF1172D Nauuo and Portals](https://codeforces.com/problemset/problem/1172/D), phải解释 “portal”.
 
-题面中涉及到的每个概念应当使用单一的词汇来描述．例如：不应一会儿说「费用」，一会儿说「代价」．
+Mỗi khái niệm nên dùng một từ duy nhất. Ví dụ: không nên lúc gọi “chi phí”, lúc gọi “giá trị”.
 
-不应不加说明地使用与原义、常见义不同的词汇．例如：不应不加说明地用「路径」代指一条边．
+Không nên dùng từ với nghĩa khác nghĩa thông dụng mà không giải thích. Ví dụ: không nên dùng “đường đi” để chỉ một cạnh.
 
-你需要保证你的题面不会自相矛盾．例如：在 [CF1173A Nauuo and Votes](https://codeforces.com/problemset/problem/1173/A) 中，没有把 "?" 作为一种 "result"，是因为 "?" 的含义是 "there are more than one possible results"．
+Phải đảm bảo đề không tự mâu thuẫn. Ví dụ: trong [CF1173A Nauuo and Votes](https://codeforces.com/problemset/problem/1173/A), không把 “?”作为一种 “result”，因为 “?” nghĩa là “có nhiều kết quả khả dĩ”.
 
-你需要保证你的题面不能被错误理解而自圆其说，即使这种理解是反常识、没有人会这么去想的．例如：在 [CF1172D Nauuo and Portals](https://codeforces.com/problemset/problem/1172/D) 中，之所以要繁琐地定义 "walk into" 并与 "teleport" 区分，是为了防止这种理解：通过传送门可以到另一个传送门，而到了传送门会传送，因此会反复横跳．
+Phải đảm bảo đề không thể bị hiểu sai rồi tự hợp lý hóa, dù cách hiểu đó trái thường识. Ví dụ: trong [CF1172D Nauuo and Portals](https://codeforces.com/problemset/problem/1172/D), định nghĩa rườm rà “walk into” vs “teleport” để tránh hiểu rằng đi vào cổng sẽ bị teleport lặp đi lặp lại giữa các cổng.
 
-顺着读题目描述应当能看懂每一句话，并理解题目的任务与要求．至少在紧接着的下一段话中疑惑能够得到解释，而不是需要在若干段后才能得到解释，或者要看了输入输出格式才能明白题意，甚至需要根据样例来猜题意．例如：在 [「GuOJ Round #1」琪露诺的冰雪宴会](https://github.com/OI-wiki/problemset/blob/master/contest/online/GuOJ/OI%20Archive%20-%20GuOJ1171.pdf) 中，在输出格式才第一次出现了题目的目标「雾之湖最终能接收到的最大水量」，再加上「灵梦当然能很快算出来清理完全部小溪的总费用是多少」这句带有误解性质的话，更容易使人读错题意，这是不可取的，应当在题目描述中就对题目的目标进行说明．（在这个例子中还存在题目背景严重影响题意理解的问题．）相同的错误还出现在 [CF1423(4)N Bubblesquare Tokens](https://codeforces.com/problemset/problem/1423/N) 中，在输出格式才第一次出现了题目的目标 "friend pairs and number of tokens each of them gets on behalf of their friendship"．
+Đọc mô tả phải hiểu từng câu và nhiệm vụ. Ít nhất trong đoạn kế tiếp phải giải thích疑惑, chứ không nên đợi nhiều đoạn, hoặc phải xem IO format mới hiểu,甚至 phải đoán từ sample. Ví dụ: trong [「GuOJ Round #1」琪露诺的冰雪宴会](https://github.com/OI-wiki/problemset/blob/master/contest/online/GuOJ/OI%20Archive%20-%20GuOJ1171.pdf), mục tiêu “雾之湖最终能接收到的最大水量” chỉ xuất hiện ở output, cộng thêm câu “灵梦当然能很快算出来清理完全部小溪的总费用是多少” dễ误导, khiến đọc sai题意; nên nêu mục tiêu trong mô tả. (Ví dụ này còn có vấn đề bối cảnh ảnh hưởng hiểu题意.) Lỗi tương tự cũng xuất hiện ở [CF1423(4)N Bubblesquare Tokens](https://codeforces.com/problemset/problem/1423/N), mục tiêu chỉ xuất hiện ở output.
 
-### 输入输出格式
+### Định dạng vào/ra
 
-输入输出格式清晰 **完整** 即可，没有死板的要求，个人建议参照 CF 的题目来写输入输出格式，具体可以参考[CF 出题人须知][3]．
+Định dạng vào/ra chỉ cần **rõ ràng và đầy đủ**. Không có要求 cứng,建议参照 CF 的写法，参考 [CF 出题人须知][3].
 
-为了方便选手做题，输入输出格式中最好说明每个变量的具体含义，除非变量的意义非常长，没法一句话说清楚（这时可以说「意义见题目描述」）．
+Để tiện cho thí sinh,最好说明每个变量意义，除非意义太长无法一句话说清（这时可写 “xem mô tả đề”）.
 
-需要特别注意的是，如果输出中含有小数，请尽量使用 [SPJ](#special-judge) 来对误差的大小进行限制，而非要求「保留 x 位小数」．
+Nếu output có số thực,尽量 dùng [SPJ](#special-judge) để限制 sai số，thay vì yêu cầu “giữ x chữ số thập phân”.
 
-「保留 x 位小数」对精度的要求可能是无限的．例如：要求保留三位小数，实际答案为 $0.0015$，此时只要有任意大小的误差导致计算出的答案小于 $0.0015$，即使计算出的答案是 $0.00149999\cdots$ 也会输出错误的答案．
+“Giữ x chữ số” có thể đòi độ chính xác无限。Ví dụ: yêu cầu 3 chữ số, đáp án thực là $0.0015$，chỉ cần sai số khiến kết quả nhỏ hơn $0.0015$，dù输出 $0.00149999\cdots$ 仍会判错。
 
-如果无法使用 SPJ，请保证对精度的要求是有限的，例如：请输出答案四舍五入后保留小数点后三位的结果．令标准答案为 $ans$，数据保证对于任意满足 $\frac{|x-ans|}{\max(1,ans)}<10^{-9}$ 的 $x$，四舍五入后结果与 $ans$ 四舍五入后相同．
+Nếu không dùng SPJ, hãy đảm bảo yêu cầu độ chính xác là hữu hạn, ví dụ: làm tròn đến 3 chữ số thập phân. Đặt đáp án chuẩn $ans$，数据保证对于任意满足 $\frac{|x-ans|}{\max(1,ans)}<10^{-9}$ 的 $x$，làm tròn rồi kết quả trùng với làm tròn của $ans$.
 
-可以参考的一些句子：
+Một số câu mẫu:
 
 ```latex
 输入的第一行包含三个正整数 $n$, $m$, $k$ ($1\le n,m\le 2\cdot 10^5$, $1\le k\le 100$) — $n$ 表示数列的长度，$m$ 表示操作个数，$k$ 的意义见题目描述．
@@ -184,172 +184,172 @@ OI 中的数学题与其它数学题的区别，也是体现 OI 本质的一个�
 如果有多组合法的答案，可以任意输出其中一组．
 ```
 
-???+ note "在选手代码内由随机数生成器生成输入数据"
-    有的题目会因为输入数据过大，为了防止读入用时过长，而要求选手在代码内通过给定的数据生成器生成数据，代替通过标准输入或文件输入来读入数据．
+???+ note "Dữ liệu đầu vào do RNG sinh trong code thí sinh"
+    Một số bài vì dữ liệu quá lớn, để tránh đọc vào tốn thời gian, yêu cầu thí sinh tự sinh dữ liệu trong code theo bộ sinh đã cho, thay cho đọc từ input tiêu chuẩn/tệp.
     
-    采用这种做法需要谨慎考虑，因为它有很多缺点：
+    Cách này cần cân nhắc kỹ vì có nhiều nhược điểm:
     
-    -   可能引入了正解所不需要的数据随机性，或者使得构造数据变得困难
-    -   可能增大了理解输入格式的难度
-    -   如果随机数生成器封装的不好，可能理解数据生成器本身的使用方法就有难度
-    -   如果选手没有使用出题者推荐的语言，可能需要自己写一个数据生成器
+    -   Có thể引入随机性 mà lời giải đúng không cần, hoặc khiến构造数据 khó
+    -   Tăng độ难理解 input
+    -   Nếu RNG đóng gói kém, việc hiểu cách dùng bộ sinh đã khó
+    -   Nếu thí sinh không dùng ngôn ngữ được khuyến nghị, phải tự viết bộ sinh
     
-    采用这种做法一般是为了防止读入数据用时过长，所以一个可能的替代方案是下发一个性能足够好的 [读入、输出优化](./io.md) 模板，以尽量保证所有人的读入用时一致，这样的话即使读入用时很久也不会影响不同选手用时的差异．另一个解决方案是将题目包装成函数调用式（而非 IO 式）交互题，即使算法过程中没有交互，交互题也可以起到统一读入用时的作用，IOI 就采用了所有题目都是交互题的方案．但是，这两种方案都对选手使用的语言有限制，需要出题者手动支持每种允许选手使用的语言．
+    Cách này thường để tránh đọc vào tốn thời gian, nên một phương án thay thế là phát một [mẫu tối ưu I/O](./io.md) đủ nhanh để保证 thời gian đọc gần như一致; như vậy dù đọc lâu cũng không ảnh hưởng差异 giữa thí sinh. Một giải pháp khác là gói đề thành dạng gọi hàm (không phải IO) giao互题, dù không có tương tác, giao互题 vẫn giúp统一 thời gian đọc; IOI dùng方案 tất cả đề là交互. Tuy nhiên hai方案 đều限制 ngôn ngữ và cần ra đề hỗ trợ từng ngôn ngữ.
     
-    回到问题的本源，还可以考虑一下过大的输入数据是否是必要的，有没有可能使用较小的输入数据达到目的，以及比正解复杂度稍劣的做法是否有卡掉的必要．
+    Quay lại本质, cũng nên考虑: dữ liệu quá lớn是否必要, có thể dùng dữ liệu nhỏ hơn đạt mục đích không, và是否 cần卡掉 cách làm chỉ kém hơn chút về độ phức tạp.
 
-### 数据范围
+### Giới hạn dữ liệu
 
-按照 CF 的要求，数据范围要写在输入格式里，但在国内，数据范围往往是写在题目的最后的．
+Theo CF, giới hạn dữ liệu nên写在 input format, nhưng trong nước thường写 ở cuối đề.
 
-数据范围中最容易犯的错误就是不完整．输入中的每一个数、每一个字符串都应该有清晰的界定．在上文所给出的输入输出格式示例中就有一些数据范围的正确写法．
+Lỗi phổ biến nhất là thiếu完整. Mỗi số, mỗi chuỗi trong input đều cần界定 rõ. Các ví dụ input/output ở trên có一些写法 đúng.
 
-数据范围的常见遗漏：
+Các thiếu sót thường见:
 
-1.  「整数」中的「整」．
-2.  题面中只说了是「整数」没说是「正整数」，并且数据范围中只有上限没有下限．
-3.  字符串没说字符集．
-4.  实数没说小数点后位数．
-5.  某些变量没有给范围．
+1.  “整数” nhưng thiếu “整” (ví dụ không nói có thể âm/dương).
+2.  Chỉ nói “整数” mà không nói “正整数”, và范围 chỉ có上限没有下限.
+3.  Chuỗi không nói bộ ký tự.
+4.  Số thực không nói số chữ số sau dấu chấm.
+5.  Một số biến không có范围.
 
-你需要保证标程可以通过满足题面所述数据范围的 **任何一组数据**．
+Cần đảm bảo lời giải chuẩn chạy được trên **mọi dữ liệu** trong phạm vi đề bài.
 
-???+ note "关于「保证数据随机生成」"
-    有的题目中会「保证数据随机生成」，很多时候这样的限制并不是最优的解决方案，因为「随机生成」对数据的限制并不明确，会给判断具体数据范围、提供 hack 数据带来困难．
+???+ note "Về “dữ liệu đảm bảo ngẫu nhiên”"
+    Một số đề “bảo đảm dữ liệu sinh ngẫu nhiên”. Nhiều khi限制 này không tối ưu, vì “ngẫu nhiên” không明确限制数据, gây khó判断范围 và提供 hack.
     
-    一般来说，「保证数据随机生成」可以换成解法所需要的数据性质．例如，随机生成一棵树往往可以换成限制树的高度．
+    Thường có thể thay “ngẫu nhiên” bằng性质 dữ liệu cần cho lời giải. Ví dụ, thay “sinh ngẫu nhiên cây” bằng限制 chiều cao cây.
     
-    如果一定要保证数据随机生成，应当指定随机生成的具体操作．例如，生成一棵树是随机选择父亲节点还是随机生成 Prüfer 序列．
+    Nếu必须保证 ngẫu nhiên, nên指定 thao tác ngẫu nhiên cụ thể. Ví dụ, sinh cây làRandom chọn cha hayRandom sinh Prüfer.
     
-    需要注意的是，非确定性算法和依赖于数据随机性的算法是不同的．前者可以对于任意数据都有很高的概率得到正解，而后者是对于大部分的数据能得到正解，对于某些特定的数据则不可能得到正解．
+    Lưu ý: thuật toán không định型 và thuật toán phụ thuộc ngẫu nhiên của dữ liệu là khác nhau. Loại đầu có xác suất cao đúng với mọi dữ liệu; loại sau chỉ đúng với phần lớn dữ liệu, nhưng với một số dữ liệu đặc biệt thì không thể đúng.
 
-### 样例
+### Sample
 
-样例应当有一定的强度，能够查出一些简单的错误．读错题意的人应当能够通过样例发现自己读错了题意．
+Sample nên đủ mạnh để bắt lỗi đơn giản. Người đọc sai đề nên có thể发现 qua sample.
 
-有多种操作的题，每种操作都应在样例中出现．
+Bài có nhiều thao tác, mỗi thao tác nên xuất hiện trong sample.
 
-有多种输出的题（如 [CF1173A Nauuo and Votes](https://codeforces.com/problemset/problem/1173/A)），每种输出都应在样例中出现．例外：实际上不可能无解，但要求判断是否有解的题目．
+Bài có nhiều kiểu output (ví dụ [CF1173A Nauuo and Votes](https://codeforces.com/problemset/problem/1173/A)), mỗi kiểu output nên xuất hiện. Ngoại lệ: thực tế không thể vô nghiệm nhưng yêu cầu判断 có nghiệm.
 
-### 样例解释
+### Giải thích sample
 
-题目描述越复杂、越不易理解就越应当有详细的样例解释．
+Đề càng复杂, càng khó hiểu thì càng cần解释 sample chi tiết.
 
-题目难度越简单就越应当有详细的样例解释．
+Đề càng dễ thì càng nên có giải thích chi tiết.
 
-详细的样例解释可以选择配上图片．
+Giải thích chi tiết có thể kèm hình.
 
-较大的样例可以没有样例解释．
+Sample lớn có thể không cần giải thích.
 
-为了照顾色觉障碍者，最好不要使颜色成为理解样例解释所必备的．可以用彩色图片来美化样例解释，但如果一定要用颜色传递一些必要的信息，最好不要同时出现红黄或者红绿．
+Để考虑 người mù màu,最好不要让颜色成为理解 sample 的必要条件。Có thể dùng hình màu để đẹp, nhưng nếu必须用 màu传递信息,最好 tránh đỏ-vàng hoặc đỏ-xanh同时出现。
 
-## 时限、空间限制与部分分
+## Giới hạn thời gian, bộ nhớ và điểm từng phần
 
-时限与空间限制的目的是卡掉复杂度错误的做法．（当然，也是为了防止评测用时过长，如：只对交互次数有限制而对时间复杂度没有限制的交互题也有时间限制．）
+Giới hạn thời gian/ bộ nhớ nhằm卡掉 các cách sai độ phức tạp (và tránh评测 quá lâu).
 
-因此，原则上时间限制应当选取不使错误做法通过的尽量大的值．
+原则上, thời gian nên chọn càng lớn càng tốt nhưng không让 cách sai qua.
 
-一般地，时限应满足以下要求：
+一般要求:
 
-1.  至少为 std 在最坏情况下用时的两倍．
-2.  如果比赛允许使用 Java，应使 Java 能够通过．
-3.  不应使错误做法通过（实在卡不掉、想放某种错解过除外）．
+1.  Ít nhất gấp đôi thời gian std ở trường hợp xấu nhất.
+2.  Nếu cho phép Java, phải đảm bảo Java qua.
+3.  Không让 cách sai qua (trừ trường hợp cố tình放过).
 
-为了更好地在放大常数做法过的同时卡掉错解，一般可以采用同时增大数据范围和时限的方法．但要注意，有时正解（由于缓存等玄学问题）会在数据范围增大时有极大的常数增加，此时增大数据范围不一定能够增大正解与错解之间用时的差距．
+Để卡 sai tốt hơn trong khi放过 cách đúng hằng lớn, có thể tăng同时 dữ liệu và thời gian. Nhưng注意, đôi khi lời giải đúng có hằng rất lớn khi dữ liệu tăng, khiến差距 không tăng.
 
-在有部分分的赛制中，还可以通过设置有梯度的数据、数据范围稍小的数据来使较为优秀的错解和大常数正解不能通过，同时使其获得较高的部分分．
+Trong赛制 có điểm phần, có thể thiết kế dữ liệu梯度 hoặc范围稍小 để让错解 tốt và正解 hằng lớn đều không过, nhưng仍能拿较高部分分。
 
-需要注意的是，在数据范围小于 $5\cdot 10^5$ 时，应当考虑是否能使用 [指令集](https://ouuan.github.io/post/n方过百万-暴力碾标算——指令集优化的基础使用) 通过．
+注意: 当数据范围小于 $5\cdot 10^5$，需考虑是否能用 [指令集优化](https://ouuan.github.io/post/n方过百万-暴力碾标算——指令集优化的基础使用).
 
-一般情况下空间限制应当设置的足够大，除非空间复杂度更优的做法的确十分巧妙，值得卡掉空间复杂度大的做法．这种情况下可以考虑设置空间限制较松的部分分．值得注意的是，如果不想卡掉空间消耗较大的做法，数据结构题一般需要设置较大的空间限制．
+一般空间限制应足够大, trừ khi có cách tối ưu space rất巧妙值得卡掉. Khi đó có thể设置空间限制较松的部分分. 值得注意: nếu không muốn卡掉空间大做法, bài cấu trúc dữ liệu通常需要设置较大空间限制.
 
-> 一道好题应该具有它的选拔性质，具有足够的区分度．应该至少 4 档部分分，让新手可以拿到分，让高手能够展示自己的实力．
+> Một đề hay phải具有选拔性, có đủ分 hóa. Nên có至少 4 档部分分 để新人 có điểm,高手展示实力.
 >
 > ——vfk《UOJ 精神之源流》
 
-部分分一般分为较小数据范围与特殊性质两种．
+Phần điểm thường chia thành两类: dữ liệu小 hơn và性质特殊.
 
-较小数据范围一般要设置多档，即使你想不到某种复杂度的做法，也可以考虑给这种复杂度一档分．一般来说，为了避免卡常，可以设置一档极限数据除以二的部分分．
+Dữ liệu nhỏ thường nên có多档; dù không nghĩ ra cách某复杂度, vẫn có thể给它一档分. Để tránh卡常, có thể设置一档极限数据除以二的部分分.
 
-「数据有梯度」最好用多档部分分替代．
+“Dữ liệu có梯度”最好用多档部分分替代.
 
-特殊性质部分分的设置要依具体题目而定．理想的特殊性质部分分应当是能够引导选手思考正解的．与较小数据范围部分分不同，在你不会针对某种特殊性质的做法时，最好不要给这种特殊性质一档分．例如：[「CTS2019」随机立方体](https://loj.ac/problem/3119) 的 $k=1$ 这档部分分在讲题时就被很多人吐槽，称这档部分分妨碍了思考正解．
+Phần性质特殊 cần tùy đề. Lý tưởng là能引导思考正解. Khác với phần dữ liệu nhỏ, nếu không针对某性质的做法,最好不要给它一档分. Ví dụ: [「CTS2019」随机立方体](https://loj.ac/problem/3119) 的 $k=1$ 这一档 bị nhiều人吐槽 vì妨碍思考正解.
 
-如果题目给分方式与默认方式不同（如：在一般的 OI 赛制比赛中绑 subtask 测试），一定要在题面中说明．
+Nếu cách chấm điểm khác mặc định (ví dụ OI 绑 subtask),必须在题面说明.
 
-不推荐使用「百分之 XX 的数据满足 XX」的说法，尤其是数据范围有多个变量时．例如，「$30\%$ 的数据满足 $n \le 1000$」和「$40\%$ 的数据满足 $m \le 100$」可能描述了 $70\%$ 的数据的性质，也可能只描述了 $40\%$ 数据的性质．一般来说，subtask 或数据范围表格是更好的选择．
+Không推荐 dùng “% dữ liệu thỏa …”尤其 khi có nhiều biến. Ví dụ, “$30\%$ 的数据满足 $n \le 1000$” và “$40\%$ 的数据满足 $m \le 100$” có thể描述 70% 或 40%. Thông thường, bảng subtask hoặc bảng范围 là tốt hơn.
 
-## 造数据
+## Sinh dữ liệu
 
-数据生成是出题过程中必要的一步，也是对拍时所必需的，掌握一些生成数据的技巧，就能使造数据的过程更加轻松，造出来的数据强度更高．
+Sinh dữ liệu là bước cần thiết, cũng cần cho对拍. Nắm技巧 sẽ khiến quá trình nhẹ hơn và dữ liệu mạnh hơn.
 
-### 生成随机数据
+### Sinh dữ liệu ngẫu nhiên
 
-#### 生成随机数
+#### Sinh số ngẫu nhiên
 
-请参考 [随机函数](../misc/random.md) 页面．
+Tham khảo [随机函数](../misc/random.md).
 
-需要特别提醒的是，在生成值域比随机函数返回值更大的数时，请 **不要** 使用 `rand() * rand()` 之类的写法，这样的写法生成的随机数非常不均匀．
+Nhấn mạnh: khi cần sinh số có giá trị lớn hơn phạm vi RNG, **không** dùng `rand() * rand()`; phân bố rất không均匀.
 
-另外，出题时推荐使用 [testlib](../tools/testlib/generator.md) 来造数据，可以保证在不同平台上同一个种子生成的随机数相同，并且种子会依据命令行参数自动生成．
+Ngoài ra, khuyến nghị dùng [testlib](../tools/testlib/generator.md) để sinh dữ liệu,保证同一 seed sinh cùng số trên các平台, và seed tự动生成 theo tham số dòng lệnh.
 
-#### 生成随机排列
+#### Sinh hoán vị ngẫu nhiên
 
-可以使用 STL 中的 `std::shuffle` 函数，形如 `std::shuffle(a, a + n, rng)`，这里 `rng` 是一个随机数生成器，比如 `std::mt19937 rng(std::chrono::steady_clock::now().time_since_epoch().count())`．
+Dùng `std::shuffle(a, a + n, rng)`; `rng` là RNG, ví dụ `std::mt19937 rng(std::chrono::steady_clock::now().time_since_epoch().count())`.
 
-请 **不要** 使用 `std::random_shuffle`，它在 C++14 中弃用，C++17 中被移除．
+**Không** dùng `std::random_shuffle` (C++14 deprecate, C++17 remove).
 
-#### 生成随机区间
+#### Sinh đoạn ngẫu nhiên
 
-常见错误方法：在 $[1,n]$ 中随机生成左端点 $l$，再在 $[l, n]$ 中随机生成右端点 $r$．这样的话生成的区间会比较靠右．
+Sai常见: trong $[1,n]$ chọn trái $l$, rồi trong $[l,n]$ chọn phải $r$ => đoạn偏右.
 
-较为正确的方法（推荐做法）：在 $[1, n]$ 中随机生成两个数，取较小的作为左端点，较大的作为右端点．
+Đúng hơn (khuyến nghị): chọn hai số trong $[1,n]$, lấy nhỏ làm trái, lớn làm phải.
 
-真正均匀随机的方法：在 $[0, n]$ 中生成一个随机数 $x$，若 $x = 0$，再在 $[1, n]$ 中生成一个随机数 $y$，区间为 $[y, y]$；否则按「较为正确的方法」生成．
+均匀真正: chọn $x$ trong $[0,n]$. Nếu $x=0$，trong $[1,n]$ chọn $y$，đoạn $[y,y]$;否则用方法 “đúng hơn”.
 
-#### 生成随机树
+#### Sinh cây ngẫu nhiên
 
-常用方法是为 $2\sim n$ 的每个节点 $i$ 从 $[1,i-1]$ 中随机选择一个父亲．这样做的话生成的树不是均匀随机的，期望高度为 $O(\log n)$．
+Cách常用: với mỗi nodes $i$ từ $2$ đến $n$, chọn cha trong $[1,i-1]$. Cây không均匀, độ cao kỳ vọng $O(\log n)$.
 
-还有一种随机方法：从 $[i\cdot low, i\cdot high]$ 中随机选择 $i$ 的父亲．若 $low$ 和 $high$ 设置得当，可以造出强度较高的树．
+Một cách khác: chọn cha của $i$ trong $[i\cdot low, i\cdot high]$; nếu $low,high$ hợp lý, có thể tạo cây mạnh.
 
-真正均匀随机的方法是利用 [Prüfer 序列](../graph/prufer.md)，先生成一个随机 Prüfer 序列，再通过序列生成树．这样做的话，树的期望高度为 $O(\sqrt n)$．
+均匀真正: dùng [Prüfer 序列](../graph/prufer.md), sinh một Prüfer random rồi dựng cây. Khi đó độ cao kỳ vọng $O(\sqrt n)$.
 
-除此之外，可以随机一个排列来给节点重编号/打乱边的顺序．
+Ngoài ra, có thể random một hoán vị để đổi nhãn hoặc xáo trộn thứ tự cạnh.
 
-### 构造数据
+### 构造 dữ liệu
 
-#### 区间相关的题目
+#### Bài liên quan đoạn
 
-常用构造：长度特别小（特殊地，全部为单点）、长度特别大（特殊地，全部为整个序列）．
+Cấu tạo常用: độ dài rất nhỏ (đặc biệt toàn điểm), độ dài rất lớn (đặc biệt toàn bộ dãy).
 
-#### 需要分解因数的题目
+#### Bài cần phân tích ước
 
-可重质因数个数尽量多：$2$ 的幂．
+Số lượng thừa số nguyên tố (tính cả lặp) càng nhiều: lũy thừa của 2.
 
-去重后质因数个数尽量多：最小的若干个质数相乘．
+Số lượng thừa số nguyên tố khác nhau càng nhiều: tích của vài số nguyên tố nhỏ nhất.
 
-约数尽量多：可以参考 OEIS 上的 [A002182](http://oeis.org/A002182) 数列．
+Số ước càng nhiều: tham khảo dãy [A002182](http://oeis.org/A002182) trên OEIS.
 
-#### 树上问题
+#### Bài trên cây
 
-常用构造：
+Cấu tạo常用:
 
--   链
--   菊花
--   完全二叉树
--   将完全二叉树的每个节点替换为一条长为 $\sqrt n$ 的链
--   菊花上挂一条链
--   链上挂一些单点
--   一棵高度为 $d$ 且 $d>1$ 的树的根节点有两个儿子，左子树是一条长为 $d-1$ 的链，右子树是一棵高度为 $d-1$ 的这样的树．
+-   Chuỗi
+-   Hoa cúc
+-   Cây nhị phân hoàn chỉnh
+-   Thay mỗi node của cây nhị phân hoàn chỉnh bằng một chuỗi dài $\sqrt n$
+-   Hoa cúc treo một chuỗi
+-   Chuỗi treo vài điểm
+-   Cây cao $d$ ($d>1$): gốc có hai con; trái là chuỗi dài $d-1$, phải là cây cùng dạng cao $d-1$.
 
-如果不是在考场上，还可以使用 [Tree-Generator](https://github.com/ouuan/Tree-Generator) 来生成各种各样的树．
+Nếu không ở phòng thi, có thể dùng [Tree-Generator](https://github.com/ouuan/Tree-Generator) để sinh nhiều loại cây.
 
-### 批量生成数据
+### Sinh dữ liệu hàng loạt
 
-笔者推荐使用命令行参数 + bat/sh 的方法．
+Khuyến nghị dùng tham số dòng lệnh + bat/sh.
 
-例如：
+Ví dụ:
 
 `gen.cpp`:
 
@@ -373,12 +373,12 @@ int main(int argc, char* argv[]) {
   for (i = 1; i <= n; ++i) p.push_back(i);
 
   shuffle(p.begin(), p.end());
-  // 使用 rnd.next() 进行 shuffle
+  // Dùng rnd.next() để shuffle
 
   printf("%d %d %d\n", n, m, k);
   for (i = 0; i < n; ++i) {
     printf("%d%c", p[i], " \n"[i == n - 1]);
-    // 把字符串当作数组用，中间空格，末尾换行，是一个造数据时常用的技巧
+    // Dùng chuỗi như mảng: giữa là khoảng trắng, cuối là xuống dòng; mẹo hay khi sinh dữ liệu
   }
 
   return 0;
@@ -395,187 +395,185 @@ gen 2000 1000 > 4.in
 gen 100000 100000 > 5.in
 ```
 
-这样做的好处是，对于不同的数据只需要写一个 generator，并且可以方便地修改某个测试点的参数．
+Lợi ích: với các test khác nhau chỉ cần một generator, và dễ sửa tham số từng test.
 
-### 造数据的要求
+### Yêu cầu khi sinh dữ liệu
 
-数据应当包含各个参数的最小值和最大值．
+Dữ liệu nên包含 giá trị nhỏ nhất và lớn nhất của các tham số.
 
-数据应当包含各种边角情况．
+Dữ liệu nên覆盖 các trường hợp biên.
 
-在使用 subtask 时，数据（包括输入、输出）最好覆盖到值域中的各个范围，而不是只有数据范围的最大值．
+Dùng subtask thì dữ liệu (input/output)最好覆盖各范围, không chỉ giá trị max.
 
-为了防止针对特殊构造的特判过掉，可以将不同的构造结合在一个测试点中，或者数据的大部分是构造，掺杂小部分的随机．
+Để防止特判过掉, có thể kết hợp nhiều cấu造 trong một test, hoặc phần lớn là构造, kèm ít random.
 
-数据中应当包含各种各样的构造，即使你不知道什么错解会挂在这组构造上．（在按测试点给分的赛制中需要酌情处理．）
+Dữ liệu nên包含各种构造, kể cả khi không biết错解 nào sẽ挂 trên cấu造 đó. (Trong赛制按点给分需 cân nhắc.)
 
-当然，如果你已知一个（正常人能想的到、写的出的）正确性有问题的错解，要尽量卡掉它．
+Nếu biết một错解 có问题 đúng sai (mà người bình thường nghĩ ra), hãy尽量卡掉.
 
-需要特别提醒的是，如果有整型溢出的可能，一定要卡掉会溢出的做法．在有部分分的赛制中，不应使不开 long long 的人得到和暴力一样甚至更低的分数．
+Nhắc lại: nếu có nguy cơ tràn số,一定要卡掉 cách会溢出. Trong赛制 phần分, không nên让 người không dùng long long 得分 thấp hơn brute force.
 
-如果有 pretests，pretests 应尽量强，（同时尽量少）．换言之，你需要在 pretests 中（用尽量少的数据组数）包含该题的所有已知叉点．
+Nếu có pretests, nên đủ mạnh (và尽量少). Tức trong pretests (với ít test) phải包含所有已知叉点.
 
-如果你希望出现少量而非没有 FST，仍然应当保证 pretests 的强度，因为实际比赛中很可能出现你意想不到的错误，导致远远高出预期的 FST 数量．
+Nếu muốn出现少量而非无 FST, vẫn phải保证 pretests mạnh, vì thi thực tế có thể出现意外 lỗi,导致 FST vượt dự kiến.
 
-### 数据的格式
+### 格式 dữ liệu
 
-这里提供一些通常情况下输入数据的格式要求，可作为一般情况下的参考：
+Dưới đây là一些要求 thường见 cho input, làm参考:
 
-> 1.  使用测试环境下的换行格式．
-> 2.  文件最后一行的末尾有换行符，即整个文件的最后一个字符需要是 `\n`．
-> 3.  任何一行的开头和末尾都没有空白字符．
-> 4.  连续的空格不超过 1 个．
+> 1.  Dùng format xuống dòng của môi trường test.
+> 2.  Dòng cuối của file phải có newline, tức ký tự cuối là `\n`.
+> 3.  Đầu và cuối mỗi dòng không có khoảng trắng.
+> 4.  Không có quá 1 dấu cách liên tiếp.
 
-在 Windows 环境下生成的数据，其换行格式通常为 `\r\n`，而主流测评系统均在 Linux 环境下运行，其换行格式为 `\n`．若在 Linux 环境下读入 Windows 格式的换行数据，可能会导致读入字符串时换行处理异常，进而导致不同环境下程序运行结果不同；若在 Linux 环境下比较 Linux 环境下生成的输出和 Windows 环境下生成的标准输出，可能由于换行格式不同而导致比较存在差异．为了保持程序行为一致，所有数据的换行格式必须转换为程序运行环境下的换行格式．
+Trong Windows, newline là `\r\n`, trong Linux là `\n`. Nếu đọc dữ liệu Windows trên Linux, có thể gây lỗi khi đọc chuỗi, dẫn đến kết quả khác nhau; nếu so sánh output sinh từ Windows và Linux, newline khác nhau cũng gây khác biệt. Để一致 hành vi, phải chuyển newline về môi trường chạy.
 
-一般可以通过如下方式生成 Linux 格式换行的数据：
+Cách sinh dữ liệu newline Linux:
 
-1.  直接使用 Linux 环境生成数据．
-2.  通过 [`dos2unix`](https://dos2unix.sourceforge.io/) 工具对输入输出文件进行转换，此工具包含于 Cygwin, MinGW 等工具链中．
-3.  使用二进制方式打开输出文件，并且使用 `\n` 换行格式．
-4.  参考 [此页面](https://help.luogu.com.cn/manual/luogu/problem/testcase-format#附录windows-环境下造数据注意事项) 中 `dos2unix.cpp` 代码自行编写工具．
+1.  Sinh trực tiếp trên Linux.
+2.  Dùng [`dos2unix`](https://dos2unix.sourceforge.io/) (trong Cygwin/MinGW).
+3.  Mở file output ở chế độ nhị phân và dùng `\n`.
+4.  Tự viết tool dựa trên `dos2unix.cpp` trong [trang này](https://help.luogu.com.cn/manual/luogu/problem/testcase-format#附录windows-环境下造数据注意事项).
 
 ## Special Judge
 
-[SPJ 编写教程](../tools/special-judge.md)
+[Hướng dẫn viết SPJ](../tools/special-judge.md)
 
-输出方案题和输出浮点数题是两种较为常见的需要使用 SPJ 的题型，其它题目视情况也需要使用 SPJ．在 CF 上，所有题目都必须使用基于 testlib 的 checker，例如：题目要求输出若干个整数时，使用 testlib 自带的 ncmp checker，选手可以任意输出空白字符（既可以空格也可以换行）．
+Bài yêu cầu output方案 hoặc số thực thường cần SPJ; các bài khác tùy情况 cũng có thể cần. Trên CF, mọi bài đều phải dùng checker dựa trên testlib; ví dụ output nhiều số nguyên dùng ncmp, thí sinh có thể输出任意空白.
 
-checker 一般使用 testlib 编写．由于 checker 要应对各种各样的不合法输出，需要极强的鲁棒性，不使用 testlib 是很难写好 checker 的．
+Checker thường viết bằng testlib. Vì cần xử lý各种 output không hợp lệ, độ鲁棒 phải cực mạnh; không dùng testlib很难写好.
 
-编写 checker 需要注意以下两点：
+Khi viết checker cần chú ý:
 
-1.  你需要应对各种不合法的输出，因此，请检查读入的每个变量是否在合法范围中（`readInt(minvalue, maxvalue)`）．例如：读入一个在 check 过程中会作为数组下标的变量时必须检查其范围，否则可能引发数组越界，有时这会导致 RE，有时则可能判为 AC．
-2.  原则上 checker 中不应检查空白字符（即，不应使用 `readSpace()`、`readEoln()`、`readEof()`，值得一提的是，testlib 会自动检查是否有多余的输出）．
+1.  Cần xử lý mọi output không hợp lệ, nên kiểm tra每 biến读入 có在范围合法 (`readInt(minvalue, maxvalue)`). Ví dụ: biến dùng làm chỉ số mảng phải kiểm tra phạm vi,否则 có thể越界, đôi khi RE, đôi khi AC sai.
+2.  Nguyên tắc: checker không kiểm tra khoảng trắng (không dùng `readSpace()`、`readEoln()`、`readEof()`; testlib tự检查是否有多余输出).
 
 ## 题解
 
-题解的目标是让预计会来参加比赛的人都能看懂．所以官方题解详细程度的要求会比一般的题解高．
+Mục tiêu của题解 là让 người dự kiến参赛都能看懂. Vì vậy题解官方 cần详细 hơn bình thường.
 
 ### 关于部分分
 
-在有部分分的题目中，题解里可以考虑写一写部分分的做法．
+Trong bài có部分分, có thể viết cách làm部分分.
 
 ### 关于知识点
 
-解题中用到的知识点应当明确指出．对于一些难度和题目难度相当的知识点，最好给出学习该知识点的资料（比如一篇博客的地址）．
+Các kiến thức dùng trong lời giải cần指出 rõ. Với kiến thức难度 tương当 với đề,最好给资料学习 (ví dụ link blog).
 
 ### 关于定义
 
-题解中不要凭空冒出来一些概念．
-
-例如：dp 的题解要解释清楚状态的定义．
+Không nên tự dưng xuất hiện概念. Ví dụ DP cần解释 rõ定义 trạng thái.
 
 ### 关于细节
 
-具体的实现细节如果比较巧妙最好写出来，否则的话「详见代码」也是可以的．如果「详见代码」的话，最好在代码中加上一定的注释．
+Chi tiết hiện thực nếu tinh巧最好 viết ra; nếu “详见代码” cũng được, nhưng nên thêm注释 trong code.
 
 ### 标程
 
-标程中最好去掉冗余部分．比如，有的题解中保留了完整的 define 模板（为了提高做题速度，包含大量 define 与常用函数，常用于 CF 等在线比赛），并且其中很大一部分都没有用到，这是不好的．
+标程 nên bỏ phần冗余. Ví dụ: giữ cả template define dài (thường dùng CF) mà phần lớn không dùng là不好.
 
-如果涉及到一些题解中没有详细说明的实现细节，最好加上适量的注释．
+Nếu có chi tiết hiện thực không giải thích,最好加注释适量.
 
 ## 比赛
 
-### 比赛通知中的题目难度需真实
+### Thông báo độ khó phải真实
 
 > Remember that authors tend to underestimate the difficulty of their problems.
 >
-> ——Codeforces PROPOSE A PROBLEM 页面的提醒
+> ——Nhắc nhở trên trang Codeforces PROPOSE A PROBLEM
 
-出题人很可能错误估计题目的难度，因此，如果要在比赛通知中写上比赛难度，需要谨慎考虑，最好提前请人来验题并进行评估．
+Ra đề thường估计 sai độ khó; nếu要写 độ难 trong thông báo, cần慎重,最好 nhờ người验题 trước và评估.
 
-### 题目难度的分配
+### Phân bổ độ khó đề
 
-在类国内 OI 的模拟赛中，往往是三道题的整体难度与比赛难度相当即可．
+Trong比赛 kiểu OI nội địa, thường chỉ cần难度 tổng của 3 đề tương đương难度 cuộc thi.
 
-在类 CF/ATC 这种线上赛的比赛中，需要尽量保证难度的递增（虽然由于对难度的误估很多时候都并不能真正做到），并且尽量避免出现大的 difficulty gap．可以通过把一题分为难易两题（两个 subtask）来减少 difficulty gap，但是分 subtask 需要谨慎考虑，也有很多人不喜欢 CF 赛制中的 subtask（[Are subtasks evil?](https://codeforces.com/blog/entry/71700)），原因包括但不限于：
+Trong比赛 kiểu CF/ATC, cần保证难度 tăng dần (dù估计 khó), và tránh gap lớn. Có thể chia một đề thành easy/hard (subtask) để giảm gap, nhưng分 subtask cần慎重, nhiều người không thích subtask của CF（[Are subtasks evil?](https://codeforces.com/blog/entry/71700)），理由包括:
 
--   由于赛制原因，可能先做 easy version 再做 hard version 罚时更少而总分更高
--   subtask 的赋分往往与题目难度不成正比
--   很多时候 easy version 的题目并不是一道合格的题目（不有趣）
--   很多时候 easy version 的解法对于思考 hard version 的正解没有帮助
+-   Do赛制, làm easy trước rồi hard có thể罚时 ít hơn và tổng分 cao hơn
+-   Điểm subtask thường không tương xứng难度
+-   Easy version nhiều khi không phải đề合格 (không thú vị)
+-   Lời giải easy thường không giúp nghĩ ra lời giải hard
 
-### 题目知识点的分配
+### Phân bổ kiến thức đề
 
-一场比赛应尽量涵盖较广的知识点（专题训练赛当然除外）．
+Một contest nên覆盖 rộng kiến thức (trừ专题训练).
 
-经典反例：涵盖了动态规划、期望、组合计数、容斥原理、多项式等多种知识点的 CTS2019．
+Phản例经典: CTS2019包含 DP, kỳ vọng, tổ hợp, bao hàm-loại trừ, đa thức, v.v.
 
-> 我要从五道题里选六道，我也很无奈啊．
+> Tôi phải chọn sáu bài từ năm bài, tôi cũng bó tay.
 >
-> ——CTS2019 组题人给出的理由，没有收到足够多的题目投稿
+> ——Lời giải thích của nhóm ra đề CTS2019 khi không nhận đủ投稿
 
-## 出题平台
+## Nền tảng ra đề
 
 ### Polygon
 
-Polygon 是一个功能非常强大的多人合作出题平台，可以作为在任何网站（使用 package 功能导出到不支持 Polygon 的网站）多人合作出题的首选方案，单人出题（尤其是在不同设备上出题）时也是很不错的选择，使用方法参见 [Polygon 简介](../tools/polygon.md)．
+Polygon là nền tảng合作 ra đề rất mạnh,适合作多人合作 hoặc单人 ra đề (đặc biệt đa thiết bị). Xem [Polygon 简介](../tools/polygon.md).
 
 ### Codeforces
 
-Codeforces 是全球最著名的算法竞赛网站之一，题目质量较高，非常适合有一定出题经验并且想进一步提升出题水平、想要出一套高质量题目的出题人．不足之处是审核速度较慢（一般要几个月），但你也可以在审核期间就开始题目的准备（虽然有题目被否掉导致准备白费了的风险）．
+Codeforces là trang CP nổi tiếng nhất, đề chất lượng cao,适合 người có经验 ra đề và muốn nâng trình,出一套 đề chất lượng. Nhược点 là审核 chậm (thường vài tháng), nhưng có thể chuẩn bị trong thời gian审核 (dù có风险 bị否).
 
-#### 出题资格
+#### Điều kiện ra đề
 
--   蓝名且参加过至少 25 场 rated 比赛；
--   紫名且参加过至少 15 场 rated 比赛；
--   橙名且参加过至少 5 场 rated 比赛；
--   红名或黑红名．
+-   Màu xanh dương và参加至少 25 场 rated；
+-   Màu tím và参加至少 15 场 rated；
+-   Màu cam và参加至少 5 场 rated；
+-   Màu đỏ hoặc đen-đỏ.
 
-#### 提交比赛申请
+#### Nộp申请 contest
 
-有了出题资格后，在侧边栏可以看到 [Propose a contest/problems](http://codeforces.com/proposals/new-contest) 按钮．
+Có资格后, sidebar có nút [Propose a contest/problems](http://codeforces.com/proposals/new-contest).
 
-点进去之后，先写一份 contest proposal（在 PROPOSE A CONTEST 里写），然后再写 problem proposal 并添加进比赛里．
+Vào đó,先写 contest proposal (PROPOSE A CONTEST), rồi写 problem proposal và thêm vào contest.
 
-题目决定好之后，就可以将 contest proposal open to review（提交审核）了．
+Sau khi确定题目, mở contest proposal để审核.
 
-#### 在 Polygon 上准备题目
+#### Chuẩn bị đề trên Polygon
 
-参考 [Polygon 简介](../tools/polygon.md)．
+参见 [Polygon 简介](../tools/polygon.md).
 
-#### 与管理之间的联系
+#### Liên hệ quản trị
 
-与管理联系有两个作用：
+Liên hệ quản trị có 2 mục đích:
 
-1.  加快审核速度．
-2.  进入准备阶段后管理会提供建议和帮助．
+1.  Tăng tốc审核.
+2.  Khi进入准备阶段, quản trị提供建议与帮助.
 
-正规的联系方式是在 proposal system 中以 proposal 的形式提交申请，管理开始审核之后以 comment 的形式在 proposal 的下方进行讨论．
+Cách正规 là提交 proposal trong hệ thống,审核后讨论在 proposal comment.
 
-实际上，如果 proposal 长时间没有过审，可以考虑私信联系管理（其实 CF 上写了 "Don't send private messages or emails to coordinators"，但 300iq 在 [评论](http://codeforces.com/blog/entry/64077#comment-478933) 中表示可以私信他）．
+Thực tế, nếu lâu không duyệt, có thể私信 quản trị (dù CF写 “Don't send private messages or emails to coordinators”，nhưng 300iq在 [评论](http://codeforces.com/blog/entry/64077#comment-478933) 表示可私信).
 
 ### Comet OJ
 
-[Comet OJ 链接](https://www.cometoj.com/)
+[Liên kết Comet OJ](https://www.cometoj.com/)
 
-已经不再活跃（截至 2021 年 11 月，最后一场比赛是 2020 年 1 月的）．
+已不活跃（截至 2021 年 11 月，最后一场比赛为 2020 年 1 月）.
 
-出题申请：<https://info.cometoj.com/contests/Questionnaire_IssuerInfo/>
+申请出题：<https://info.cometoj.com/contests/Questionnaire_IssuerInfo/>
 
 ### CodeChef
 
-印度的算法竞赛平台，有三种赛制：10 天且带 challenge 的 Long Challenge，2.5h 类 ICPC 的 Cook-Off，3h 类 IOI 的 LunchTime．
+Nền tảng CP của Ấn Độ, có 3赛制: Long Challenge 10 ngày có challenge, Cook-Off 2.5h kiểu ICPC, LunchTime 3h kiểu IOI.
 
-出题 FAQ：<https://www.codechef.com/wiki/faq-problem-setters>
+FAQ ra đề：<https://www.codechef.com/wiki/faq-problem-setters>
 
-出题指南：<https://www.codechef.com/problemsetting>
+指南 ra đề：<https://www.codechef.com/problemsetting>
 
 ### AtCoder
 
-日本的算法竞赛平台，出题联系方式：<contest@atcoder.jp>．
+Nền tảng CP Nhật, liên hệ ra đề：<contest@atcoder.jp>.
 
 ### UOJ & LOJ
 
-比赛不多的国内 OJ．
+OJ trong nước ít tổ chức contest.
 
 ### 洛谷
 
-参与出题工作人员需要有一定的奖项认证等级，创建比赛后由负责人在 [工单系统](https://www.luogu.com.cn/ticket) 中提交申请．
+Tham gia ra đề cần等级认证 nhất định; sau khi tạo contest,负责人 gửi申请 tại [hệ thống工单](https://www.luogu.com.cn/ticket).
 
-公开赛规范：<https://help.luogu.com.cn/rules/academic/opencontest-standard>
+Chuẩn公开赛：<https://help.luogu.com.cn/rules/academic/opencontest-standard>
 
 ## 参考资料
 
@@ -583,11 +581,11 @@ Codeforces 是全球最著名的算法竞赛网站之一，题目质量较高，
 
 2.  [王天懿《论偏题的危害》][2]
 
-3.  [CF 出题人须知][3]（[国内可访问的图片版](https://github.com/OI-wiki/libs/blob/master/topic/rules.jpg)）
+3.  [CF 出题人须知][3]（[bản ảnh có thể truy cập](https://github.com/OI-wiki/libs/blob/master/topic/rules.jpg)）
 
 4.  [CF 出题人的自我修养][4]
 
-本文由作者本人自 [ouuan 的出题规范](https://ouuan.github.io/post/ouuan-的出题规范/) 搬运而来并有所修改、补充．
+Bài viết được chuyển từ [ouuan 的出题规范](https://ouuan.github.io/post/ouuan-的出题规范/) và có chỉnh sửa, bổ sung.
 
 [1]: https://vfleaking.blog.uoj.ac/blog/909 "vfk《UOJ 精神之源流》"
 

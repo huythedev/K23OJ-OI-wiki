@@ -1,32 +1,32 @@
-本页面将简要介绍模拟算法．
+Trang này giới thiệu ngắn gọn về các bài toán mô phỏng (simulation).
 
-## 简介
+## Giới thiệu
 
-模拟就是用计算机来模拟题目中要求的操作．
+Mô phỏng là dùng máy tính để mô phỏng quá trình được mô tả trong đề bài.
 
-模拟题目通常具有码量大、操作多、思路繁复的特点．由于它码量大，经常会出现难以查错的情况，如果在考试中写错是相当浪费时间的．
+Bài mô phỏng thường có lượng mã lớn, nhiều thao tác và logic phức tạp. Do lượng mã nhiều, dễ phát sinh lỗi khó tìm — trong thi cử sẽ rất tốn thời gian nếu viết sai.
 
-## 技巧
+## Kỹ thuật
 
-写模拟题时，遵循以下的建议有可能会提升做题速度：
+Khi viết mã mô phỏng, tuân theo các đề xuất sau có thể giúp tăng tốc độ làm bài:
 
--   在动手写代码之前，在草纸上尽可能地写好要实现的流程．
--   在代码中，尽量把每个部分模块化，写成函数、结构体或类．
--   对于一些可能重复用到的概念，可以统一转化，方便处理：如，某题给你 "YY-MM-DD 时：分" 把它抽取到一个函数，处理成秒，会减少概念混淆．
--   调试时分块调试．模块化的好处就是可以方便的单独调某一部分．
--   写代码的时候一定要思路清晰，不要想到什么写什么，要按照落在纸上的步骤写．
+- Trước khi viết code, hãy phác thảo thật kỹ luồng xử lý trên giấy nháp.
+- Trong code, tách các phần thành module, viết hàm, struct hoặc class để dễ quản lý.
+- Với các khái niệm lặp lại, chuẩn hóa (ví dụ: chuyển YY-MM-DD hoặc giờ:phút sang số giây) để tránh nhầm lẫn.
+- Gỡ lỗi theo từng phần; việc module hóa giúp test từng phần độc lập.
+- Khi viết code cần có lộ trình rõ ràng, không nghĩ đến đâu viết tới đó.
 
-实际上，上述步骤在解决其它类型的题目时也是很有帮助的．
+Những bước trên cũng có ích cho các loại bài khác.
 
-## 例题详解
+## Ví dụ giải
 
 ???+ note "[Climbing Worm](https://open.kattis.com/problems/climbingworm)"
-    一只长度不计的蠕虫位于 $n$ 英寸深的井的底部．它每次向上爬 $u$ 英寸，但是必须休息一次才能再次向上爬．在休息的时候，它滑落了 $d$ 英寸．之后它将重复向上爬和休息的过程．蠕虫爬出井口需要至少爬多少次？如果蠕虫爬完后刚好到达井的顶部，我们也设作蠕虫已经爬出井口．
+    Một con giun (kích thước bỏ qua) ở đáy giếng sâu n inch. Mỗi lần leo lên u inch, nhưng phải nghỉ một lần rồi mới leo tiếp; khi nghỉ, nó trượt xuống d inch. Quá trình lặp lại. Hỏi giun cần ít nhất bao nhiêu lần leo để thoát giếng? Nếu sau lần leo vừa vặn tới miệng giếng thì coi là đã thoát.
 
-??? note "解题思路"
-    直接使用程序模拟蠕虫爬井的过程就可以了．用一个循环重复蠕虫的爬井过程，当攀爬的长度超过或者等于井的深度时跳出．
+??? note "Ý tưởng giải"
+    Cứ mô phỏng quá trình giun leo: dùng vòng lặp lặp lại quá trình leo, nếu chiều cao leo được >= n thì dừng.
 
-??? note "参考代码"
+??? note "Tham khảo code"
     === "C++"
         ```cpp
         --8<-- "docs/basic/code/simulate/simulate_1.cpp"
@@ -42,7 +42,7 @@
         --8<-- "docs/basic/code/simulate/simulate_1.java"
         ```
 
-## 习题
+## Bài tập
 
 -   [「NOIP2014」生活大爆炸版石头剪刀布 - Universal Online Judge](https://uoj.ac/problem/15)
 -   [「OpenJudge 3750」魔兽世界](http://bailian.openjudge.cn/practice/3750/)

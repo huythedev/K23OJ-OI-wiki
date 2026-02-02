@@ -1,36 +1,37 @@
-前置知识：[连分数](./continued-fraction.md)、[二次域](./quadratic.md)
+<!-- filepath: /home/ubuntu/K23OJ-OI-wiki/docs/math/number-theory/pell-equation.md -->
+Kiến thức tiền đề: [Phân số liên tục](./continued-fraction.md)、[Trường bậc hai](./quadratic.md)
 
-## 引入
+## Giới thiệu
 
-本文讨论（广义）Pell 方程的求解．广义 Pell 方程是指关于 $x$ 和 $y$ 的不定方程
+Bài viết này thảo luận việc giải (tổng quát hóa) phương trình Pell. Phương trình Pell tổng quát là phương trình vô định theo $x$ và $y$
 
 $$
 x^2-Dy^2=N,
 $$
 
-其中，$D$ 是正整数且不是完全平方数[^not-square]，$N$ 是非零整数．狭义的 Pell 方程特指 $N=1$ 或 $N=\pm 1$ 的特殊情形，有时也包括 $N=\pm 4$ 的情形．广义 Pell 方程与在实二次整数环内寻找范数为 $N$ 的二次整数紧密相关，而常常称作（狭义）Pell 方程的这些情形可以看作是寻找实二次整数环内的单位数．
+trong đó $D$ là số nguyên dương và không phải là số chính phương[^not-square], $N$ là số nguyên khác 0. Phương trình Pell theo nghĩa hẹp chỉ các trường hợp đặc biệt $N=1$ hoặc $N=\pm 1$, đôi khi còn bao gồm $N=\pm 4$. Phương trình Pell tổng quát gắn chặt với việc tìm các số nguyên bậc hai trong vành số nguyên bậc hai thực có chuẩn bằng $N$, còn các trường hợp thường được gọi là phương trình Pell (nghĩa hẹp) có thể xem là việc tìm các đơn vị trong vành số nguyên bậc hai thực.
 
-当本文提及 Pell 方程时，特指 $N=1$ 的情形．相应地，$N=-1$ 的情形称为负 Pell 方程[^neg-pell]（negative Pell's equation）．
+Khi bài viết nhắc đến phương trình Pell, mặc định là trường hợp $N=1$. Tương ứng, trường hợp $N=-1$ được gọi là phương trình Pell âm[^neg-pell] (negative Pell's equation).
 
-## 解的结构
+## Cấu trúc nghiệm
 
-广义 Pell 方程的整数解 $(x,y)$ 和二次整数 $x+y\sqrt{D}$ 联系密切，因此文献中 Pell 方程的解常常写作 $x+y\sqrt{D}$ 的形式．因为二次整数的范数
+Nghiệm nguyên $(x,y)$ của phương trình Pell tổng quát có liên hệ chặt chẽ với số nguyên bậc hai $x+y\sqrt{D}$, do đó trong tài liệu, nghiệm của phương trình Pell thường được viết dưới dạng $x+y\sqrt{D}$. Vì chuẩn của số nguyên bậc hai là
 
 $$
 N(x+y\sqrt{D}) = x^2-Dy^2,
 $$
 
-所以，广义 Pell 方程大致相当于在求解范数为 $N$ 的二次整数．但是，两者确实有细微的区别．当 $x$ 和 $y$ 都是整数时，$x+y\sqrt{D}$ 一定是二次整数；反过来，二次整数未必要求 $x$ 和 $y$ 都是整数——在 $D\equiv 1\pmod 4$ 的情形，$x$ 和 $y$ 还可以同时是半整数[^half-int]．
+nên phương trình Pell tổng quát về cơ bản tương đương với việc tìm số nguyên bậc hai có chuẩn $N$. Tuy nhiên, giữa hai bài toán vẫn có khác biệt tinh tế. Khi $x$ và $y$ đều là số nguyên, $x+y\sqrt{D}$ chắc chắn là số nguyên bậc hai; ngược lại, số nguyên bậc hai không nhất thiết yêu cầu $x$ và $y$ đều là số nguyên — trong trường hợp $D\equiv 1\pmod 4$, $x$ và $y$ còn có thể đồng thời là bán nguyên[^half-int].
 
-这个区别在求解基本单位数时格外重要．因为二次整环中的单位数是指范数为 $\pm 1$ 的二次整数．对于 $D\equiv 2,3\pmod 4$，要找到这样的单位数，只需要求解广义 Pell 方程在 $N=\pm 1$ 的情形即可；但是对于 $D\equiv 1\pmod 4$，还需要考虑 $N=\pm 4$ 的情形．[下文](#范数为-4-的情形) 会讨论单位数的求解方法．
+Sự khác biệt này đặc biệt quan trọng khi tìm đơn vị cơ bản. Vì đơn vị trong vành số nguyên bậc hai là số nguyên bậc hai có chuẩn $\pm 1$. Với $D\equiv 2,3\pmod 4$, để tìm các đơn vị chỉ cần giải phương trình Pell tổng quát trong các trường hợp $N=\pm 1$; nhưng với $D\equiv 1\pmod 4$, cần xét thêm cả trường hợp $N=\pm 4$. [Phần dưới](#范数为-4-的情形) sẽ thảo luận cách tìm các đơn vị.
 
-要理解广义 Pell 方程解的结构，需要从 [Brahmagupta 恒等式](https://en.wikipedia.org/wiki/Brahmagupta%27s_identity) 入手：
+Để hiểu cấu trúc nghiệm của phương trình Pell tổng quát, cần bắt đầu từ [đẳng thức Brahmagupta](https://en.wikipedia.org/wiki/Brahmagupta%27s_identity):
 
 $$
 (x_1^2-Dy_1^2)(x_2^2-Dy_2^2)=(x_1x_2+Dy_1y_2)^2-D(x_1y_2+x_2y_1)^2.
 $$
 
-它相当于二次整数的范数保持乘法，即
+Điều này tương đương với việc chuẩn của số nguyên bậc hai bảo toàn phép nhân, tức là
 
 $$
 \begin{aligned}
@@ -39,63 +40,63 @@ N\left(x_1+y_1\sqrt{D}\right)N\left(x_2+y_2\sqrt{D}\right) &= N\left((x_1+y_1\sq
 \end{aligned}
 $$
 
-利用这一恒等式，可以利用方程 $x^2-Dy^2=N_1$ 和方程 $x^2-Dy^2=N_2$ 的整数解复合出方程 $x^2-Dy^2=N_1N_2$ 的整数解．当然，从二次整数的角度看，解的复合就是二次整数的乘法，这就体现了将 Pell 方程的解记作二次整数形式的方便之处．特别地，取 $N_1=N$ 和 $N_2=1$ 就可以发现，如果已知 $x^2-Dy^2=N$ 的一组解和相应的 Pell 方程 $x^2-Dy^2=1$ 的全体解，就可以得到 $x^2-Dy^2=N$ 更多的解．当然，这种方法未必能够生成全部的解．但是，这至少说明理解 Pell 方程的解的结构对理解广义 Pell 方程的解的结构有重要作用．
+Nhờ đẳng thức này, có thể kết hợp nghiệm nguyên của phương trình $x^2-Dy^2=N_1$ và phương trình $x^2-Dy^2=N_2$ để tạo ra nghiệm của phương trình $x^2-Dy^2=N_1N_2$. Ở góc nhìn số nguyên bậc hai, việc kết hợp nghiệm chính là phép nhân của các số nguyên bậc hai, qua đó thể hiện sự tiện lợi khi viết nghiệm dưới dạng số nguyên bậc hai. Đặc biệt, lấy $N_1=N$ và $N_2=1$ thì thấy rằng nếu đã biết một nghiệm của $x^2-Dy^2=N$ và toàn bộ nghiệm của phương trình Pell $x^2-Dy^2=1$, thì có thể sinh ra thêm nhiều nghiệm của $x^2-Dy^2=N$. Dĩ nhiên cách này không nhất thiết sinh ra tất cả nghiệm, nhưng ít nhất cho thấy việc hiểu cấu trúc nghiệm của phương trình Pell có vai trò quan trọng với việc hiểu cấu trúc nghiệm của phương trình Pell tổng quát.
 
-### Pell 方程
+### Phương trình Pell
 
-方程 $x^2-Dy^2=1$ 的几何意义是实轴在 $x$ 轴、虚轴在 $y$ 轴的双曲线．双曲线上的每个点都唯一对应了 $x+y\sqrt{D}$ 的一个非零取值：双曲线的左支对应着 $x+y\sqrt{D}$ 的负值，右支则对应正值．而且，在每一支上，双曲线自下而上对应的 $x+y\sqrt{D}$ 的取值是严格递增的．二次整数的取值给 Pell 方程的解赋予了自然的顺序．
+Phương trình $x^2-Dy^2=1$ có ý nghĩa hình học là hyperbol với trục thực là trục $x$ và trục ảo là trục $y$. Mỗi điểm trên hyperbol tương ứng duy nhất với một giá trị khác 0 của $x+y\sqrt{D}$: nhánh trái tương ứng với giá trị âm, nhánh phải tương ứng với giá trị dương. Hơn nữa, trên mỗi nhánh, khi đi từ dưới lên trên, giá trị $x+y\sqrt{D}$ tăng строго. Giá trị của số nguyên bậc hai gán cho nghiệm của phương trình Pell một thứ tự tự nhiên.
 
-双曲线同时关于 $x$ 轴和 $y$ 轴对称，因此讨论 Pell 方程的解只需要考虑在第一象限内的那一段即可，其余解可以通过对称性获得．这相当于只考虑 $x+y\sqrt{D}>1$ 的解．如果方程除了 $(\pm 1,0)$ 之外还存在不平凡的解，那么一定在第一象限内存在 $x+y\sqrt{D}$ 取值最小的解 $(x_1,y_1)$，这也是第一象限内（不含坐标轴）横纵坐标都最小的整点，它称为 Pell 方程的基本解（fundamental solution）[^fundamental-solution]．根据前文的讨论，满足 $x_k+y_k\sqrt{D}=(x_1+y_1\sqrt{D})^k$ 的整数对 $(x_k,y_k)$ 都是 Pell 方程的解，而且都在第一象限．反过来，这也的确是 Pell 方程在第一象限内的全部解．再利用对称性，就可以得到如下结论：
+Hyperbol đối xứng qua cả trục $x$ và trục $y$, do đó khi xét nghiệm của phương trình Pell chỉ cần xét phần trong góc phần tư thứ nhất; các nghiệm còn lại có thể thu được nhờ đối xứng. Điều này tương đương với việc chỉ xét nghiệm thỏa $x+y\sqrt{D}>1$. Nếu phương trình, ngoài $(\pm 1,0)$, còn có nghiệm không tầm thường, thì nhất định trong góc phần tư thứ nhất tồn tại nghiệm $(x_1,y_1)$ có giá trị $x+y\sqrt{D}$ nhỏ nhất; đây cũng là điểm nguyên có hoành và tung nhỏ nhất trong góc phần tư thứ nhất (không nằm trên trục tọa độ), gọi là nghiệm cơ bản (fundamental solution) của phương trình Pell[^fundamental-solution]. Theo thảo luận trước, mọi cặp $(x_k,y_k)$ thỏa $x_k+y_k\sqrt{D}=(x_1+y_1\sqrt{D})^k$ đều là nghiệm của phương trình Pell và đều nằm trong góc phần tư thứ nhất. Ngược lại, đây đúng là tất cả nghiệm trong góc phần tư thứ nhất. Kết hợp với đối xứng, ta có kết luận sau:
 
-???+ note "定理"
-    设 Pell 方程 $x^2-Dy^2=1$ 的基本解是 $(x_1,y_1)$．那么，它的全部解就是
+???+ note "Định lý"
+    Giả sử nghiệm cơ bản của phương trình Pell $x^2-Dy^2=1$ là $(x_1,y_1)$. Khi đó, toàn bộ nghiệm của nó là
     
     $$
     \{(x,y):x+y\sqrt{D}=\pm(x_1+y_1\sqrt{D})^k,k\in\mathbf Z\}.
     $$
 
-??? note "证明"
-    首先证明第一象限中不存在其他解．不妨设存在其他解 $x+y\sqrt{D}$ 且对于某个 $k\ge 0$ 有
+??? note "Chứng minh"
+    Trước hết chứng minh không có nghiệm nào khác trong góc phần tư thứ nhất. Giả sử tồn tại nghiệm khác $x+y\sqrt{D}$ và với một $k\ge 0$ nào đó có
     
     $$
     x_k+y_k\sqrt{D}< x+y\sqrt{D}< x_{k+1}+y_{k+1}\sqrt{D}.
     $$
     
-    几何意义上，这相当于说整点 $(x,y)$ 落入了双曲线上 $(x_k,y_k)$ 和 $(x_{k+1},y_{k+1})$ 之间（不含端点）．将不等式同时乘以 $x_k-y_k\sqrt{D}=(x_k+y_k\sqrt{D})^{-1}$ 就得到
+    Về mặt hình học, điều này nói rằng điểm nguyên $(x,y)$ nằm trên hyperbol giữa $(x_k,y_k)$ và $(x_{k+1},y_{k+1})$ (không kể hai đầu mút). Nhân bất đẳng thức với $x_k-y_k\sqrt{D}=(x_k+y_k\sqrt{D})^{-1}$ ta được
     
     $$
     1< (x+y\sqrt{D})(x_k-y_k\sqrt{D})=(xx_k-Dyy_k)+(x_ky-xy_k)\sqrt{D} < x_1+y_1\sqrt{D}.
     $$
     
-    根据前文提到的单调性，这个不等式就说明 $(xx_k-Dyy_k,x_ky-xy_k)$ 是位于 $(1,0)$ 和 $(x_1,y_1)$ 之间的整点．这与 $(x_1,y_1)$ 的选取矛盾．
+    Theo tính đơn điệu đã nêu, bất đẳng thức này cho thấy $(xx_k-Dyy_k,x_ky-xy_k)$ là điểm nguyên nằm giữa $(1,0)$ và $(x_1,y_1)$. Điều này mâu thuẫn với cách chọn $(x_1,y_1)$.
     
-    将第一象限的解扩展到整个平面时，指数 $k$ 取相反数（即整体取倒数）就是关于 $x$ 轴对称，整体取相反数则是关于原点对称．再加上 $k=0$ 时的平凡解，就得到 Pell 方程的全部解．
+    Khi mở rộng nghiệm trong góc phần tư thứ nhất ra toàn mặt phẳng, việc đổi dấu số mũ $k$ (tức lấy nghịch đảo) tương ứng với đối xứng qua trục $x$, còn đổi dấu toàn bộ tương ứng với đối xứng qua gốc tọa độ. Cộng thêm nghiệm tầm thường khi $k=0$, ta thu được toàn bộ nghiệm của phương trình Pell.
 
-前文的讨论只是假设了基本解的存在．现在要说明的是，Pell 方程总是存在非平凡的解．
+Phần trước chỉ giả sử nghiệm cơ bản tồn tại. Bây giờ cần chứng minh rằng phương trình Pell luôn có nghiệm không tầm thường.
 
-???+ note "定理"
-    Pell 方程 $x^2-Dy^2=1$ 总是存在除了 $(\pm 1,0)$ 之外的整数解．
+???+ note "Định lý"
+    Phương trình Pell $x^2-Dy^2=1$ luôn có nghiệm nguyên khác $(\pm 1,0)$.
 
-??? note "证明"
-    首先，[Dirichlet 定理](./continued-fraction.md#用渐近分数逼近实数) 表明存在无数对正整数 $(x,y)$ 使得
+??? note "Chứng minh"
+    Trước hết, [định lý Dirichlet](./continued-fraction.md#用渐近分数逼近实数) cho biết tồn tại vô số cặp số nguyên dương $(x,y)$ sao cho
     
     $$
     \left|\dfrac{x}{y}-\sqrt{D}\right| \le \dfrac{1}{y^2}
     $$
     
-    成立，它们都满足不等式
+    và do đó thỏa
     
     $$
     |x^2-Dy^2|=y^2\left|\dfrac{x}{y}-\sqrt{D}\right|\left|\dfrac{x}{y}+\sqrt{D}\right| \le \dfrac{1}{y^2}+2\sqrt{D}<1+2\sqrt{D}.
     $$
     
-    因而，必然存在整数 $m\in(-1-2\sqrt{D},1+2\sqrt{D})$ 使得有无数对 $(x,y)$ 都满足 $x^2-Dy^2 = m$．将这些 $(x,y)$ 根据对 $m$ 的余数分类，就知道对某一对整数 $(x_0,y_0)$，一定存在无数对 $(x,y)$ 使得 $x\equiv x_0\pmod m$ 以及 $y\equiv y_0\pmod m$ 成立．任取满足这些条件的两对互异的 $(x_1,y_1)$ 和 $(x_2,y_2)$，则
+    Vì vậy, tất yếu tồn tại số nguyên $m\in(-1-2\sqrt{D},1+2\sqrt{D})$ sao cho có vô số cặp $(x,y)$ thỏa $x^2-Dy^2 = m$. Phân loại các cặp $(x,y)$ theo phần dư modulo $m$, ta suy ra tồn tại một cặp $(x_0,y_0)$ sao cho có vô số cặp $(x,y)$ thỏa $x\equiv x_0\pmod m$ và $y\equiv y_0\pmod m$. Lấy hai cặp khác nhau $(x_1,y_1)$ và $(x_2,y_2)$ thỏa các điều kiện đó, ta có
     
     $$
     \dfrac{x_1+y_1\sqrt{D}}{x_2+y_2\sqrt{D}}=\dfrac{x_1x_2-Dy_1y_2}{m}+\dfrac{x_2y_1-x_1y_2}{m}\sqrt{D}.
     $$
     
-    因为根据同余关系有
+    Do các quan hệ đồng dư, ta có
     
     $$
     \begin{aligned}
@@ -104,93 +105,93 @@ $$
     \end{aligned}
     $$
     
-    这说明上式右侧得到的是整数解．而且，因为 $(x_1,y_1)\neq(x_2,y_2)$，它并不平凡．这就说明 Pell 方程的确存在非平凡解．
+    cho thấy vế phải là nghiệm nguyên. Hơn nữa, vì $(x_1,y_1)\neq(x_2,y_2)$, nghiệm này không tầm thường. Điều này chứng minh phương trình Pell действительно có nghiệm không tầm thường.
 
-当然，本节提供的是非构造性的证明，在下文讨论 Pell 方程的解法时，会直接利用连分数的渐近分数构造出 Pell 方程的解，因而提供了 Pell 方程存在非平凡解的另一种证明．另外，尽管本节得到的 Pell 方程解的结构与实二次整数环的单位数的结构是一致的，但是对于 $D\equiv 1\pmod 4$ 的情形，本节并没有完全解决相应的二次整数环的单位数的结构问题，下文将进一步讨论．
+Tất nhiên, mục này đưa ra chứng minh phi kiến thiết; trong phần sau khi bàn về cách giải phương trình Pell, ta sẽ trực tiếp dùng phân số liên tục để xây dựng nghiệm, từ đó đưa ra một chứng minh khác cho sự tồn tại nghiệm không tầm thường. Ngoài ra, dù cấu trúc nghiệm của phương trình Pell trong mục này trùng với cấu trúc các đơn vị trong vành số nguyên bậc hai thực, nhưng với trường hợp $D\equiv 1\pmod 4$ thì mục này chưa giải quyết trọn vẹn cấu trúc đơn vị tương ứng; phần sau sẽ bàn tiếp.
 
-### 广义 Pell 方程
+### Phương trình Pell tổng quát
 
-广义 Pell 方程 $x^2-Dy^2=N$ 的图像同样是平面上的双曲线，同样以 $x$ 轴和 $y$ 轴为对称轴．前文已经指出，方程 $x^2-Dy^2=N$ 的部分解可能只相差一个 Pell 方程解的因子，这意味着可以将方程 $x^2-Dy^2=N$ 的解划分为等价类．对于方程 $x^2-Dy^2=N$ 的两个解 $(x_1,y_1)$ 和 $(x_2,y_2)$，如果存在 Pell 方程的解 $(u,v)$ 使得 $x_2+y_2\sqrt{D}=(x_1+y_1\sqrt{D})(u+v\sqrt{D})$ 成立，那么称解 $(x_1,y_1)$ 和 $(x_2,y_2)$ 等价．两个解等价的充分必要条件是
+Đồ thị của phương trình Pell tổng quát $x^2-Dy^2=N$ cũng là hyperbol trên mặt phẳng, đối xứng qua trục $x$ và $y$. Như đã chỉ ra, một số nghiệm của $x^2-Dy^2=N$ có thể chỉ khác nhau bởi một thừa số là nghiệm của phương trình Pell, điều này cho phép chia các nghiệm thành các lớp tương đương. Với hai nghiệm $(x_1,y_1)$ và $(x_2,y_2)$ của $x^2-Dy^2=N$, nếu tồn tại nghiệm Pell $(u,v)$ sao cho $x_2+y_2\sqrt{D}=(x_1+y_1\sqrt{D})(u+v\sqrt{D})$, thì gọi hai nghiệm đó tương đương. Điều kiện cần và đủ để hai nghiệm tương đương là
 
 $$
 N\mid (x_1x_2-Dy_1y_2),\ N\mid (x_2y_1-x_1y_2).
 $$
 
-因为 Pell 方程的解相对容易求出，一个自然的想法是在上述的每个等价类中各求出一个解．只要知道这些解，就可以利用相应的 Pell 方程的解得到所要求的广义 Pell 方程的全部解．在广义 Pell 方程的解的等价类中，由于对称性，每个等价类都存在纵坐标 $y$ 非负但是尽可能小的解：如果这样的解唯一，它就称为该等价类的基本解；否则，该等价类必然有两个 $y$ 非负且最小的解，而且它们关于 $y$ 轴对称，此时选择 $x>0$ 的那个作为基本解．由此，求解广义 Pell 方程 $x^2-Dy^2=N$，就相当于求解它的基本解集 $U$．设它对应的 Pell 方程的基本解是 $(r,s)$，则广义 Pell 方程的全部解的集合是
+Vì nghiệm của phương trình Pell tương đối dễ tìm, một ý tưởng tự nhiên là trong mỗi lớp tương đương tìm một nghiệm. Khi biết các nghiệm này, có thể dùng các nghiệm Pell tương ứng để sinh ra toàn bộ nghiệm của phương trình Pell tổng quát. Trong các lớp tương đương, do đối xứng, mỗi lớp đều có nghiệm với tung độ $y$ không âm và nhỏ nhất có thể: nếu nghiệm đó là duy nhất thì gọi là nghiệm cơ bản của lớp; nếu không, lớp đó có hai nghiệm có $y$ không âm và nhỏ nhất, đối xứng qua trục $y$, và chọn nghiệm có $x>0$ làm nghiệm cơ bản. Do đó, giải $x^2-Dy^2=N$ tương đương với tìm tập nghiệm cơ bản $U$. Gọi nghiệm cơ bản của phương trình Pell tương ứng là $(r,s)$, thì toàn bộ nghiệm của phương trình Pell tổng quát là
 
 $$
 \{(x,y):x+y\sqrt{D}=\pm(r+s\sqrt{D})^k(u+v\sqrt{D}),k\in\mathbf Z,u+v\sqrt{D}\in U\}.
 $$
 
-广义 Pell 方程的基本解必然是有限的．这是因为从上面的通解表达式可知，绝对值 $|u+v\sqrt{D}|$ 必然位于 $r-s\sqrt{D}$ 和 $r+s\sqrt{D}$ 之间．文末的参考文献中提供了关于基本解的坐标的范围的更严格的估计．当然，与 Pell 方程的情形不同，广义 Pell 方程可能没有解．
+Tập nghiệm cơ bản của phương trình Pell tổng quát là hữu hạn. Vì từ công thức nghiệm tổng quát, trị tuyệt đối $|u+v\sqrt{D}|$ nhất định nằm giữa $r-s\sqrt{D}$ và $r+s\sqrt{D}$. Ở phần tài liệu tham khảo cuối bài có các ước lượng chặt hơn về phạm vi tọa độ của nghiệm cơ bản. Dĩ nhiên, khác với phương trình Pell, phương trình Pell tổng quát có thể không có nghiệm.
 
-利用广义 Pell 方程的一个解 $(u,v)$ 和 Pell 方程的基本解 $(r,s)$ 得到同一个等价类中的全部解的方法，除了利用解的复合之外，还可以利用如下递推关系
+Dùng một nghiệm $(u,v)$ của phương trình Pell tổng quát và nghiệm cơ bản $(r,s)$ của phương trình Pell để sinh ra toàn bộ nghiệm cùng lớp tương đương, ngoài cách dùng phép nhân nghiệm còn có thể dùng truy hồi:
 
 $$
 x_{k} = 2rx_{k-1} - x_{k-2},\ y_{k} = 2ry_{k-1} - y_{k-2},
 $$
 
-其中，$x_k+y_k\sqrt{D}=(r+s\sqrt{D})^k(u+v\sqrt{D})$．这是因为 $x_n$ 和 $y_n$ 都可以对某一对实数 $(A,B)$ 写成 $A(r+s\sqrt{D})^k+B(r-s\sqrt{D})^k$ 的形式，而根据 Vieta 定理，$r\pm s\sqrt{D}$ 是方程 $x^2-2rx+1=0$ 的两个实根，进而 $x_n$ 和 $y_n$ 都满足上述的二阶常系数递推关系．相较于解的复合，该递推公式有更少的乘法次数．
+trong đó $x_k+y_k\sqrt{D}=(r+s\sqrt{D})^k(u+v\sqrt{D})$. Vì $x_k$ và $y_k$ đều có thể viết dạng $A(r+s\sqrt{D})^k+B(r-s\sqrt{D})^k$ với một cặp thực $(A,B)$, và theo định lý Vieta, $r\pm s\sqrt{D}$ là nghiệm của $x^2-2rx+1=0$, nên $x_k,y_k$ đều thỏa truy hồi tuyến tính bậc hai trên. So với phép nhân nghiệm, công thức truy hồi này cần ít phép nhân hơn.
 
-## 求解方法
+## Phương pháp giải
 
-Pell 方程和广义 Pell 方程的求解都可以基于连分数进行．
+Việc giải phương trình Pell và Pell tổng quát có thể dựa trên phân số liên tục.
 
-### PQa 算法
+### Thuật toán PQa
 
-本文讨论的算法都基于 PQa 算法，它可以用于求出特定的二次无理数的连分数展开．
+Các thuật toán trong bài dựa trên thuật toán PQa, dùng để tìm khai triển phân số liên tục của một số vô tỉ bậc hai.
 
-设整数 $P_0,Q_0,D$ 满足 $Q_0\neq 0$，$D>0$ 且不是完全平方数，以及 $P_0^2\equiv D\pmod{Q_0}$．那么，二次无理数
+Cho các số nguyên $P_0,Q_0,D$ thỏa $Q_0\neq 0$，$D>0$ và không phải là số chính phương, và $P_0^2\equiv D\pmod{Q_0}$. Khi đó số vô tỉ bậc hai
 
 $$
 \omega=\dfrac{P_0+\sqrt{D}}{Q_0}
 $$
 
-的连分数展开 $[a_0,a_1,\cdots]$ 可以通过如下 [递推公式](./continued-fraction.md#二次无理数) 求得：
+có khai triển phân số liên tục $[a_0,a_1,\cdots]$ có thể được tính bởi [công thức truy hồi](./continued-fraction.md#二次无理数):
 
 $$
 a_k = \left\lfloor\dfrac{P_k+\sqrt{D}}{Q_k}\right\rfloor,\ P_{k+1} = a_kQ_k - P_k,\ Q_{k+1} = \dfrac{D-P_{k+1}^2}{Q_k}.
 $$
 
-进而，$\omega$ 的第 $k$ 个渐近分数的分子和分母 $A_k$ 和 $B_k$ 由如下 [递推公式](./continued-fraction.md#递推关系) 给出：
+Tiếp theo, tử và mẫu của phân số liên tục thứ $k$ là $A_k$ và $B_k$ được cho bởi [công thức truy hồi](./continued-fraction.md#递推关系):
 
 $$
 A_k = a_kA_{k-1} + A_{k-2},\ B_k = a_kB_{k-1} + B_{k-2}
 $$
 
-且 $A_{-1} = 1$，$A_{-2}=0$，$B_{-1}=0$，$B_{-2}=1$．
+với $A_{-1} = 1$，$A_{-2}=0$，$B_{-1}=0$，$B_{-2}=1$.
 
-这些公式的正确性已经在连分数一文中得到证明．那里也说明了，因为二次无理数是 [循环连分数](./continued-fraction.md#二次无理数)，所以，三元组 $(P_k,Q_k,a_k)$ 最终将进入循环，算法总可以在有限步内终止．不妨设循环节的最小长度是 $\ell$，且循环的最早的起始位置是 $k_0$，则二次无理数的连分数展开可以写作
+Độ đúng của các công thức đã được chứng minh trong bài phân số liên tục. Ở đó cũng chỉ ra rằng vì số vô tỉ bậc hai là [phân số liên tục tuần hoàn](./continued-fraction.md#二次无理数), nên bộ ba $(P_k,Q_k,a_k)$ cuối cùng sẽ đi vào chu kỳ, do đó thuật toán luôn kết thúc sau hữu hạn bước. Gọi độ dài chu kỳ tối tiểu là $\ell$, và vị trí bắt đầu sớm nhất là $k_0$, khi đó khai triển có dạng
 
 $$
 \omega=[a_0,\cdots,a_{k_0-1},\overline{a_{k_0},\cdots,a_{k_0+\ell-1}}].
 $$
 
-利用 PQa 算法解决 Pell 方程，需要建立如下结论：
+Để giải phương trình Pell bằng PQa, cần thiết lập kết quả sau:
 
-???+ note "定理"
-    继续上述记号．设 $G_k=Q_0A_k-P_0B_k$，则整数对 $(G_{k-1},B_{k-1})$ 满足关系式
+???+ note "Định lý"
+    Tiếp tục ký hiệu như trên. Đặt $G_k=Q_0A_k-P_0B_k$, khi đó cặp số nguyên $(G_{k-1},B_{k-1})$ thỏa
     
     $$
     G_{k-1}^2-DB_{k-1}^2=(-1)^{k}Q_0Q_{k},
     $$
     
-    且它们的最大公因数 $\gcd(G_{k-1},B_{k-1})$ 整除 $Q_{k}$．
+    và $\gcd(G_{k-1},B_{k-1})$ chia hết $Q_{k}$.
 
-??? note "证明"
-    设 $\omega$ 的连分数展开中，第 $k$ 个余项（完全商）为 $\omega_{k}$，即
+??? note "Chứng minh"
+    Gọi $\omega_k$ là dư (hoàn thương) thứ $k$ trong khai triển phân số liên tục của $\omega$, tức
     
     $$
     \omega = [a_0,a_1,\cdots,a_{k-1},\omega_k] = \dfrac{\omega_k A_{k-1}+A_{k-2}}{\omega_k B_{k-1}+B_{k-2}}.
     $$
     
-    将 $\omega=(P_0+\sqrt{D})/Q_0$ 和 $\omega_k=(P_k+\sqrt{D})/Q_k$ 代入上式，就得到
+    Thay $\omega=(P_0+\sqrt{D})/Q_0$ và $\omega_k=(P_k+\sqrt{D})/Q_k$ vào, ta được
     
     $$
     \dfrac{P_0+\sqrt{D}}{Q_0} = \dfrac{(P_k+\sqrt{D})A_{k-1}+Q_kA_{k-2}}{(P_k+\sqrt{D})B_{k-1}+Q_kB_{k-2}}.
     $$
     
-    消去左右两侧的分母并比较有理部分和无理部分的系数，再代入 $G_k$ 的表达式，就得到如下等式：
+    Khử mẫu và so sánh phần hữu tỉ và vô tỉ, rồi thay biểu thức $G_k$, ta được
     
     $$
     \begin{aligned}
@@ -199,7 +200,7 @@ $$
     \end{aligned}
     $$
     
-    因此，将一式乘以 $G_{k-1}$ 减去二式乘以 $B_{k-1}$，就有
+    Do đó, nhân phương trình đầu với $G_{k-1}$ và trừ phương trình hai nhân với $B_{k-1}$, ta có
     
     $$
     \begin{aligned}
@@ -209,66 +210,66 @@ $$
     \end{aligned}
     $$
     
-    最后一步利用了渐近分数的 [差分公式](./continued-fraction.md#误差估计)．这就证明了第一个结论．
+    Bước cuối dùng [công thức sai phân](./continued-fraction.md#误差估计) của phân số liên tục. Điều này chứng minh kết luận đầu.
     
-    为了证明第二个结论，将 $G_k$ 的表达式代入第一个结论，有
+    Để chứng minh kết luận thứ hai, thay biểu thức $G_k$ vào kết luận đầu, ta có
     
     $$
     (Q_0A_{k-1}-P_0B_{k-1})^2 - DB_{k-1}^2 = (-1)^kQ_0Q_k.
     $$
     
-    所以，利用 $Q_0\mid(P_0^2-D)$ 有
+    Do $Q_0\mid(P_0^2-D)$ nên
     
     $$
     Q_0A_{k-1}^2 +\left(\dfrac{P_0^2-D}{Q_0}B_{k-1}- 2P_0A_{k-1}\right)B_{k-1} = (-1)^kQ_k.
     $$
     
-    故而，$\gcd(G_{k-1},B_{k-1}) = \gcd(Q_0A_{k-1},B_{k-1})$ 整除 $Q_k$．
+    Suy ra $\gcd(G_{k-1},B_{k-1}) = \gcd(Q_0A_{k-1},B_{k-1})$ chia hết $Q_k$.
 
-这个结论提供了一种寻找方程 $x^2-Dy^2=N$ 的解的方法．如果合理地选择 $Q_0>0$ 并选择 $P_0$ 为同余方程 $P_0^2\equiv D\pmod{Q_0}$ 的解，那么通过对 $(P_0+\sqrt{D})/Q_0$ 执行 PQa 算法，直到找到 $(-1)^kQ_0Q_{k}=N$，此时 $(G_{k-1},B_{k-1})$ 就成为原方程的一组解．而且，如果 $Q_k=\pm 1$，那么这样得到的解一定是本原解，也就是说 $G_{k-1}$ 和 $B_{k-1}$ 一定是互素的．
+Kết quả này cung cấp cách tìm nghiệm của $x^2-Dy^2=N$. Nếu chọn $Q_0>0$ hợp lý và chọn $P_0$ là nghiệm của đồng dư $P_0^2\equiv D\pmod{Q_0}$, thì chạy PQa cho $(P_0+\sqrt{D})/Q_0$ cho đến khi gặp $(-1)^kQ_k=1$, lúc đó $(G_{k-1},B_{k-1})$ là một nghiệm của phương trình. Hơn nữa, nếu $Q_k=\pm 1$, nghiệm thu được là nghiệm nguyên tố cùng nhau, tức $\gcd(G_{k-1},B_{k-1})=1$.
 
-这个思想是解决 Pell 方程和广义 Pell 方程的核心．理解了这一思想后，下面就着手处理算法的一些细节，并证明所有的解都可以通过该方式得到．
+Ý tưởng này là lõi để giải phương trình Pell và Pell tổng quát. Hiểu điều này rồi, ta sẽ xử lý chi tiết và chứng minh mọi nghiệm đều có thể thu được bằng cách này.
 
-### Pell 方程
+### Phương trình Pell
 
-要解决 Pell 方程 $x^2-Dy^2=1$，只需要对 $(P_0,Q_0,D)=(0,1,D)$ 运行 PQa 算法，直到出现 $(-1)^kQ_k=1$，此时 $(A_{k-1},B_{k-1})$ 就是 Pell 方程的一组解（因为 $G_{k-1}$ 此时就是 $A_{k-1}$)．当然，对于 Pell 方程，对该过程可以进行更精确的描述．
+Để giải $x^2-Dy^2=1$, chỉ cần chạy PQa với $(P_0,Q_0,D)=(0,1,D)$ đến khi xuất hiện $(-1)^kQ_k=1$, khi đó $(A_{k-1},B_{k-1})$ là một nghiệm (vì $G_{k-1}$ khi đó chính là $A_{k-1}$). Dĩ nhiên, có mô tả chính xác hơn.
 
-首先，解一定出现在循环节的末尾处．上述过程相当于对 $\sqrt{D}$ 做连分数展开．对此，已经有 [结论](./continued-fraction.md#纯循环连分数)：
+Trước hết, nghiệm chắc chắn xuất hiện ở cuối chu kỳ. Quá trình trên tương đương với khai triển phân số liên tục của $\sqrt{D}$. Ta đã có [kết luận](./continued-fraction.md#纯循环连分数):
 
 $$
 \sqrt{D} = [\lfloor\sqrt{D}\rfloor,\overline{a_1,\cdots,a_{\ell-1},2\lfloor\sqrt{D}\rfloor}].
 $$
 
-此处，循环节长度为 $\ell$，且起始位置是第 $1$ 项（下标从 $0$ 开始）．而且，它的第 $\ell$ 项余项等于 $\lfloor\sqrt{D}\rfloor+\sqrt{D}$，这说明 $Q_{\ell}=1$．因此，如果 $\ell$ 是偶数，那么 $(A_{\ell-1},B_{\ell-1})$ 就是 Pell 方程的一组非平凡解；如果 $\ell$ 是奇数，那么 $(A_{2\ell-1},B_{2\ell-1})$ 就是 Pell 方程的一组非平凡解．
+Ở đây, độ dài chu kỳ là $\ell$, và bắt đầu từ vị trí $1$ (chỉ số từ $0$). Hơn nữa, dư thứ $\ell$ bằng $\lfloor\sqrt{D}\rfloor+\sqrt{D}$, nên $Q_{\ell}=1$. Do đó, nếu $\ell$ chẵn thì $(A_{\ell-1},B_{\ell-1})$ là một nghiệm không tầm thường; nếu $\ell$ lẻ thì $(A_{2\ell-1},B_{2\ell-1})$ là một nghiệm không tầm thường.
 
-接下来要说明，刚刚得到的这组解一定是基础解．这个结论基于两点理由：第一，Pell 方程的所有正整数解 $(x,y)$ 对应的分数 $x/y$ 都出现在 $\sqrt{D}$ 的渐近分数中，这就保证了 $(x,y)$ 必定是 PQa 算法过程中的某个 $(A_k,B_k)$；第二，除了循环节末尾，不会再出现其他位置有 $Q_k=1$，因为 $A_k$ 和 $B_k$ 的递推关系保证了它们的大小随着下标增加而增加，所以最小的正整数解（即基础解）必然出现在刚刚指明的位置．这两点理由可以分别从如下的两条定理得出：
+Tiếp theo cần chứng minh nghiệm vừa tìm là nghiệm cơ bản. Kết luận này dựa trên hai điểm: (1) mọi nghiệm nguyên dương $(x,y)$ của phương trình Pell đều cho phân số $x/y$ xuất hiện trong các phân số liên tục của $\sqrt{D}$, nên $(x,y)$ phải là một $(A_k,B_k)$ nào đó của PQa; (2) ngoài cuối chu kỳ không có vị trí nào khác có $Q_k=1$, và do $A_k,B_k$ tăng theo $k$, nên nghiệm nguyên dương nhỏ nhất (nghiệm cơ bản) phải xuất hiện ở vị trí vừa nêu. Hai lý do này lần lượt từ hai định lý sau:
 
-???+ note "定理"
-    设方程 $x^2-Dy^2=N$ 有正整数解 $(x,y)$，如果 $|N|<\sqrt{D}$，那么 $\dfrac{x}{y}$ 一定等于 $\sqrt{D}$ 的渐近分数．
+???+ note "Định lý"
+    Nếu phương trình $x^2-Dy^2=N$ có nghiệm nguyên dương $(x,y)$ và $|N|<\sqrt{D}$, thì $\dfrac{x}{y}$ là một phân số liên tục của $\sqrt{D}$.
 
-??? note "证明"
-    当 $N>0$ 时，因为 $x^2-Dy^2>0$，所以 $x>y\sqrt{D}$．故而，有
+??? note "Chứng minh"
+    Với $N>0$, do $x^2-Dy^2>0$ nên $x>y\sqrt{D}$. Do đó,
     
     $$
     \left|\dfrac{x}{y}-\sqrt{D}\right| = \dfrac{N}{y(x+y\sqrt{D})}<\dfrac{N}{2y^2\sqrt{D}}<\dfrac{1}{2y^2}.
     $$
     
-    根据 [Legendre 判别法](./continued-fraction.md#渐近分数的判定) 可知，$\dfrac{x}{y}$ 是 $\sqrt{D}$ 的渐近分数．
+    Theo [tiêu chuẩn Legendre](./continued-fraction.md#渐近分数的判定), suy ra $\dfrac{x}{y}$ là một phân số liên tục của $\sqrt{D}$.
     
-    当 $N<0$ 时，$x>y\sqrt{D}$ 不再成立．所以，转而考虑方程 $y^2-\dfrac{1}{D}x^2=-\dfrac{N}{D}$ 的解．因为 $\dfrac{|N|}{D}<\sqrt{\dfrac{1}{D}}$，所以上面的论证依然成立．这说明 $\dfrac{y}{x}$ 是 $\dfrac{1}{\sqrt{D}}$ 的渐近分数．根据 [倒数定理](./continued-fraction.md#递推关系) 可知，$\dfrac{x}{y}$ 也是 $\sqrt{D}$ 的渐近分数．
+    Với $N<0$, $x>y\sqrt{D}$ không còn đúng. Khi đó xét phương trình $y^2-\dfrac{1}{D}x^2=-\dfrac{N}{D}$. Vì $\dfrac{|N|}{D}<\sqrt{\dfrac{1}{D}}$, lập luận trên vẫn đúng. Do đó $\dfrac{y}{x}$ là phân số liên tục của $\dfrac{1}{\sqrt{D}}$. Theo [định lý đảo](./continued-fraction.md#递推关系), suy ra $\dfrac{x}{y}$ cũng là phân số liên tục của $\sqrt{D}$.
 
-???+ note "定理"
-    在对 $(P_0,Q_0,D)=(0,1,D)$ 运行上述 PQa 算法的过程中，$Q_k=1$ 必然推出 $\ell\mid k$．
+???+ note "Định lý"
+    Khi chạy PQa với $(P_0,Q_0,D)=(0,1,D)$, nếu $Q_k=1$ thì обязательно $\ell\mid k$.
 
-??? note "证明"
-    在 $\sqrt{D}$ 的连分数展开中，除了第 $0$ 个余项，所有其他余项都是 [纯循环连分数](./continued-fraction.md#纯循环连分数)．设 $Q_k=1$．根据 Galois 的结论，必然有余项 $\omega_k=P_k+\sqrt{D}>1$，且它的共轭 $-1<P_k-\sqrt{D}<0$，这说明 $P_k=\lfloor\sqrt{D}\rfloor$．因此，余项 $\omega_k$ 就等于 $\omega_\ell$．但是，余项的重复意味着连分数的循环，如果 $k$ 不是 $\ell$ 的整数倍，就与 $\ell$ 是最小正周期相矛盾．所以，必然有 $\ell\mid k$．
+??? note "Chứng minh"
+    Trong khai triển của $\sqrt{D}$, ngoài dư thứ $0$, các dư khác đều là [phân số liên tục thuần chu kỳ](./continued-fraction.md#纯循环连分数). Giả sử $Q_k=1$. Theo kết quả của Galois, dư $\omega_k=P_k+\sqrt{D}>1$ và liên hợp của nó thỏa $-1<P_k-\sqrt{D}<0$, suy ra $P_k=\lfloor\sqrt{D}\rfloor$. Do đó $\omega_k=\omega_\ell$. Lặp lại dư nghĩa là bắt đầu chu kỳ; nếu $k$ không là bội của $\ell$ thì mâu thuẫn với việc $\ell$ là chu kỳ nhỏ nhất. Vậy $\ell\mid k$.
 
-综合本节的讨论可知，只要对 $\sqrt{D}$ 做连分数展开，亦即以 $(P_0,Q_0,D)=(0,1,D)$ 为起点做 PQa 算法，当首次得到 $Q_\ell=1$ 时，就到达了第一个循环节的末尾．此时，如果 $\ell$ 是偶数，那么 $(A_{\ell-1},B_{\ell-1})$ 就是 Pell 方程的基本解；否则，$(A_{2\ell-1},B_{2\ell-1})$ 是 Pell 方程的基本解．对于循环节长度 $\ell$ 为奇数的情形，并不需要继续 PQa 算法到两倍的循环节处，马上就会说明 $A_{2\ell-1}+B_{2\ell-1}\sqrt{D}=(A_{\ell-1}+B_{\ell-1}\sqrt{D})^2$，因而可以直接从 $(A_{\ell-1},B_{\ell-1})$ 直接计算出 Pell 方程的基本解．Pell 方程所有其他解都可以通过 Pell 方程的基本解计算．
+Tổng hợp lại: chỉ cần khai triển $\sqrt{D}$ bằng PQa với $(0,1,D)$, khi lần đầu có $Q_\ell=1$ thì đã tới cuối chu kỳ đầu. Nếu $\ell$ chẵn thì $(A_{\ell-1},B_{\ell-1})$ là nghiệm cơ bản; nếu $\ell$ lẻ thì $(A_{2\ell-1},B_{2\ell-1})$ là nghiệm cơ bản. Với $\ell$ lẻ, không cần chạy PQa đến hai chu kỳ; sẽ thấy $A_{2\ell-1}+B_{2\ell-1}\sqrt{D}=(A_{\ell-1}+B_{\ell-1}\sqrt{D})^2$, nên có thể từ $(A_{\ell-1},B_{\ell-1})$ trực tiếp tính nghiệm cơ bản. Các nghiệm còn lại được sinh từ nghiệm cơ bản.
 
-??? example "示例"
-    1.  求解方程 $x^2-14y^2=1$．
+??? example "Ví dụ"
+    1.  Giải phương trình $x^2-14y^2=1$.
     
-        对 $(P_0,Q_0,D)=(0,1,14)$ 运行 PQa 算法结果如下：（标红部分为第一个循环节）
+        Chạy PQa với $(P_0,Q_0,D)=(0,1,14)$ thu được: (phần tô đỏ là chu kỳ đầu)
     
         | $k$ | $P$ | $Q$ |        $a$       |  $A$  |  $B$ |  $G$  | $G^2-DB^2$ |
         | :-: | :-: | :-: | :--------------: | :---: | :--: | :---: | :--------: |
@@ -279,10 +280,10 @@ $$
         | $4$ | $3$ | $1$ | $\color{red}{6}$ | $101$ | $27$ | $101$ |    $-5$    |
         | $5$ | $3$ | $5$ |        $1$       | $116$ | $31$ | $116$ |     $2$    |
     
-        循环节长度 $\ell=4$ 为偶数．方程的最小正整数解为 $(G_3,B_3)=(15,4)$．
-    2.  求解方程 $x^2-41y^2=1$．
+        Độ dài chu kỳ $\ell=4$ chẵn. Nghiệm nguyên dương nhỏ nhất là $(G_3,B_3)=(15,4)$.
+    2.  Giải phương trình $x^2-41y^2=1$.
     
-        对 $(P_0,Q_0,D)=(0,1,41)$ 运行 PQa 算法结果如下：（标红部分为第一个循环节）
+        Chạy PQa với $(P_0,Q_0,D)=(0,1,41)$ thu được: (phần tô đỏ là chu kỳ đầu)
     
         | $k$ | $P$ | $Q$ |        $a$        |   $A$   |   $B$  |   $G$   | $G^2-DB^2$ |
         | :-: | :-: | :-: | :---------------: | :-----: | :----: | :-----: | :--------: |
@@ -295,152 +296,152 @@ $$
         | $6$ | $6$ | $1$ |        $12$       | $25414$ | $3969$ | $25414$ |    $-5$    |
         | $7$ | $6$ | $5$ |        $2$        | $52877$ | $8258$ | $52877$ |     $5$    |
     
-        循环节长度 $\ell=3$ 为奇数．方程的最小正整数解为 $(G_5,B_5)=(2049,320)$．它也可以通过 $(G_2,B_2)=(32,5)$ 计算得出：
+        Độ dài chu kỳ $\ell=3$ lẻ. Nghiệm nguyên dương nhỏ nhất là $(G_5,B_5)=(2049,320)$. Ta cũng có thể tính từ $(G_2,B_2)=(32,5)$:
     
         $$
         (32+5\sqrt{41})^2=2049+320\sqrt{41}.
         $$
 
-### 负 Pell 方程
+### Phương trình Pell âm
 
-根据上一节的讨论可知，负 Pell 方程的解也必然对应于 $\sqrt{D}$ 的渐近分数，而且只能出现在 $(-1)^kQ_k=-1$ 处．这只能出现在循环节的末尾．因此，负 Pell 方程有解，当且仅当循环节长度 $\ell$ 是奇数．当解存在时，$(A_{\ell-1},B_{\ell-1})$ 就是负 Pell 方程的基本解．它的求解方法和上一节是一致的．
+Theo phần trước, nghiệm của phương trình Pell âm cũng tương ứng với các phân số liên tục của $\sqrt{D}$, và chỉ có thể xuất hiện tại vị trí $(-1)^kQ_k=-1$, tức là ở cuối chu kỳ. Do đó, phương trình Pell âm có nghiệm khi và chỉ khi độ dài chu kỳ $\ell$ là lẻ. Khi có nghiệm, $(A_{\ell-1},B_{\ell-1})$ là nghiệm cơ bản. Cách giải giống phần trước.
 
-利用前文对于 Pell 方程解的结构的证明相仿的思路，可以证明如下结论：
+Dùng lập luận tương tự phần cấu trúc nghiệm của Pell, ta có:
 
-???+ note "定理"
-    设方程 $x^2-Dy^2=-1$ 有解，且基本解是 $(x_1,y_1)$．那么，$x^2-Dy^2=\pm 1$ 的所有整数解都属于集合
+???+ note "Định lý"
+    Giả sử phương trình $x^2-Dy^2=-1$ có nghiệm, nghiệm cơ bản là $(x_1,y_1)$. Khi đó, toàn bộ nghiệm nguyên của $x^2-Dy^2=\pm 1$ thuộc
     
     $$
     \{(x,y):x+y\sqrt{D}=\pm(x_1+y_1\sqrt{D})^k,k\in\mathbf Z\}.
     $$
     
-    特别地，满足 $x_2+y_2\sqrt{D}=(x_1+y_1\sqrt{D})^2$ 的整数解 $(x_2,y_2)$ 正是 $x^2-Dy^2=1$ 的基本解．
+    Đặc biệt, nghiệm $(x_2,y_2)$ thỏa $x_2+y_2\sqrt{D}=(x_1+y_1\sqrt{D})^2$ chính là nghiệm cơ bản của $x^2-Dy^2=1$.
 
-??? note "证明"
-    由于对称性，只需要考虑正整数解，即 $x+y\sqrt{D}>1$ 的情形．但是由于 $x^2-Dy^2=\pm 1$ 是两段双曲线，所以 $x+y\sqrt{D}$ 无法和 $(x,y)$ 建立一一对应．为了处理这种困难，首先证明上述的 $(x_2,y_2)$ 是 $x^2-Dy^2=1$ 的基本解．
+??? note "Chứng minh"
+    Do đối xứng, chỉ cần xét nghiệm nguyên dương, tức $x+y\sqrt{D}>1$. Nhưng vì $x^2-Dy^2=\pm 1$ gồm hai nhánh hyperbol, $x+y\sqrt{D}$ không còn tương ứng một-một với $(x,y)$. Để xử lý, trước hết chứng minh $(x_2,y_2)$ là nghiệm cơ bản của $x^2-Dy^2=1$.
     
-    显然，$(x_2,y_2)$ 是 $x^2-Dy^2=1$ 的解．如果设 $(z,w)$ 是 $x^2-Dy^2=1$ 的基本解，那么必然有 $1<z+w\sqrt{D}\le x_2+y_2\sqrt{D}$．如果右侧的不等式不含有等号，那么将不等式同除以 $x_1+y_1\sqrt{D}$ 就得到 $-x_1+y_1\sqrt{D}<(z+w\sqrt{D})(-x_1+y_1\sqrt{D})<x_1+y_1\sqrt{D}$．将该不等式的中间项的表达式展开就能得到 $x'+y'\sqrt{D}$ 的形式，它的范数是 $-1$ 且 $(x',y')$ 也是整数解．将该不等式取倒数，就发现 $-x'+y'\sqrt{D}$ 同样落入 $-x_1+y_1\sqrt{D}$ 和 $x_1+y_1\sqrt{D}$ 之间．二次整数 $\pm x'+y'\sqrt{D}$ 互为倒数，必然有一个大于 $1$．但是 $1$ 和 $x_1+y_1\sqrt{D}$ 不应该再出现别的范数为 $-1$ 的二次整数，这与 $x_1+y_1\sqrt{D}$ 的最小性矛盾．所以，必然成立 $x_2+y_2\sqrt{D}=z+w\sqrt{D}$，即 $(x_2,y_2)$ 是方程 $x^2-Dy^2=1$ 的基本解．
+    Rõ ràng $(x_2,y_2)$ là nghiệm của $x^2-Dy^2=1$. Nếu $(z,w)$ là nghiệm cơ bản của $x^2-Dy^2=1$ thì $1<z+w\sqrt{D}\le x_2+y_2\sqrt{D}$. Nếu bất đẳng thức bên phải là строг, chia cho $x_1+y_1\sqrt{D}$ ta được $-x_1+y_1\sqrt{D}<(z+w\sqrt{D})(-x_1+y_1\sqrt{D})<x_1+y_1\sqrt{D}$. Khai triển hạng giữa thành $x'+y'\sqrt{D}$, ta có chuẩn $-1$ và $(x',y')$ nguyên. Lấy nghịch đảo bất đẳng thức, ta thấy $-x'+y'\sqrt{D}$ cũng nằm giữa $-x_1+y_1\sqrt{D}$ và $x_1+y_1\sqrt{D}$. Hai số nguyên bậc hai $\pm x'+y'\sqrt{D}$ là nghịch đảo của nhau, nên một trong hai lớn hơn $1$. Nhưng giữa $1$ và $x_1+y_1\sqrt{D}$ không được có số nguyên bậc hai chuẩn $-1$ khác, mâu thuẫn với tính nhỏ nhất của $x_1+y_1\sqrt{D}$. Do đó phải có $x_2+y_2\sqrt{D}=z+w\sqrt{D}$, tức $(x_2,y_2)$ là nghiệm cơ bản của $x^2-Dy^2=1$.
     
-    基于此，如果出现方程 $x^2-Dy^2=\pm 1$ 的解 $(x,y)$ 不对应某个 $(x_1+y_1\sqrt{D})^k$，那么必然存在 $k$ 使得 $(x_1+y_1\sqrt{D})^{2k}<x+y\sqrt{D}<(x_1+y_1\sqrt{D})^{2k+2}$，消去因子 $(x_1+y_1)^{2k+1}$，就说明存在位于 $-x_1+y_1\sqrt{D}$ 和 $x_1+y_1\sqrt{D}$ 之间的范数为 $\pm 1$ 的二次整数 $x'+y'\sqrt{D}\neq 1$．重复上一段利用倒数的论证可知，这与 $x_1+y_1\sqrt{D}$ 的最小性矛盾．因而原命题得证．
+    Dựa vào đó, nếu có nghiệm $(x,y)$ của $x^2-Dy^2=\pm 1$ không tương ứng với $(x_1+y_1\sqrt{D})^k$, thì tồn tại $k$ sao cho $(x_1+y_1\sqrt{D})^{2k}<x+y\sqrt{D}<(x_1+y_1\sqrt{D})^{2k+2}$. Khử nhân tử $(x_1+y_1)^{2k+1}$, ta thu được số nguyên bậc hai chuẩn $\pm 1$ nằm giữa $-x_1+y_1\sqrt{D}$ và $x_1+y_1\sqrt{D}$ khác $1$, mâu thuẫn như trên. Suy ra mệnh đề đúng.
 
-因为 $(A_{\ell-1},B_{\ell-1})$ 是负 Pell 方程的最小正整数解，而 $x^2-Dy^2=\pm 1$ 的所有正整数解都出现在集合
+Vì $(A_{\ell-1},B_{\ell-1})$ là nghiệm dương nhỏ nhất của phương trình Pell âm, và mọi nghiệm dương của $x^2-Dy^2=\pm 1$ đều thuộc tập
 
 $$
 \{(x,y):x+y\sqrt{D}=(A_{\ell-1}+B_{\ell-1}\sqrt{D})^k,k\in\mathbf N_+\}
 $$
 
-中，又因为这些正整数解必然对应 $\sqrt{D}$ 的在循环节末尾（前一位）处的渐近分数，而且渐近分数的分子和分母是严格单调递增的，所以对所有 $k\in\mathbf N_+$ 总是有
+mà các nghiệm dương này tương ứng với các phân số liên tục ở cuối chu kỳ của $\sqrt{D}$, với tử mẫu tăng строго, nên với mọi $k\in\mathbf N_+$ ta có
 
 $$
 (A_{\ell-1}+B_{\ell-1}\sqrt{D})^k = A_{k\ell-1}+B_{k\ell-1}\sqrt{D}.
 $$
 
-在所有这些正整数解中，$k$ 为奇数时就是负 Pell 方程的解，$k$ 为偶数时就是 Pell 方程的解，两者交替出现．
+Trong các nghiệm dương, $k$ lẻ thì là nghiệm Pell âm, $k$ chẵn thì là nghiệm Pell dương; hai loại xen kẽ.
 
-判断负 Pell 方程是否有解，需要计算 $\sqrt{D}$ 连分数展开的循环节的长度，这并不容易计算，因此希望能够找到更简单的判断方法．但是，目前并没有条件简明、容易计算的判断方法[^solubility-neg-pell]．此处仅仅提供一个简单的结论．
+Việc判断 phương trình Pell âm có nghiệm đòi hỏi biết độ dài chu kỳ của $\sqrt{D}$, không dễ tính, nên mong muốn có tiêu chuẩn đơn giản hơn. Tuy vậy, hiện chưa có điều kiện ngắn gọn và dễ tính[^solubility-neg-pell]. Ở đây chỉ nêu một kết luận đơn giản.
 
-???+ note "定理"
-    方程 $x^2-Dy^2=-1$ 有解，则 $4$ 不能整除 $D$ 且 $D$ 不含有 $4k+3$ 型的素因子．反过来，如果 $D=2$ 或 $D$ 是 $4k+1$ 型的素数，那么方程必然有解．
+???+ note "Định lý"
+    Nếu phương trình $x^2-Dy^2=-1$ có nghiệm thì $4$ không chia $D$ và $D$ không có thừa số nguyên tố dạng $4k+3$. Ngược lại, nếu $D=2$ hoặc $D$ là số nguyên tố dạng $4k+1$, thì phương trình chắc chắn có nghiệm.
 
-??? note "证明"
-    首先，负 Pell 方程有解，就意味着 $-1$ 是 $D$ 的二次剩余，因而 $-1$ 也是 $D$ 的任意一个因子 $d$ 的二次剩余，故而 $d\neq 4$ 且 $d$ 不是 $4k+3$ 型素数．反过来，方程 $x^2-2y^2=-1$ 的解有非平凡解 $(1,1)$．剩下的就是 $D$ 是 $4k+1$ 型素数的情形．
+??? note "Chứng minh"
+    Nếu Pell âm có nghiệm thì $-1$ là thặng dư bậc hai của $D$, do đó $-1$ là thặng dư bậc hai của mọi ước $d$ của $D$, suy ra $d\neq 4$ và $d$ không là nguyên tố dạng $4k+3$. Ngược lại, phương trình $x^2-2y^2=-1$ có nghiệm không tầm thường $(1,1)$. Còn lại là trường hợp $D$ nguyên tố dạng $4k+1$.
     
-    设 $D$ 是 $4k+1$ 型素数，要证明方程 $x^2-Dy^2=-1$ 有解．思路是通过 Pell 方程 $x^2-Dy^2=1$ 的基本解 $(u,v)$ 入手，构造出 $x^2-Dy^2=-1$ 的解 $(\alpha,\beta)$．如果 $u$ 是偶数，将 $u^2-Dv^2=1$ 两侧对 $4$ 取模，就得到 $v^2\equiv -1\pmod 4$，但是 $-1$ 并不是模 $4$ 的二次剩余．这个矛盾说明 $u$ 是奇数．考察等式 $Dv^2=u^2-1=(u+1)(u-1)$．因为 $u$ 是奇数，所以 $\gcd(u+1,u-1)=\gcd(u+1,2)=2$．根据这一事实，将 $Dv^2$ 的因子分给 $u+1$ 和 $u-1$，必然一个是 $2\alpha^2$，另一个是 $2D\beta^2$，其中，$\alpha$ 和 $\beta$ 是互素的正整数而且 $v=2\alpha\beta$．将 $u=\alpha^2+D\beta^2$ 和 $v=2\alpha\beta$ 代入 $u^2-Dv^2=1$ 就得到 $\alpha^2-D\beta^2=\pm 1$．因为 $(u,v)$ 是 Pell 方程的基本解而且 $(\alpha,\beta)$ 是比 $(u,v)$ 更小的正整数对，这个等式右侧不能是 $+1$，故而只能是 $-1$．这就证明 $x^2-Dy^2=-1$ 存在解 $(\alpha,\beta)$．
+    Giả sử $D$ nguyên tố dạng $4k+1$. Ta chứng minh $x^2-Dy^2=-1$ có nghiệm bằng cách xuất phát từ nghiệm cơ bản $(u,v)$ của $x^2-Dy^2=1$ để dựng nghiệm $(\alpha,\beta)$ của $x^2-Dy^2=-1$. Nếu $u$ chẵn, lấy modulo $4$ từ $u^2-Dv^2=1$ được $v^2\equiv -1\pmod 4$, nhưng $-1$ không là thặng dư bậc hai modulo $4$, mâu thuẫn. Vậy $u$ lẻ. Xét $Dv^2=u^2-1=(u+1)(u-1)$. Vì $u$ lẻ nên $\gcd(u+1,u-1)=\gcd(u+1,2)=2$. Từ đó, phân chia các thừa số của $Dv^2$ vào $u+1$ và $u-1$, ta được một bên là $2\alpha^2$, bên kia là $2D\beta^2$, với $\alpha,\beta$ nguyên dương nguyên tố cùng nhau và $v=2\alpha\beta$. Thay $u=\alpha^2+D\beta^2$, $v=2\alpha\beta$ vào $u^2-Dv^2=1$ ta được $\alpha^2-D\beta^2=\pm 1$. Vì $(u,v)$ là nghiệm cơ bản và $(\alpha,\beta)$ nhỏ hơn, nên vế phải không thể là $+1$, do đó phải là $-1$. Vậy $x^2-Dy^2=-1$ có nghiệm $(\alpha,\beta)$.
 
-如果 $D$ 是合数，那么不含有 $4k+3$ 型素因子且没有平方因子也不能保证方程 $x^2-Dy^2=-1$ 有解，例如 $x^2-34y^2=-1$ 就没有解．
+Nếu $D$ hợp số thì việc không có thừa số dạng $4k+3$ và không có thừa số bình phương vẫn không đảm bảo có nghiệm, ví dụ $x^2-34y^2=-1$ vô nghiệm.
 
-??? example "示例"
-    利用上面的示例中的计算结果可知，方程 $x^2-14y^2=-1$ 无解，且方程 $x^2-41y^2=-1$ 的最小正整数解为 $(G_2,B_2)=(32,5)$．
+??? example "Ví dụ"
+    Dựa vào các tính toán trên, phương trình $x^2-14y^2=-1$ vô nghiệm, và phương trình $x^2-41y^2=-1$ có nghiệm dương nhỏ nhất $(G_2,B_2)=(32,5)$.
 
-### 范数为 ±4 的情形
+### Trường hợp chuẩn bằng ±4
 
-接下来讨论方程 $x^2-Dy^2=\pm 4$ 的解．此时，解的性态取决于 $D\bmod 4$ 的大小．
+Tiếp theo xét phương trình $x^2-Dy^2=\pm 4$. Lúc này tính chất nghiệm phụ thuộc vào $D\bmod 4$.
 
-有些情形是容易的．如果 $D\equiv 0\pmod 4$，那么 $x$ 是偶数，因而 $(x/2,y)$ 是方程 $u^2-(D/4)v^2=\pm 1$ 的解．其余的情形，必然有 $x,y$ 同时是奇数或者同时是偶数．如果 $x,y$ 同时是奇数，方程两侧对 $4$ 取模就得到 $D\equiv 1\pmod 4$．所以，如果 $D\equiv 2,3\pmod 4$，那么 $x,y$ 只能同时是偶数，因而 $(x/2,y/2)$ 是方程 $u^2-Dv^2=\pm 1$ 的解．因此，除了 $D\equiv 1\pmod 4$ 的情形，方程 $x^2-Dy^2=\pm 4$ 的解都可以通过相应的（负）Pell 方程的解得到．
+Một số trường hợp dễ. Nếu $D\equiv 0\pmod 4$, thì $x$ chẵn, và $(x/2,y)$ là nghiệm của $u^2-(D/4)v^2=\pm 1$. Các trường hợp khác, $x,y$ либо cùng lẻ hoặc cùng chẵn. Nếu $x,y$ đều lẻ, lấy modulo $4$ cho hai vế được $D\equiv 1\pmod 4$. Do đó, nếu $D\equiv 2,3\pmod 4$ thì $x,y$ phải cùng chẵn, và $(x/2,y/2)$ là nghiệm của $u^2-Dv^2=\pm 1$. Vì vậy, trừ trường hợp $D\equiv 1\pmod 4$, nghiệm của $x^2-Dy^2=\pm 4$ đều có thể suy ra từ nghiệm của (âm) Pell tương ứng.
 
-现在讨论 $D\equiv 1\pmod 4$ 的情形，它不能简单地转化为已经解决的情形．为了找到基本解，可以对 $(P_0,Q_0,D)=(1,2,D)$ 应用 PQa 算法，当首次得到 $Q_\ell=2$ 时，就到达了第一个循环节的末尾．如果循环节长度 $l$ 是偶数，那么 $(G_{\ell-1},B_{\ell-1})$ 就是方程 $x^2-Dy^2=4$ 的基本解；否则，$(G_{\ell-1},B_{\ell-1})$ 就是方程 $x^2-Dy^2=-4$ 的基本解．从 $(G_{\ell-1},B_{\ell-1})$ 出发，可以得到方程 $x^2-Dy^2=\pm 4$ 的所有解：
+Bây giờ xét $D\equiv 1\pmod 4$, không thể giản lược như trên. Để tìm nghiệm cơ bản, chạy PQa với $(P_0,Q_0,D)=(1,2,D)$, khi lần đầu có $Q_\ell=2$ thì tới cuối chu kỳ đầu. Nếu độ dài chu kỳ $\ell$ chẵn, thì $(G_{\ell-1},B_{\ell-1})$ là nghiệm cơ bản của $x^2-Dy^2=4$; nếu $\ell$ lẻ, thì $(G_{\ell-1},B_{\ell-1})$ là nghiệm cơ bản của $x^2-Dy^2=-4$. Từ $(G_{\ell-1},B_{\ell-1})$ có thể sinh toàn bộ nghiệm của $x^2-Dy^2=\pm 4$:
 
 $$
 \left\{(x,y):\dfrac{x+y\sqrt{D}}{2}=\pm\left(\dfrac{G_{\ell-1}+B_{\ell-1}\sqrt{D}}{2}\right)^k,k\in\mathbf Z\right\}.
 $$
 
-如果循环节长度 $\ell$ 是偶数，所有这些都是方程 $x^2-Dy^2=4$ 的解；否则，当 $k$ 是奇数时，$(x,y)$ 是方程 $x^2-Dy^2=-4$ 的解，而当 $k$ 是偶数时，$(x,y)$ 是方程 $x^2-Dy^2=4$ 的解．
+Nếu $\ell$ chẵn, tất cả đều là nghiệm của $x^2-Dy^2=4$; nếu $\ell$ lẻ, khi $k$ lẻ thì $(x,y)$ là nghiệm của $x^2-Dy^2=-4$, khi $k$ chẵn thì là nghiệm của $x^2-Dy^2=4$.
 
-这个算法的正确性依赖于如下事实：
+Tính đúng đắn dựa vào các факты sau:
 
-???+ note "定理"
-    设方程 $x^2-Dy^2=\pm 4$ 有正整数解 $(x,y)$．如果 $D\equiv 1\pmod 4$，那么，$\dfrac{(x+y)/2}{y}$ 一定是 $\dfrac{1+\sqrt{D}}{2}$ 的渐近分数．
+???+ note "Định lý"
+    Giả sử phương trình $x^2-Dy^2=\pm 4$ có nghiệm dương $(x,y)$. Nếu $D\equiv 1\pmod 4$, thì $\dfrac{(x+y)/2}{y}$ là một phân số liên tục của $\dfrac{1+\sqrt{D}}{2}$.
 
-??? note "证明"
-    首先注意到，此时 $x,y$ 必然奇偶性相同，所以 $(x+y)/2$ 是整数．如果 $(x,y)$ 是方程 $x^2-Dy^2=4$ 的解，那么 $x>y\sqrt{D}>2y$，所以，
+??? note "Chứng minh"
+    Lưu ý $x,y$ đồng parity, nên $(x+y)/2$ là整数. Nếu $(x,y)$ là nghiệm của $x^2-Dy^2=4$ thì $x>y\sqrt{D}>2y$, nên
     
     $$
     \left|\dfrac{(x+y)/2}{y}-\dfrac{1+\sqrt{D}}{2}\right| = \dfrac{2}{y(x+y\sqrt{D})}<\dfrac{1}{2y^2}.
     $$
     
-    根据 [Legendre 判别法](./continued-fraction.md#渐近分数的判定) 可知，$\dfrac{(x+y)/2}{y}$ 是 $\dfrac{1+\sqrt{D}}{2}$ 的渐近分数．
+    Theo [tiêu chuẩn Legendre](./continued-fraction.md#渐近分数的判定), suy ra $\dfrac{(x+y)/2}{y}$ là phân số liên tục của $\dfrac{1+\sqrt{D}}{2}$.
     
-    如果 $(x,y)$ 是方程 $x^2-Dy^2=-4$ 的解，那么要建立上述不等式，只需要证明 $4y<x+y\sqrt{D}$．这至少对于除了 $D=5,13$ 之外的情形都成立．对于 $D=5,13$ 的情形，将 $x=\sqrt{Dy^2-4}$ 代入该不等式可知，它等价于 $2(\sqrt{D}-2)y^2>1$ 成立．除了 $(D,y)=(5,1)$ 之外，该不等式对于所有 $D=5,13$ 和正整数 $y$ 都成立．剩下的就是验证 $(D,y)=(5,1)$ 的情形，此时，方程 $x^2-5y^2=-4$ 的解是 $(x,y)=(1,1)$，需要验证的是 $\dfrac{1}{1}$ 是 $\dfrac{1+\sqrt{5}}{2}=[\overline{1}]$ 的渐近分数，而这是显然成立的．
+    Nếu $(x,y)$ là nghiệm của $x^2-Dy^2=-4$, để có bất đẳng thức trên chỉ cần chứng minh $4y<x+y\sqrt{D}$. Điều này đúng với mọi trường hợp trừ $D=5,13$. Với $D=5,13$, thay $x=\sqrt{Dy^2-4}$ vào bất đẳng thức, thấy tương đương với $2(\sqrt{D}-2)y^2>1$. Trừ $(D,y)=(5,1)$, bất đẳng thức đúng cho mọi $D=5,13$ và $y$ dương. Còn lại kiểm tra $(D,y)=(5,1)$, khi đó nghiệm của $x^2-5y^2=-4$ là $(1,1)$, cần kiểm tra $\dfrac{1}{1}$ là phân số liên tục của $\dfrac{1+\sqrt{5}}{2}=[\overline{1}]$, điều này hiển nhiên.
 
-???+ note "定理"
-    设 $D$ 是正整数但不是完全平方数．二次无理数 $\omega=\dfrac{1+\sqrt{D}}{2}$ 的连分数展开具有形式
+???+ note "Định lý"
+    Với $D$ dương không là chính phương, số vô tỉ bậc hai $\omega=\dfrac{1+\sqrt{D}}{2}$ có khai triển phân số liên tục
     
     $$
     \omega = [\lfloor\omega\rfloor,\overline{a_1,\cdots,a_{\ell-1},2\lfloor\omega\rfloor-1}],
     $$
     
-    其中，$\ell$ 为循环节长度，且 $a_k=a_{\ell-k}$ 对任何 $1<k<\ell$ 都成立．
+    trong đó $\ell$ là độ dài chu kỳ và $a_k=a_{\ell-k}$ với mọi $1<k<\ell$.
 
-??? note "证明"
-    因为 $\lfloor\omega\rfloor-1+\omega>1$，而且它的共轭等于 $\lfloor\omega\rfloor - \omega$，位于 $-1$ 和 $0$ 之间，所以根据 [Galois 的结论](./continued-fraction.md#纯循环连分数) 可知，$\lfloor\omega\rfloor-1+\omega$ 是纯循环连分数，可以写成
+??? note "Chứng minh"
+    Do $\lfloor\omega\rfloor-1+\omega>1$ và liên hợp của nó bằng $\lfloor\omega\rfloor - \omega$ nằm giữa $-1$ và $0$, theo [kết luận của Galois](./continued-fraction.md#纯循环连分数), ta có
     
     $$
     \lfloor\omega\rfloor-1+\omega = [\overline{2\lfloor\omega\rfloor-1,a_1,\cdots,a_{\ell-1}}].
     $$
     
-    而 Galois 关于倒数负共轭的结论说明
+    Còn kết luận của Galois về nghịch đảo liên hợp âm cho
     
     $$
     \dfrac{1}{\omega-\lfloor\omega\rfloor} = [\overline{a_{\ell-1},\cdots,a_1,2\lfloor\omega\rfloor-1}].
     $$
     
-    因此，根据连分数的定义，有
+    Do đó,
     
     $$
     \lfloor\omega\rfloor-1+\omega = 2\lfloor\omega\rfloor-1 + \dfrac{1}{\dfrac{1}{\omega-\lfloor\omega\rfloor}} = [2\lfloor\omega\rfloor-1,\overline{a_{\ell-1},\cdots,a_1,2\lfloor\omega\rfloor-1}].
     $$
     
-    连分数展开的唯一性就说明 $a_k=a_{\ell-k}$ 对所有 $1<k<\ell$ 都成立，因而要证明的展开式也成立．
+    Tính duy nhất của khai triển phân số liên tục suy ra $a_k=a_{\ell-k}$ với mọi $1<k<\ell$, nên dạng khai triển cần chứng minh đúng.
 
-???+ note "定理"
-    设 $D\equiv 1\pmod 4$．在对 $(P_0,Q_0,D)=(1,2,D)$ 运行上述 PQa 算法的过程中，$Q_k=2$ 必然推出 $\ell\mid k$．
+???+ note "Định lý"
+    Giả sử $D\equiv 1\pmod 4$. Khi chạy PQa với $(P_0,Q_0,D)=(1,2,D)$, nếu $Q_k=2$ thì nhất định $\ell\mid k$.
 
-??? note "证明"
-    在 $\dfrac{1+\sqrt{D}}{2}$ 的连分数展开中，除了第 $0$ 个余项，所有其他余项都是 [纯循环连分数](./continued-fraction.md#纯循环连分数)．设 $Q_k=2$．根据 Galois 的结论，必然有余项 $\omega_k=\dfrac{P_k+\sqrt{D}}{2}$ 的共轭 $-1<\dfrac{P_k-\sqrt{D}}{2}<0$，亦即 $\sqrt{D}-2<P_k<\sqrt{D}$．因为 PQa 算法中总有 $Q_k\mid P_k^2-D$（见 [算法正确性证明](./continued-fraction.md#二次无理数)），所以 $P_k$ 一定是奇数，这就说明 $P_k$ 取值唯一，即 $P_k=P_0+2(\lfloor\omega\rfloor-1)$，也就是说余项 $\omega_k=\omega\ell$．但是，余项的重复意味着连分数的循环，如果 $k$ 不是 $\ell$ 的整数倍，就与 $\ell$ 是最小正周期相矛盾．所以，必然有 $\ell\mid k$．
+??? note "Chứng minh"
+    Trong khai triển của $\dfrac{1+\sqrt{D}}{2}$, ngoài dư thứ $0$, các dư còn lại đều là [phân số liên tục thuần chu kỳ](./continued-fraction.md#纯循环连分数). Giả sử $Q_k=2$. Theo kết luận của Galois, liên hợp của $\omega_k=\dfrac{P_k+\sqrt{D}}{2}$ thỏa $-1<\dfrac{P_k-\sqrt{D}}{2}<0$, tức $\sqrt{D}-2<P_k<\sqrt{D}$. Do trong PQa luôn có $Q_k\mid P_k^2-D$ (xem [chứng minh đúng đắn](./continued-fraction.md#二次无理数)), nên $P_k$ phải là số lẻ, suy ra giá trị $P_k$ là duy nhất: $P_k=P_0+2(\lfloor\omega\rfloor-1)$, tức $\omega_k=\omega_\ell$. Dư lặp lại nghĩa là bắt đầu chu kỳ; nếu $k$ không là bội của $\ell$ thì mâu thuẫn với tính tối tiểu của chu kỳ. Do đó $\ell\mid k$.
 
-???+ note "定理"
-    设方程 $x^2-Dy^2=\pm 4$ 的最小正整数解为 $(x_1,y_1)$．那么，它的全部解就是
+???+ note "Định lý"
+    Giả sử nghiệm nguyên dương nhỏ nhất của $x^2-Dy^2=\pm 4$ là $(x_1,y_1)$. Khi đó, toàn bộ nghiệm là
     
     $$
     \left\{(x,y):\dfrac{x+y\sqrt{D}}{2}=\pm\left(\dfrac{x_1+y_1\sqrt{D}}{2}\right)^k,k\in\mathbf Z\right\}.
     $$
 
-??? note "证明"
-    根据对称性，只需要考虑正整数解 $(x,y)$ 即可．此处需要证明的只有集合中的实数对 $(x,y)$ 确实是方程 $x^2-Dy^2=\pm 4$ 的整数解．剩下的事情只需要复述对方程 $x^2-Dy^2=\pm 1$ 的解的结构的证明即可．
+??? note "Chứng minh"
+    Do đối xứng, chỉ cần xét nghiệm dương $(x,y)$. Ở đây chỉ cần chứng minh các cặp thực trong tập trên thực sự là nghiệm nguyên của $x^2-Dy^2=\pm 4$. Phần còn lại lặp lại chứng minh cấu trúc nghiệm của $x^2-Dy^2=\pm 1$.
     
-    实际上要证明的是，对于方程 $x^2-Dy^2=\pm 4$ 的任何整数解 $(x_1,y_1)$ 和 $(x_2,y_2)$，如下定义的正实数对 $(x_3,y_3)$ 仍然是整数解：
+    Cụ thể, cần chứng minh rằng với hai nghiệm $(x_1,y_1)$ và $(x_2,y_2)$ của $x^2-Dy^2=\pm 4$, cặp thực dương $(x_3,y_3)$ sau vẫn là nghiệm nguyên:
     
     $$
     \dfrac{x_3+y_3\sqrt{D}}{2} = \dfrac{x_1+y_1\sqrt{D}}{2}\dfrac{x_2+y_2\sqrt{D}}{2}.
     $$
     
-    展开右侧，比较有理项和无理项的系数可知
+    Khai triển, so sánh hệ số được
     
     $$
     x_3=\dfrac{x_1x_2+Dy_1y_2}{2},\ y_3=\dfrac{x_1y_2+x_2y_1}{2}.
     $$
     
-    因为对 $i=1,2$ 有 $x_i\equiv x_i^2\equiv Dy_i^2\equiv Dy_i\pmod 2$，所以
+    Vì $x_i\equiv x_i^2\equiv Dy_i^2\equiv Dy_i\pmod 2$, nên
     
     $$
     \begin{aligned}
@@ -449,31 +450,31 @@ $$
     \end{aligned}
     $$
     
-    这说明 $x_3$ 和 $y_3$ 都是整数．再利用范数保持乘法的性质可知，$(x_3,y_3)$ 是 $x^2-Dy^2=\pm 4$ 的解．
+    Do đó $x_3,y_3$ là số nguyên. Kết hợp tính nhân của chuẩn, $(x_3,y_3)$ là nghiệm của $x^2-Dy^2=\pm 4$.
 
-综合这些事实，重复前文几节的论述，就可以说明用于解决方程 $x^2-Dy^2=\pm 4$ 的上述算法的正确性．这些结果说明，方程 $x^2-Dy^2=\pm 4$ 具有和方程 $x^2-Dy^2=\pm 1$ 类似的简单的解的结构：它的所有解都可以通过其最小正整数解表示出来，而无需求解其它方程．
+Từ đó, lặp lại lập luận các mục trước, ta chứng minh được độ đúng của thuật toán giải $x^2-Dy^2=\pm 4$. Các kết quả này cho thấy $x^2-Dy^2=\pm 4$ có cấu trúc nghiệm đơn giản tương tự $x^2-Dy^2=\pm 1$: mọi nghiệm đều biểu diễn qua nghiệm dương nhỏ nhất, không cần giải thêm phương trình khác.
 
-其实，方程 $x^2-Dy^2=\pm 1$ 的所有解都可以在方程 $x^2-Dy^2=\pm 4$ 的解中找到，因而从这个角度看，方程 $x^2-Dy^2=\pm 4$ 更为基础．显然，$(x,y)$ 是方程 $x^2-Dy^2=\pm 1$ 的解，当且仅当 $(2x,2y)$ 是方程 $x^2-Dy^2=\pm 4$ 的解．前文的分析指出，当 $D\equiv 2,3\pmod 4$ 时，方程 $x^2-Dy^2=\pm 4$ 的所有解都一定同为偶数，因而对应于 $x^2-Dy^2=\pm 1$ 的解．
+Thực ra, mọi nghiệm của $x^2-Dy^2=\pm 1$ đều có thể tìm thấy trong nghiệm của $x^2-Dy^2=\pm 4$. Rõ ràng, $(x,y)$ là nghiệm của $x^2-Dy^2=\pm 1$ khi và chỉ khi $(2x,2y)$ là nghiệm của $x^2-Dy^2=\pm 4$. Phân tích trước cho thấy khi $D\equiv 2,3\pmod 4$, mọi nghiệm của $x^2-Dy^2=\pm 4$ đều chẵn, tương ứng với nghiệm của $x^2-Dy^2=\pm 1$.
 
-当 $D\equiv 0\pmod 4$ 时，方程 $x^2-Dy^2=\pm 4$ 的解 $(x,y)$ 中，$x$ 一定是偶数，但是 $y$ 可能是奇数．如果在方程 $x^2-Dy^2=\pm 4$ 的最小正整数解 $(x_1,y_1)$ 中，$y_1$ 是偶数，那么在所有解中 $y$ 也一定是偶数，此时这些整数解和方程 $x^2-Dy^2=\pm 1$ 的整数解一一对应；但是，如果在最小整数解 $(x_1,y_1)$ 中，$y_1$ 是奇数，那么 $y_k$ 的奇偶性将和 $k$ 一致，交替变化，因而只有当 $k$ 是偶数时，才对应于方程 $x^2-Dy^2=\pm 1$ 的解．如果 $x^2-Dy^2=\pm 4$ 的最小正整数解中 $y_1$ 是奇数而且 $x_1+y_1\sqrt{D}$ 的范数是 $-4$，那么，对于这样的 $D$，$x^2-Dy^2=-4$ 有解，但是 $x^2-Dy^2=-1$ 无解．
+Khi $D\equiv 0\pmod 4$, nghiệm $(x,y)$ của $x^2-Dy^2=\pm 4$ có $x$ chẵn nhưng $y$ có thể lẻ. Nếu trong nghiệm dương nhỏ nhất $(x_1,y_1)$ mà $y_1$ chẵn, thì mọi nghiệm đều có $y$ chẵn, và các nghiệm tương ứng một-một với nghiệm của $x^2-Dy^2=\pm 1$. Nhưng nếu $y_1$ lẻ, thì tính chẵn lẻ của $y_k$ sẽ đổi theo $k$, và chỉ khi $k$ chẵn mới tương ứng với nghiệm của $x^2-Dy^2=\pm 1$. Nếu nghiệm dương nhỏ nhất của $x^2-Dy^2=\pm 4$ có $y_1$ lẻ và chuẩn của $x_1+y_1\sqrt{D}$ là $-4$, thì với $D$ đó, $x^2-Dy^2=-4$ có nghiệm nhưng $x^2-Dy^2=-1$ vô nghiệm.
 
-当 $D\equiv 1\pmod 4$ 时，方程 $x^2-Dy^2=\pm 4$ 的解 $(x,y)$ 可能同时是奇数，也可能同时是偶数．如果最小正整数解 $(x_1,y_1)$ 已经同时是偶数，那么它的所有整数解也一定同时是偶数，所以总是对应于方程 $x^2-Dy^2=\pm 1$ 的整数解．如果最小正整数解 $(x_1,y_1)$ 同时是奇数，那么有如下结论：
+Khi $D\equiv 1\pmod 4$, nghiệm $(x,y)$ của $x^2-Dy^2=\pm 4$ có thể đồng thời lẻ hoặc đồng thời chẵn. Nếu nghiệm dương nhỏ nhất $(x_1,y_1)$ đã đồng thời chẵn, thì mọi nghiệm cũng đồng thời chẵn, nên luôn tương ứng với nghiệm của $x^2-Dy^2=\pm 1$. Nếu nghiệm dương nhỏ nhất $(x_1,y_1)$ đồng thời lẻ, ta có kết luận sau:
 
-???+ note "定理"
-    设方程 $x^2-Dy^2=\pm 4$ 的最小正整数解是 $(x_1,y_1)$．如果 $x_1$ 和 $y_1$ 同时是奇数，那么，$D\equiv 5\pmod 8$，且该方程的整数解 $(x,y)$ 同时是偶数，当且仅当
+???+ note "Định lý"
+    Giả sử nghiệm dương nhỏ nhất của $x^2-Dy^2=\pm 4$ là $(x_1,y_1)$. Nếu $x_1$ và $y_1$ đều lẻ, thì $D\equiv 5\pmod 8$, và nghiệm $(x,y)$ là đồng thời chẵn khi và chỉ khi
     
     $$
     \dfrac{x+y\sqrt{D}}{2} = \pm\left(\dfrac{x_1+y_1\sqrt{D}}{2}\right)^{3k},k\in\mathbf Z.
     $$
 
-??? note "证明"
-    等式 $x_1^2-Dy_1^2=\pm 4$ 的两边同时对 $8$ 取模，得到 $D\equiv 5\pmod 8$．要证明第二个结论，首先证明 $(x_3,y_3)$ 都是偶数，因为
+??? note "Chứng minh"
+    Lấy modulo $8$ hai vế của $x_1^2-Dy_1^2=\pm 4$ được $D\equiv 5\pmod 8$. Để chứng minh kết luận thứ hai, trước hết chứng minh $(x_3,y_3)$ đều chẵn, vì
     
     $$
     \dfrac{x_3+y_3\sqrt{D}}{2} = \left(\dfrac{x_1+y_1\sqrt{D}}{2}\right)^{3} = \dfrac{x_1^3+3Dxy_1^2}{8}+\dfrac{3x_1^2y_1+Dy_1^3}{8}\sqrt{D},
     $$
     
-    所以，只需要证明右侧是整数．因为奇数的平方模 $8$ 余 $1$，所以，有
+    nên chỉ cần chứng minh vế phải là số nguyên. Vì bình phương số lẻ modulo $8$ dư $1$, ta có
     
     $$
     \begin{aligned}
@@ -482,37 +483,37 @@ $$
     \end{aligned}
     $$
     
-    这就说明了 $x_3,y_3$ 都是偶数．进而，对于所有 $k\in\mathbf Z$，都有
+    Suy ra $x_3,y_3$ đều chẵn. Do đó với mọi $k\in\mathbf Z$, ta có
     
     $$
     \dfrac{x+y\sqrt{D}}{2} = \pm\left(\dfrac{x_1+y_1\sqrt{D}}{2}\right)^{3k} = \pm\left(\dfrac{x_3+y_3\sqrt{D}}{2}\right)^k \in \mathbf Z,
     $$
     
-    所以此时的 $(x,y)$ 都是偶数．反过来，对于 $r=1,2$，总有
+    nên $(x,y)$ đều chẵn. Ngược lại, với $r=1,2$ luôn có
     
     $$
     \pm\left(\dfrac{x_1+y_1\sqrt{D}}{2}\right)^{3k+r} = \pm\left(\dfrac{x_3+y_3\sqrt{D}}{2}\right)^k\left(\dfrac{x_r+y_r\sqrt{D}}{2}\right).
     $$
     
-    要证明相应的 $(x,y)$ 不是整数，只需要证明该式不是整数，也就是右侧的乘积中第二项不是整数．这在 $r=1$ 时，就是已知条件；在 $r=2$ 时，因为
+    Để chứng minh $(x,y)$ không nguyên, chỉ cần chứng minh tích bên phải không nguyên, tức hạng thứ hai không nguyên. Với $r=1$ thì đúng theo giả thiết. Với $r=2$, vì
     
     $$
     \dfrac{x_2+y_2\sqrt{D}}{2} = \left(\dfrac{x_1+y_1\sqrt{D}}{2}\right)^2 = \dfrac{x_1^2+Dy_1^2}{4} + \dfrac{x_1y_1}{2}\sqrt{D},
     $$
     
-    而且 $x_1^2+Dy_1^2\equiv 1+1\times 1=2\pmod 4$，$x_1y_1\equiv 1\pmod 2$，所以该式也不是整数．这就证明了，只有幂次是 $3$ 的倍数的时候，相应的解才都属偶数．
+    và $x_1^2+Dy_1^2\equiv 1+1\times 1=2\pmod 4$, $x_1y_1\equiv 1\pmod 2$, nên biểu thức này cũng không nguyên. Vậy chỉ khi số mũ là bội của $3$ thì nghiệm mới đồng thời chẵn.
 
-也就是说，方程 $x^2-Dy^2=\pm 4$ 的每三个解中就有一个同时是偶数，它对应着 $x^2-Dy^2=\pm 1$ 的整数解．这也说明，对于 $D\equiv 1\pmod 4$，方程 $x^2-Dy^2=-4$ 有解，当且仅当方程 $x^2-Dy^2=-1$ 有解．
+Nói cách khác, cứ mỗi ba nghiệm của $x^2-Dy^2=\pm 4$ thì có một nghiệm đồng thời chẵn, tương ứng với nghiệm của $x^2-Dy^2=\pm 1$. Điều này cũng cho thấy với $D\equiv 1\pmod 4$, $x^2-Dy^2=-4$ có nghiệm khi và chỉ khi $x^2-Dy^2=-1$ có nghiệm.
 
-到目前为止的讨论，已经足够计算实二次整数环的基本单位数．设 $D$ 是正整数且不含平方因子．对于 $D\equiv 2,3\pmod 4$ 的情形，只需要求出 $x^2-Dy^2=\pm 1$ 的最小正整数解；而对于 $D\equiv 1\pmod 4$ 的情形，只需要求出 $x^2-Dy^2=\pm 4$ 的最小正整数解．当得到最小正整数解 $(x,y)$ 时，对于 $D\equiv 2,3\pmod 4$，基本单位数就是 $\pm x\pm y\sqrt{D}$；对于 $D\equiv 1\pmod 4$，基本单位数就是 $\dfrac{\pm x\pm y\sqrt{D}}{2}$．
+Đến đây, đã đủ để tính đơn vị cơ bản của vành số nguyên bậc hai thực. Giả sử $D$ là số nguyên dương không chứa thừa số bình phương. Với $D\equiv 2,3\pmod 4$, chỉ cần tìm nghiệm dương nhỏ nhất của $x^2-Dy^2=\pm 1$; với $D\equiv 1\pmod 4$, chỉ cần tìm nghiệm dương nhỏ nhất của $x^2-Dy^2=\pm 4$. Khi tìm được nghiệm dương nhỏ nhất $(x,y)$, thì với $D\equiv 2,3\pmod 4$, đơn vị cơ bản là $\pm x\pm y\sqrt{D}$; với $D\equiv 1\pmod 4$, đơn vị cơ bản là $\dfrac{\pm x\pm y\sqrt{D}}{2}$.
 
-??? example "示例"
-    1.  求解方程 $x^2-14y^2=\pm 4$．
+??? example "Ví dụ"
+    1.  Giải phương trình $x^2-14y^2=\pm 4$.
     
-        利用前文的示例中的计算可知，方程 $x^2-14y^2=4$ 的最小正整数解为 $(30,8)$，方程 $x^2-14y^2=-4$ 无解．
-    2.  求解方程 $x^2-41y^2=\pm 4$．
+        Dựa vào các ví dụ trước, phương trình $x^2-14y^2=4$ có nghiệm dương nhỏ nhất $(30,8)$, còn $x^2-14y^2=-4$ vô nghiệm.
+    2.  Giải phương trình $x^2-41y^2=\pm 4$.
     
-        对 $(P_0,Q_0,D)=(1,2,41)$ 运行 PQa 算法结果如下：（标红部分为第一个循环节）
+        Chạy PQa với $(P_0,Q_0,D)=(1,2,41)$ được: (phần tô đỏ là chu kỳ đầu)
     
         |  $k$ | $P$ | $Q$ |        $a$       |   $A$   |   $B$  |   $G$   | $G^2-DB^2$ |
         | :--: | :-: | :-: | :--------------: | :-----: | :----: | :-----: | :--------: |
@@ -529,16 +530,16 @@ $$
         | $10$ | $5$ | $2$ |        $5$       | $13507$ | $3649$ | $23365$ |    $-16$   |
         | $11$ | $5$ | $8$ |        $1$       | $15876$ | $4289$ | $27463$ |     $8$    |
     
-        循环节长度 $\ell=5$ 为奇数．方程 $x^2-41y^2=-4$ 的最小正整数解为 $(G_4,B_4)=(64,10)$，方程 $x^2-41y^2=4$ 的最小正整数解为 $(G_9,B_9)=(4098,640)$．它们之间有如下关系：
+        Chu kỳ $\ell=5$ lẻ. Nghiệm dương nhỏ nhất của $x^2-41y^2=-4$ là $(G_4,B_4)=(64,10)$, còn nghiệm dương nhỏ nhất của $x^2-41y^2=4$ là $(G_9,B_9)=(4098,640)$. Chúng có quan hệ:
     
         $$
         \dfrac{4098+640\sqrt{41}}{2} = \left(\dfrac{64+10\sqrt{41}}{2}\right)^2.
         $$
     
-        当然，因为 $D\equiv 1\pmod 8$，根据前文结论，此时方程 $x^2-41y^2=\pm 4$ 的最小正整数解一定都是偶数，且总是方程 $x^2-41y^2=\pm 1$ 的最小正整数解的 $2$ 倍，所以也可以直接利用前文的示例得出．
-    3.  求解方程 $x^2-13y^2=\pm 4$．
+        Dĩ nhiên, vì $D\equiv 1\pmod 8$, theo kết luận trước thì nghiệm dương nhỏ nhất của $x^2-41y^2=\pm 4$ đều chẵn và luôn là 2 lần nghiệm dương nhỏ nhất của $x^2-41y^2=\pm 1$, nên cũng có thể suy ra trực tiếp từ ví dụ trước.
+    3.  Giải phương trình $x^2-13y^2=\pm 4$.
     
-        对 $(P_0,Q_0,D)=(1,2,13)$ 运行 PQa 算法结果如下：（标红部分为第一个循环节）
+        Chạy PQa với $(P_0,Q_0,D)=(1,2,13)$ được: (phần tô đỏ là chu kỳ đầu)
     
         | $k$ | $P$ | $Q$ |        $a$       |  $A$ |  $B$ |  $G$  | $G^2-DB^2$ |
         | :-: | :-: | :-: | :--------------: | :--: | :--: | :---: | :--------: |
@@ -547,46 +548,46 @@ $$
         | $2$ | $3$ | $2$ |        $3$       | $23$ | $10$ |  $36$ |    $-4$    |
         | $3$ | $3$ | $2$ |        $3$       | $74$ | $33$ | $119$ |     $4$    |
     
-        循环节长度 $\ell=1$ 为奇数．方程 $x^2-13y^2=-4$ 的最小正整数解为 $(G_0,B_0)=(3,1)$，方程 $x^2-13y^2=4$ 的最小正整数解为 $(G_1,B_1)=(11,3)$．
+        Chu kỳ $\ell=1$ lẻ. Nghiệm dương nhỏ nhất của $x^2-13y^2=-4$ là $(G_0,B_0)=(3,1)$, còn nghiệm dương nhỏ nhất của $x^2-13y^2=4$ là $(G_1,B_1)=(11,3)$.
     
-        因为该方程的最小正整数解都是奇数，所以可以利用第三个循环节末尾处的数对 $(G_2,B_2)=(36,10)$ 得到相应的（负）Pell 方程 $x^2-13y^2=\pm 1$ 的最小正整数解 $(18,5)$．它也可以通过直接计算得到：
+        Vì các nghiệm dương nhỏ nhất đều lẻ, có thể dùng cặp $(G_2,B_2)=(36,10)$ ở cuối chu kỳ thứ ba để lấy nghiệm dương nhỏ nhất của (âm) Pell $x^2-13y^2=\pm 1$ là $(18,5)$. Ta cũng có thể tính trực tiếp:
     
         $$
         \dfrac{36+10\sqrt{13}}{2}=\left(\dfrac{3+\sqrt{13}}{2}\right)^3.
         $$
     
-        而且，这是负 Pell 方程的解．相应的 Pell 方程的最小正整数解是 $(649,180)$．
-    4.  求解方程 $x^2-52y^2=\pm 4$．
+        Hơn nữa, đây là nghiệm của phương trình Pell âm. Nghiệm dương nhỏ nhất của Pell dương là $(649,180)$.
+    4.  Giải phương trình $x^2-52y^2=\pm 4$.
     
-        因为方程 $x^2-13y^2=\pm 1$ 的最小正整数解分别是 $(18,5)$ 和 $(649,180)$，所以方程 $x^2-52y^2=\pm 4$ 的最小正整数解分别是 $(36,10)$ 和 $(1298,360)$．
+        Vì nghiệm dương nhỏ nhất của $x^2-13y^2=\pm 1$ lần lượt là $(18,5)$ và $(649,180)$, nên nghiệm dương nhỏ nhất của $x^2-52y^2=\pm 4$ lần lượt là $(36,10)$ và $(1298,360)$.
 
-### 一般情形
+### Trường hợp tổng quát
 
-最后，讨论广义 Pell 方程的解法．
+Cuối cùng, bàn về cách giải phương trình Pell tổng quát.
 
-对于 $|N|<\sqrt{D}$ 的情形有一个简单的解法．前文的结论说明方程 $x^2-Dy^2=N$ 的解 $(x,y)$ 一定满足 $\dfrac{x}{y}$ 等于 $\sqrt{D}$ 的某个渐近分数．而且，根据前文讨论的解的结构可知，每个基础解 $(x,y)$ 都满足 $x+y\sqrt{D}$ 小于等于相应的 Pell 方程 $x^2-Dy^2=1$ 的基础解 $x_1+y_1\sqrt{D}$．利用 PQa 算法中分母序列 $B_k$ 的单调性可知，广义 Pell 方程的这些基础解一定出现在相应的 Pell 方程的基础解出现之前．由此，只需要对 $(P_0,Q_0,D)=(0,1,D)$ 运行 PQa 算法，直到 $Q_{\ell'}=1$ 且 $\ell'$ 为偶数时为止，过程中对出现的每个 $(A_k,B_k)$ 检验是否存在整数 $f$ 使得
+Với $|N|<\sqrt{D}$ có một cách giải đơn giản. Kết luận trước cho thấy nghiệm $(x,y)$ của $x^2-Dy^2=N$ phải có $\dfrac{x}{y}$ là một phân số liên tục của $\sqrt{D}$. Hơn nữa, theo cấu trúc nghiệm đã bàn, mỗi nghiệm cơ bản $(x,y)$ đều thỏa $x+y\sqrt{D}$ không vượt quá nghiệm cơ bản $x_1+y_1\sqrt{D}$ của $x^2-Dy^2=1$. Dùng tính đơn điệu của dãy mẫu $B_k$ trong PQa, các nghiệm cơ bản này phải xuất hiện trước khi nghiệm cơ bản của Pell xuất hiện. Vì vậy, chỉ cần chạy PQa với $(P_0,Q_0,D)=(0,1,D)$ cho đến khi $Q_{\ell'}=1$ và $\ell'$ chẵn; trong quá trình, với mỗi $(A_k,B_k)$ xuất hiện, kiểm tra có tồn tại số nguyên $f$ sao cho
 
 $$
 A_k^2-DB_k^2 = (-1)^{k+1}Q_{k+1} = N/f^2
 $$
 
-成立，如果成立，则记录 $(fA_{k},fB_{k})$ 是一个最小正整数解．这个过程记录的所有 $(fA_k,fB_k)$ 就是方程 $x^2-Dy^2=N$ 的全部最小正整数解．利用 $(A_{\ell'-1},B_{\ell'-1})$，即相应的 Pell 方程的基本解，就可以根据求出的这些最小正整数解，生成广义 Pell 方程的所有解．注意，取决于循环节长度 $\ell$ 是偶数还是奇数，上述的 $\ell'$ 可能是 $\ell$ 或是 $2\ell$．
+hay không. Nếu có, ghi lại $(fA_{k},fB_{k})$ là một nghiệm dương nhỏ nhất. Tập các $(fA_k,fB_k)$ thu được là toàn bộ nghiệm dương nhỏ nhất của $x^2-Dy^2=N$. Dùng $(A_{\ell'-1},B_{\ell'-1})$ (tức nghiệm cơ bản của Pell tương ứng) có thể sinh ra toàn bộ nghiệm. Lưu ý tùy theo $\ell$ chẵn hay lẻ, $\ell'$ có thể là $\ell$ hoặc $2\ell$.
 
-对于更为一般的 $N$ 的情形，上述方法不再适用．首先，枚举 $N$ 的所有平方因子 $f^2$，设 $m=N/f^2$，并枚举同余方程 $z^2\equiv D\pmod{|m|}$ 的所有满足 $-|m|/2<z \le |m|/2$ 的解 $z$．然后，对 $(P_0,Q_0,D)=(z,|m|,D)$ 运行 PQa 算法，直到 $Q_k=\pm 1$ 或已经结束了一个循环节．在第二种情形，那么与该组 $(f,z)$ 相关的方程的解并不存在．在第一种情形，需要进一步判断 $(-1)^kQ_k=N/|N|$ 与否．如果符号一致，那么 $(fG_{k-1},fB_{k-1})$ 就是方程 $x^2-Dy^2=N$ 的解．否则，它是方程 $x^2-Dy^2=-N$ 的解，而且当且仅当相应的负 Pell 方程的解存在时，才可以通过复合它与相应的负 Pell 方程的基本解来得到方程 $x^2-Dy^2=N$ 的解．当完成对所有组 $(f,z)$ 的遍历之后，就可以得到方程 $x^2-Dy^2=N$ 在每个解的等价类中各恰好一个解，且该解为该等价类中的基本解或最小正整数解．利用它们和相应的 Pell 方程的基本解，可以生成该方程的所有整数解．这一算法称为 **Lagrange–Matthews–Mollin 算法**．
+Với $N$ tổng quát hơn, cách trên không còn dùng được. Trước hết, liệt kê mọi ước bình phương $f^2$ của $N$, đặt $m=N/f^2$, và liệt kê mọi nghiệm $z$ của đồng dư $z^2\equiv D\pmod{|m|}$ thỏa $-|m|/2<z \le |m|/2$. Sau đó chạy PQa với $(P_0,Q_0,D)=(z,|m|,D)$ cho đến khi $Q_k=\pm 1$ hoặc đã kết thúc một chu kỳ. Nếu rơi vào trường hợp thứ hai, thì không có nghiệm liên quan đến cặp $(f,z)$ đó. Nếu rơi vào trường hợp thứ nhất, cần kiểm tra $(-1)^kQ_k=N/|N|$ hay không. Nếu trùng dấu, thì $(fG_{k-1},fB_{k-1})$ là nghiệm của $x^2-Dy^2=N$. Nếu không, thì đó là nghiệm của $x^2-Dy^2=-N$, và chỉ khi phương trình Pell âm tương ứng có nghiệm thì mới có thể dùng phép nhân với nghiệm cơ bản của Pell âm để tạo ra nghiệm của $x^2-Dy^2=N$. Hoàn tất duyệt mọi $(f,z)$, ta thu được đúng một nghiệm trong mỗi lớp tương đương, và nghiệm đó là nghiệm cơ bản hoặc nghiệm dương nhỏ nhất của lớp. Dùng các nghiệm đó cùng nghiệm cơ bản Pell, ta sinh ra toàn bộ nghiệm. Thuật toán này gọi là **thuật toán Lagrange–Matthews–Mollin**.
 
-该算法的正确性由如下定理保证：
+Độ đúng của thuật toán được đảm bảo bởi định lý sau:
 
-???+ note "定理"
-    设方程 $x^2-Dy^2=N$ 有整数解 $(x,y)$ 且 $x\ge 0, y>0,\gcd(x,y)=1$．令 $Q_0=|N|$，则 $\gcd(Q_0,y)=1$．设 $P_0$ 是同余方程 $x\equiv -P_0y\pmod{Q_0}$ 的解且 $-Q_0/2<P_0\le Q_0/2$，并设整数 $X$ 使得 $x=Q_0X-P_0y$ 成立．那么，$P_0^2\equiv D\pmod{Q_0}$，$\dfrac{X}{y}$ 是 $\omega=\dfrac{P_0+\sqrt{D}}{Q_0}$ 的一个渐近分数 $\dfrac{A_{k-1}}{B_{k-1}}$，且 $Q_k=(-1)^k\dfrac{N}{|N|}$．
+???+ note "Định lý"
+    Giả sử phương trình $x^2-Dy^2=N$ có nghiệm nguyên $(x,y)$ với $x\ge 0, y>0,\gcd(x,y)=1$. Đặt $Q_0=|N|$, khi đó $\gcd(Q_0,y)=1$. Gọi $P_0$ là nghiệm của đồng dư $x\equiv -P_0y\pmod{Q_0}$ thỏa $-Q_0/2<P_0\le Q_0/2$, và đặt $X$ sao cho $x=Q_0X-P_0y$. Khi đó $P_0^2\equiv D\pmod{Q_0}$, $\dfrac{X}{y}$ là một phân số liên tục của $\omega=\dfrac{P_0+\sqrt{D}}{Q_0}$, ký hiệu $\dfrac{A_{k-1}}{B_{k-1}}$, và $Q_k=(-1)^k\dfrac{N}{|N|}$.
 
-??? note "证明"
-    利用 $x\equiv -P_0y\pmod{Q_0}$ 和 $x^2-Dy^2=N\equiv 0\pmod{Q_0}$，显然有 $P_0^2\equiv D\pmod{Q_0}$．因而，
+??? note "Chứng minh"
+    Từ $x\equiv -P_0y\pmod{Q_0}$ và $x^2-Dy^2=N\equiv 0\pmod{Q_0}$, suy ra $P_0^2\equiv D\pmod{Q_0}$. Do đó
     
     $$
     P_0x+Dy\equiv -P_0^2y+Dy = (D-P_0^2)y\equiv 0\pmod{Q_0}.
     $$
     
-    由此，可以考察整系数矩阵
+    Xét ma trận hệ số nguyên
     
     $$
     \begin{pmatrix}P & R \\ Q & S\end{pmatrix}
@@ -594,46 +595,46 @@ $$
     \begin{pmatrix}X & \dfrac{P_0x+Dy}{Q_0} \\ y & x\end{pmatrix}.
     $$
     
-    它的行列式
+    Định thức
     
     $$
     PS-QR = \dfrac{x(x+P_0y)-y(P_0x+Dy)}{Q_0} = \dfrac{x^2-Dy^2}{Q_0} = \pm 1.
     $$
     
-    而且，设 $\zeta =\sqrt{D} > 1$，就有
+    Hơn nữa, đặt $\zeta =\sqrt{D} > 1$, ta có
     
     $$
     \dfrac{P\zeta+R}{Q\zeta+S} = \dfrac{(x+P_0y)\sqrt{D}+(P_0x+Dy)}{(x+y\sqrt{D})Q_0} = \dfrac{P_0+\sqrt{D}}{Q_0} = \omega.
     $$
     
-    下面要证明 $\dfrac{P}{Q}$ 是 $\omega$ 的一个渐近分数．不妨设 $\dfrac{P}{Q}$ 有 [连分数展开](./continued-fraction.md#简单连分数)
+    Tiếp theo chứng minh $\dfrac{P}{Q}$ là phân số liên tục của $\omega$. Giả sử
     
     $$
     \dfrac{P}{Q} = [a_0,a_1,\cdots,a_k]
     $$
     
-    且 $PS-QR = (-1)^{k-1}$．如果设 $\dfrac{p_k}{q_k}$ 是它的第 $k$ 个渐近分数，那么 $(p_k,q_k)=(P,Q)$，且根据 [渐近分数的差分公式](./continued-fraction.md#误差估计) 可知，$p_kq_{k-1}-q_kp_{k-1}=(-1)^{k-1}$．这说明
+    và $PS-QR = (-1)^{k-1}$. Nếu $\dfrac{p_k}{q_k}$ là phân số liên tục thứ $k$, thì $(p_k,q_k)=(P,Q)$ và theo [công thức sai phân](./continued-fraction.md#误差估计), $p_kq_{k-1}-q_kp_{k-1}=(-1)^{k-1}$. Suy ra
     
     $$
     p_k(S-q_{k-1}) = q_k(R-p_{k-1}).
     $$
     
-    分情况讨论：
+    Xét các trường hợp:
     
-    -   如果 $S=0$，那么容易验证 $Q=R=1$，因而 $\omega=P+\zeta^{-1}=[P,\zeta]$，故而 $\dfrac{P}{Q}=P$ 是 $\omega$ 的第 $0$ 个渐近分数；
-    -   如果 $Q=S>0$，那么 $Q=S=1$ 且 $P-R=\pm 1$．此时，
-        -   如果 $P=R+1$，那么 $\omega=R+\dfrac{1}{1+\zeta^{-1}}=[R,1,\zeta]$，故而 $\dfrac{P}{Q}=\dfrac{R+1}{1}=[R,1]$ 是 $\omega$ 的第 $1$ 个渐近分数；
-        -   如果 $P=R-1$，那么 $\omega=R-1+\dfrac{1}{1+\zeta}=[R-1,\zeta-1]$，故而 $\dfrac{P}{Q}=R-1$ 是 $\omega$ 的第 $0$ 个渐近分数；
-    -   如果 $Q\neq S>0$，那么由于 $Q=q_k\mid(S-q_{k-1})$，总存在整数 $\kappa$ 使得 $S=\kappa q_k+q_{k-1}$ 和 $R=\kappa p_k+p_{k-1}$ 成立．因为 $q_k\ge q_{k-1}$ 且 $S>0$，所以 $\kappa\ge 0$．因而，$\omega=\dfrac{(\kappa+\zeta)p_k+p_{k-1}}{(\kappa+\zeta)q_k+q_{k-1}}=[a_0,a_1,\cdots,a_k,\kappa+\zeta]$，故而 $\dfrac{P}{Q}$ 是它的第 $k$ 个渐近分数．
+    -   Nếu $S=0$, dễ thấy $Q=R=1$, do đó $\omega=P+\zeta^{-1}=[P,\zeta]$, nên $\dfrac{P}{Q}=P$ là phân số liên tục thứ $0$ của $\omega$;
+    -   Nếu $Q=S>0$, thì $Q=S=1$ và $P-R=\pm 1$. Khi đó:
+        -   Nếu $P=R+1$, thì $\omega=R+\dfrac{1}{1+\zeta^{-1}}=[R,1,\zeta]$, nên $\dfrac{P}{Q}=\dfrac{R+1}{1}=[R,1]$ là phân số liên tục thứ $1$;
+        -   Nếu $P=R-1$, thì $\omega=R-1+\dfrac{1}{1+\zeta}=[R-1,\zeta-1]$, nên $\dfrac{P}{Q}=R-1$ là phân số liên tục thứ $0$;
+    -   Nếu $Q\neq S>0$, vì $Q=q_k\mid(S-q_{k-1})$ nên tồn tại $\kappa$ sao cho $S=\kappa q_k+q_{k-1}$ và $R=\kappa p_k+p_{k-1}$. Do $q_k\ge q_{k-1}$ và $S>0$, suy ra $\kappa\ge 0$. Khi đó $\omega=\dfrac{(\kappa+\zeta)p_k+p_{k-1}}{(\kappa+\zeta)q_k+q_{k-1}}=[a_0,a_1,\cdots,a_k,\kappa+\zeta]$, nên $\dfrac{P}{Q}$ là phân số liên tục thứ $k$.
     
-    综上所述，总有 $\dfrac{X}{y}$ 是 $\omega=\dfrac{P_0+\sqrt{D}}{Q_0}$ 的渐近分数，并按照 PQa 算法中的记号记作 $\dfrac{A_{k-1}}{B_{k-1}}$．因为 $A_{k-1}^2-DB_{k-1}^2=(-1)^kQ_0Q_k$，所以 $Q_k=(-1)^k\dfrac{N}{|N|}$．
+    Tóm lại, luôn có $\dfrac{X}{y}$ là phân số liên tục của $\omega=\dfrac{P_0+\sqrt{D}}{Q_0}$, ký hiệu $\dfrac{A_{k-1}}{B_{k-1}}$. Vì $A_{k-1}^2-DB_{k-1}^2=(-1)^kQ_0Q_k$, suy ra $Q_k=(-1)^k\dfrac{N}{|N|}$.
 
-该定理保证了方程的所有正解都存在于相应的二次无理数的渐近分数中．因为利用 PQa 算法计算渐近分数时，只要进入循环节，就一定能保证渐近分数总是正的．所以，只要枚举所有定理条件所允许的二次无理数，计算它的渐近分数直到一个循环节内，就能够找到一个解．因为在同一个二次无理数的渐近分数中出现的两个解，一定是等价的，所以只要得到第一个满足 $(-1)^kQ_k=N/|N|$ 的解，就可以停止继续后面的计算．与前面的所有算法都不同的是，此处满足条件的 $k$ 可能出现在尚未进入循环节时．
+Định lý này đảm bảo mọi nghiệm dương của phương trình đều xuất hiện trong các phân số liên tục của các số vô tỉ bậc hai tương ứng. Khi dùng PQa để tính phân số liên tục, chỉ cần vào chu kỳ thì các phân số liên tục luôn dương. Vì vậy, chỉ cần liệt kê mọi số vô tỉ bậc hai thỏa điều kiện của định lý và tính phân số liên tục trong một chu kỳ, ta có thể tìm một nghiệm. Vì hai nghiệm xuất hiện trong cùng một phân số liên tục là tương đương, nên chỉ cần lấy nghiệm đầu tiên thỏa $(-1)^kQ_k=N/|N|$ rồi dừng. Khác với các thuật toán trước, ở đây $k$ thỏa điều kiện có thể xuất hiện trước khi vào chu kỳ.
 
-??? example "示例"
-    1.  求解方程 $x^2-157y^2=12$．
+??? example "Ví dụ"
+    1.  Giải phương trình $x^2-157y^2=12$.
     
-        因为 $12^2<157$，所以对 $(P_0,Q_0,D)=(0,1,157)$ 运行 PQa 算法结果如下：（标红部分为第一个循环节）
+        Vì $12^2<157$, nên chạy PQa với $(P_0,Q_0,D)=(0,1,157)$ được: (phần tô đỏ là chu kỳ đầu)
     
         |  $k$ |  $P$ |  $Q$ |        $a$        |         $A$        |        $B$       |         $G$        | $G^2-DB^2$ |
         | :--: | :--: | :--: | :---------------: | :----------------: | :--------------: | :----------------: | :--------: |
@@ -674,7 +675,7 @@ $$
         | $34$ | $12$ |  $1$ |        $24$       | $1145518138660728$ | $91422300238489$ | $1145518138660728$ |    $-13$   |
         | $35$ | $12$ | $13$ |        $1$        | $1192216867392577$ | $95149264530709$ | $1192216867392577$ |    $12$    |
     
-        循环节长度 $\ell=17$ 为奇数，所以需要考察两个循环节内 $G_{k-1}^2-157B_{k-1}^2$ 与 $12$ 相差一个平方因子的情形，即 $k=1,9,13,19,23,31$ 的情形．它们对应的解就是下表中的 $(fG,fB)$：
+        Chu kỳ $\ell=17$ lẻ, nên cần xét hai chu kỳ đối với các vị trí $k=1,9,13,19,23,31$ nơi $G_{k-1}^2-157B_{k-1}^2$ khác $12$ bởi một thừa số bình phương. Các nghiệm tương ứng là $(fG,fB)$ trong bảng sau:
     
         |  $k$ | $f$ |    $fG_{k-1}$    |    $fB_{k-1}$   |    $x$    |   $y$   |
         | :--: | :-: | :--------------: | :-------------: | :-------: | :-----: |
@@ -685,15 +686,15 @@ $$
         | $23$ | $1$ |   $26277068347$  |   $2097138361$  |  $-10663$ |  $851$  |
         | $31$ | $1$ | $21950079635497$ | $1751807067011$ |   $-13$   |   $1$   |
     
-        全体 $(fG,fB)$ 就是方程 $x^2-157y^2=12$ 的解集的所有等价类中的最小正整数解．要通过这些解得到全部解，可以利用相应的 Pell 方程的基本解 $(46698728731849,3726964292220)$．比如说，可以将它们转化为该等价类中的基本解 $(x,y)$，相应的解也一并列于上表中．
-    2.  求解方程 $x^2-157y^2=12$．
+        Tập các $(fG,fB)$ là các nghiệm dương nhỏ nhất trong mỗi lớp tương đương của $x^2-157y^2=12$. Để sinh toàn bộ nghiệm, dùng nghiệm cơ bản của Pell là $(46698728731849,3726964292220)$. Chẳng hạn, có thể chuyển chúng thành nghiệm cơ bản của từng lớp; các nghiệm đó cũng liệt kê trong bảng.
+    2.  Giải phương trình $x^2-157y^2=12$.
     
-        这次利用 Lagrange–Matthews–Mollin 算法求解．首先，枚举 $N=12$ 的平方因子：
+        Lần này dùng thuật toán Lagrange–Matthews–Mollin. Trước hết liệt kê các ước bình phương của $N=12$:
     
-        -   $f^2=1^2$ 时，有 $m=12$，同余方程 $P^2\equiv 157\pmod{12}$ 有解 $z=\pm 1,\pm 5$；
-        -   $f^2=2^2$ 时，有 $m=3$，同余方程 $P^2\equiv 157\pmod{3}$ 有解 $z=\pm 1$．
+        -   $f^2=1^2$ thì $m=12$, đồng dư $P^2\equiv 157\pmod{12}$ có nghiệm $z=\pm 1,\pm 5$;
+        -   $f^2=2^2$ thì $m=3$, đồng dư $P^2\equiv 157\pmod{3}$ có nghiệm $z=\pm 1$.
     
-        对于所有可能的 $(f,z)$ 组合运行初始参数为 $(P_0,Q_0,D)=(z,|m|,D)$ 的 PQa 算法，并找到首个 $(-1)^kQ_k=1$ 的位置，对应的 $(fG_{k-1},fB_{k-1})$ 就是一组解．结果如下表所示：
+        Với mọi cặp $(f,z)$, chạy PQa với $(P_0,Q_0,D)=(z,|m|,D)$ và tìm vị trí đầu tiên có $(-1)^kQ_k=1$, khi đó $(fG_{k-1},fB_{k-1})$ là một nghiệm. Kết quả:
     
         | $f$ |  $z$ |  $m$ |  $k$ |    $fG_{k-1}$    |    $fB_{k-1}$   |
         | :-: | :--: | :--: | :--: | :--------------: | :-------------: |
@@ -704,12 +705,12 @@ $$
         | $2$ |  $1$ |  $3$ | $20$ |    $483790960$   |    $38610722$   |
         | $2$ | $-1$ |  $3$ | $14$ |     $579160$     |     $46222$     |
     
-        这就是前文列举的所有等价类中的最小正整数解，可以利用 Pell 方程的基本解将它们转化为基本解．
-    3.  求解方程 $x^2-79y^2=\pm 101$．
+        Đây chính là các nghiệm dương nhỏ nhất của mỗi lớp, có thể dùng nghiệm cơ bản Pell để chuyển sang nghiệm cơ bản.
+    3.  Giải phương trình $x^2-79y^2=\pm 101$.
     
-        仍然使用 Lagrange–Matthews–Mollin 算法求解．因为 $N=101$ 是素数，所以一定有 $f=1$．此时，$m=101$，相应的同余方程 $P^2\equiv 79\pmod{101}$ 有解 $P=\pm 33$．
+        Vẫn dùng thuật toán Lagrange–Matthews–Mollin. Vì $N=101$ là số nguyên tố, nên $f=1$. Khi đó $m=101$, đồng dư $P^2\equiv 79\pmod{101}$ có nghiệm $P=\pm 33$.
     
-        对 $(P_0,Q_0,D)=(33,101,79)$ 运行 PQa 算法结果如下：（标红部分为第一个循环节）
+        Chạy PQa với $(P_0,Q_0,D)=(33,101,79)$ được: (phần tô đỏ là chu kỳ đầu)
     
         | $k$ |  $P$  |  $Q$  |       $a$      |  $A$  |   $B$  |   $G$   | $G^2-DB^2$ |
         | :-: | :---: | :---: | :------------: | :---: | :----: | :-----: | :--------: |
@@ -724,9 +725,9 @@ $$
         | $8$ |  $4$  |  $9$  | $\color{red}1$ | $304$ |  $733$ |  $6515$ |   $-606$   |
         | $9$ |  $5$  |  $6$  |       $2$      | $805$ | $1941$ | $17252$ |    $505$   |
     
-        循环节长度 $\ell=6$ 为偶数．直到一个循环节结束，都不存在 $Q_k=\pm 1$，因而，该情形无解．相应地，对于 $(P_0,Q_0,D)=(-33,101,79)$ 运行 PQa 算法也可以观察到类似的情况．因此，该方程无解．
+        Chu kỳ $\ell=6$ chẵn. Kết thúc một chu kỳ vẫn không có $Q_k=\pm 1$, nên trường hợp này vô nghiệm. Tương tự với $(P_0,Q_0,D)=(-33,101,79)$ cũng không có nghiệm. Vì vậy phương trình vô nghiệm.
 
-## 习题
+## Bài tập
 
 -   [LOJ 6687.「Project Euler 66」解方程](https://loj.ac/p/6687)
 -   [SPOJ EQU2 - Yet Another Equation](https://www.spoj.com/problems/EQU2/)
@@ -734,21 +735,21 @@ $$
 -   [UVa 12909. Numeric Center](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=862&page=show_problem&problem=4774)
 -   [UVa 10241. Semi-triangular and also Square](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=14&page=show_problem&problem=1182)
 
-## 参考文献与注释
+## Tài liệu tham khảo và chú thích
 
 -   [Pell's equation - Wikipedia](https://en.wikipedia.org/wiki/Pell%27s_equation)
 -   [John P. Robertson - Solving the generalized Pell equation $x^2-Dy^2=N$](https://citeseerx.ist.psu.edu/document?repid=rep1&type=pdf&doi=5ac34a344ee346855184ff949eeaed18685b155c)
 -   [Keith Matthews - The Diophantine Equation $x^2-Dy^2=N$,$D>0$](http://www.numbertheory.org/PDFS/patz5.pdf)
 -   [Existence of Solution to Pell’s Equation - Suryateja Gavva's Blog](https://surya-teja.com/2011/01/11/existence-of-solution-to-pells-equation/)
--   [Calculating the simple continued fraction of a quadratic irrational - Number Theory Web](http://www.numbertheory.org/php/surd.html)（PQa 算法）
--   [Solving the diophantine equation x2–Dy2 = N, D > 0 and not a perfect square, N ≠ 0 - Number Theory Web](http://www.numbertheory.org/php/patz.html)（Lagrange–Matthews–Mollin 算法）
+-   [Calculating the simple continued fraction of a quadratic irrational - Number Theory Web](http://www.numbertheory.org/php/surd.html)（thuật toán PQa）
+-   [Solving the diophantine equation x2–Dy2 = N, D > 0 and not a perfect square, N ≠ 0 - Number Theory Web](http://www.numbertheory.org/php/patz.html)（thuật toán Lagrange–Matthews–Mollin）
 
-[^not-square]: 当 $D$ 是完全平方数时，直接做因式分解可知，$(x+y\sqrt{D})(x-y\sqrt{D})=N$，因此所有解可以通过遍历 $N$ 的因数得知．特别地，当 $N=1$ 时，方程只有解 $(\pm 1,0)$；当 $N=-1$ 且 $D\neq 1$ 时，方程没有解．
+[^not-square]: Khi $D$ là số chính phương, phân tích nhân tử cho thấy $(x+y\sqrt{D})(x-y\sqrt{D})=N$, do đó mọi nghiệm có thể tìm được bằng cách duyệt các ước của $N$. Đặc biệt, khi $N=1$ thì chỉ có nghiệm $(\pm 1,0)$; khi $N=-1$ và $D\neq 1$ thì không có nghiệm.
 
-[^neg-pell]: 有些中文文献也称它为第二型 Pell 方程．
+[^neg-pell]: Một số tài liệu tiếng Trung cũng gọi đây là phương trình Pell loại hai.
 
-[^half-int]: 即形如 $n+\dfrac12$ 且 $n\in\mathbf Z$ 的有理数．
+[^half-int]: Tức các số hữu tỉ dạng $n+\dfrac12$ với $n\in\mathbf Z$.
 
-[^fundamental-solution]: 注意，Pell 方程中基本解的定义与实二次整数环中的基本单位数的定义并不一致．首先，部分实二次整数环中的基本单位数 $x+y\sqrt{D}$ 中的 $x,y$ 是半整数，因而并非 Pell 方程的解．其次，同一个实二次整数环的基本单位数有四个，但是基本解只有一个，因为基本解要求 $x,y$ 都是正数．
+[^fundamental-solution]: Lưu ý, định nghĩa nghiệm cơ bản của phương trình Pell không trùng với định nghĩa đơn vị cơ bản trong vành số nguyên bậc hai thực. Thứ nhất, trong một số vành số nguyên bậc hai thực, đơn vị cơ bản $x+y\sqrt{D}$ có $x,y$ là bán nguyên, nên không phải nghiệm của Pell. Thứ hai, cùng một vành số nguyên bậc hai thực có bốn đơn vị cơ bản, nhưng nghiệm cơ bản chỉ có một, vì yêu cầu $x,y$ đều dương.
 
-[^solubility-neg-pell]: 一个较为实用的判断方法和工具在 [这里](http://www.numbertheory.org/php/hardy_williams.html) 及其参考文献．使得方程 $x^2-Dy^2=-1$ 有解的正整数 $D$ 的列表是 [OEIS A031396](https://oeis.org/A031396)．
+[^solubility-neg-pell]: Một phương pháp và công cụ thực dụng được nêu [tại đây](http://www.numbertheory.org/php/hardy_williams.html) cùng các tài liệu tham khảo. Danh sách các $D$ dương sao cho $x^2-Dy^2=-1$ có nghiệm là [OEIS A031396](https://oeis.org/A031396).

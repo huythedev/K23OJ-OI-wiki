@@ -1,28 +1,28 @@
-**注意**：考虑到算法竞赛的实际情况，本文将不会全面研究语法，只会讲述在算法竞赛中可能会应用到的部分．
+**Lưu ý**: Xét theo thực tế thi đấu thuật toán, bài này sẽ không khảo sát toàn bộ cú pháp, chỉ trình bày những phần có thể dùng trong thi đấu.
 
-本文语法参照 **C++11** 标准．语义不同的将以 **C++11** 作为标准，C++14、C++17 等语法视情况提及并会特别标注．
+Cú pháp trong bài tham chiếu chuẩn **C++11**. Những chỗ có khác biệt về ngữ nghĩa sẽ lấy **C++11** làm chuẩn; các cú pháp C++14, C++17... sẽ được nhắc đến khi phù hợp và có ghi chú rõ.
 
-## `auto` 类型说明符
+## Từ khóa `auto`
 
-`auto` 类型说明符用于自动推导变量等的类型．例如：
+`auto` dùng để tự động suy luận kiểu của biến, ví dụ:
 
 ```cpp
-auto a = 1;        // a 是 int 类型
-auto b = a + 0.1;  // b 是 double 类型
+auto a = 1;        // a là kiểu int
+auto b = a + 0.1;  // b là kiểu double
 ```
 
-注意 `auto` 会去除引用，如果不希望出现拷贝开销，需要手动指定：
+Lưu ý `auto` sẽ bỏ tham chiếu; nếu không muốn phát sinh chi phí copy, cần chỉ định thủ công:
 
 ```cpp
 int a = 1;
 int& b = a;
-auto c = b;   // c 是 int 类型，有拷贝开销
-auto& e = a;  // e 是 int& 类型，没有拷贝开销
+auto c = b;   // c là kiểu int, có chi phí copy
+auto& e = a;  // e là kiểu int&, không có chi phí copy
 ```
 
-## decltype 说明符
+## Từ khóa decltype
 
-`decltype` 可以根据 **实体** 或 **表达式** 推断类型，注意二者推导类型的方式不同，错误使用可能造成悬垂引用．竞赛中不常用，此处仅粗略介绍．
+`decltype` có thể suy luận kiểu dựa trên **thực thể** hoặc **biểu thức**, lưu ý hai cách suy luận khác nhau, dùng sai có thể gây tham chiếu treo. Trong thi đấu ít dùng, ở đây chỉ giới thiệu sơ lược.
 
 ```cpp
 #include <iostream>
@@ -30,29 +30,29 @@ auto& e = a;  // e 是 int& 类型，没有拷贝开销
 
 int main() {
   int a = 1926;
-  decltype(a) b;                 // 根据实体推断， b 是 int 类型
-  decltype(1 + 1) c;             // 根据表达式推断，c 是 int 类型
-  decltype((a)) d = a;           // 根据表达式推断，d 是 int& 类型！
-  std::vector<decltype(b)> vec;  // 根据实体推断，vec 是 std::vector <int> 类型
+  decltype(a) b;                 // Suy luận từ thực thể, b là kiểu int
+  decltype(1 + 1) c;             // Suy luận từ biểu thức, c là kiểu int
+  decltype((a)) d = a;           // Suy luận từ biểu thức, d là kiểu int&!
+  std::vector<decltype(b)> vec;  // Suy luận từ thực thể, vec là std::vector <int>
   return 0;
 }
 ```
 
 ## constexpr
 
-> 另请参阅 [常量表达式 constexpr（C++11）](const.md#常量表达式-constexprc11)
+> Xem thêm [biểu thức hằng constexpr (C++11)](const.md#常量表达式-constexprc11)
 
-## 基于范围的 `for` 循环
+## Vòng lặp `for` theo phạm vi
 
-使用范围 for 遍历可迭代对象，与使用迭代器遍历的效率相同．上述二者的效率一般优于索引遍历，因为不需要根据索引寻址．
+Dùng for theo phạm vi để duyệt đối tượng có thể lặp, hiệu suất tương đương duyệt bằng iterator. Hai cách này thường tốt hơn duyệt theo chỉ số vì không cần định vị theo index.
 
-下面是一种简单的基于范围的 `for` 循环的语法：
+Cú pháp đơn giản của vòng for theo phạm vi:
 
 ```cpp
 for (item_declaration : range_initializer) statement
 ```
 
-比如：
+Ví dụ:
 
 ```cpp
 std::array<int, 4> arr = {1, 2, 3, 4};
@@ -61,7 +61,7 @@ for (int x : arr) {
 }
 ```
 
-上述语法产生的代码效果等价于下列代码：
+Hiệu quả tương đương đoạn sau:
 
 ```cpp
 std::array<int, 4> arr = {1, 2, 3, 4};
@@ -70,15 +70,15 @@ for (auto px = arr.begin(), ed = arr.end(); px != ed; ++px) {
 }
 ```
 
-### item-declaration 项声明
+### Khai báo item-declaration
 
-声明一个变量用于接受右侧容器中的元素，变量类型要与容器内子元素类型一致．可以用 `auto` 自动推导类型，复杂类型常用 `auto&` 防止拷贝开销．
+Khai báo một biến để nhận phần tử trong container bên phải, kiểu biến phải phù hợp với kiểu phần tử. Có thể dùng `auto` để suy luận, kiểu phức tạp thường dùng `auto&` để tránh copy.
 
-### range-initializer 范围初始化器
+### Khởi tạo phạm vi range-initializer
 
-范围初始化器可以是任何一种可迭代的对象（比如数组，或定义了 `begin` 和 `end` 成员函数的类对象）．如果放入表达式，表达式也只会计算一次．
+Phạm vi có thể là bất kỳ đối tượng có thể lặp nào (mảng, hoặc lớp có hàm `begin` và `end`). Nếu truyền vào một biểu thức, biểu thức chỉ được tính một lần.
 
-例子：
+Ví dụ:
 
 ```cpp
 int a[] = {1, 1, 4, 5, 1, 4};
@@ -86,16 +86,16 @@ std::vector<int> b{1, 1, 4, 5, 1, 4};
 std::map<std::string, int> c{{"114", 114}, {"514", 514}};
 for (int i : a) std::cout << i;
 for (auto i : b) std::cout << i;
-// 下方 i 的类型是 std::pair<const std::string, int>&
+// Kiểu của i bên dưới là std::pair<const std::string, int>&
 for (auto& i : c) std::cout << i.first << i.second;
 for (auto i : {1, 1, 4, 5, 1, 4}) std::cout << i;
 ```
 
-### 自定义类型支持范围 for
+### Tự định nghĩa kiểu hỗ trợ for theo phạm vi
 
-只需提供 `begin` 和 `end` 成员函数，返回类型需要支持比较、自增和解引用（`*` 运算符）．
+Chỉ cần cung cấp hàm thành viên `begin` và `end`, kiểu trả về phải hỗ trợ so sánh, tăng và giải tham chiếu (`*`).
 
-这里有一个例子：
+Ví dụ:
 
 ```cpp
 #include <iostream>
@@ -117,9 +117,9 @@ int main() {
 }
 ```
 
-### 初始化语句（C++20）
+### Câu lệnh khởi tạo (C++20)
 
-在 C++20 中还可以使用初始化语句实现一些功能，例如循环计数器：
+Trong C++20 có thể dùng câu lệnh khởi tạo để làm một số việc như bộ đếm:
 
 ```cpp
 #include <iostream>
@@ -128,14 +128,14 @@ int main() {
 int main() {
   std::vector<int> v = {0, 1, 2, 3, 4, 5};
 
-  for (int counter = 0; auto i : v)  // the init-statement (C++20)
+  for (int counter = 0; auto i : v)  // câu lệnh khởi tạo (C++20)
     std::cout << counter++ << ' ' << i << std::endl;
 }
 ```
 
-## 结构化绑定（C++17）
+## Ràng buộc cấu trúc (C++17)
 
-结构化绑定（Structured binding）是 C++17 提供的一种语法糖，可以方便的提取子元素或子元素的引用，像这样：
+Ràng buộc cấu trúc (Structured binding) là cú pháp đường tắt của C++17 để trích xuất phần tử hoặc tham chiếu phần tử, ví dụ:
 
 ```cpp
 struct C {
@@ -144,32 +144,32 @@ struct C {
 
 int arr[]{4, 5, 6};
 
-auto [c1, c2] = C{};       // c1=1,c2=2; int 类型
-auto& [a1, a2, a3] = arr;  // a1=arr[0],a2=arr[1],a3=arr[2]; int& 类型
+auto [c1, c2] = C{};       // c1=1,c2=2; kiểu int
+auto& [a1, a2, a3] = arr;  // a1=arr[0],a2=arr[1],a3=arr[2]; kiểu int&
 ```
 
-注意以下几点：
+Lưu ý:
 
--   左侧声明的变量数和右侧对象的子元素数必须一致
--   类型声明需要使用 `auto`
--   可以使用 `&` 修饰获取引用
+-   Số biến bên trái phải bằng số phần tử con của đối tượng bên phải
+-   Khai báo kiểu cần dùng `auto`
+-   Có thể thêm `&` để lấy tham chiếu
 
-你可以在遍历 `map` 容器时这样写：
+Khi duyệt `map` có thể viết:
 
 ```cpp
 std::map<std::string, int> m = {{"k1", 1}, {"k2", 2}};
 
-// 使用 "auto&" ，没有拷贝开销
+// Dùng "auto&" để không có chi phí copy
 for (auto& [k, v] : m) {
-  // k 的类型是 const std::string& ，因为键自带 const 修饰
-  // v 的类型是 int&
+  // k có kiểu const std::string& do khóa có const
+  // v có kiểu int&
   std::cout << k << ' ' << v << std::endl;
 }
 ```
 
-## std::tuple 元组
+## std::tuple
 
-[元组](https://zh.cppreference.com/w/cpp/utility/tuple) 定义于头文件 `<tuple>`，是 `std::pair` 的推广，可以存储多个不同类型的值．下面来看一个例子：
+[Tuple](https://zh.cppreference.com/w/cpp/utility/tuple) được định nghĩa trong `<tuple>`, là mở rộng của `std::pair`, có thể lưu nhiều giá trị kiểu khác nhau. Ví dụ:
 
 ```cpp
 #include <iostream>
@@ -183,33 +183,33 @@ int main() {
   std::tuple<int, int, std::string, std::vector<int>> tup =
       std::make_tuple(817, 114, "514", vec);
 
-  // 使用 get<> 获取子元素，尖括号内必须是整型常量表达式
+  // Dùng get<> để lấy phần tử, bên trong <> phải là biểu thức hằng số nguyên
   for (auto i : std::get<expr>(tup)) std::cout << i << " ";
-  // 首元素编号为 0，故我们 std::get<3> 得到了一个 std::vector<int>
+  // Chỉ số phần tử đầu là 0, nên std::get<3> cho ta một std::vector<int>
   return 0;
 }
 ```
 
-在 C++17 之后可以使用结构化绑定提取值，像这样：
+Từ C++17 có thể dùng structured binding để lấy giá trị:
 
 ```cpp
 std::vector<int> vec = {1, 9, 2, 6, 0};
 std::tuple<int, int, std::string, std::vector<int>> tup =
     std::make_tuple(817, 114, "514", vec);
 
-auto& [a, b, c, d] = tup;  // C++17 Structured binding
+auto& [a, b, c, d] = tup;  // Structured binding C++17
 std::cout << a << ' ' << b << c << std::endl;
 std::cout << d.size() << ' ' << d[2] << std::endl;
 ```
 
-### 成员函数
+### Hàm thành viên
 
-| 函数          | 作用                   |
+| Hàm          | Tác dụng                   |
 | ----------- | -------------------- |
-| `operator=` | 赋值一个 `tuple` 的内容给另一个 |
-| `swap`      | 交换两个 `tuple` 的内容     |
+| `operator=` | Gán nội dung của một `tuple` cho một `tuple` khác |
+| `swap`      | Hoán đổi nội dung của hai `tuple`     |
 
-例子：
+Ví dụ:
 
 ```cpp
 constexpr std::tuple<int, int> tup = {1, 2};
@@ -218,17 +218,17 @@ tupB = tup;
 tupB.swap(tupA);
 ```
 
-### 非成员函数
+### Hàm không thành viên
 
-| 函数             | 作用                           |
+| Hàm             | Tác dụng                           |
 | -------------- | ---------------------------- |
-| `make_tuple`   | 创建一个 `tuple` 对象，其类型根据各实参类型定义 |
-| `std::get`     | 元组式访问指定的元素                   |
-| `std::tie`     | 将元组中的值赋值到已有变量                |
-| `operator==` 等 | 按字典顺序比较 `tuple` 中的值          |
-| `std::swap`    | 特化的 `std::swap` 算法           |
+| `make_tuple`   | Tạo một `tuple`, kiểu được xác định theo kiểu các đối số |
+| `std::get`     | Truy cập phần tử của tuple                  |
+| `std::tie`     | Gán phần tử tuple cho các biến có sẵn                |
+| `operator==` ... | So sánh `tuple` theo thứ tự từ điển          |
+| `std::swap`    | Thuật toán `std::swap` được đặc hóa           |
 
-例子：
+Ví dụ:
 
 ```cpp
 std::tuple<int, int> tupA = {2, 3}, tupB;
@@ -240,39 +240,39 @@ std::tie(x, std::ignore) = tupB;
 std::cout << x << std::endl;
 ```
 
-`std::tie` 将元组元素赋值给已有变量，可以使用 `std::ignore` 跳过不需要的元素．结构化绑定直接声明新变量（支持值/引用绑定），必须接受所有元素．
+`std::tie` gán phần tử tuple vào biến có sẵn, có thể dùng `std::ignore` để bỏ qua phần tử không cần. Structured binding tạo biến mới (hỗ trợ gán theo giá trị/tham chiếu), và phải nhận tất cả phần tử.
 
-## 函数对象
+## Hàm đối tượng
 
-可以使用函数调用运算符 `operator()` 的对象，称为函数对象（FunctionObject）．
+Đối tượng có thể dùng toán tử gọi hàm `operator()` được gọi là hàm đối tượng (FunctionObject).
 
-它不是一种语言特性，而是一种 [概念或者要求](https://zh.cppreference.com/w/cpp/named_req/FunctionObject)，在标准库中广泛应用．
+Đây không phải là một tính năng của ngôn ngữ, mà là một [khái niệm/yêu cầu](https://zh.cppreference.com/w/cpp/named_req/FunctionObject), được dùng rộng rãi trong thư viện chuẩn.
 
-函数对象大致可以分成两类：
+Hàm đối tượng có thể chia thành hai loại:
 
-1.  函数指针
-2.  重载了 `operator()` 运算符的类对象
+1.  Con trỏ hàm
+2.  Đối tượng lớp có nạp chồng `operator()`
 
-[lambda](./lambda.md) 就是典型的第二类函数对象，它将捕获的内容存放在成员变量中，并重载了函数调用运算符．
+[lambda](./lambda.md) là ví dụ điển hình của loại thứ hai: nó lưu phần bắt vào thành biến thành viên, và nạp chồng toán tử gọi hàm.
 
-## Lambda 表达式
+## Biểu thức Lambda
 
-> 请参考 [Lambda 表达式](lambda.md) 页面．
+> Xem [biểu thức Lambda](lambda.md).
 
 ## std::function
 
-???+ warning "请注意性能开销"
-    `std::function` 会引入一定的性能开销，经 [Benchmark](./lambda.md#lambda-中的递归) 测试，通常会造成 2 到 3 倍以上的性能损失．
+???+ warning "Lưu ý chi phí hiệu năng"
+    `std::function` có thể gây chi phí hiệu năng, theo [Benchmark](./lambda.md#lambda-中的递归) thường làm chậm 2 đến 3 lần hoặc hơn.
     
-    因为它使用了类型擦除的技术，而这通常借由虚函数机制实现，调用虚函数会引入额外的 [开销](https://stackoverflow.com/questions/5057382/what-is-the-performance-overhead-of-stdfunction)．
+    Vì nó dùng kỹ thuật type erasure, thường được thực hiện qua cơ chế hàm ảo; gọi hàm ảo gây [chi phí](https://stackoverflow.com/questions/5057382/what-is-the-performance-overhead-of-stdfunction).
     
-    请考虑使用 [**Lambda 表达式**](./lambda.md) 或者 [**函数对象**](#函数对象) 代替．
+    Hãy cân nhắc dùng [**biểu thức Lambda**](./lambda.md) hoặc [**hàm đối tượng**](#函数对象) thay thế.
 
-`std::function` 是通用函数封装器，定义于头文件 `<functional>`．
+`std::function` là một bộ bao hàm tổng quát, định nghĩa trong `<functional>`.
 
-`std::function` 的实例能存储、复制及调用任何 [**可调用**](https://zh.cppreference.com/w/cpp/named_req/Callable) 对象，这包括 [**Lambda 表达式**](./lambda.md)、成员函数指针或其他 [**函数对象**](#函数对象)．
+Một đối tượng `std::function` có thể lưu, sao chép và gọi bất kỳ đối tượng [**có thể gọi**](https://zh.cppreference.com/w/cpp/named_req/Callable) nào, bao gồm [**lambda**](./lambda.md), con trỏ hàm thành viên hoặc các [**hàm đối tượng**](#函数对象) khác.
 
-若 `std::function` 不含任何可调用对象（比如默认构造），调用时将抛出 [`std::bad_function_call`](https://zh.cppreference.com/w/cpp/utility/functional/bad_function_call) 异常．
+Nếu `std::function` không chứa đối tượng có thể gọi (ví dụ được khởi tạo mặc định), khi gọi sẽ ném ngoại lệ [`std::bad_function_call`](https://zh.cppreference.com/w/cpp/utility/functional/bad_function_call).
 
 ```cpp
 #include <functional>
@@ -293,51 +293,51 @@ struct PrintNum {
 };
 
 int main() {
-  // 存储自由函数
+  // Lưu hàm tự do
   std::function<void(int)> f_display = print_num;
   f_display(-9);
 
-  // 存储 Lambda
+  // Lưu lambda
   std::function<void()> f_display_42 = []() { print_num(42); };
   f_display_42();
 
-  // 存储到成员函数的调用
+  // Lưu lời gọi đến hàm thành viên
   std::function<void(const Foo&, int)> f_add_display = &Foo::print_add;
   const Foo foo(314159);
   f_add_display(foo, 1);
   f_add_display(314159, 1);
 
-  // 存储到数据成员访问器的调用
+  // Lưu lời gọi đến thành viên dữ liệu
   std::function<int(Foo const&)> f_num = &Foo::num_;
   std::cout << "num_: " << f_num(foo) << '\n';
 
-  // 存储到函数对象的调用
+  // Lưu lời gọi đến hàm đối tượng
   std::function<void(int)> f_display_obj = PrintNum();
   f_display_obj(18);
 }
 ```
 
-## 可变参数函数模板
+## Hàm mẫu tham số biến đổi
 
-在 C++11 之前，类模板和函数模板都只能接受固定数目的模板参数．C++11 允许 **任意个数、任意类型** 的模板参数．
+Trước C++11, template lớp và hàm chỉ nhận số lượng tham số template cố định. C++11 cho phép **bất kỳ số lượng, bất kỳ kiểu** tham số template.
 
-这里仅简要介绍可变参数 **函数** 模板．
+Ở đây chỉ giới thiệu ngắn gọn **hàm** mẫu tham số biến đổi.
 
-下列代码声明的函数模板 `fun` 可以接受任意个数、任意类型的模板参数作为它的模板形参．
+Hàm mẫu `fun` sau có thể nhận số lượng bất kỳ và kiểu bất kỳ các tham số template:
 
 ```cpp
 template <typename... Clazz>
 void fun(Clazz... paras) {}
 ```
 
-`paras` 是一个函数参数包（function parameter pack），接受 0 个或多个函数实参．`Clazz` 是一个模板参数包（template parameter pack），接受 0 个或多个模板实参（非类型、类型或模板），以 `typename` 标记时只接受类型．
+`paras` là một gói tham số hàm (function parameter pack), nhận 0 hoặc nhiều tham số hàm. `Clazz` là một gói tham số template (template parameter pack), nhận 0 hoặc nhiều đối số template (không kiểu, kiểu hoặc template), khi dùng `typename` thì chỉ nhận kiểu.
 
-可以简单理解如下：
+Có thể hiểu đơn giản:
 
--   模板参数包通常是一些类型名（但也可以使用编译期常量或模板名）
--   函数参数包通常是一些变量名
+-   Gói tham số template thường là các tên kiểu (nhưng cũng có thể là hằng số biên dịch hoặc tên template)
+-   Gói tham số hàm thường là các tên biến
 
-现在可以这么调用 `fun` 函数：
+Khi đó có thể gọi `fun` như sau:
 
 ```cpp
 fun();
@@ -346,42 +346,42 @@ fun(1, 2, 3);
 fun(1, 0.0, "abc");
 ```
 
-### 参数包展开
+### Mở rộng gói tham số
 
-#### 参数包展开语法
+#### Cú pháp mở rộng gói
 
-参数包展开非常简单，使用 `...` 即可，将自动使用 `,` 分隔．比如：
+Mở rộng gói tham số rất đơn giản, dùng `...` để mở rộng và tự động dùng `,` để phân tách. Ví dụ:
 
 ```cpp
 template <class A, class... C>
 void func(A arg1, C... arg2) {
-  // C 是 模板参数包
-  tuple<A, C...>();  // 展开成 tuple<int, int, double, bool>();
+  // C là gói tham số template
+  tuple<A, C...>();  // Mở rộng thành tuple<int, int, double, bool>();
 
-  // arg2 是函数参数包
-  func(arg2...);  // 展开成 func( 2, 1.1, true );
+  // arg2 là gói tham số hàm
+  func(arg2...);  // Mở rộng thành func( 2, 1.1, true );
 }
 
 func(1, 2, 1.1, true);
 ```
 
-参数包展开时还可以附带需要的运算，比如：
+Mở rộng gói còn có thể kèm theo toán tử:
 
 ```cpp
 template <class A, class... C>
 void func(A arg1, C... arg2) {
   func((arg2 + 1)...);
-  // 展开成 func( (2+1) , (1.1+1), (2.1f+1) );
+  // Mở rộng thành func( (2+1) , (1.1+1), (2.1f+1) );
 }
 
 func(1, 2, 1.1, 2.1f);
 ```
 
-#### 终止函数
+#### Hàm kết thúc
 
-上面的函数无法运行，因为参数数量不断减少，最后变为空参并报错．
+Hàm phía trên không thể chạy vì số lượng tham số giảm dần, cuối cùng thành rỗng và báo lỗi.
 
-我们需要指定终止条件，可以提供一个普通函数，像这样：
+Cần chỉ định điều kiện dừng, bằng cách viết một hàm thường:
 
 ```cpp
 void func() {}
@@ -395,45 +395,45 @@ void func(A arg1, C... arg2) {
 func(1, 2, 1.1, 2.1f);
 ```
 
-这样，参数数量不为 0 时会调用模板，空参时会调用普通函数，就能正常运行了．
+Như vậy, khi số tham số không bằng 0 sẽ gọi template, còn rỗng thì gọi hàm thường, chương trình chạy bình thường.
 
-### 折叠表达式（C++17）
+### Biểu thức gập (C++17)
 
-C++17 提供了一种简便的语法处理 **函数参数包**，他的语法是这样的（必须用小括号包裹）：
+C++17 cung cấp cú pháp đơn giản để xử lý **gói tham số hàm**, cú pháp như sau (bắt buộc có ngoặc):
 
-1.  `( pack op ... )`，会变成 `(E1 op (... op (EN-1 op EN)))`
-2.  `( ... op pack )`，会变成 `(((E1 op E2) op ...) op EN)`
-3.  `( pack op ... op init )`，会变成 `(E1 op (... op (EN−1 op (EN op I))))`
-4.  `( init op ... op pack )`，会变成 `((((I op E1) op E2) op ...) op EN)`
+1.  `( pack op ... )` sẽ thành `(E1 op (... op (EN-1 op EN)))`
+2.  `( ... op pack )` sẽ thành `(((E1 op E2) op ...) op EN)`
+3.  `( pack op ... op init )` sẽ thành `(E1 op (... op (EN−1 op (EN op I))))`
+4.  `( init op ... op pack )` sẽ thành `((((I op E1) op E2) op ...) op EN)`
 
-简单演示一下就好理解了：
+Ví dụ đơn giản:
 
 ```cpp
 template <class... C>
 void func(C... args) {
   (std::cout << ... << args) << std::endl;
-  // 语法 4, 等价于 ↓
+  // Cú pháp 4, tương đương ↓
   // ( ( ( std::cout << 1 ) << 2.1 ) << true ) << std::endl;
-  // 输出: 12.11  注意true输出成了1，因为这里没有指定boolalpha
+  // Kết quả: 12.11  Lưu ý true in thành 1 vì không có boolalpha
 
   std::cout << (args && ...) << std::endl;
-  // 语法 1, 等价于 ↓
+  // Cú pháp 1, tương đương ↓
   // std::cout << ( 1 && ( 2.1 && true ) ) ) << std::endl;
-  // 输出: 1
+  // Kết quả: 1
 }
 
 func(1, 2.1, true);
 ```
 
-### 缩写函数模板（C++20）
+### Hàm mẫu rút gọn (C++20)
 
-C++20 起可以直接使用 `auto ...` 作为参数类型，实现函数模板的缩写：
+Từ C++20 có thể dùng trực tiếp `auto ...` làm kiểu tham số để rút gọn hàm mẫu:
 
 ```cpp
 void func(auto... args) { (std::cout << ... << args) << std::endl; }
 ```
 
-注意它本质上仍然是函数模板，与下面的写法等价：
+Lưu ý về bản chất vẫn là hàm mẫu, tương đương:
 
 ```cpp
 template <class... T>
@@ -442,39 +442,39 @@ void func(T... args) {
 }
 ```
 
-## 范围库（C++20）
+## Thư viện ranges (C++20)
 
-> 范围库是对迭代器和泛型算法库的一个扩展，使得迭代器和算法可以通过组合变得更强大，并且减少错误．
+> Thư viện ranges mở rộng iterator và thuật toán generic, giúp tổ hợp iterator/thuật toán mạnh hơn và giảm lỗi.
 
-范围即可遍历的序列，包括数组、容器、视图等．
+Range là dãy có thể duyệt, gồm mảng, container, view...
 
-在需要对容器等范围进行复杂操作时，[范围库](https://zh.cppreference.com/w/cpp/ranges) 可以使得算法编写更加容易和清晰．
+Khi cần thao tác phức tạp trên container/range, [ranges](https://zh.cppreference.com/w/cpp/ranges) giúp code dễ viết và rõ ràng hơn.
 
-### View 视图
+### View (góc nhìn)
 
-视图是一种轻量对象，通过特定机制（如自定义迭代器）来实现一些算法，给范围提供了更多的遍历方式以满足需求．
+View là đối tượng nhẹ, dùng cơ chế riêng (như iterator tùy biến) để thực hiện thuật toán, cung cấp thêm cách duyệt cho range.
 
-范围库中已实现了一些常用的视图，大致分为两种：
+Trong ranges đã có nhiều view, chia thành hai loại:
 
-1.  **范围工厂**，用于构造一些特殊的范围，使用这类工厂可以省去手动构造容器的步骤，降低开销，直接生成一个范围．
-2.  **范围适配器**，提供多种多样的遍历支持，既能像函数一样调用，也可以通过管道运算符 `|` 连接，实现链式调用．
+1.  **Range factory**: tạo ra range đặc biệt, giúp khỏi tự dựng container, giảm chi phí.
+2.  **Range adaptor**: cung cấp nhiều kiểu duyệt, vừa có thể gọi như hàm, vừa dùng toán tử ống `|` để nối, tạo chuỗi.
 
-**范围适配器** 作为 [**范围适配器闭包对象**](https://zh.cppreference.com/w/cpp/named_req/RangeAdaptorClosureObject)，也属于 [**函数对象**](#函数对象)，它们重载了 `operator|`，使得它们能够像管道一样拼装起来．
+**Range adaptor** là [**range adaptor closure object**](https://zh.cppreference.com/w/cpp/named_req/RangeAdaptorClosureObject), cũng thuộc [**function object**](#函数对象), chúng nạp chồng `operator|` để ghép như ống.
 
-??? note "管道运算符"
-    此处的 `|` 应该理解成管道运算符，而非按位或运算符，这个用法来自于 Linux 中的 [管道](https://zh.wikipedia.org/wiki/%E7%AE%A1%E9%81%93_%28Unix%29)．
+??? note "Toán tử ống"
+    `|` ở đây nên hiểu là toán tử ống, không phải OR bit; cách dùng này lấy từ [pipe](https://zh.wikipedia.org/wiki/%E7%AE%A1%E9%81%93_%28Unix%29) trong Linux.
 
-在复杂操作下，也能保持良好可读性，有以下特性：
+Khi thao tác phức tạp vẫn giữ được tính dễ đọc, có các tính chất:
 
-若 A、B、C 为一些范围适配器闭包对象，R 为某个范围，其他字母为可能的有效参数，表达式
+Nếu A, B, C là các range adaptor closure object, R là một range, các chữ khác là tham số hợp lệ, thì
 
     R | A(a) | B(b) | C(c, d)
 
-等价于
+tương đương
 
     C(B(A(R, a), b), c, d)
 
-下面以 `ranges::take_view` 与 `ranges::iota_view` 为例：
+Ví dụ với `ranges::take_view` và `ranges::iota_view`:
 
 ```cpp
 #include <iostream>
@@ -488,17 +488,17 @@ int main() {
 }
 ```
 
-1.  范围工厂 `std::views::iota(0, 6)` 生成了从 0 到 5 的整数序列的范围
-2.  范围适配器 `std::views::filter(even)` 过滤前一个范围，生成了一个只剩下偶数的范围
-3.  两个操作使用管道运算符链接
+1.  Range factory `std::views::iota(0, 6)` tạo dãy số từ 0 đến 5
+2.  Range adaptor `std::views::filter(even)` lọc range trước, chỉ còn số chẵn
+3.  Hai thao tác nối bằng toán tử ống
 
-上述代码不需要额外分配堆空间存储每步生成的范围，实际的生成和过滤运算发生在遍历操作中（更具体而言，内部的迭代器构造、自增和解引用），也就是零开销（Zero Overhead）．
+Đoạn code này không cần cấp phát heap để lưu mỗi bước, việc sinh và lọc diễn ra trong lúc duyệt (cụ thể là tạo iterator, tăng, giải tham chiếu), tức zero overhead.
 
-同时，外部输入的范围生命周期，等同于 **范围适配器** 的内部元素的生命周期．如果外部范围（比如容器、范围工厂）已经销毁，那么再对这些的视图遍历，其效果与解引用悬垂指针一致，属于未定义行为．
+Đồng thời, vòng đời của range đầu vào tương đương vòng đời các phần tử trong **range adaptor**. Nếu range bên ngoài (container, range factory) đã bị hủy, thì duyệt view sẽ như giải tham chiếu con trỏ treo, là hành vi không xác định.
 
-为了避免上述情况，应该严格要求适配器的生命周期位于其使用的任何范围的生命周期内．
+Để tránh điều này, cần đảm bảo vòng đời của adaptor nằm trong vòng đời của bất kỳ range nào mà nó dùng.
 
-???+ note "范围被销毁时，视图内元素均悬垂"
+???+ note "Range bị hủy thì phần tử trong view đều bị treo"
     ```cpp
     #include <iostream>
     #include <ranges>
@@ -512,17 +512,17 @@ int main() {
         return vec | std::views::filter([](int i) { return 0 == i % 2; });
       }();
     
-      for (int i : view) cout << i << ' ';  // runtime undefined behavior
+      for (int i : view) cout << i << ' ';  // Hành vi không xác định lúc chạy
     
       return 0;
     }
     ```
 
-### Constrained Algorithm 受约束的算法
+### Thuật toán có ràng buộc (Constrained Algorithm)
 
-> C++20 在命名空间 std::ranges 中提供大多数算法的受约束版本，可以用迭代器 - 哨位对或单个 range 作为实参来指定范围，并且支持投影和指向成员指针可调用对象．另外还更改了大多数算法的返回类型，以返回算法执行过程中计算的所有潜在有用信息．
+> C++20 cung cấp phiên bản ràng buộc của đa số thuật toán trong không gian tên std::ranges, có thể nhận cặp iterator-sentinel hoặc một range làm tham số, hỗ trợ projection và callable trỏ tới thành viên. Ngoài ra còn thay đổi kiểu trả về để chứa các thông tin hữu ích trong quá trình chạy.
 
-这些算法可以理解成旧标准库算法的改良版本，均为函数对象，提供更友好的重载和入参类型检查（基于 [`concept`](https://zh.cppreference.com/w/cpp/language/constraints)），让我们先以 `std::sort` 和 `ranges::sort` 的对比作为例子
+Các thuật toán này có thể hiểu là bản cải tiến của thuật toán thư viện cũ, đều là function object, cung cấp overload và kiểm tra kiểu tham số tốt hơn (dựa trên [`concept`](https://zh.cppreference.com/w/cpp/language/constraints)). Trước tiên so sánh `std::sort` và `ranges::sort`:
 
 ```cpp
 #include <algorithm>
@@ -547,9 +547,9 @@ int main() {
 }
 ```
 
-`ranges::sort` 和 `sort` 的算法实现相同，但提供了基于范围的重载，使得传参更为简洁．其他的 `std` 命名空间下的算法，多数也有对应的范围重载版本位于 `ranges` 命名空间中．
+`ranges::sort` và `sort` có cùng cài đặt, nhưng cung cấp overload dựa trên range nên truyền tham số gọn hơn. Các thuật toán khác trong `std` phần lớn cũng có phiên bản range tương ứng trong `ranges`.
 
-使用这些范围入参，再结合使用上节视图，能允许我们在进行复杂操作的同时，保持代码可读性，让我们看一个例子：
+Dùng các tham số range này cùng với view ở phần trước giúp thao tác phức tạp mà vẫn dễ đọc. Ví dụ:
 
 ```cpp
 #include <algorithm>
@@ -560,22 +560,22 @@ int main() {
 using namespace std;
 
 int main() {
-  const auto& inputs = views::iota(0u, 9u);  // 生产 0 到 8 的整数序列
-  const auto& chunks = inputs | views::chunk(3);  // 将序列分块，每块 3 个元素
+  const auto& inputs = views::iota(0u, 9u);  // Tạo dãy 0 đến 8
+  const auto& chunks = inputs | views::chunk(3);  // Chia dãy thành các khối, mỗi khối 3 phần tử
   const auto& cartesian_product =
-      views::cartesian_product(chunks, chunks);  // 计算对块自身进行笛卡尔积
+      views::cartesian_product(chunks, chunks);  // Lấy tích Descartes của các khối với chính nó
 
   for (const auto [l_chunk, r_chunk] : cartesian_product)
-    // 计算笛卡尔积下的两个块整数的和
+    // Tính tổng các phần tử trong hai khối ở tích Descartes
     cout << ranges::fold_left(l_chunk, 0u, plus{}) +
                 ranges::fold_left(r_chunk, 0u, plus{})
          << ' ';
 }
 ```
 
-???+ note "输出："
+???+ note "Kết quả:"
     6 15 24 15 24 33 24 33 42
 
-## 参考
+## Tài liệu tham khảo
 
-1.  [C++ 参考手册](https://zh.cppreference.com/)
+1.  [C++ Reference](https://zh.cppreference.com/)

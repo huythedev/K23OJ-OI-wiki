@@ -1,68 +1,68 @@
-## 分类
+## Phân loại
 
 ![](images/container1.png)
 
-### 序列式容器
+### Container tuần tự
 
--   **向量**(`vector`) 后端可高效增加元素的顺序表．
--   **数组**(`array`)**C++11**，定长的顺序表，C 风格数组的简单包装．
--   **双端队列**(`deque`) 双端都可高效增加元素的顺序表．
--   **列表**(`list`) 可以沿双向遍历的链表．
--   **单向列表**(`forward_list`) 只能沿一个方向遍历的链表．
+-   **Vector**(`vector`) bảng tuần tự có thể thêm phần tử hiệu quả ở cuối.
+-   **Array**(`array`)**C++11** bảng tuần tự độ dài cố định, bọc mảng C.
+-   **Deque**(`deque`) bảng tuần tự có thể thêm phần tử hiệu quả ở cả hai đầu.
+-   **List**(`list`) danh sách liên kết đôi, có thể duyệt hai chiều.
+-   **Forward list**(`forward_list`) danh sách liên kết đơn, chỉ duyệt một chiều.
 
-### 关联式容器
+### Container liên kết
 
--   **集合**(`set`) 用以有序地存储 **互异** 元素的容器．其实现是由节点组成的红黑树，每个节点都包含着一个元素，节点之间以某种比较元素大小的谓词进行排列．
--   **多重集合**(`multiset`) 用以有序地存储元素的容器．允许存在相等的元素．
--   **映射**(`map`) 由 {键，值} 对组成的集合，以某种比较键大小关系的谓词进行排列．
--   **多重映射**(`multimap`) 由 {键，值} 对组成的多重集合，亦即允许键有相等情况的映射．
+-   **Set**(`set`) lưu phần tử **khác nhau** có thứ tự. Hiện thực bằng cây đỏ-đen với các node chứa phần tử, sắp theo một “vị từ” so sánh.
+-   **Multiset**(`multiset`) lưu phần tử có thứ tự, cho phép trùng.
+-   **Map**(`map`) tập các cặp {khóa, giá trị}, sắp theo quan hệ so sánh khóa.
+-   **Multimap**(`multimap`) đa tập các cặp {khóa, giá trị}, cho phép khóa trùng.
 
-???+ note "什么是谓词 ([**Predicate**](https://en.wikipedia.org/wiki/Predicate_%28mathematical_logic%29))？"
-    谓词就是返回值为真或者假的函数．STL 容器中经常会使用到谓词，用于模板参数．
+???+ note "Vị từ ([Predicate](https://en.wikipedia.org/wiki/Predicate_%28mathematical_logic%29)) là gì?"
+    Vị từ là hàm trả về đúng hoặc sai. STL thường dùng vị từ làm tham số template.
 
-### 无序（关联式）容器
+### Container (liên kết) không thứ tự
 
--   **无序（多重）集合**(`unordered_set`/`unordered_multiset`)**C++11**，与 `set`/`multiset` 的区别在于元素无序，只关心「元素是否存在」，使用哈希实现．
--   **无序（多重）映射**(`unordered_map`/`unordered_multimap`)**C++11**，与 `map`/`multimap` 的区别在于键 (key) 无序，只关心 "键与值的对应关系"，使用哈希实现．
+-   **Unordered (multi)set**(`unordered_set`/`unordered_multiset`)**C++11**, khác `set`/`multiset` ở chỗ không có thứ tự, chỉ quan tâm “phần tử có tồn tại hay không”, dùng hash.
+-   **Unordered (multi)map**(`unordered_map`/`unordered_multimap`)**C++11**, khác `map`/`multimap` ở chỗ khóa không có thứ tự, chỉ quan tâm quan hệ “khóa–giá trị”, dùng hash.
 
-### 容器适配器
+### Bộ thích nghi container
 
-容器适配器其实并不是容器．它们不具有容器的某些特点（如：有迭代器、有 `clear()` 函数……）．
+Bộ thích nghi không phải là container. Chúng không có một số đặc điểm của container (ví dụ: có iterator, có `clear()`...).
 
-> 「适配器是使一种事物的行为类似于另外一种事物行为的一种机制」，适配器对容器进行包装，使其表现出另外一种行为．
+> “Adapter là cơ chế làm cho hành vi của một thứ giống với hành vi của thứ khác”, adapter bọc container để thể hiện hành vi khác.
 
--   **栈**(`stack`) 后进先出 (LIFO) 的容器，默认是对双端队列（`deque`）的包装．
--   **队列**(`queue`) 先进先出 (FIFO) 的容器，默认是对双端队列（`deque`）的包装．
--   **优先队列**(`priority_queue`) 元素的次序是由作用于所存储的值对上的某种谓词决定的的一种队列，默认是对向量（`vector`）的包装．
+-   **Stack**(`stack`) LIFO, mặc định bọc `deque`.
+-   **Queue**(`queue`) FIFO, mặc định bọc `deque`.
+-   **Priority queue**(`priority_queue`) thứ tự phần tử do một vị từ quyết định, mặc định bọc `vector`.
 
-## 共同点
+## Điểm chung
 
-### 容器声明
+### Khai báo container
 
-都是 `containerName<typeName,...> name` 的形式，但模板参数（`<>` 内的参数）的个数、形式会根据具体容器而变．
+Đều có dạng `containerName<typeName,...> name`, nhưng số lượng/hình thức tham số template khác nhau tùy container.
 
-本质原因：STL 就是「标准模板库」，所以容器都是模板类．
+Nguyên nhân: STL là “Standard Template Library”, nên container là lớp template.
 
-### 迭代器
+### Iterator
 
-请参考 [迭代器](./iterator.md)．
+Xem [iterator](./iterator.md).
 
-### 共有函数
+### Hàm chung
 
-`=`：有赋值运算符以及复制构造函数．
+`=`: có toán tử gán và copy constructor.
 
-`begin()`：返回指向开头元素的迭代器．
+`begin()`：trả về iterator trỏ đầu.
 
-`end()`：返回指向末尾的下一个元素的迭代器．`end()` 不指向某个元素，但它是末尾元素的后继．
+`end()`：trả về iterator trỏ sau phần tử cuối. `end()` không trỏ phần tử, nhưng là hậu kế của phần tử cuối.
 
-`size()`：返回容器内的元素个数．
+`size()`：số phần tử.
 
-`max_size()`：返回容器 **理论上** 能存储的最大元素个数．依容器类型和所存储变量的类型而变．
+`max_size()`：số phần tử tối đa **theo lý thuyết**. Tùy loại container và kiểu dữ liệu.
 
-`empty()`：返回容器是否为空．
+`empty()`：rỗng hay không.
 
-`swap()`：交换两个容器．
+`swap()`：hoán đổi hai container.
 
-`clear()`：清空容器．
+`clear()`：xóa toàn bộ.
 
-`==`/`!=`/`<`/`>`/`<=`/`>=`：按 **字典序** 比较两个容器的大小．（比较元素大小时 `map` 的每个元素相当于 `set<pair<key, value>>`，无序容器不支持 `<`/`>`/`<=`/`>=`．）
+`==`/`!=`/`<`/`>`/`<=`/`>=`：so sánh theo **thứ tự từ điển** (với `map`, mỗi phần tử tương đương `set<pair<key, value>>`; container không thứ tự không hỗ trợ `<`/`>`/`<=`/`>=`).

@@ -1,17 +1,17 @@
-STL 提供了大约 100 个实现算法的模版函数，基本都包含在 `<algorithm>` 之中，还有一部分包含在 `<numeric>` 和 `<functional>`．完备的函数列表请 [参见参考手册](https://zh.cppreference.com/w/cpp/algorithm)，排序相关的可以参考 [排序内容的对应页面](../../basic/stl-sort.md)．
+STL cung cấp khoảng 100 hàm mẫu thuật toán, hầu hết nằm trong `<algorithm>`, một phần nằm trong `<numeric>` và `<functional>`. Danh sách đầy đủ [xem tại cppreference](https://zh.cppreference.com/w/cpp/algorithm), phần liên quan đến sắp xếp có thể tham khảo [trang sắp xếp](../../basic/stl-sort.md).
 
--   `find`：顺序查找．`find(v.begin(), v.end(), value)`，其中 `value` 为需要查找的值．
+-   `find`: tìm tuyến tính. `find(v.begin(), v.end(), value)`, trong đó `value` là giá trị cần tìm.
 
--   `reverse`：翻转数组、字符串．`reverse(v.begin(), v.end())` 或 `reverse(a + begin, a + end)`．
+-   `reverse`: đảo ngược mảng/chuỗi. `reverse(v.begin(), v.end())` hoặc `reverse(a + begin, a + end)`.
 
--   `unique`：去除容器中相邻的重复元素．`unique(ForwardIterator first, ForwardIterator last)`，返回值为指向 **去重后** 容器结尾的迭代器，原容器大小不变．与 `sort` 结合使用可以实现完整容器去重．
+-   `unique`: loại bỏ các phần tử trùng nhau **liền kề** trong container. `unique(ForwardIterator first, ForwardIterator last)`, trả về iterator trỏ tới **cuối sau khi loại trùng**, kích thước container gốc không đổi. Kết hợp với `sort` có thể loại trùng toàn bộ.
 
--   `random_shuffle`：随机地打乱数组．`random_shuffle(v.begin(), v.end())` 或 `random_shuffle(v + begin, v + end)`．
+-   `random_shuffle`: xáo trộn ngẫu nhiên mảng. `random_shuffle(v.begin(), v.end())` hoặc `random_shuffle(v + begin, v + end)`.
 
-    ???+ warning "`random_shuffle` 函数在最新 C++ 标准中已被移除"
-        `random_shuffle` 自 C++14 起被弃用，C++17 起被移除．
+    ???+ warning "`random_shuffle` đã bị loại khỏi chuẩn C++ mới"
+        `random_shuffle` bị deprecate từ C++14 và bị loại bỏ từ C++17.
         
-        在 C++11 以及更新的标准中，您可以使用 `shuffle` 函数代替原来的 `random_shuffle`．使用方法为 `shuffle(v.begin(), v.end(), rng)`（最后一个参数传入的是使用的随机数生成器，一般情况使用以真随机数生成器 [`random_device`](https://zh.cppreference.com/w/cpp/numeric/random/random_device) 播种的梅森旋转伪随机数生成器 [`mt19937`](https://zh.cppreference.com/w/cpp/numeric/random/mersenne_twister_engine)）．
+        Trong C++11 trở đi, có thể dùng `shuffle` thay thế. Cú pháp: `shuffle(v.begin(), v.end(), rng)` (tham số cuối là bộ sinh số ngẫu nhiên, thường dùng `mt19937` với seed từ `random_device`).
         
         ```cpp
         // #include <random>
@@ -19,38 +19,38 @@ STL 提供了大约 100 个实现算法的模版函数，基本都包含在 `<al
         std::shuffle(v.begin(), v.end(), rng);
         ```
 
--   `sort`：排序．`sort(v.begin(), v.end(), cmp)` 或 `sort(a + begin, a + end, cmp)`，其中 `end` 是排序的数组最后一个元素的后一位，`cmp` 为自定义的比较函数．
+-   `sort`: sắp xếp. `sort(v.begin(), v.end(), cmp)` hoặc `sort(a + begin, a + end, cmp)`, trong đó `end` là vị trí sau phần tử cuối cần sắp xếp, `cmp` là hàm so sánh tự định nghĩa.
 
--   `stable_sort`：稳定排序，用法同 `sort()`．
+-   `stable_sort`: sắp xếp ổn định, cách dùng như `sort()`.
 
--   `nth_element`：按指定范围进行分类，即找出序列中第 $n$ 大的元素，使其左边均为小于它的数，右边均为大于它的数．`nth_element(v.begin(), v.begin() + n, v.end(), cmp)` 或 `nth_element(a + begin, a + begin + n, a + end, cmp)`．
+-   `nth_element`: phân loại theo vị trí, tìm phần tử lớn thứ $n$, bên trái nhỏ hơn nó, bên phải lớn hơn nó. `nth_element(v.begin(), v.begin() + n, v.end(), cmp)` hoặc `nth_element(a + begin, a + begin + n, a + end, cmp)`.
 
--   `binary_search`：二分查找．`binary_search(v.begin(), v.end(), value)`，其中 `value` 为需要查找的值．
+-   `binary_search`: tìm kiếm nhị phân. `binary_search(v.begin(), v.end(), value)`, trong đó `value` là giá trị cần tìm.
 
--   `merge`：将两个（已排序的）序列 **有序合并** 到第三个序列的 **插入迭代器** 上．`merge(v1.begin(), v1.end(), v2.begin(), v2.end() ,back_inserter(v3))`．
+-   `merge`: **gộp có thứ tự** hai dãy đã sắp xếp vào **inserter** của dãy thứ ba. `merge(v1.begin(), v1.end(), v2.begin(), v2.end() ,back_inserter(v3))`.
 
--   `inplace_merge`：将两个（已按小于运算符排序的）：`[first,middle), [middle,last)` 范围 **原地合并为一个有序序列**．`inplace_merge(v.begin(), v.begin() + middle, v.end())`．
+-   `inplace_merge`: gộp **tại chỗ** hai đoạn `[first,middle), [middle,last)` đã sắp theo toán tử `<` thành một dãy có thứ tự. `inplace_merge(v.begin(), v.begin() + middle, v.end())`.
 
--   `lower_bound`：在一个有序序列中进行二分查找，返回指向第一个 **大于等于**  $x$ 的元素的位置的迭代器．如果不存在这样的元素，则返回尾迭代器．`lower_bound(v.begin(),v.end(),x)`．
+-   `lower_bound`: tìm nhị phân trong dãy có thứ tự, trả về iterator trỏ tới phần tử đầu tiên **không nhỏ hơn** $x$. Nếu không tồn tại thì trả về end. `lower_bound(v.begin(),v.end(),x)`.
 
--   `upper_bound`：在一个有序序列中进行二分查找，返回指向第一个 **大于**  $x$ 的元素的位置的迭代器．如果不存在这样的元素，则返回尾迭代器．`upper_bound(v.begin(),v.end(),x)`．
+-   `upper_bound`: tìm nhị phân trong dãy có thứ tự, trả về iterator trỏ tới phần tử đầu tiên **lớn hơn** $x$. Nếu không tồn tại thì trả về end. `upper_bound(v.begin(),v.end(),x)`.
 
-    ???+ warning "`lower_bound` 和 `upper_bound` 的时间复杂度"
-        在一般的数组里，这两个函数的时间复杂度均为 $O(\log n)$，但在 `set` 等关联式容器中，直接调用 `lower_bound(s.begin(),s.end(),val)` 的时间复杂度是 $O(n)$ 的．
+    ???+ warning "Độ phức tạp của `lower_bound` và `upper_bound`"
+        Với mảng thông thường, thời gian là $O(\log n)$, nhưng trong container liên kết như `set`, gọi `lower_bound(s.begin(),s.end(),val)` sẽ là $O(n)$.
         
-        `set` 等关联式容器中已经封装了 `lower_bound` 等函数（像 `s.lower_bound(val)` 这样），这样调用的时间复杂度是 $O(\log n)$ 的．
+        `set` có sẵn `s.lower_bound(val)` với độ phức tạp $O(\log n)$.
 
--   `next_permutation`：将当前排列更改为 **全排列中的下一个排列**．如果当前排列已经是 **全排列中的最后一个排列**（元素完全从大到小排列），函数返回 `false` 并将排列更改为 **全排列中的第一个排列**（元素完全从小到大排列）；否则，函数返回 `true`．`next_permutation(v.begin(), v.end())` 或 `next_permutation(v + begin, v + end)`．
+-   `next_permutation`: chuyển hoán vị hiện tại sang **hoán vị kế tiếp**. Nếu đã là **hoán vị cuối** (giảm dần), trả `false` và đổi về **hoán vị đầu** (tăng dần); ngược lại trả `true`. `next_permutation(v.begin(), v.end())` hoặc `next_permutation(v + begin, v + end)`.
 
--   `prev_permutation`：将当前排列更改为 **全排列中的上一个排列**．用法同 `next_permutation`．
+-   `prev_permutation`: chuyển hoán vị hiện tại sang **hoán vị trước đó**. Cách dùng như `next_permutation`.
 
--   `partial_sum`：求前缀和．设源容器为 $x$，目标容器为 $y$，则令 $y[i]=x[0]+x[1]+\dots+x[i]$．`partial_sum(src.begin(), src.end(), back_inserter(dst))`．
+-   `partial_sum`: tính tổng tiền tố. Với nguồn $x$ và đích $y$, `y[i]=x[0]+x[1]+\dots+x[i]`. `partial_sum(src.begin(), src.end(), back_inserter(dst))`.
 
-### 使用样例
+### Ví dụ sử dụng
 
--   使用 `next_permutation` 生成 $1$ 到 $9$ 的全排列．例题：[Luogu P1706 全排列问题](https://www.luogu.com.cn/problem/P1706)
+-   Dùng `next_permutation` sinh hoán vị của $1$ đến $9$. Bài: [Luogu P1706 全排列问题](https://www.luogu.com.cn/problem/P1706)
 
-    ???+ note "实现"
+    ???+ note "Cài đặt"
         ```cpp
         int N = 9, a[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
         do {
@@ -58,50 +58,49 @@ STL 提供了大约 100 个实现算法的模版函数，基本都包含在 `<al
           cout << endl;
         } while (next_permutation(a, a + N));
         ```
--   使用 `lower_bound` 与 `upper_bound` 查找有序数组 $a$ 中小于 $x$，等于 $x$，大于 $x$ 元素的分界线．
+-   Dùng `lower_bound` và `upper_bound` tìm ranh giới các phần tử < $x$, = $x$, > $x$ trong mảng tăng $a$.
 
-    ???+ note "实现"
+    ???+ note "Cài đặt"
         ```cpp
         int N = 10, a[] = {1, 1, 2, 4, 5, 5, 7, 7, 9, 9}, x = 5;
         int i = lower_bound(a, a + N, x) - a, j = upper_bound(a, a + N, x) - a;
-        // a[0] ~ a[i - 1] 为小于x的元素， a[i] ~ a[j - 1] 为等于x的元素，
-        // a[j] ~ a[N - 1] 为大于x的元素
+        // a[0] ~ a[i - 1] là các phần tử < x, a[i] ~ a[j - 1] là = x,
+        // a[j] ~ a[N - 1] là > x
         cout << i << " " << j << endl;
         ```
--   使用 `partial_sum` 求解 $src$ 中元素的前缀和，并存储于 $dst$ 中．
+-   Dùng `partial_sum` tính tổng tiền tố của $src$ và lưu vào $dst$.
 
-    ???+ note "实现"
+    ???+ note "Cài đặt"
         ```cpp
         vector<int> src = {1, 2, 3, 4, 5}, dst;
-        // 求解src中元素的前缀和，dst[i] = src[0] + ... + src[i]
-        // back_inserter 函数作用在 dst 容器上，提供一个迭代器
+        // Tính tổng tiền tố của src, dst[i] = src[0] + ... + src[i]
+        // back_inserter tác động lên dst, cung cấp một iterator
         partial_sum(src.begin(), src.end(), back_inserter(dst));
         for (unsigned int i = 0; i < dst.size(); i++) cout << dst[i] << " ";
         ```
--   使用 `lower_bound` 查找有序数组 $a$ 中最接近 $x$ 的元素．例题：[UVa10487 Closest Sums](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=16&page=show_problem&problem=1428)
+-   Dùng `lower_bound` tìm phần tử gần $x$ nhất trong mảng tăng $a$. Bài: [UVa10487 Closest Sums](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=16&page=show_problem&problem=1428)
 
-    ???+ note "实现"
+    ???+ note "Cài đặt"
         ```cpp
         int N = 10, a[] = {1, 1, 2, 4, 5, 5, 8, 8, 9, 9}, x = 6;
-        // lower_bound将返回a中第一个大于等于x的元素的地址，计算出的i为其下标
+        // lower_bound trả về địa chỉ phần tử đầu tiên >= x, i là chỉ số
         int i = lower_bound(a, a + N, x) - a;
-        // 在以下两种情况下，a[i] (a中第一个大于等于x的元素) 即为答案：
-        // 1. a中最小的元素都大于等于x；
-        // 2. a中存在大于等于x的元素，且第一个大于等于x的元素 (a[i])
-        // 相比于第一个小于x的元素 (a[i - 1]) 更接近x；
-        // 否则，a[i - 1] (a中第一个小于x的元素) 即为答案
+        // Trong hai trường hợp sau, a[i] là đáp án:
+        // 1. phần tử nhỏ nhất trong a cũng >= x;
+        // 2. tồn tại phần tử >= x và a[i] gần x hơn a[i - 1];
+        // Ngược lại, a[i - 1] là đáp án
         if (i == 0 || (i < N && a[i] - x < x - a[i - 1]))
           cout << a[i];
         else
           cout << a[i - 1];
         ```
--   使用 `sort` 与 `unique` 查找数组 $a$ 中 **第 $k$ 小的值**（注意：重复出现的值仅算一次，因此本题不是求解第 $k$ 小的元素）．例题：[Luogu P1138 第 k 小整数](https://www.luogu.com.cn/problem/P1138)
+-   Dùng `sort` và `unique` tìm **giá trị nhỏ thứ $k$** trong mảng $a$ (lưu ý: giá trị trùng chỉ tính một lần). Bài: [Luogu P1138 第 k 小整数](https://www.luogu.com.cn/problem/P1138)
 
-    ???+ note "实现"
+    ???+ note "Cài đặt"
         ```cpp
         int N = 10, a[] = {1, 3, 3, 7, 2, 5, 1, 2, 4, 6}, k = 3;
         sort(a, a + N);
-        // unique将返回去重之后数组最后一个元素之后的地址，计算出的cnt为去重后数组的长度
+        // unique trả về địa chỉ sau phần tử cuối sau khi loại trùng, cnt là độ dài mới
         int cnt = unique(a, a + N) - a;
         cout << a[k - 1];
         ```

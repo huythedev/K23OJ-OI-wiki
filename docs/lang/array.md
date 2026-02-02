@@ -1,37 +1,37 @@
-数组是存放相同类型对象的容器，数组中存放的对象没有名字，而是要通过其所在的位置访问．数组的大小是固定的，不能随意改变数组的长度．
+Mảng là một контей (container) lưu các đối tượng cùng kiểu, các đối tượng trong mảng không có tên, mà được truy cập theo vị trí của chúng. Kích thước mảng là cố định, không thể tùy ý thay đổi độ dài mảng.
 
-## 定义数组
+## Định nghĩa mảng
 
-数组的声明形如 `a[d]`，其中，`a` 是数组的名字，`d` 是数组中元素的个数．在编译时，`d` 应该是已知的，也就是说，`d` 应该是一个整型的常量表达式．
+Khai báo mảng có dạng `a[d]`, trong đó `a` là tên mảng, `d` là số phần tử của mảng. Khi biên dịch, `d` phải là một hằng biểu thức nguyên đã biết.
 
 ```cpp
 unsigned int d1 = 42;
 const int d2 = 42;
-int arr1[d1];  // 错误：d1 不是常量表达式
-int arr2[d2];  // 正确：arr2 是一个长度为 42 的数组
+int arr1[d1];  // Sai: d1 không phải là hằng biểu thức
+int arr2[d2];  // Đúng: arr2 là mảng có độ dài 42
 ```
 
-不能将一个数组直接赋值给另一个数组：
+Không thể gán trực tiếp một mảng cho một mảng khác:
 
 ```cpp
 int arr1[3];
-int arr2 = arr1;  // 错误
-arr2 = arr1;      // 错误
+int arr2 = arr1;  // Sai
+arr2 = arr1;      // Sai
 ```
 
-应该尽量将较大的数组定义为全局变量．因为局部变量会被创建在栈区中，过大（大于栈的大小）的数组会爆栈，进而导致 RE．如果将数组声明在全局作用域中，就会在静态区中创建数组．
+Nên khai báo các mảng lớn ở phạm vi toàn cục. Vì biến cục bộ được tạo trên vùng stack, mảng quá lớn (lớn hơn kích thước stack) sẽ gây tràn stack, dẫn đến RE. Nếu khai báo mảng ở phạm vi toàn cục, mảng sẽ được tạo ở vùng tĩnh.
 
-## 访问数组元素
+## Truy cập phần tử mảng
 
-可以通过下标运算符 `[]` 来访问数组内元素，数组的索引（即方括号中的值）从 0 开始．以一个包含 10 个元素的数组为例，它的索引为 0 到 9，而非 1 到 10．但在 OI 中，为了使用方便，我们通常会将数组开大一点，不使用数组的第一个元素，从下标 1 开始访问数组元素．
+Có thể dùng toán tử chỉ số `[]` để truy cập phần tử trong mảng. Chỉ số mảng bắt đầu từ 0. Ví dụ, một mảng có 10 phần tử sẽ có chỉ số từ 0 đến 9, chứ không phải 1 đến 10. Nhưng trong OI, để thuận tiện, ta thường khai báo mảng lớn hơn một chút và không dùng phần tử đầu tiên, bắt đầu truy cập từ chỉ số 1.
 
-例 1：从标准输入中读取一个整数 $n$，再读取 $n$ 个数，存入数组中．其中，$n\leq 1000$．
+Ví dụ 1: Đọc một số nguyên $n$ từ đầu vào chuẩn, sau đó đọc $n$ số, lưu vào mảng. Với $n\leq 1000$.
 
 ```cpp
 #include <iostream>
 using namespace std;
 
-int arr[1001];  // 数组 arr 的下标范围是 [0, 1001)
+int arr[1001];  // Chỉ số của mảng arr nằm trong [0, 1001)
 
 int main() {
   int n;
@@ -42,7 +42,7 @@ int main() {
 }
 ```
 
-例 2：（接例 1）求和数组 `arr` 中的元素，并输出和．满足数组中所有元素的和小于等于 $2^{31} - 1$
+Ví dụ 2: (tiếp ví dụ 1) Tính tổng các phần tử trong mảng `arr` và in ra tổng. Giả sử tổng tất cả phần tử không vượt quá $2^{31} - 1$
 
 ```cpp
 #include <iostream>
@@ -67,23 +67,22 @@ int main() {
 }
 ```
 
-### 越界访问下标
+### Truy cập vượt chỉ số
 
-数组的下标 $\mathit{idx}$ 应当满足 $0\leq \mathit{idx}< \mathit{size}$，如果下标不在这个范围内，则是未定义行为，会产生不可预料的后果，如段错误（Segmentation Fault），或者修改预期以外的变量等等．
+Chỉ số mảng $\mathit{idx}$ phải thỏa $0\leq \mathit{idx}< \mathit{size}$. Nếu chỉ số nằm ngoài phạm vi này thì là hành vi không xác định, có thể gây hậu quả khó lường như lỗi phân đoạn (Segmentation Fault), hoặc sửa đổi các biến ngoài dự kiến, v.v.
 
-## 多维数组
+## Mảng nhiều chiều
 
-多维数组的实质是「数组的数组」，即外层数组的元素是数组．一个二维数组需要两个维度来定义：数组的长度和数组内元素的长度．访问二维数组时需要写出两个索引：
+Bản chất của mảng nhiều chiều là “mảng của mảng”, tức phần tử của mảng ngoài là các mảng. Một mảng hai chiều cần hai kích thước để định nghĩa: độ dài mảng và độ dài phần tử trong mảng. Truy cập mảng hai chiều cần viết ra hai chỉ số:
 
 ```cpp
-int arr[3][4];  // 一个长度为 3 的数组，它的元素是「元素为 int 的长度为的 4
-                // 的数组」
-arr[2][1] = 1;  // 访问二维数组
+int arr[3][4];  // Một mảng độ dài 3, mỗi phần tử là “mảng độ dài 4 kiểu int”
+arr[2][1] = 1;  // Truy cập mảng hai chiều
 ```
 
-我们经常使用嵌套的 for 循环来处理二维数组．
+Ta thường dùng vòng lặp for lồng nhau để xử lý mảng hai chiều.
 
-例：从标准输入中读取两个数 $n$ 和 $m$，分别表示黑白图片的高与宽，满足 $n,m\leq 1000$．对于接下来的 $n$ 行数据，每行有用空格分隔开的 $m$ 个数，代表这一位置的亮度值．现在我们读取这张图片，并将其存入二维数组中．
+Ví dụ: Đọc hai số $n$ và $m$ từ đầu vào chuẩn, lần lượt là chiều cao và chiều rộng của ảnh đen trắng, với $n,m\leq 1000$. Trong $n$ dòng tiếp theo, mỗi dòng có $m$ số cách nhau bởi dấu cách, biểu diễn độ sáng tại vị trí đó. Ta đọc ảnh này và lưu vào mảng hai chiều.
 
 ```cpp
 const int MAXN = 1001;
@@ -95,4 +94,4 @@ for (int i = 1; i <= n; ++i)
   for (int j = 1; j <= m; ++j) cin >> pic[i][j];
 ```
 
-同样地，你可以定义三维、四维，以及更高维的数组．
+Tương tự, bạn có thể định nghĩa mảng ba chiều, bốn chiều và cao hơn nữa.

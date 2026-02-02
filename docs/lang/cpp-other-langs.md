@@ -1,44 +1,44 @@
-本文介绍 C++ 与其他常用语言的区别，重点介绍 C 与 C++ 之间重要的或者容易忽略的区别．尽管 C++ 几乎是 C 的超集，C/C++ 代码混用一般也没什么问题，但是了解 C/C++ 间比较重要的区别可以避免碰到一些奇怪的 bug．如果你是以 C 为主力语言的 OIer，那么本文也能让你更顺利地上手 C++．C++ 相比 C 增加的独特特性可以阅读 [C++ 进阶](./class.md) 部分的教程．此外，本文也简要介绍了 Python, Java 和 C++ 的区别．
+Bài này giới thiệu sự khác biệt giữa C++ và các ngôn ngữ phổ biến khác, tập trung vào khác biệt giữa C và C++ (quan trọng hoặc dễ bỏ qua). Dù C++ gần như là siêu tập của C, trộn C/C++ thường không vấn đề, nhưng hiểu các khác biệt quan trọng giúp tránh bug kỳ lạ. Nếu bạn dùng C là chính, bài này giúp chuyển sang C++ dễ hơn. Các tính năng C++ riêng có thể xem ở [C++ nâng cao](./class.md). Bài cũng tóm lược khác biệt giữa Python, Java và C++.
 
-## C 与 C++ 的区别
+## Khác biệt giữa C và C++
 
-### 宏与模板
+### Macro và template
 
-C++ 的模板在设计之初的一个用途就是用来替换宏定义．学会模板编程是从 C 迈向 C++ 的重要一步．模板不同于宏的文字替换，在编译时会得到更全面的编译器检查，便于编写更健全的代码．模板特性在 C++11 后支持了可变长度的模板参数表，可以用来替代 C 中的可变长度函数并保证类型安全．
+Một mục tiêu ban đầu của template C++ là thay macro. Học template là bước quan trọng từ C sang C++. Template khác macro vì không chỉ thay văn bản; tại thời điểm biên dịch, template có kiểm tra kiểu đầy đủ hơn, giúp code an toàn hơn. Từ C++11, template hỗ trợ tham số biến độ dài, có thể thay thế hàm biến độ dài trong C và vẫn an toàn kiểu.
 
-### 指针与引用
+### Con trỏ và tham chiếu
 
-C++ 中你仍然可以使用 C 风格的指针，但是对于变量传递而言，更推荐使用 C++ 的 [引用](./reference.md) 特性来实现类似的功能．由于引用指向的对象不能为空，因此可以避免一些空地址访问的问题．不过指针由于其灵活性，也仍然有其用武之地．值得一提的是，C 中的 `NULL` 空指针在 C++11 起有类型安全的替代品 `nullptr`．引用和指针之间可以通过 [`*` 和 `&` 运算符](./op.md) 相互转换．
+C++ vẫn có thể dùng con trỏ kiểu C, nhưng truyền biến khuyến nghị dùng [tham chiếu](./reference.md) của C++. Tham chiếu không thể rỗng, tránh lỗi truy cập null. Con trỏ vẫn hữu ích nhờ tính linh hoạt. Đáng chú ý, `NULL` trong C có thay thế an toàn kiểu là `nullptr` từ C++11. Tham chiếu và con trỏ có thể chuyển qua lại bằng [toán tử `*` và `&`](./op.md).
 
 ### bool
 
-另请参阅 [布尔类型](var.md#布尔类型)．
+Xem thêm [kiểu bool](var.md#布尔类型).
 
-与 C++ 不同的是，C 语言最初并没有布尔类型．
+Khác C++, C ban đầu không có bool.
 
-C99 标准加入了 `_Bool` 关键字（以及等效的 `bool` 宏）以及 `true` 和 `false` 两个宏．如果需要使用 `bool`，`true`，`false` 这三个宏，需要在程序中引入 `stdbool.h` 头文件．而使用 `_Bool` 则不需要引入任何额外头文件．
+C99 thêm `_Bool` (và macro tương đương `bool`), cùng macro `true` và `false`. Muốn dùng `bool`/`true`/`false` cần `stdbool.h`. Dùng `_Bool` thì không cần.
 
 ```c
-bool x = true;  // 需要引入 stdbool.h
-_Bool x = 1;    // 不需要引入 stdbool.h
+bool x = true;  // cần stdbool.h
+_Bool x = 1;    // không cần stdbool.h
 ```
 
-C23 起，`true`,`false` 和 `bool` 成为 C 语言中的关键字，使用它们不需要再引入 `stdbool.h` 头文件，同时保留 `_Bool` 作为 `bool` 的替代拼写形式[^boolean-keyword]．
+Từ C23, `true`,`false`,`bool` thành từ khóa, không cần `stdbool.h`, đồng thời giữ `_Bool` là cách viết thay thế `bool`[^boolean-keyword].
 
-下表展示了 C 语言不同标准下，bool 类型支持的变化情况（作为对照，加入了 C++ 的支持情况）：
+Bảng sau tóm tắt thay đổi hỗ trợ bool trong C (so sánh với C++):
 
-| 语言标准         | `bool`                            | `true`/`false`                                        | `_Bool`                   |
+| Chuẩn ngôn ngữ | `bool`                            | `true`/`false`                                        | `_Bool`                   |
 | ------------ | --------------------------------- | ----------------------------------------------------- | ------------------------- |
-| C89          | /                                 | /                                                     | 保留[^reserved-identifiers] |
-| C99 起，C23 以前 | 宏，与 `_Bool` 等价，需要 `stdbool.h` 头文件 | 宏，`true` 与 `1` 等价，`false` 与 `0` 等价，需要 `stdbool.h` 头文件 | 关键字                       |
-| C23 起        | 关键字                               | 关键字                                                   | 关键字 `bool` 的替代拼写形式        |
-| C++          | 关键字                               | 关键字                                                   | 保留[^reserved-identifiers] |
+| C89          | /                                 | /                                                     | giữ lại[^reserved-identifiers] |
+| C99 đến trước C23 | Macro, tương đương `_Bool`, cần `stdbool.h` | Macro, `true` = `1`, `false` = `0`, cần `stdbool.h` | Từ khóa                   |
+| Từ C23        | Từ khóa                            | Từ khóa                                               | Cách viết thay thế của `bool` |
+| C++          | Từ khóa                            | Từ khóa                                               | giữ lại[^reserved-identifiers] |
 
 ### struct
 
-尽管在 C 和 C++ 中都有 struct 的概念，但是他们对应的东西是不能混用的！C 中的 struct 用来描述一种固定的内存组织结构，而 C++ 中的 struct 就是一种类，**它与类唯一的区别就是它的成员和继承行为默认是 public 的**，而一般类的默认成员是 private 的．这一点在写 C/C++ 混合代码时尤其致命．
+C và C++ đều có struct, nhưng **không thể trộn lẫn**! Trong C, struct mô tả bố cục bộ nhớ cố định. Trong C++, struct là một lớp, **khác lớp chỉ ở chỗ mặc định là `public`** (lớp mặc định là `private`). Điều này rất quan trọng khi viết code C/C++ lẫn nhau.
 
-另外，声明 struct 时 C++ 也不需要像 C 那么繁琐，C 版本：
+Ngoài ra, khai báo struct trong C++ đơn giản hơn. C:
 
 ```c
 typedef struct Node_t {
@@ -47,7 +47,7 @@ typedef struct Node_t {
 } Node;
 ```
 
-C++ 版本
+C++:
 
 ```cpp
 struct Node {
@@ -58,46 +58,46 @@ struct Node {
 
 ### const
 
-const 在 C 中只有限定变量不能修改的功能，而在 C++ 中，由于大量新特性的出现，const 也被赋予的更多用法．C 中的 const 在 C++ 中的继任者是 constexpr，而 C++ 中的 const 的用法请参见 [常值](./const.md) 页面的说明．
+Trong C, const chỉ giới hạn không cho sửa. Trong C++, const có nhiều ý nghĩa hơn. Người kế nhiệm const trong C ở C++ là constexpr; chi tiết const xem [hằng](./const.md).
 
-### 内存分配
+### Cấp phát bộ nhớ
 
-C++ 中新增了 `new` 和 `delete` 关键字用来在「自由存储区」上分配空间，这个自由存储区可以是堆也可以是静态存储区，他们是为了配合「类」而出现的．其中 `delete[]` 还能够直接释放动态数组的内存，非常方便．`new` 和 `delete` 关键字会调用类型的构造函数和析构函数，相比 C 中的 `malloc()`、`realloc()`、`free()` 函数，他们对类型有更完善的支持，但是效率不如 C 中的这些函数．
+C++ thêm `new` và `delete` để cấp phát vùng “free store”, có thể là heap hoặc static, phục vụ lớp. `delete[]` còn giải phóng mảng động. `new`/`delete` gọi constructor/destructor, hỗ trợ kiểu tốt hơn `malloc()`/`realloc()`/`free()` nhưng chậm hơn.
 
-简而言之，如果你需要动态分配内存的对象是基础类型或他们的数组，那么你可以使用 `malloc()` 进行更高效的内存分配；但如果你新建的对象是非基础的类型，那么建议使用 `new` 以获得安全性检查．值得注意的是尽管 `new` 和 `malloc()` 都是返回指针，但是 `new` 出来的指针 **只能** 用 `delete` 回收，而 `malloc()` 出来的指针也只能用 `free()` 回收，否则会有内存泄漏的风险．
+Nói ngắn gọn: nếu cấp phát kiểu cơ bản hoặc mảng, dùng `malloc()` hiệu quả hơn; nếu cấp phát đối tượng không cơ bản, nên dùng `new` để an toàn. Lưu ý: `new` trả về con trỏ chỉ được thu hồi bằng `delete`, còn `malloc()` chỉ bằng `free()`, nếu không sẽ rò rỉ.
 
-### 变量声明
+### Khai báo biến
 
-C99 前，C 的变量声明必须位于语句块开头，C++ 和 C99 后无此限制．
+Trước C99, C yêu cầu khai báo biến ở đầu khối; C++ và C99 trở đi không còn hạn chế này.
 
-### 可变长数组
+### Mảng độ dài biến
 
-C99 后 C 语言支持 VLA（可变长数组），C++ 始终不支持．
+C99 hỗ trợ VLA (mảng độ dài biến), C++ không hỗ trợ.
 
-### 结构体初始化
+### Khởi tạo struct
 
-C99 后 C 语言支持结构体的 [指派符初始化](https://en.cppreference.com/w/c/language/struct_initialization)（但是在 C11 中为可选特性），C++ 直到 C++20 才支持有顺序要求的指派符初始化，且 C 语言支持的乱序、嵌套、与普通初始化器混用、数组的指派符初始化特性 C++ 都不支持[^cpp-designated-init]．
+C99 hỗ trợ [khởi tạo chỉ định](https://en.cppreference.com/w/c/language/struct_initialization) (C11 là tùy chọn), C++ đến C++20 mới hỗ trợ dạng có thứ tự, và các đặc tính C như thứ tự lộn xộn, lồng nhau, trộn với khởi tạo thường, khởi tạo chỉ định cho mảng đều không được C++ hỗ trợ[^cpp-designated-init].
 
-### 注释语法
+### Cú pháp chú thích
 
-C++ 风格单行注释 `//`，C 于 C99 前不支持．
+Chú thích dòng `//` kiểu C++ không được C hỗ trợ trước C99.
 
-## Python 与 C++ 的区别
+## Khác biệt giữa Python và C++
 
-Python 是目前机器学习界最常用的语言．相比于 C++，Python 的优势在于易于学习，易于实践．Python 有着更加简单直接的语法，比如在定义变量时，不需要提前声明变量类型．但是，这样的简单也是有代价的．Python 相比于 C++ 牺牲了性能．C++ 几乎适用于包括嵌入式系统的所有平台，并且有着更快的执行速度，但是 Python 只可以在某些支持高级语言的平台上使用．C++ 更接近底层，所以可以用来进行编写操作系统．
+Python rất phổ biến trong ML. So với C++, Python dễ học và dễ thực hành. Cú pháp đơn giản, không cần khai báo kiểu. Nhưng cái giá là hiệu năng. C++ nhanh hơn và dùng được trên nhiều nền tảng (kể cả nhúng). C++ gần tầng thấp nên có thể dùng để viết hệ điều hành.
 
-## Java 与 C++ 的区别
+## Khác biệt giữa Java và C++
 
-Java 与 C++ 都是面向对象的语言，都使用了面向对象的思想（封装、继承、多态），由于面向对象有许多非常好的特性（继承、组合等），因此二者有很好的可重用性．所以相比于 Python，Java 和 C++ 更加类似．
+Java và C++ đều hướng đối tượng (đóng gói, kế thừa, đa hình), nên tái sử dụng tốt. So với Python, Java gần C++ hơn.
 
-二者最大的区别在于 Java 有 JVM 的机制．JVM 全称是 Java Virtual Machine，中文意为 Java 虚拟机．Java 语言的一个非常重要的特点就是与平台的无关性．而使用 Java 虚拟机是实现这一特点的关键．一般的高级语言如果要在不同的平台上运行，至少需要编译成不同的目标代码．而引入 Java 语言虚拟机后，Java 语言在不同平台上运行时不需要重新编译．Java 语言使用 Java 虚拟机屏蔽了与具体平台相关的信息，使得 Java 语言编译程序只需生成在 Java 虚拟机上运行的目标代码（字节码），就可以在多种平台上不加修改地运行．
+Khác biệt lớn nhất là cơ chế JVM. JVM (Java Virtual Machine) giúp Java độc lập nền tảng. Ngôn ngữ bậc cao khác muốn chạy đa nền tảng phải biên dịch riêng. Với JVM, Java chỉ cần sinh bytecode chạy trên JVM, không cần sửa khi đổi nền tảng.
 
-因为这个特点，Java 经常被用于需要移植到不同平台程序的开发．但是也由于编译 Java 程序时需要从字节码开始，所以 Java 的性能没有 C++ 好．
+Vì vậy Java thường dùng khi cần đa nền tảng. Nhưng do biên dịch sang bytecode và chạy trên JVM, Java kém hiệu năng hơn C++.
 
-## 参考资料
+## Tài liệu tham khảo
 
 [^cpp-designated-init]: <https://en.cppreference.com/w/cpp/language/aggregate_initialization>
 
 [^boolean-keyword]: <https://www.open-std.org/jtc1/sc22/wg14/www/docs/n3054.pdf>．
 
-[^reserved-identifiers]: C 和 C++ 均规定，以一个下划线跟着一个大写字母开头的标识符是被保留的，详见 <https://en.cppreference.com/w/c/language/identifier>．
+[^reserved-identifiers]: C và C++ quy định định danh bắt đầu bằng dấu gạch dưới và chữ hoa là tên dành riêng, xem <https://en.cppreference.com/w/c/language/identifier>．

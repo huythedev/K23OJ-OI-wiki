@@ -1,22 +1,22 @@
-## 初等矩阵
+## Ma trận sơ cấp
 
-以下三类方阵称为初等矩阵．
+Ba loại ma trận vuông sau gọi là ma trận sơ cấp.
 
-### 倍乘矩阵
+### Ma trận nhân bội
 
-倍乘矩阵是一种特殊的对角矩阵．
+Ma trận nhân bội là một dạng đường chéo đặc biệt:
 
 $$
 D_i(k)=\operatorname{diag}\{1,\cdots,1,k,1,\cdots,1\}
 $$
 
-表示一个对角阵，主对角线上第 $i$ 个元素为 $k$，并且规定 $k$ 不能为 $0$，其余的元素全部为 $1$．
+Phần tử đường chéo thứ $i$ là $k$, với $k\ne 0$, các phần tử khác là $1$.
 
-特别地，当 $k$ 为 $1$ 的时候，$D_i(1)$ 就是单位阵 $I$．
+Nếu $k=1$ thì $D_i(1)$ là đơn vị $I$.
 
-### 对换矩阵
+### Ma trận đổi chỗ
 
-对换矩阵是一种特殊的对称矩阵．
+Ma trận đổi chỗ là đối xứng đặc biệt:
 
 $$
 P_{ij}=\begin{pmatrix}
@@ -28,13 +28,13 @@ I_{i-1} &  &  &  & \\
 \end{pmatrix}
 $$
 
-对换矩阵的元素全是 $1$ 和 $0$，主对角线上其余元素均为 $1$，仅有第 $i$ 个元素和第 $j$ 个元素为 $0$，而在第 $i$ 行第 $j$ 列、第 $j$ 行第 $i$ 列上的两个元素为 $1$．
+Chỉ có $1$ và $0$, đường chéo chính toàn $1$ trừ vị trí $i,j$ là $0$, và hai vị trí đối xứng là $1$.
 
-对换矩阵要求 $i$ 与 $j$ 不能相等．
+Yêu cầu $i\ne j$.
 
-### 倍加矩阵
+### Ma trận cộng bội
 
-倍加矩阵是在单位阵 $I$ 的基础上，令第 $i$ 行第 $j$ 列为 $k$．
+Ma trận cộng bội là $I$ với phần tử $(i,j)$ bằng $k$:
 
 $$
 T_{ij}(k)=\begin{pmatrix}
@@ -48,13 +48,13 @@ T_{ij}(k)=\begin{pmatrix}
 \end{pmatrix}
 $$
 
-倍加矩阵要求 $i$ 与 $j$ 不能相等．如果 $k$ 为 $0$，则 $T_{ij}(0)$ 退化为单位阵 $I$．
+Yêu cầu $i\ne j$. Nếu $k=0$ thì $T_{ij}(0)=I$.
 
-倍加矩阵是一种上三角矩阵或者下三角矩阵．
+Ma trận cộng bội là tam giác trên hoặc dưới.
 
-### 初等矩阵的行列式
+### Định thức của ma trận sơ cấp
 
-三种初等矩阵具有行列式：
+Ba loại có:
 
 $$
 |D_i(k)|=k
@@ -68,125 +68,107 @@ $$
 |T_{ij}(k)|=1
 $$
 
-由于方阵乘法的行列式等于行列式的乘法，借助下文初等变换与矩阵乘法的等价性，初等矩阵的这个性质可以用于行列式的计算．
+Nhờ tính chất định thức của tích ma trận và quan hệ giữa biến đổi sơ cấp và nhân ma trận, các tính chất này dùng để tính định thức.
 
-## 初等变换
+## Biến đổi sơ cấp
 
-不仅限于方阵，对于一般的矩阵 $A$，可以进行初等行变换和初等列变换，统称为初等变换．
+Không chỉ ma trận vuông, ma trận bất kỳ đều có biến đổi hàng/cột sơ cấp (gọi chung là biến đổi sơ cấp). Có 3 loại: nhân bội, đổi chỗ, cộng bội.
 
-初等行变换与初等列变换一样，都有 3 种：倍乘（multiplication）、对换（switching）、倍加（addition）．这里先介绍初等行变换：
+Biến đổi hàng:
 
--   第 $i$ 行乘非零数 $k$：$B\mapsto D_i(k)B$．
--   第 $i$，$j$ 行互换：$B\mapsto P_{ij}B$．
--   第 $j$ 行乘 $k$ 加到第 $i$ 行：$B\mapsto T_{ij}(k)B$．
+-   Nhân hàng $i$ với $k\ne 0$: $B\mapsto D_i(k)B$.
+-   Đổi hàng $i$ và $j$: $B\mapsto P_{ij}B$.
+-   Cộng $k$ lần hàng $j$ vào hàng $i$: $B\mapsto T_{ij}(k)B$.
 
-将上述操作的行改为列，即得到初等列变换．
+Đổi “hàng” thành “cột” được biến đổi cột.
 
-在初等变换中，对换可以通过倍乘和倍加实现．显然，倍加不能通过倍乘和对换实现．借助行列式的知识，以及下文的初等变换与矩阵乘法的等价性，也能说明倍乘不能通过倍加和对换实现．
+Trong các biến đổi, đổi chỗ có thể mô phỏng bằng nhân bội và cộng bội; cộng bội không mô phỏng được bằng hai loại kia. Dựa trên định thức và quan hệ với nhân ma trận cũng thấy nhân bội không mô phỏng được bằng hai loại còn lại.
 
-因此，相较对换而言，倍乘和倍加是更为本质的操作．对换操作是为了在消元法中，保证消元的有序，而引入的辅助操作．
+Do đó, nhân bội và cộng bội là cơ bản, đổi chỗ là thao tác phụ để sắp xếp trong khử.
 
-## 初等变换与矩阵乘法
+## Biến đổi sơ cấp và nhân ma trận
 
-可以发现，三类初等矩阵都是在单位阵 $I$ 上进行一次相应的变换得到的结果．在后文的线性变换中指出，线性变换与矩阵之间有对应关系，与这里的关系类似．
+Ba loại ma trận sơ cấp đều là kết quả của một phép biến đổi trên $I$. Với ma trận $A$, biến đổi hàng tương đương nhân trái bởi ma trận sơ cấp; biến đổi cột tương đương nhân phải.
 
-无论矩阵 $A$ 是否方阵，对矩阵 $A$ 进行初等行变换，等价于对矩阵 $A$ 左乘初等矩阵．对矩阵 $A$ 进行初等列变换，等价于对矩阵 $A$ 右乘初等矩阵．
+### Nhân bội
 
-### 倍乘操作
+Nhân trái bởi $D_i(k)$ ⇔ nhân hàng $i$ với $k$. Nhân phải ⇔ nhân cột $i$ với $k$.
 
-左乘一个倍乘矩阵 $D_i(k)$，等价于将第 $i$ 行变为 $k$ 倍．右乘一个倍乘矩阵 $D_i(k)$，等价于将第 $i$ 列变为 $k$ 倍．
+Tích của hai đường chéo là đường chéo; nhân các phần tử tương ứng. Nếu phần tử đường chéo khác 0, có thể tách thành tích của các ma trận nhân bội.
 
-对角阵乘对角阵还是对角阵，对于对角阵的乘法，将主对角线上对应的元素相乘．由于单位阵是特殊的倍乘阵，而倍乘阵要求 $k$ 不为 $0$，可以看出，只要对角阵主对角线上的元素均非 $0$，就可以拆分为倍乘阵的乘积．
+Với đường chéo bất kỳ, nhân trái là nhân các hàng, nhân phải là nhân các cột theo phần tử đường chéo.
 
-对于一般的对角阵，无论元素是否为 $0$，也有相应的结论．左乘对角阵，等价于将对应的行变为原来的若干倍，倍数恰为对角阵主对角线上的相应元素．右乘对角阵，是对相应的列进行同样操作．
+Vì $|D_i(k)|=k$, nhân một hàng/cột sẽ nhân định thức với $k$. Định thức đường chéo là tích các phần tử đường chéo.
 
-由于倍乘矩阵 $D_i(k)$ 的行列式为 $k$，对于方阵的行或列进行倍乘操作之后，方阵对应的行列式变为原来的 $k$ 倍．对角阵的行列式为主对角线元素的乘积．
+Nhân bội (và đường chéo) giao hoán. Đơn vị tương ứng không làm gì.
 
-倍乘矩阵的乘法可以交换，对角阵的乘法也可以交换，在乘法只有对角阵时，顺序可以任意排列．
+### Đổi chỗ
 
-单位阵对应的倍乘操作为保持矩阵 $A$ 不变，在实际应用中不进行这样的操作．
+Nhân trái bởi $P_{ij}$ ⇔ đổi hàng $i,j$. Nhân phải ⇔ đổi cột $i,j$.
 
-### 对换操作
+Đưa khái niệm ma trận hoán vị: mỗi hàng/cột có đúng một $1$, còn lại $0$. $I$ là trường hợp đặc biệt.
 
-左乘一个对换矩阵 $P_{ij}$，等价于将第 $i$ 行与第 $j$ 行交换．右乘一个对换矩阵 $P_{ij}$，等价于将第 $i$ 列与第 $j$ 列交换．
+Nhân trái bởi ma trận hoán vị ⇔ hoán vị hàng; nhân phải ⇔ hoán vị cột.
 
-与倍乘阵和对角阵的关系类似，这里引入置换矩阵的概念．置换矩阵是一个方阵，每行每列均恰有一个 $1$，其余位置均为 $0$．单位阵 $I$ 也是特殊的置换矩阵．
+Ma trận hoán vị tương ứng một hoán vị, và nhóm của chúng đẳng cấu với nhóm hoán vị. Mọi hoán vị là tích các đổi chỗ.
 
-置换阵和对于单位阵 $I$ 的行进行置换操作一致，也和对于单位阵 $I$ 的列进行置换操作一致．单位阵 $I$ 本身对应于恒等变换．
+Vì $|P_{ij}|=-1$, đổi hàng/cột đổi dấu định thức.
 
-左乘一个置换矩阵等价于对原矩阵的行进行置换，右乘一个置换矩阵等价于对原矩阵的列进行置换，相应置换的方法和对于单位阵 $I$ 的行或列进行置换操作一致．
+Nhân đổi chỗ không giao hoán. Định thức ma trận hoán vị là ${(-1)}^p$ với $p$ là số nghịch thế.
 
-置换矩阵与置换完全对应，置换矩阵构成的乘法群与置换群同构．由于有定理，在恒等变换视为零个对换的乘积的情形下，任何置换都可以拆为对换的乘积，因此任何置换矩阵也可以拆分为对换矩阵的乘积．
+### Cộng bội
 
-由于对换矩阵的行列式为 $-1$，对于方阵的行或列进行对换操作之后，方阵对应的行列式变为原来的 $-1$ 倍．
+Nhân trái bởi $T_{ij}(k)$ ⇔ cộng $k$ lần hàng $j$ vào hàng $i$. Nhân phải ⇔ cộng $k$ lần cột $i$ vào cột $j$.
 
-对换阵的乘法不可交换，置换阵的乘法也不可交换．
+Có thể nhớ bằng cách quan sát $T_{ij}(k)$ là biến đổi của $I$; nhân trái là thao tác hàng, nhân phải là thao tác cột (hàng trái cột phải).
 
-置换矩阵的行列式为 ${(-1)}^p$，其中 $p$ 为置换矩阵对应置换的逆序数，即置换拆分为对换乘积的个数．
+Vì $|T_{ij}(k)|=1$, cộng bội không đổi định thức.
 
-### 倍加操作
+Cộng bội không giao hoán. Đơn vị tương ứng không làm gì.
 
-左乘倍加矩阵 $T_{ij}(k)$ 等价于把第 $j$ 行的 $k$ 倍加到第 $i$ 行上．右乘倍加矩阵 $T_{ij}(k)$ 等价于把第 $i$ 列的 $k$ 倍加到第 $j$ 列上．
+#### Ma trận tam giác trên
 
-如果难以记忆，可以观察倍加阵 $T_{ij}(k)$ 是对单位阵 $I$ 进行了怎样的操作，两者是对应的，左乘是对行的操作，右乘是对列的操作，符合口诀左行右列．
+Ma trận cộng bội là tam giác trên/dưới. Chỉ xét tam giác trên.
 
-由于倍加矩阵的行列式为 $1$，对于方阵进行倍加操作之后，方阵对应的行列式不变．
+Nếu đường chéo toàn 1, có thể tách thành tích các ma trận cộng bội bằng cách thao tác từng hàng của $I$ từ trên xuống.
 
-倍加矩阵的乘法不可交换．
+Vì không giao hoán nên thứ tự không đổi.
 
-单位阵对应的倍加操作为保持矩阵 $A$ 不变，在实际应用中不进行这样的操作．
+Nếu đường chéo khác 0, có thể tách thành tích của cộng bội và nhân bội (trước nhân bội để đặt đường chéo).
 
-#### 上三角矩阵
+Nếu đường chéo có 0 thì không thể tách thành tích các ma trận sơ cấp.
 
-倍加矩阵是一种上三角矩阵或者下三角矩阵．由于两种矩阵关于主对角线对称，这里讨论上三角矩阵．事实上在这个例子中，只需要进行初等行变换，而不需要列变换．
+Định thức tam giác bằng tích đường chéo, giống đường chéo.
 
-如果一个上三角矩阵的主对角线均为 $1$，则可拆分为一连串倍加矩阵的乘积．拆分的顺序为，先对单位矩阵 $I$ 的第一行进行倍加操作，再对单位矩阵 $I$ 的第二行进行倍加操作，以此类推，直到每一行均被操作完毕为止．
+#### Dùng cộng bội đưa ma trận vuông về đường chéo
 
-由于倍加矩阵的乘法不可交换，上述操作不可调换顺序．
+Chỉ dùng cộng bội cũng có thể đưa ma trận vuông về đường chéo, nhưng cần cả biến đổi hàng và cột.
 
-如果一个上三角矩阵的主对角线均非 $0$，则可拆分为一连串倍加矩阵和倍乘矩阵的乘积．可以在操作单位矩阵 $I$ 的每一行时，先将该行进行倍乘操作，效果为主对角线元素变为指定非零值．
+Nếu hàng/cột đầu có phần tử khác 0, có thể dùng cộng bội để đưa góc trên trái khác 0, rồi khử các phần tử khác trên hàng/cột.
 
-如果一个上三角矩阵的主对角线存在 $0$，则不可拆分为一连串初等矩阵的乘积．
+Nếu hàng/cột đầu toàn 0 thì xét hàng/cột tiếp theo.
 
-无论上三角矩阵的主对角线上是否有 $0$，上三角矩阵的行列式等于主对角线元素乘积，与对角阵一致．
+Có thể sắp xếp để các phần tử khác 0 ở góc trên trái.
 
-#### 倍加操作将方阵转化为对角阵
+Nếu phần còn lại có phần tử khác 0, dùng cộng bội để tạo phần tử khác 0 ở hàng/cột đầu rồi quay về trường hợp trước. Nếu phần còn lại toàn 0 thì ma trận còn lại là 0.
 
-只使用倍加操作可以使任意一个方阵变为对角阵，这个例子既需要初等行变换也需要初等列变换．
+#### Dạng chuẩn
 
-如果方阵的第一行和第一列存在非零元素，则可以通过倍加办法将左上角元素变为非零，进而借助初等行变换和初等列变换，将第一行和第一列除了左上角元素以外，均变为 $0$．
+Biến đổi sơ cấp đưa mọi ma trận về dạng chuẩn: có một khối đơn vị $I$ ở góc trên trái, phần còn lại là 0. Số lượng phần tử 1 bằng hạng.
 
-如果方阵的第一行和第一列已经均为 $0$，则直接看第二行和第二列即可．
+## Ma trận khả nghịch
 
-借助这个办法，甚至可以规定对角阵的非零元素均在左上角．
+Với ma trận vuông $A$, nếu tồn tại $B$ sao cho $AB=BA=I$ thì $A$ khả nghịch (không suy biến), $B$ là nghịch đảo, ký hiệu $A^{-1}$.
 
-如果方阵的第一行和第一列已经均为 $0$，则看剩余的行列是否有非零元素，只要有非零元素，则可以通过倍加操作将第一行和第一列中某个元素变为非 $0$，进而化归为一开始的情况，使得左上角元素非 $0$．
+Nghịch đảo là duy nhất. $A^{-1}$ cũng khả nghịch và $(A^{-1})^{-1}=A$.
 
-仅当剩余的行列也均没有非零元素时，左上角无法变为非零元素，此时剩余的方阵已经为零矩阵．
+Tích của hai ma trận khả nghịch cũng khả nghịch, nghịch đảo là $B^{-1}A^{-1}$.
 
-#### 标准形矩阵
+Chuyển vị của ma trận khả nghịch cũng khả nghịch, và $(A^T)^{-1}=(A^{-1})^T$.
 
-借助初等变换可以将任意的矩阵，无论形状，化归为标准形矩阵．
+### Nghịch đảo của ma trận sơ cấp
 
-标准形矩阵拥有一个单位阵 $I$ 作为子矩阵位于左上角，其余部分均为 $0$．化归的办法与将方阵转化为对角阵的操作类似，并需要借助倍乘操作使左上角非零元素变为 $1$．
-
-矩阵转化为标准形矩阵后，含有元素 $1$ 的个数恰好为矩阵的秩．
-
-## 可逆矩阵
-
-设 $A$ 是一个 $n$ 阶矩阵．如果存在一个 $n$ 阶矩阵 $B$，使得 $AB=BA=I$，那么 $A$ 叫做一个可逆矩阵或非奇异矩阵，$B$ 叫做 $A$ 的逆矩阵，并记为 $A^{-1}$．
-
-如果矩阵 $A$ 可逆，那么 $A$ 的逆矩阵由 $A$ 唯一确定．
-
-可逆矩阵 $A$ 的逆 $A^{-1}$ 也可逆，并且 $A^{-1}$ 的逆就是 $A$．
-
-两个可逆矩阵 $A$ 和 $B$ 的乘积 $AB$ 也可逆，并且逆为 $B^{-1}A^{-1}$．
-
-可逆矩阵 $A$ 的转置 $A^T$ 也可逆，并且转置的逆等于逆的转置．
-
-### 初等矩阵的逆
-
-初等矩阵均可逆，并且逆为同类的初等矩阵：
+Ma trận sơ cấp đều khả nghịch, nghịch đảo cùng loại:
 
 $$
 {D_i(k)}^{-1}=D_i\left(\frac{1}{k}\right)
@@ -200,34 +182,28 @@ $$
 T_{ij}(k)^{-1}=T_{ij}(-k)
 $$
 
-显然单位阵 $I$ 可逆，逆矩阵仍为 $I$．
+$ I$ khả nghịch và tự nghịch.
 
-初等变换保持矩阵的可逆性，变换前后矩阵要么同时可逆，要么同时不可逆．
+Biến đổi sơ cấp bảo toàn khả nghịch.
 
-矩阵 $A$ 可逆，当且仅当矩阵 $A$ 可以写成初等矩阵的乘积，即可以通过初等变换变为单位阵 $I$．
+$A$ khả nghịch ⇔ $A$ là tích các ma trận sơ cấp ⇔ $A$ biến đổi sơ cấp được về $I$.
 
-等到引入行列式之后可以知道：
+Sau khi có định thức: $A$ khả nghịch ⇔ hạng $n$ ⇔ định thức khác 0.
 
-矩阵 $A$ 可逆，当且仅当矩阵 $A$ 的秩为 $n$，当且仅当矩阵 $A$ 的行列式非 $0$．
-
-一种简单的记法为：记 $E_{ij}$ 为第 $i$ 行第 $j$ 列的元素为 $1$、其余为零的 $n\times n$ 矩阵，那么
+Một cách ký hiệu: $E_{ij}$ là ma trận có 1 tại $(i,j)$, còn lại 0, thì
 
 -   $D_i(k)=I_n+(k-1)E_{ii}$
 -   $P_{ij}=I_n-E_{ii}-E_{jj}+E_{ij}+E_{ji}$
 -   $T_{ij}(k)=I_n+kE_{ij}$
 
-这种记法也可以应用于它们的逆矩阵．
+Cũng áp dụng cho nghịch đảo.
 
-## 应用
+## Ứng dụng
 
-### 线性方程组求解
+### Giải hệ phương trình tuyến tính
 
-对于一个线性方程组，未知数前的系数构成系数矩阵，如果在系数矩阵右端补上线性方程组的常数项则构成增广矩阵．
+Hệ phương trình có ma trận hệ số và ma trận mở rộng. Dùng biến đổi hàng sơ cấp để đưa về dạng bậc thang, rồi bậc thang rút gọn, từ đó giải hệ. Đây là phương pháp khử Gauss–Jordan.
 
-应用初等行变换，可以将线性方程组对应的增广矩阵先转化为行阶梯形矩阵，再转化为行最简形矩阵，进而完成线性方程组的求解．这个方法叫做消元法解线性方程组，后文的 Gauss–Jordan 消元，是按照一定的顺序进行的消元算法．
+### Tính định thức
 
-### 行列式计算
-
-由于方阵乘积的行列式等于方阵行列式的乘积，初等矩阵的行列式便于计算，以及初等变换等价于初等矩阵的乘法，在行列式计算中也会使用初等变换．
-
-由于按照一定的顺序进行初等变换更加便于程序书写，行列式计算也可以使用后文的 Gauss–Jordan 消元算法．
+Vì định thức của tích bằng tích định thức, cùng với tính chất của ma trận sơ cấp và biến đổi sơ cấp, có thể dùng để tính định thức. Khử Gauss–Jordan cũng dùng cho mục này.

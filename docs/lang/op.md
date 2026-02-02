@@ -1,262 +1,262 @@
 author: aofall, greyqz, Ir1d, Link-cute, Marcythm, ouuan, Shen-Linwood, sshwy, StudyingFather
 
-## 算术运算符
+## Toán tử số học
 
-| 运算符       | 功能  |
+| Toán tử       | Chức năng |
 | --------- | --- |
-|  `+` （单目） | 正   |
-|  `-` （单目） | 负   |
-|  `*` （双目） | 乘法  |
-|  `/`      | 除法  |
-|  `%`      | 取模  |
-|  `+` （双目） | 加法  |
-|  `-` （双目） | 减法  |
+|  `+` （đơn ngôi） | Dương   |
+|  `-` （đơn ngôi） | Âm   |
+|  `*` （nhị phân） | Nhân  |
+|  `/`      | Chia  |
+|  `%`      | Lấy dư  |
+|  `+` （nhị phân） | Cộng  |
+|  `-` （nhị phân） | Trừ  |
 
-??? note "单目与双目运算符"
-    单目运算符（又称一元运算符）指被操作对象只有一个的运算符，而双目运算符（又称二元运算符）的被操作对象有两个．例如 `1 + 2` 中加号就是双目运算符，它有 `1` 和 `2` 两个被操作数．此外 C++ 中还有唯一的一个三目运算符 `?:` ．
+??? note "Toán tử đơn ngôi và nhị phân"
+    Toán tử đơn ngôi (còn gọi là toán tử một ngôi) là toán tử chỉ có một toán hạng, còn toán tử nhị phân (còn gọi là toán tử hai ngôi) có hai toán hạng. Ví dụ trong `1 + 2` thì dấu cộng là toán tử nhị phân, có hai toán hạng `1` và `2`. Ngoài ra trong C++ còn có duy nhất một toán tử ba ngôi là `?:`.
 
-算术运算符中有两个单目运算符（正、负）以及五个双目运算符（乘法、除法、取模、加法、减法），其中单目运算符的优先级最高．
+Trong các toán tử số học có hai toán tử đơn ngôi (dương, âm) và năm toán tử nhị phân (nhân, chia, lấy dư, cộng, trừ), trong đó toán tử đơn ngôi có độ ưu tiên cao nhất.
 
-其中取模运算符 `%` 意为计算两个整数相除得到的余数，即求余数．
+Toán tử lấy dư `%` dùng để lấy phần dư khi chia hai số nguyên.
 
-而 `-` 为双目运算符时做减法运算符，如 `2-1` ；为单目运算符时做负值运算符，如 `-1` ．
+Còn `-` khi là toán tử nhị phân thì là phép trừ, như `2-1`; khi là toán tử đơn ngôi thì là lấy đối (âm), như `-1`.
 
-使用方法如下
+Cách dùng như sau:
 
  `op=x-y*z` 
 
-得到的 `op` 的运算值遵循数学中加减乘除的优先规律，首先进行优先级高的运算，同优先级按运算的结合性运算，括号提高优先级．
+Giá trị của `op` tuân theo quy tắc ưu tiên của cộng trừ nhân chia trong toán học: thực hiện phép có độ ưu tiên cao trước, cùng độ ưu tiên thì theo tính kết hợp, ngoặc sẽ nâng độ ưu tiên.
 
-### 算术运算中的类型转换
+### Chuyển đổi kiểu trong phép toán số học
 
-对于双目算术运算符，当参与运算的两个变量类型相同时，不发生 [类型转换](./var.md#类型转换)，运算结果将会用参与运算的变量的类型容纳，否则会发生类型转换，以使两个变量的类型一致．转换的规则参见 [类型转换](./var.md#类型转换)．
+Với toán tử số học nhị phân, khi hai biến tham gia có cùng kiểu thì không xảy ra [chuyển đổi kiểu](./var.md#类型转换), kết quả sẽ dùng kiểu đó để biểu diễn; nếu khác kiểu thì sẽ xảy ra chuyển đổi kiểu để hai biến có cùng kiểu. Quy tắc chuyển đổi xem tại [chuyển đổi kiểu](./var.md#类型转换).
 
-例如，对于一个整型（`int`）变量 $x$ 和另一个双精度浮点型（`double`）类型变量 $y$：
+Ví dụ, với một biến số nguyên (`int`) $x$ và một biến số thực kép (`double`) $y$:
 
--  `x/3` 的结果将会是整型；
--  `x/3.0` 的结果将会是双精度浮点型；
--  `x/y` 的结果将会是双精度浮点型；
--  `x*1/3` 的结果将会是整型；
--  `x*1.0/3` 的结果将会是双精度浮点型；
+-  `x/3` cho kết quả kiểu số nguyên;
+-  `x/3.0` cho kết quả kiểu số thực kép;
+-  `x/y` cho kết quả kiểu số thực kép;
+-  `x*1/3` cho kết quả kiểu số nguyên;
+-  `x*1.0/3` cho kết quả kiểu số thực kép;
 
-## 位操作符
+## Toán tử bit
 
-另请参阅：[位运算](../math/bit.md#位运算)．
+Xem thêm: [Phép toán bit](../math/bit.md#位运算).
 
-| 运算符       | 功能   |
+| Toán tử       | Chức năng   |
 | --------- | ---- |
-|  `~`      | 逐位非  |
-|  `&` （双目） | 逐位与  |
-|  `|`      | 逐位或  |
-|  `^`      | 逐位异或 |
-|  `<<`     | 逐位左移 |
-|  `>>`     | 逐位右移 |
+|  `~`      | NOT theo bit  |
+|  `&` （nhị phân） | AND theo bit  |
+|  `|`      | OR theo bit  |
+|  `^`      | XOR theo bit |
+|  `<<`     | Dịch trái theo bit |
+|  `>>`     | Dịch phải theo bit |
 
-位操作的意义请参考 [位操作](../math/bit.md) 页面．需要注意的是，位操作的优先级低于算术运算符（除了取反），而按位与、按位或及异或低于比较运算符（详见 [C++ 运算符优先级总表](#c-运算符优先级总表)），所以使用时需多加注意，在必要时添加括号．
+Ý nghĩa các phép toán bit xem tại [phép toán bit](../math/bit.md). Cần lưu ý độ ưu tiên của phép toán bit thấp hơn toán tử số học (trừ phép NOT), và AND/OR/XOR theo bit còn thấp hơn toán tử so sánh (xem [Bảng độ ưu tiên toán tử C++](#c-运算符优先级总表)), nên khi dùng cần chú ý, khi cần thì thêm ngoặc.
 
-移位运算中如果出现如下情况，则其行为未定义：
+Trong phép dịch bit, nếu xuất hiện các tình huống sau thì hành vi là không xác định:
 
-1.  右操作数（即移位数）为负值；
-2.  右操作数大于等于左操作数的位数；
+1.  Toán hạng bên phải (số bit dịch) là số âm;
+2.  Toán hạng bên phải lớn hơn hoặc bằng số bit của toán hạng bên trái;
 
-例如，对于 `int32_t` 类型的变量 `a`，`a<<-1` 和 `a<<32` 都是未定义的．
+Ví dụ với biến `a` kiểu `int32_t`, `a<<-1` và `a<<32` đều là không xác định.
 
-对于带符号非负数的左移操作，需要确保移位后的结果能被原数的类型容纳，否则行为也是未定义的．[^note1]对一个负数执行左移操作也未定义．[^note2]
+Với phép dịch trái trên số có dấu không âm, cần đảm bảo kết quả sau dịch có thể biểu diễn trong kiểu của số ban đầu, nếu không thì cũng là không xác định.[^note1] Dịch trái một số âm cũng là không xác định.[^note2]
 
-对于右移操作，右侧多余的位将会被舍弃，而左侧较为复杂：对于无符号数，会在左侧补 $0$[^note3]；而对于有符号数，则会用最高位的数（其实就是符号位，非负数为 $0$，负数为 $1$）补齐[^note4]．
+Với phép dịch phải, các bit thừa bên phải sẽ bị bỏ, còn bên trái phức tạp hơn: với số không dấu, sẽ điền $0$[^note3]; còn với số có dấu thì điền bit cao nhất (tức bit dấu, số không âm là $0$, số âm là $1$)[^note4].
 
-## 自增/自减 运算符
+## Toán tử tăng/giảm
 
-有时我们需要让变量进行增加 1（自增）或者减少 1（自减），这时自增运算符 `++` 和自减运算符 `--` 就派上用场了．
+Đôi khi ta cần tăng biến lên 1 (tăng) hoặc giảm đi 1 (giảm), lúc này toán tử tăng `++` và giảm `--` sẽ hữu ích.
 
-自增/自减运算符可放在变量前或变量后面，在变量前称为前缀，在变量后称为后缀，单独使用时前缀后缀无需特别区别，如果需要用到表达式的值则需注意，具体可看下面的例子．详细情况可参考 [引用](./reference.md) 介绍的例子部分．
+Toán tử tăng/giảm có thể đặt trước hoặc sau biến, trước là tiền tố, sau là hậu tố. Khi dùng riêng lẻ thì tiền/hậu tố không cần phân biệt; nếu dùng giá trị của biểu thức thì cần chú ý, xem ví dụ dưới đây. Chi tiết xem phần ví dụ trong [tham chiếu](./reference.md).
 
 ```cpp
 i = 100;
 
-op1 = i++;  // op1 = 100，先 op1 = i，然后 i = i + 1
+op1 = i++;  // op1 = 100, trước tiên op1 = i, sau đó i = i + 1
 
 i = 100;
 
-op2 = ++i;  // op2 = 101，先 i = i + 1，然后赋值 op2
+op2 = ++i;  // op2 = 101, trước tiên i = i + 1, sau đó gán op2
 
 i = 100;
 
-op3 = i--;  // op3 = 100，先赋值 op3，然后 i = i - 1
+op3 = i--;  // op3 = 100, trước tiên gán op3, sau đó i = i - 1
 
 i = 100;
 
-op4 = --i;  // op4 = 99，先 i = i - 1，然后赋值 op4
+op4 = --i;  // op4 = 99, trước tiên i = i - 1, sau đó gán op4
 ```
 
-## 复合赋值运算符
+## Toán tử gán kết hợp
 
-复合赋值运算符实际上是表达式的缩写形式．可分为复合算术运算符 `+=`、`-=`、`*=`、`/=`、`%=` 和复合位操作符 `&=`、`|=`、`^=`、`<<=`、`>>=`．
+Toán tử gán kết hợp thực chất là dạng rút gọn của biểu thức. Có thể chia thành toán tử số học kết hợp `+=`、`-=`、`*=`、`/=`、`%=` và toán tử bit kết hợp `&=`、`|=`、`^=`、`<<=`、`>>=`.
 
-例如，`op = op + 2` 可写为 `op += 2`，`op = op - 2` 可写为 `op -= 2`，`op= op * 2` 可写为 `op *= 2`．
+Ví dụ, `op = op + 2` có thể viết `op += 2`, `op = op - 2` viết `op -= 2`, `op= op * 2` viết `op *= 2`.
 
-## 条件运算符
+## Toán tử điều kiện
 
-条件运算符可以看作 `if` 语句的简写，`a ? b : c` 中如果表达式 `a` 成立，那么这个条件表达式的结果是 `b`，否则条件表达式的结果是 `c`．
-## 比较运算符
+Toán tử điều kiện có thể xem là dạng rút gọn của câu lệnh `if`, trong `a ? b : c` nếu biểu thức `a` đúng thì kết quả là `b`, ngược lại là `c`.
+## Toán tử so sánh
 
-| 运算符    | 功能   |
+| Toán tử    | Chức năng   |
 | ------ | ---- |
-|  `>`   | 大于   |
-|  `>=`  | 大于等于 |
-|  `<`   | 小于   |
-|  `<=`  | 小于等于 |
-|  `==`  | 等于   |
-|  `!=`  | 不等于  |
+|  `>`   | Lớn hơn   |
+|  `>=`  | Lớn hơn hoặc bằng |
+|  `<`   | Nhỏ hơn   |
+|  `<=`  | Nhỏ hơn hoặc bằng |
+|  `==`  | Bằng  |
+|  `!=`  | Không bằng  |
 
-其中特别需要注意的是要将等于运算符 `==` 和赋值运算符 `=` 区分开来，这在判断语句中尤为重要．
+Đặc biệt cần phân biệt toán tử so sánh bằng `==` với toán tử gán `=`; điều này rất quan trọng trong các câu lệnh điều kiện.
 
- `if (op=1)` 与 `if (op==1)` 看起来类似，但实际功能却相差甚远．第一条语句是在对 op 进行赋值，若赋值为非 0 时为真值，表达式的条件始终是满足的，无法达到判断的作用；而第二条语句才是对 `op` 的值进行判断．
+ `if (op=1)` và `if (op==1)` nhìn có vẻ giống nhau, nhưng chức năng khác hẳn. Câu lệnh đầu là gán giá trị cho op, nếu gán khác 0 thì là true, điều kiện luôn đúng, không còn tác dụng kiểm tra; còn câu lệnh thứ hai mới là so sánh giá trị của `op`.
 
-## 逻辑运算符
+## Toán tử logic
 
-| 运算符    | 功能  |
+| Toán tử    | Chức năng  |
 | ------ | --- |
-|  `&&`  | 逻辑与 |
-|  `||`  | 逻辑或 |
-|  `!`   | 逻辑非 |
+|  `&&`  | AND logic |
+|  `||`  | OR logic |
+|  `!`   | NOT logic |
 
 ```cpp
-Result = op1 && op2;  // 当 op1 与 op2 都为真时则 Result 为真
+Result = op1 && op2;  // Khi op1 và op2 đều đúng thì Result đúng
 
-Result = op1 || op2;  // 当 op1 或 op2 其中一个为真时则 Result 为真
+Result = op1 || op2;  // Khi op1 hoặc op2 đúng thì Result đúng
 
-Result = !op1;  // 当 op1 为假时则 Result 为真
+Result = !op1;  // Khi op1 sai thì Result đúng
 ```
 
-**内建的**运算符 `&&` 和 `||` 进行短路求值（若在求值第一个操作数后结果已知，则不求值第二个），重载的运算符无此特性，并始终对两个操作数都进行求值．
+Các toán tử **built-in** `&&` và `||` có đánh giá ngắn mạch (nếu sau khi đánh giá toán hạng đầu tiên đã biết kết quả thì không đánh giá toán hạng thứ hai), còn toán tử đã bị nạp chồng thì không có đặc tính này và luôn đánh giá cả hai toán hạng.
 
-## 逗号运算符
+## Toán tử dấu phẩy
 
-逗号运算符可将多个表达式分隔开来，被分隔开的表达式按从左至右的顺序依次计算，整个表达式的值是最后的表达式的值．逗号表达式的优先级在所有运算符中的优先级是 **最低** 的．
+Toán tử dấu phẩy dùng để phân tách nhiều biểu thức, các biểu thức được tính từ trái sang phải, giá trị của toàn biểu thức là giá trị của biểu thức cuối. Độ ưu tiên của toán tử dấu phẩy là **thấp nhất** trong tất cả toán tử.
 
 ```cpp
-exp1, exp2, exp3;  // 最后的值为 exp3 的运算结果．
+exp1, exp2, exp3;  // Giá trị cuối cùng là kết quả của exp3.
 
 Result = 1 + 2, 3 + 4, 5 + 6;
-//得到 Result 的值为 3 而不是 11，因为赋值运算符 "="
-//的优先级比逗号运算符高，先进行了赋值运算才进行逗号运算．
+// Giá trị Result là 3 chứ không phải 11, vì toán tử gán "="
+// có độ ưu tiên cao hơn toán tử dấu phẩy, nên gán trước rồi mới xử lý dấu phẩy.
 
 Result = (1 + 2, 3 + 4, 5 + 6);
 
-// 若要让 Result 的值得到逗号运算的结果则应将整个表达式用括号提高优先级，此时
-// Result 的值才为 11．
+// Nếu muốn Result nhận giá trị của phép toán dấu phẩy thì cần bao toàn biểu thức bằng ngoặc
+// để tăng độ ưu tiên, lúc này Result mới là 11.
 ```
 
-## 成员访问运算符
+## Toán tử truy cập thành viên
 
-| 运算符       | 功能       |
+| Toán tử       | Chức năng       |
 | --------- | -------- |
-|  `[]`     | 数组下标     |
-|  `.`      | 对象成员     |
-|  `&` （单目） | 取地址/获取引用 |
-|  `*` （单目） | 间接寻址/解引用 |
-|  `->`     | 指针成员     |
+|  `[]`     | Chỉ số mảng     |
+|  `.`      | Thành viên của đối tượng     |
+|  `&` （đơn ngôi） | Lấy địa chỉ/lấy tham chiếu |
+|  `*` （đơn ngôi） | Truy cập gián tiếp/giải tham chiếu |
+|  `->`     | Thành viên qua con trỏ     |
 
-这些运算符用来访问对象的成员或者内存，除了最后一个运算符外上述运算符都可被重载．与 `&` ， `*` 和 `->` 相关的内容请阅读 [指针](./pointer.md) 和 [引用](./reference.md) 教程．这里还省略了两个很少用到的运算符 `.*` 和 `->*` ，其具体用法可以参见 [C++ 语言手册](https://zh.cppreference.com/w/cpp/language/operator_member_access) ．
+Các toán tử này dùng để truy cập thành viên của đối tượng hoặc bộ nhớ; ngoài toán tử cuối cùng, các toán tử trên đều có thể nạp chồng. Nội dung liên quan đến `&`、`*` và `->` xem [con trỏ](./pointer.md) và [tham chiếu](./reference.md). Ở đây bỏ qua hai toán tử ít dùng `.*` và `->*`, cách dùng xem [C++ language manual](https://zh.cppreference.com/w/cpp/language/operator_member_access).
 
 ```cpp
-auto result1 = v[1];  // 获取v中下标为2的对象
-auto result2 = p.q;   // 获取p对象的q成员
-auto result3 = p -> q;  // 获取p指针指向的对象的q成员，等价于 (*p).q
-auto result4 = &v;      // 获取指向v的指针
-auto result5 = *v;      // 获取v指针指向的对象
+auto result1 = v[1];  // Lấy phần tử có chỉ số 2 trong v
+auto result2 = p.q;   // Lấy thành viên q của đối tượng p
+auto result3 = p -> q;  // Lấy thành viên q của đối tượng mà con trỏ p trỏ tới, tương đương (*p).q
+auto result4 = &v;      // Lấy con trỏ trỏ tới v
+auto result5 = *v;      // Lấy đối tượng mà con trỏ v trỏ tới
 ```
 
-## C++ 运算符优先级总表
+## Bảng tổng hợp độ ưu tiên toán tử C++
 
-来自 [C++ 运算符优先级 - cppreference](https://zh.cppreference.com/w/cpp/language/operator_precedence) ，有修改．
+Trích từ [C++ operator precedence - cppreference](https://zh.cppreference.com/w/cpp/language/operator_precedence), có chỉnh sửa.
 
-|          运算符         |    描述    |                              例子                              | 可重载性 |
+|          Toán tử         |    Mô tả    |                              Ví dụ                              | Khả năng nạp chồng |
 | :------------------: | :------: | :----------------------------------------------------------: | :--: |
-|       **第一级别**       |          |                                                              |      |
-|         `::`         |  作用域解析符  |                       `Class::age = 2;`                      | 不可重载 |
-|       **第二级别**       |          |                                                              |      |
-|         `++`         |  后自增运算符  |           `for (int i = 0; i < 10; i++) cout << i;`          |  可重载 |
-|         `--`         |  后自减运算符  |           `for (int i = 10; i > 0; i--) cout << i;`          |  可重载 |
-|   `type()  type{}`   |  强制类型转换  |           `unsigned int a = unsigned(3.14);`                | 可重载 |
-|         `()`         |   函数调用   |                        `isdigit('1')`                        |  可重载 |
-|         `[]`         |  数组数据获取  |                        `array[4] = 2;`                       |  可重载 |
-|          `.`         |  对象型成员调用 |                        `obj.age = 34;`                       | 不可重载 |
-|         `->`         |  指针型成员调用 |                       `ptr->age = 34;`                       |  可重载 |
-|   **第三级别** （从右向左结合）  |          |                                                              |      |
-|         `++`         |  前自增运算符  |             `for (i = 0; i < 10; ++i) cout << i;`            |  可重载 |
-|         `--`         |  前自减运算符  |             `for (i = 10; i > 0; --i) cout << i;`            |  可重载 |
-|          `+`         |    正号    |                         `int i = +1;`                        |  可重载 |
-|          `-`         |    负号    |                         `int i = -1;`                        |  可重载 |
-|          `!`         |   逻辑取反   |                        `if (!done) …`                       |  可重载 |
-|          `~`         |   按位取反   |                       `flags = ~flags;`                      |  可重载 |
-|       `(type)`       |  C 风格强制类型转换  |                 `int i = (int) floatNum;`             |  可重载 |
-|          `*`         |   指针取值   |                     `int data = *intPtr;`                    |  可重载 |
-|          `&`         |   值取指针   |                    `int *intPtr = &data;`                    |  可重载 |
-|       `sizeof`       |  返回类型内存  |    `int size = sizeof floatNum; int size = sizeof(float);`   | 不可重载 |
-|         `new`        | 动态元素内存分配 |  `long *pVar = new long; MyClass *ptr = new MyClass(args);`  |  可重载 |
-|       `new []`       | 动态数组内存分配 |                 `long *array = new long[n];`                 |  可重载 |
-|       `delete`       | 动态析构元素内存 |                        `delete pVar;`                        |  可重载 |
-|      `delete []`     | 动态析构数组内存 |                      `delete [] array;`                      |  可重载 |
-|       **第四级别**    |          |                                                              |      |
-|         `.*`         |  类对象成员引用 |                       `obj.*var = 24;`                       | 不可重载 |
-|         `->*`        |  类指针成员引用 |                       `ptr->*var = 24;`                      |  可重载 |
-|       **第五级别**    |          |                                                              |      |
-|          `*`         |    乘法    |                       `int i = 2 * 4;`                       |  可重载 |
-|          `/`         |    除法    |                    `float f = 10.0 / 3.0;`                   |  可重载 |
-|          `%`         | 取余数（模运算） |                      `int rem = 4 % 3;`                      |  可重载 |
-|       **第六级别**    |          |                                                              |      |
-|          `+`         |    加法    |                       `int i = 2 + 3;`                       |  可重载 |
-|          `-`         |    减法    |                       `int i = 5 - 1;`                       |  可重载 |
-|       **第七级别**    |          |                                                              |      |
-|         `<<`         |    位左移   |                    `int flags = 33 << 1;`                    |  可重载 |
-|         `>>`         |    位右移   |                    `int flags = 33 >> 1;`                    |  可重载 |
-|       **第八级别**     |          |                                                              |      |
-|         `<=>`         | 三路比较运算符  |                `if ((i <=> 42) < 0) ...`                      |  可重载 |
-|       **第九级别**     |          |                                                              |      |
-|          `<`         |    小于    |                      `if (i < 42) ...`                      |  可重载 |
-|         `<=`         |   小于等于   |                      `if (i <= 42) ...`                     |  可重载 |
-|          `>`         |    大于    |                      `if (i > 42) ...`                      |  可重载 |
-|         `>=`         |   大于等于   |                      `if (i >= 42) ...`                     |  可重载 |
-|       **第十级别**       |          |                                                              |      |
-|         `==`         |    等于    |                      `if (i == 42) ...`                     |  可重载 |
-|         `!=`         |    不等于   |                      `if (i != 42) ...`                     |  可重载 |
-|       **第十一级别**      |          |                                                              |      |
-|          `&`         |   位与运算   |                     `flags = flags & 42;`                    |  可重载 |
-|       **第十二级别**      |          |                                                              |      |
-|          `^`         |   位异或运算  |                     `flags = flags ^ 42;`                    |  可重载 |
-|       **第十三级别**      |          |                                                              |      |
-|          `|`         |   位或运算   |                     `flags = flags | 42;`                    |  可重载 |
-|       **第十四级别**      |          |                                                              |      |
-|         `&&`         |   逻辑与运算  |              `if (conditionA && conditionB) ...`             |  可重载 |
-|   **第十五级别**         |          |                                                              |      |
-|         `||`         |   逻辑或运算  |              `if (conditionA || conditionB) ...`             |  可重载 |
-|   **第十六级别** （从右向左结合） |          |                                                              |      |
-|         `? :`        |   条件运算符  |                   `int i = a > b ? a : b;`                   | 不可重载 |
-|        `throw`       |   异常抛出   |                  `throw EClass("Message");`                  | 不可重载 |
-|          `=`         |    赋值    |                         `int a = b;`                         |  可重载 |
-|         `+=`         |   加赋值运算  |                           `a += 3;`                          |  可重载 |
-|         `-=`         |   减赋值运算  |                           `b -= 4;`                          |  可重载 |
-|         `*=`         |   乘赋值运算  |                           `a *= 5;`                          |  可重载 |
-|         `/=`         |   除赋值运算  |                           `a /= 2;`                          |  可重载 |
-|         `%=`         |   模赋值运算  |                           `a %= 3;`                          |  可重载 |
-|         `<<=`        |  位左移赋值运算 |                        `flags <<= 2;`                        |  可重载 |
-|         `>>=`        |  位右移赋值运算 |                        `flags >>= 2;`                        |  可重载 |
-|         `&=`         |  位与赋值运算  |                     `flags &= new_flags;`                    |  可重载 |
-|         `^=`         |  位异或赋值运算 |                     `flags ^= new_flags;`                    |  可重载 |
-|         `|=`         |  位或赋值运算  |                     `flags |= new_flags;`                    |  可重载 |
-|       **第十七级别**      |          |                                                              |      |
-|          `,`         |   逗号分隔符  |          `for (i = 0, j = 0; i < 10; i++, j++) ...`          |  可重载 |
+|       **Mức 1**       |          |                                                              |      |
+|         `::`         |  Toán tử phân giải phạm vi  |                       `Class::age = 2;`                      | Không nạp chồng |
+|       **Mức 2**       |          |                                                              |      |
+|         `++`         |  Hậu tố tăng  |           `for (int i = 0; i < 10; i++) cout << i;`          |  Có thể nạp chồng |
+|         `--`         |  Hậu tố giảm  |           `for (int i = 10; i > 0; i--) cout << i;`          |  Có thể nạp chồng |
+|   `type()  type{}`   |  Ép kiểu  |           `unsigned int a = unsigned(3.14);`                | Có thể nạp chồng |
+|         `()`         |   Gọi hàm   |                        `isdigit('1')`                        |  Có thể nạp chồng |
+|         `[]`         |  Truy cập mảng  |                        `array[4] = 2;`                       |  Có thể nạp chồng |
+|          `.`         |  Truy cập thành viên đối tượng |                        `obj.age = 34;`                       | Không nạp chồng |
+|         `->`         |  Truy cập thành viên qua con trỏ |                       `ptr->age = 34;`                       |  Có thể nạp chồng |
+|   **Mức 3** （kết hợp từ phải sang trái）  |          |                                                              |      |
+|         `++`         |  Tiền tố tăng  |             `for (i = 0; i < 10; ++i) cout << i;`            |  Có thể nạp chồng |
+|         `--`         |  Tiền tố giảm  |             `for (i = 10; i > 0; --i) cout << i;`            |  Có thể nạp chồng |
+|          `+`         |    Dấu dương    |                         `int i = +1;`                        |  Có thể nạp chồng |
+|          `-`         |    Dấu âm    |                         `int i = -1;`                        |  Có thể nạp chồng |
+|          `!`         |   Phủ định logic   |                        `if (!done) …`                       |  Có thể nạp chồng |
+|          `~`         |   Phủ định theo bit   |                       `flags = ~flags;`                      |  Có thể nạp chồng |
+|       `(type)`       |  Ép kiểu C  |                 `int i = (int) floatNum;`             |  Có thể nạp chồng |
+|          `*`         |   Giải tham chiếu   |                     `int data = *intPtr;`                    |  Có thể nạp chồng |
+|          `&`         |   Lấy địa chỉ   |                    `int *intPtr = &data;`                    |  Có thể nạp chồng |
+|       `sizeof`       |  Kích thước bộ nhớ  |    `int size = sizeof floatNum; int size = sizeof(float);`   | Không nạp chồng |
+|         `new`        | Cấp phát bộ nhớ động |  `long *pVar = new long; MyClass *ptr = new MyClass(args);`  |  Có thể nạp chồng |
+|       `new []`       | Cấp phát mảng động |                 `long *array = new long[n];`                 |  Có thể nạp chồng |
+|       `delete`       | Giải phóng phần tử động |                        `delete pVar;`                        |  Có thể nạp chồng |
+|      `delete []`     | Giải phóng mảng động |                      `delete [] array;`                      |  Có thể nạp chồng |
+|       **Mức 4**    |          |                                                              |      |
+|         `.*`         |  Truy cập thành viên qua con trỏ thành viên (đối tượng) |                       `obj.*var = 24;`                       | Không nạp chồng |
+|         `->*`        |  Truy cập thành viên qua con trỏ thành viên (con trỏ) |                       `ptr->*var = 24;`                      |  Có thể nạp chồng |
+|       **Mức 5**    |          |                                                              |      |
+|          `*`         |    Nhân    |                       `int i = 2 * 4;`                       |  Có thể nạp chồng |
+|          `/`         |    Chia    |                    `float f = 10.0 / 3.0;`                   |  Có thể nạp chồng |
+|          `%`         | Lấy dư (mod) |                      `int rem = 4 % 3;`                      |  Có thể nạp chồng |
+|       **Mức 6**    |          |                                                              |      |
+|          `+`         |    Cộng    |                       `int i = 2 + 3;`                       |  Có thể nạp chồng |
+|          `-`         |    Trừ    |                       `int i = 5 - 1;`                       |  Có thể nạp chồng |
+|       **Mức 7**    |          |                                                              |      |
+|         `<<`         |    Dịch trái theo bit   |                    `int flags = 33 << 1;`                    |  Có thể nạp chồng |
+|         `>>`         |    Dịch phải theo bit   |                    `int flags = 33 >> 1;`                    |  Có thể nạp chồng |
+|       **Mức 8**     |          |                                                              |      |
+|         `<=>`         | Toán tử so sánh ba chiều  |                `if ((i <=> 42) < 0) ...`                      |  Có thể nạp chồng |
+|       **Mức 9**     |          |                                                              |      |
+|          `<`         |    Nhỏ hơn    |                      `if (i < 42) ...`                      |  Có thể nạp chồng |
+|         `<=`         |   Nhỏ hơn hoặc bằng   |                      `if (i <= 42) ...`                     |  Có thể nạp chồng |
+|          `>`         |    Lớn hơn    |                      `if (i > 42) ...`                      |  Có thể nạp chồng |
+|         `>=`         |   Lớn hơn hoặc bằng   |                      `if (i >= 42) ...`                     |  Có thể nạp chồng |
+|       **Mức 10**       |          |                                                              |      |
+|         `==`         |    Bằng    |                      `if (i == 42) ...`                     |  Có thể nạp chồng |
+|         `!=`         |    Không bằng   |                      `if (i != 42) ...`                     |  Có thể nạp chồng |
+|       **Mức 11**      |          |                                                              |      |
+|          `&`         |   AND theo bit   |                     `flags = flags & 42;`                    |  Có thể nạp chồng |
+|       **Mức 12**      |          |                                                              |      |
+|          `^`         |   XOR theo bit  |                     `flags = flags ^ 42;`                    |  Có thể nạp chồng |
+|       **Mức 13**      |          |                                                              |      |
+|          `|`         |   OR theo bit   |                     `flags = flags | 42;`                    |  Có thể nạp chồng |
+|       **Mức 14**      |          |                                                              |      |
+|         `&&`         |   AND logic  |              `if (conditionA && conditionB) ...`             |  Có thể nạp chồng |
+|   **Mức 15**         |          |                                                              |      |
+|         `||`         |   OR logic  |              `if (conditionA || conditionB) ...`             |  Có thể nạp chồng |
+|   **Mức 16** （kết hợp từ phải sang trái） |          |                                                              |      |
+|         `? :`        |   Toán tử điều kiện  |                   `int i = a > b ? a : b;`                   | Không nạp chồng |
+|        `throw`       |   Ném ngoại lệ   |                  `throw EClass("Message");`                  | Không nạp chồng |
+|          `=`         |    Gán    |                         `int a = b;`                         |  Có thể nạp chồng |
+|         `+=`         |   Cộng gán  |                           `a += 3;`                          |  Có thể nạp chồng |
+|         `-=`         |   Trừ gán  |                           `b -= 4;`                          |  Có thể nạp chồng |
+|         `*=`         |   Nhân gán  |                           `a *= 5;`                          |  Có thể nạp chồng |
+|         `/=`         |   Chia gán  |                           `a /= 2;`                          |  Có thể nạp chồng |
+|         `%=`         |   Lấy dư gán  |                           `a %= 3;`                          |  Có thể nạp chồng |
+|         `<<=`        |  Dịch trái gán |                        `flags <<= 2;`                        |  Có thể nạp chồng |
+|         `>>=`        |  Dịch phải gán |                        `flags >>= 2;`                        |  Có thể nạp chồng |
+|         `&=`         |  AND bit gán  |                     `flags &= new_flags;`                    |  Có thể nạp chồng |
+|         `^=`         |  XOR bit gán |                     `flags ^= new_flags;`                    |  Có thể nạp chồng |
+|         `|=`         |  OR bit gán  |                     `flags |= new_flags;`                    |  Có thể nạp chồng |
+|       **Mức 17**      |          |                                                              |      |
+|          `,`         |   Dấu phẩy  |          `for (i = 0, j = 0; i < 10; i++, j++) ...`          |  Có thể nạp chồng |
 
-需要注意的是，表中并未列出 `const_cast`、`static_cast`、`dynamic_cast`、`reinterpret_cast`、`typeid`、`sizeof...`、`noexcept` 及 `alignof` 等运算符，因为它们的使用形式与函数调用相同，不会出现歧义．
+Lưu ý bảng không liệt kê các toán tử `const_cast`, `static_cast`, `dynamic_cast`, `reinterpret_cast`, `typeid`, `sizeof...`, `noexcept` và `alignof` vì dạng dùng của chúng giống lời gọi hàm nên không gây nhập nhằng.
 
-## 参考资料与注释
+## Tài liệu tham khảo và chú thích
 
-[^note1]: C++20 前，若原值为带符号类型，且移位后的结果能被原类型的无符号版本容纳，则将该结果 [转换](../lang/var.md#类型转换) 为相应的带符号值，否则行为未定义；无符号数的左移则舍弃移出结果类型的位．C++20 起，规定 `a << b` 为 $a\cdot 2^b$ 在模 $2^N$ 下的值（$N$ 为结果类型的位宽），即无论是带符号数还是无符号数，左移均直接舍弃移出结果类型的位（即 [算术左移/逻辑左移](../math/bit.md#移位)）．
+[^note1]: Trước C++20, nếu giá trị ban đầu là kiểu có dấu và kết quả sau dịch có thể biểu diễn bằng phiên bản không dấu của kiểu đó, thì kết quả sẽ được [chuyển đổi](../lang/var.md#类型转换) sang kiểu có dấu tương ứng, nếu không thì hành vi không xác định; với số không dấu, dịch trái sẽ bỏ các bit tràn khỏi kiểu kết quả. Từ C++20, quy định `a << b` là $a\cdot 2^b$ theo modulo $2^N$ (với $N$ là độ rộng bit của kiểu kết quả), tức dù có dấu hay không dấu, dịch trái đều bỏ các bit tràn (tức [dịch trái số học/logic](../math/bit.md#移位)).
 
-[^note2]: C++20 前．C++20 起的行为参见[^note1]．
+[^note2]: Trước C++20. Hành vi từ C++20 xem [^note1].
 
-[^note3]: 即 [逻辑右移](../math/bit.md#移位)．
+[^note3]: Tức [dịch phải logic](../math/bit.md#移位).
 
-[^note4]: 即 [算术右移](../math/bit.md#移位)．C++20 前，带符号的右移是依实现定义的，在大多数实现中，均采用算术右移．C++20 起，规定 `a >> b` 为 $\lfloor a/2^b\rfloor$，所以带符号数右移运算是算术右移．
+[^note4]: Tức [dịch phải số học](../math/bit.md#移位). Trước C++20, dịch phải số có dấu là phụ thuộc hiện thực, đa số hiện thực dùng dịch phải số học. Từ C++20, quy định `a >> b` là $\lfloor a/2^b\rfloor$, nên dịch phải số có dấu là dịch phải số học.

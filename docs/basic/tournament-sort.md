@@ -1,44 +1,42 @@
-本页面将简要介绍锦标赛排序．
+Trang này giới thiệu ngắn gọn về thuật toán sắp xếp kiểu "đấu loại" (Tournament sort).
 
-## 定义
+## Định nghĩa
 
-锦标赛排序（英文：Tournament sort），又被称为树形选择排序，是 [选择排序](./selection-sort.md) 的优化版本，[堆排序](./heap-sort.md) 的一种变体（均采用完全二叉树）．它在选择排序的基础上使用优先队列查找下一个该选择的元素．
+Sắp xếp theo hình thức đấu loại (Tournament sort), còn gọi là sắp xếp chọn theo cây, là phiên bản tối ưu của [sắp xếp chọn](./selection-sort.md) và là một biến thể của [heap sort](./heap-sort.md) (đều dùng cây nhị phân hoàn chỉnh). Ý tưởng là dùng cấu trúc giống hàng đợi ưu tiên để chọn phần tử tiếp theo cần lấy.
 
-## 引入
+## Nguồn gốc tên
 
-锦标赛排序的名字来源于单败淘汰制的竞赛形式．在这种赛制中有许多选手参与比赛，他们两两比较，胜者进入下一轮比赛．这种淘汰方式能够决定最好的选手，但是在最后一轮比赛中被淘汰的选手不一定是第二好的——他可能不如先前被淘汰的选手．
+Tên "tournament" xuất phát từ hình thức thi đấu loại trực tiếp. Nhiều tuyển thủ so tài từng cặp, kẻ thắng tiến vòng kế tiếp. Cách loại trực tiếp xác định người thắng nhưng người bị loại cuối cùng không nhất thiết là nhì — vì có thể thua người sau đã bị loại trước đó.
 
-## 过程
+## Quá trình
 
-以 **最小锦标赛排序树** 为例：
+Lấy ví dụ "cây đấu loại chọn nhỏ nhất":
 
 ![tournament-sort1](./images/tournament-sort1.png)
 
-待排序元素是叶子节点显示的元素．红色边显示的是每一轮比较中较小的元素的胜出路径．显然，完成一次＂锦标赛＂可以选出一组元素中最小的那一个．
+Các phần tử cần sắp xếp được đặt ở các lá. Các cạnh màu đỏ biểu diễn đường thắng của phần tử nhỏ hơn trong mỗi so sánh. Rõ ràng một lượt "đấu" chọn ra phần tử nhỏ nhất của một tập.
 
-每一轮对 $n$ 个元素进行比较后可以得到 $\frac{n}{2}$ 个「优胜者」，每一对中较小的元素进入下一轮比较．如果无法凑齐一对元素，那么这个元素直接进入下一轮的比较．
+Mỗi lượt so sánh trên n phần tử tạo ra n/2 "người thắng" để vào vòng sau; với mỗi cặp, phần tử nhỏ hơn tiến. Nếu có phần tử lẻ không có cặp, nó tự động tiến vòng sau.
 
 ![tournament-sort2](./images/tournament-sort2.png)
 
-完成一次「锦标赛」后需要将被选出的元素去除．直接将其设置为 $\infty$（这个操作类似 [堆排序](./heap-sort.md)），然后再次举行「锦标赛」选出次小的元素．
+Sau khi chọn được phần tử nhỏ nhất, ta loại bỏ nó (thường gán giá trị đó là +∞ — ý tương tự như trong [heap sort](./heap-sort.md)) và tổ chức lại "đấu" để chọn phần tử nhỏ thứ hai. Lặp lại đến khi các phần tử đều được lấy ra theo thứ tự tăng dần.
 
-之后一直重复这个操作，直至所有元素有序．
+## Tính chất
 
-## 性质
+### Tính ổn định
 
-### 稳定性
+Tournament sort không phải là thuật toán ổn định.
 
-锦标赛排序是一种不稳定的排序算法．
+### Độ phức tạp thời gian
 
-### 时间复杂度
+Độ phức tạp tốt nhất, trung bình và xấu nhất đều là $O(n\log n)$. Thuật toán khởi tạo "tournament" trong $O(n)$, sau đó mỗi lần chọn một phần tử tốn $O(\log n)$.
 
-锦标赛排序的最优时间复杂度、平均时间复杂度和最坏时间复杂度均为 $O(n\log n)$．它用 $O(n)$ 的时间初始化「锦标赛」，然后用 $O(\log n)$ 的时间从 $n$ 个元素中选取一个元素．
+### Độ phức tạp không gian
 
-### 空间复杂度
+Sử dụng $O(n)$ bộ nhớ phụ.
 
-锦标赛排序的空间复杂度为 $O(n)$．
-
-## 实现
+## Triển khai
 
 === "C++"
     ```cpp
@@ -136,6 +134,6 @@
             value = recreat()
     ```
 
-## 外部链接
+## Liên kết ngoài
 
 -   [Tournament sort - Wikipedia](https://en.wikipedia.org/wiki/Tournament_sort)

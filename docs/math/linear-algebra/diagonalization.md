@@ -1,123 +1,111 @@
-## 特征子空间
+## Không gian riêng
 
-矩阵 $A$ 的属于 $\lambda_0$ 的全部特征向量，再添上零向量，构成一个线性空间，称为矩阵 $A$ 的一个特征子空间，记为 $E(\lambda_0)$．它是齐次线性方程组：
+Tập mọi vectơ riêng ứng với $\lambda_0$ (thêm vectơ 0) tạo thành không gian tuyến tính, gọi là không gian riêng $E(\lambda_0)$ của ma trận $A$. Nó là không gian nghiệm của:
 
 $$
 (\lambda_0 I-A)X=0
 $$
 
-的解空间．
-
-对于特征子空间 $E(\lambda_i)=N(\lambda_i I-A)$，由亏加秩定理有：
+Với $E(\lambda_i)=N(\lambda_i I-A)$, theo định lý khuyết + hạng:
 
 $$
 r(\lambda_i I-A)+\operatorname{dim} N(\lambda_i I-A)=n
 $$
 
-因此，特征子空间 $E(\lambda_i)$ 的维数为：
+Suy ra:
 
 $$
 \operatorname{dim} E(\lambda_i)=n-r(\lambda_i I-A)
 $$
 
-也称为 $\lambda_i$ 的 **几何重数**．
+gọi là **bội hình học** của $\lambda_i$.
 
-## 不变子空间
+## Không gian con bất biến
 
-在研究线性变换 $T$ 的时候，常常希望选取空间 $V$ 的一个基，使得线性变换 $T$ 对于这个基的矩阵具有尽可能简单的形状．
+Khi nghiên cứu biến đổi tuyến tính $T$, ta muốn chọn cơ sở sao cho ma trận đơn giản.
 
-设 $V$ 是数域 $F$ 上的线性空间，$W$ 是 $V$ 的一个子空间，$T$ 是 $V$ 上的一个线性变换．如果对于 $W$ 中任意的向量 $x$，都有 $T(x)$ 也在 $W$ 中（也称为空间在变换下不变或稳定），称 $W$ 是 $T$ 的一个不变子空间．
+Cho $V$ trên trường $F$, $W$ là không gian con, $T$ là biến đổi tuyến tính. Nếu với mọi $x\in W$, $T(x)\in W$, thì $W$ là không gian con bất biến.
 
-空间在变换下不变，并不是说坐标在变换下真的「不变」，有可能是进行了一个拉伸等变形，只是变形后还落在空间里．
+Không gian bất biến không phải “tọa độ không đổi”, mà là sau biến đổi vẫn nằm trong không gian đó.
 
--   线性空间 $V$ 的任意一个子空间都是数乘变换的不变子空间．
--   对于 $V$ 中任意的线性变换 $T$，空间 $V$ 和零子空间都是 $T$ 的不变子空间，称为平凡不变子空间．
--   不变子空间的交与和也是不变子空间．
+-   Mọi không gian con của $V$ là bất biến với phép nhân vô hướng.
+-   Với mọi $T$, $V$ và không gian 0 là bất biến (tầm thường).
+-   Giao và tổng của các không gian bất biến cũng bất biến.
 
-设 $W$ 是线性变换 $T$ 的一个不变子空间．只考虑 $T$ 在不变子空间 $W$ 上的作用，就得到子空间 $W$ 本身的线性变换，称为 $T$ 在子空间 $W$ 上的限制，记作 ${T|}_W$．
+Với không gian bất biến $W$, hạn chế $T$ lên $W$ gọi là **hạn chế** ${T|}_W$.
 
-对于 $V$ 中任意的线性变换 $T$，像空间 $R(T)$ 与核空间 $N(T)$ 是 $T$ 的不变子空间．这两种情况的含义是，空间 $V$ 在变换前后，完成了自身的压缩（像空间），或者压缩到 $0$（核空间）．
+Ảnh $R(T)$ và kernel $N(T)$ là không gian bất biến của $T$.
 
-对于 $V$ 中任意的线性变换 $T$，$T$ 的特征子空间是 $T$ 的不变子空间．
+Không gian riêng cũng là không gian bất biến.
 
-## 准素分解
+## Phân rã sơ cấp
 
-根据代数基本定理，最小多项式可以分解为：
+Theo định lý cơ bản đại số, đa thức tối tiểu:
 
 $$
 m_A(\lambda)={(\lambda-\lambda_1)}^{r_1}\cdots{(\lambda-\lambda_S)}^{r_S}
 $$
 
-考虑最小多项式代入变元 $\lambda$ 为矩阵 $A$ 后，各个因式的核空间，构成矩阵 $A$ 的一系列不变子空间：
+Xét các không gian con bất biến:
 
 $$
 W_i=N({(\lambda_i I-A)}^{r_i})
 $$
 
-定理：该不变子空间 $W_i$ 的维数，恰好为特征值 $\lambda_i$ 的代数重数．
+Định lý: $\dim W_i$ bằng bội đại số của $\lambda_i$.
 
-回顾一下，代数重数是指特征多项式各个因式的次数，几何重数是指特征子空间 $E(\lambda_i)=N(\lambda_i I-A)$ 的维数．这个不变子空间 $W_i$ 与特征子空间 $E(\lambda_i)$，两者都是矩阵的核空间，并且两个矩阵构成最小多项式 $r_i$ 次幂的关系．也就是说，特征子空间的维数是几何重数，「特征子空间」经过最小多项式 $r_i$ 次幂后到达一个「不变子空间」，不变子空间的维数到达了特征多项式的代数重数．
+Bội đại số là số mũ trong đa thức đặc trưng, bội hình học là số chiều không gian riêng. $W_i$ đạt đến bội đại số sau lũy thừa $r_i$.
 
-该定理其实是下面准素分解定理的推论．
+Gọi $T$ là biến đổi tương ứng với $A$, và $T_i={T|}_{W_i}$. Khi đó đa thức tối tiểu của $T_i$ là $(x-\lambda_i)^{r_i}$.
 
-记矩阵 $A$ 对应的线性变换 $T$，在每个子空间 $W_i$ 上的限制 $T_i={T|}_{W_i}$．于是 $T_i$ 的最小多项式是 $(x-\lambda_i)^{r_i}$．
-
-定理：设 $V$ 是域 $F$ 上的线性空间，$T$ 是 $V$ 上的一个线性变换．那么空间 $V$ 可以关于线性变换 $T$ 进行准素分解，拆成若干不变子空间 $W_i$ 的直和．
+Định lý: $V$ phân rã thành tổng trực tiếp các không gian bất biến $W_i$:
 
 $$
 V=W_1\oplus W_2\oplus\cdots\oplus W_S
 $$
 
-这意味着，$T$ 在某组基下的矩阵是准对角阵：
+Tương ứng ma trận là dạng khối chéo:
 
 $$
 \operatorname{diag}\{A_1,A_2,\cdots,A_S\}
 $$
 
-其中，$A_i$ 是 $T_i$ 在对应基下的矩阵．
+trong đó $A_i$ là ma trận của $T_i$.
 
-该定理表明，可以使用不变子空间简化线性变换的矩阵．
+## Ma trận khả chéo hóa
 
-## 可对角化矩阵
+Ma trận vuông $A$ khả chéo hóa nếu tương tự một ma trận đường chéo.
 
-对于 $n$ 阶方阵 $A$，如果相似于一个对角阵，则称 $A$ 为可对角化矩阵，或称单纯矩阵．
+-   Tổng, tích, nghịch đảo (nếu có) của ma trận đường chéo vẫn đường chéo, đường chéo là trị riêng.
+-   $T$ khả chéo hóa ⇔ có cơ sở để ma trận là đường chéo.
 
--   对角阵的和、积、逆，如果存在，仍然是对角阵，其对角线上的元素就是它的特征值．
--   线性变换 $T$ 的矩阵为可对角化矩阵，等价于 $T$ 在某组基下的矩阵为对角阵．
+Định lý: với trị riêng phân biệt $\lambda_1,\cdots,\lambda_m$, các mệnh đề sau tương đương:
 
-定理：设矩阵 $A$ 的全部互异特征根为 $\lambda_1,\cdots,\lambda_m$，则以下命题等价：
+-   $A$ khả chéo hóa.
+-   $A$ có $n$ vectơ riêng độc lập.
+-   $\sum \operatorname{dim} E(\lambda_i)=n$.
 
--   矩阵 $A$ 可对角化．
--   矩阵 $A$ 有 $n$ 个线性无关的特征向量．
--   以下公式成立：
+Do đó, $A$ khả chéo hóa ⇔ bội đại số = bội hình học cho mọi trị riêng.
 
-$$
-\operatorname{dim} E(\lambda_1)+\cdots+\operatorname{dim} E(\lambda_m)=n
-$$
+Hệ quả: nếu $A$ có $n$ trị riêng phân biệt thì khả chéo hóa; ngược lại không nhất thiết.
 
-前文已经指出，特征多项式的分解式中特征值的次数称为代数重数，特征子空间的维数称为几何重数．这个定理也表明，矩阵 $A$ 可对角化，等价于 $A$ 的每个特征值 $\lambda$ 的代数重数都等于它的几何重数．
+Định lý: $A$ khả chéo hóa ⇔ đa thức tối tiểu không có nghiệm bội.
 
-推论：如果 $n$ 阶方阵 $A$ 恰有 $n$ 个互异特征值，则它必可对角化．反之则不一定．
+Tương tự, ma trận tương tự giữ quan hệ phụ thuộc giữa các vectơ riêng.
 
-定理：矩阵 $A$ 可对角化当且仅当 $A$ 的最小多项式没有重根．
+Vectơ riêng có thể không thuộc $\mathbb{R}$ hoặc không đủ $n$ vectơ độc lập.
 
-矩阵的相似也会保持特征向量之间的线性相关关系不变．
+Với trị riêng bội, không gian riêng có nhiều vectơ; thường chọn một cơ sở, rồi trực giao hóa và chuẩn hóa.
 
-特征向量完全可能不是实数，也完全可能找不到 $n$ 个线性无关的特征向量．
+Vectơ riêng không nhất thiết trực giao; các trị riêng khác nhau có thể không trực giao. Trực giao hóa chỉ áp dụng cho vectơ riêng của cùng một trị riêng; chuẩn hóa áp dụng cho mọi vectơ riêng.
 
-对于重特征值而言，特征向量张成空间．为了描述这个空间，需要从其中选择代表．一般会选择线性无关的代表，代表的个数就是空间的维数．
+## Ma trận nilpotent
 
-选取代表时，常常将它们正交化与单位化．最终得到的就是一套单位正交的代表．
+Biến đổi $T$ là nilpotent nếu tồn tại $r$ sao cho $T^r$ là biến đổi 0.
 
-特征向量不一定正交，不同特征值的特征向量，可能无法正交．因此正交化只能对于重特征值的特征向量进行．但是单位化可以对任意特征向量进行．
+Ma trận $N$ gọi nilpotent nếu $N^r=0$.
 
-## 幂零矩阵
-
-设 $T$ 是空间 $V$ 的一个线性变换．如果存在一个正整数 $r$，使得 $T^r$ 为零变换，称 $T$ 是空间 $V$ 的一个幂零变换．
-
-对于某一个正整数 $r$，满足条件 $N^r=0$ 的矩阵称为幂零矩阵．
-
-一般可以进一步假定 $r$ 是使 $T^r$ 为零变换的最小正整数，于是 $T$ 的最小多项式是 $x^r$．于是存在一个向量 $\xi_0$，使得：
+Thường lấy $r$ nhỏ nhất, khi đó đa thức tối tiểu là $x^r$. Tồn tại $\xi_0$ sao cho:
 
 -   $$
     T^r(\xi_0)=0
@@ -126,37 +114,22 @@ $$
     T^{r-1}(\xi_0)\neq 0
     $$
 
-### 循环子空间
+### Không gian tuần hoàn
 
-定理：设 $T$ 是空间 $V$ 的一个线性变换，$\xi$ 是空间 $V$ 的一个向量．如果存在一个正整数 $s$，使得：
+Định lý: nếu tồn tại $s$ sao cho $T^s(\xi)=0$ và $T^{s-1}(\xi)\ne 0$ thì các vectơ $\xi,T(\xi),\cdots,T^{s-1}(\xi)$ độc lập.
 
--   $$
-    T^s(\xi)=0
-    $$
--   $$
-    T^{s-1}(\xi)\neq 0
-    $$
+Định nghĩa: nếu tồn tại $\xi_0$ và $r$ sao cho:
 
-那么向量 $\xi,T(\xi),\cdots,T^{s-1}(\xi)$ 线性无关．
+-   $\xi_0,T(\xi_0),\cdots,T^{r-1}(\xi_0)$ là cơ sở của $W$;
+-   $T^r(\xi_0)=0$,
 
-由这个定理可以给出一个定义：
+thì $W$ là **không gian tuần hoàn** của $T$. $\xi_0$ là vectơ sinh, và dãy trên là cơ sở tuần hoàn.
 
-设 $T$ 是空间 $V$ 的一个线性变换，$W$ 是 $V$ 的一个子空间．如果存在一个向量 $\xi_0$ 和一个正整数 $r$，使得：
+Rõ ràng $W$ bất biến và mọi $\xi\in W$ có $T^r(\xi)=0$.
 
--   向量 $\xi_0,T(\xi_0),\cdots,T^{r-1}(\xi_0)$ 构成 $W$ 的一个基．
--   如下等式成立：
+### Jordan block nilpotent
 
-    $$
-    T^r(\xi_0)=0
-    $$
-
-那么子空间 $W$ 称为关于 $T$ 的一个循环子空间，简称 $T$ 循环子空间．此时 $\xi_0$ 称为循环子空间 $W$ 的一个生成向量，向量 $\xi_0,T(\xi_0),\cdots,T^{r-1}(\xi_0)$ 称为 $W$ 的一个循环基．
-
-显然，一个 $T$ 循环子空间 $W$ 在 $T$ 作用下不变，并且对于循环子空间 $W$ 中的任意向量 $\xi$，均有 $T^r(\xi)=0$，这里 $r$ 为循环子空间的维数．
-
-### 幂零 Jordan 块
-
-如果空间 $W$ 是变换 $T$ 的循环子空间，那么 $T$ 在 $W$ 上的限制 ${T|}_W$ 是 $W$ 的一个幂零变换，并且 ${T|}_W$ 关于 $W$ 的倒序排列的循环基 $T^{r-1}(\xi_0),T^{r-2}(\xi_0),\cdots,\xi_0$ 的矩阵是如下形状的 $r$ 阶上三角矩阵：
+Nếu $W$ là tuần hoàn, thì ${T|}_W$ là nilpotent và trong cơ sở tuần hoàn đảo ngược $T^{r-1}(\xi_0),\dots,\xi_0$, ma trận là:
 
 $$
 N_r=\begin{pmatrix}
@@ -169,51 +142,35 @@ N_r=\begin{pmatrix}
 \end{pmatrix}
 $$
 
-矩阵 $N_r$ 称为一个 $r$ 阶幂零 Jordan 矩阵，或者 $r$ 阶幂零 Jordan 块．
+Gọi là Jordan block nilpotent bậc $r$.
 
-设 $T$ 是 $n$ 维空间 $V$ 的一个幂零变换，把出现在 $V$ 关于 $T$ 的循环子空间的分解中，唯一确定的一组正整数 $r_1\geq\cdots\geq r_S$ 叫做 $T$ 的不变指数．
+Với biến đổi nilpotent $T$ trên $V$ $n$ chiều, dãy $r_1\ge\cdots\ge r_S$ xác định từ phân rã không gian tuần hoàn gọi là **chỉ số bất biến** của $T$.
 
-对于 $n$ 阶幂零矩阵 $A$，$A$ 与一个上述形状的矩阵 $N$ 相似，也唯一确定一个正整数序列 $r_1\geq\cdots\geq r_S$，称为矩阵 $A$ 的不变指数．
+Tương tự cho ma trận nilpotent.
 
-幂零阵虽然不能和对角阵相似，但是可以相似于这样的标准形式．在 Jordan 标准型，将相似对角化与幂零阵的标准形式，二者结合起来，给出一般的矩阵通过相似变换可以达到的标准形式．
+Ma trận nilpotent tương tự dạng chuẩn gồm các Jordan block nilpotent. Đây là phần nilpotent trong dạng Jordan.
 
-### 一些定理
+### Một số định lý
 
-1.  设 $T$ 是空间 $V$ 的一个幂零变换，而
+1.  Với nilpotent $T$ và đa thức $h(x)=a_0+\cdots+a_mx^m$, thì $h(T)$ khả nghịch ⇔ $a_0\ne 0$. Khi đó $h(T)^{-1}$ cũng là đa thức của $T$.
 
-    $$
-    h(x)=a_0+a_1x+\cdots+a_mx^m
-    $$
+2.  Với nilpotent $T$, $W$ là không gian tuần hoàn $r$ chiều, $\xi\in W$. Nếu tồn tại $k$ sao cho $T^{r-k}(\xi)=0$, thì tồn tại $\eta\in W$ sao cho $\xi=T^k(\eta)$.
 
-    是一个多项式，那么当且仅当 $a_0\neq 0$ 时，线性变换 $h(T)$ 有逆变换．当 $h(T)$ 可逆时，$h(T)$ 的逆变换也是 $T$ 的一个多项式．
-
-2.  设 $T$ 是空间 $V$ 的一个幂零变换，$W$ 是一个 $r$ 维 $T$ 循环子空间，$\xi$ 是 $W$ 中的向量．如果存在一个整数 $k$，使得
-
-    $$
-    T^{r-k}(\xi)=0
-    $$
-
-    那么存在 $W$ 中的向量 $\eta$，使得
-
-    $$
-    \xi=T^k(\eta)
-    $$
-
-3.  设 $T$ 是 $n$ 维空间 $V$ 的一个幂零变换，$x^r$ 是 $T$ 的最小多项式，令 $W_1$ 是一个 $r$ 维 $T$ 循环子空间，那么存在 $W_1$ 的一个余子空间 $W_2$，使得：
+3.  Với nilpotent $T$ trên $V$ $n$ chiều, đa thức tối tiểu $x^r$, nếu $W_1$ là không gian tuần hoàn $r$ chiều thì tồn tại $W_2$ sao cho:
 
     $$
     V=W_1\oplus W_2
     $$
 
-    并且 $W_2$ 也在 $T$ 作用下不变．
+    và $W_2$ bất biến.
 
-4.  设 $T$ 是 $n$ 维空间 $V$ 的一个幂零变换，那么 $V$ 可以分解为 $T$ 循环子空间的直和：
+4.  Với nilpotent $T$, $V$ phân rã thành tổng trực tiếp các không gian tuần hoàn:
 
     $$
     V=W_1\oplus W_2\oplus\cdots\oplus W_S
     $$
 
-5.  每一个 $n$ 阶幂零矩阵都与一个形如：
+5.  Mọi ma trận nilpotent bậc $n$ tương tự ma trận:
 
     $$
     N=\begin{pmatrix}
@@ -224,6 +181,4 @@ $$
     \end{pmatrix}
     $$
 
-    的矩阵相似，这里的每一个 $N_{r_i}$ 是一个 $r_i$ 阶幂零 Jordan 块．
-
-6.  如果规定 $T$ 循环子空间 $W_i$ 按照维数 $r_i$ 降序排列 $r_1\geq\cdots\geq r_S$，那么将 $V$ 分解为 $T$ 循环子空间的方法是由 $T$ 唯一确定的．
+6.  Nếu sắp $r_1\ge\cdots\ge r_S$, thì phân rã tuần hoàn của $V$ là duy nhất.

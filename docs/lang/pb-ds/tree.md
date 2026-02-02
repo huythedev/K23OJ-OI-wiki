@@ -1,9 +1,9 @@
 ## `__gnu_pbds::tree`
 
-附：[官方文档地址](https://gcc.gnu.org/onlinedocs/libstdc++/ext/pb_ds/tree_based_containers.html)
+Kèm theo: [Địa chỉ tài liệu chính thức](https://gcc.gnu.org/onlinedocs/libstdc++/ext/pb_ds/tree_based_containers.html)
 
 ```cpp
-#include <ext/pb_ds/assoc_container.hpp>  // 因为 tree 定义在这里 所以需要包含这个头文件
+#include <ext/pb_ds/assoc_container.hpp>  // vì tree được định nghĩa ở đây nên cần include header này
 #include <ext/pb_ds/tree_policy.hpp>
 using namespace __gnu_pbds;
 __gnu_pbds::tree<Key, Mapped, Cmp_Fn = std::less<Key>, Tag = rb_tree_tag,
@@ -11,19 +11,19 @@ __gnu_pbds::tree<Key, Mapped, Cmp_Fn = std::less<Key>, Tag = rb_tree_tag,
                  Allocator = std::allocator<char>>
 ```
 
-## 模板形参
+## Tham số mẫu
 
--   `Key`: 储存的元素类型，如果想要存储多个相同的 `Key` 元素，则需要使用类似于 `std::pair` 和 `struct` 的方法，并配合使用 `lower_bound` 和 `upper_bound` 成员函数进行查找
--   `Mapped`: 映射规则（Mapped-Policy）类型，如果要指示关联容器是 **集合**，类似于存储元素在 `std::set` 中，此处填入 `null_type`，低版本 `g++` 此处为 `null_mapped_type`；如果要指示关联容器是 **带值的集合**，类似于存储元素在 `std::map` 中，此处填入类似于 `std::map<Key, Value>` 的 `Value` 类型
--   `Cmp_Fn`: 关键字比较函子，例如 `std::less<Key>`
--   `Tag`: 选择使用何种底层数据结构类型，默认是 `rb_tree_tag`．`__gnu_pbds` 提供不同的三种平衡树，分别是：
-    -   `rb_tree_tag`：红黑树，一般使用这个，后两者的性能一般不如红黑树
-    -   `splay_tree_tag`：splay 树
-    -   `ov_tree_tag`：有序向量树，只是一个由 `vector` 实现的有序结构，类似于排序的 `vector` 来实现平衡树，性能取决于数据想不想卡你
--   `Node_Update`：用于更新节点的策略，默认使用 `null_node_update`，若要使用 `order_of_key` 和 `find_by_order` 方法，需要使用 `tree_order_statistics_node_update`
--   `Allocator`：空间分配器类型
+-   `Key`: kiểu phần tử lưu trữ; nếu muốn lưu nhiều phần tử `Key` trùng nhau thì cần dùng `std::pair` hoặc `struct` kết hợp với `lower_bound` và `upper_bound` để tra cứu
+-   `Mapped`: kiểu chính sách ánh xạ (Mapped-Policy); nếu muốn chỉ ra container là **tập**, tương tự lưu trong `std::set`, điền `null_type` (ở g++ phiên bản thấp là `null_mapped_type`); nếu muốn chỉ ra container là **tập có giá trị**, tương tự `std::map`, điền kiểu `Value` như trong `std::map<Key, Value>`
+-   `Cmp_Fn`: hàm so sánh khóa, ví dụ `std::less<Key>`
+-   `Tag`: chọn cấu trúc dữ liệu nền, mặc định `rb_tree_tag`. `__gnu_pbds` cung cấp ba loại cây cân bằng:
+    -   `rb_tree_tag`: cây đỏ-đen, thường dùng loại này; hai loại sau thường kém hơn
+    -   `splay_tree_tag`: cây splay
+    -   `ov_tree_tag`: cây vector có thứ tự, chỉ là cấu trúc có thứ tự bằng `vector`, tương tự một `vector` đã sắp xếp để làm cây cân bằng; hiệu năng phụ thuộc vào dữ liệu có “cố tình” hay không
+-   `Node_Update`: chính sách cập nhật nút, mặc định `null_node_update`; nếu muốn dùng `order_of_key` và `find_by_order` thì cần `tree_order_statistics_node_update`
+-   `Allocator`: kiểu cấp phát bộ nhớ
 
-## 构造方式
+## Cách khởi tạo
 
 ```cpp
 __gnu_pbds::tree<std::pair<int, int>, __gnu_pbds::null_type,
@@ -32,25 +32,25 @@ __gnu_pbds::tree<std::pair<int, int>, __gnu_pbds::null_type,
     trr;
 ```
 
-## 成员函数
+## Hàm thành viên
 
--   `insert(x)`：向树中插入一个元素 `x`，返回 `std::pair<point_iterator, bool>`，其中第一个元素代表插入位置的迭代器，第二个元素代表是否插入成功．
--   `erase(x)`：从树中删除一个元素/迭代器 `x`．如果 `x` 是迭代器，则返回指向 `x` 下一个的迭代器（如果 `x` 是 `end()` 则返回 `end()`）；如果 `x` 是 `Key`，则返回是否删除成功（如果不存在则删除失败）．
--   `order_of_key(x)`：返回严格小于 `x` 的元素个数（以 `Cmp_Fn` 作为比较逻辑），即从 $0$ 开始的排名．
--   `find_by_order(x)`：返回 `Cmp_Fn` 比较的排名所对应元素的迭代器．
--   `lower_bound(x)`：返回第一个不小于 `x` 的元素所对应的迭代器（以 `Cmp_Fn` 作为比较逻辑）．
--   `upper_bound(x)`：返回第一个严格大于 `x` 的元素所对应的迭代器（以 `Cmp_Fn` 作为比较逻辑）．
--   `join(x)`：将 `x` 树并入当前树，`x` 树被清空（必须确保两树的 **比较函数** 和 **元素类型** 相同）．
--   `split(x,b)`：以 `Cmp_Fn` 比较，小于等于 `x` 的属于当前树，其余的属于 `b` 树．
--   `empty()`：返回是否为空．
--   `size()`：返回大小．
+-   `insert(x)`: chèn phần tử `x`, trả về `std::pair<point_iterator, bool>`; phần tử đầu là iterator vị trí chèn, phần tử hai cho biết chèn thành công hay không.
+-   `erase(x)`: xóa một phần tử/iterator `x`. Nếu `x` là iterator thì trả iterator tới phần tử sau `x` (nếu `x` là `end()` thì trả `end()`); nếu `x` là `Key` thì trả về xóa thành công hay không (không tồn tại thì xóa thất bại).
+-   `order_of_key(x)`: trả số phần tử nhỏ hơn chặt `x` (theo `Cmp_Fn`), tức là thứ hạng bắt đầu từ $0$.
+-   `find_by_order(x)`: trả iterator của phần tử ứng với thứ hạng theo `Cmp_Fn`.
+-   `lower_bound(x)`: trả iterator của phần tử đầu tiên không nhỏ hơn `x` (theo `Cmp_Fn`).
+-   `upper_bound(x)`: trả iterator của phần tử đầu tiên lớn hơn chặt `x` (theo `Cmp_Fn`).
+-   `join(x)`: gộp cây `x` vào cây hiện tại, `x` bị làm rỗng (cần đảm bảo **hàm so sánh** và **kiểu phần tử** giống nhau).
+-   `split(x,b)`: theo `Cmp_Fn`, các phần tử $\le x$ thuộc cây hiện tại, còn lại thuộc cây `b`.
+-   `empty()`: trả về có rỗng hay không.
+-   `size()`: trả về kích thước.
 
-???+ warning "注意"
-    `join(x)` 函数需要保证并入树的键的值域与被并入树的键的值域 **不相交**（也就是说并入树内所有值必须全部大于/小于当前树内的所有值），否则会抛出 `join_error` 异常．
+???+ warning "Lưu ý"
+    Hàm `join(x)` yêu cầu miền giá trị của khóa trong cây được gộp và cây hiện tại **không giao nhau** (tức là mọi giá trị trong cây được gộp đều phải lớn hơn/nhỏ hơn toàn bộ giá trị của cây hiện tại), nếu không sẽ ném ngoại lệ `join_error`.
     
-    如果要合并两棵值域有交集的树，需要将一棵树的元素一一插入到另一棵树中．
+    Nếu muốn gộp hai cây có miền giá trị giao nhau, cần chèn từng phần tử của một cây vào cây còn lại.
 
-## 示例
+## Ví dụ
 
 ```cpp
 // Common Header Simple over C++11
@@ -74,42 +74,42 @@ int main() {
   trr.insert(make_pair(4, cnt++));
   trr.insert(make_pair(3, cnt++));
   trr.insert(make_pair(2, cnt++));
-  // 树上元素 {(1,0), (2,4), (3,3), (4,2), (5,1)}
+  // Các phần tử trên cây {(1,0), (2,4), (3,3), (4,2), (5,1)}
 
   auto it = trr.lower_bound(make_pair(2, 0));
   trr.erase(it);
-  // 树上元素 {(1,0), (3,3), (4,2), (5,1)}
+  // Các phần tử trên cây {(1,0), (3,3), (4,2), (5,1)}
 
-  // 输出排名 0 1 2 3 中的排名 1 的元素的 first
+  // In phần tử có thứ hạng 1 trong các thứ hạng 0 1 2 3 (lấy first)
   auto it2 = trr.find_by_order(1);
-  cout << (*it2).first << endl;  // 输出：3
+  cout << (*it2).first << endl;  // Output: 3
 
-  // 输出其排名
+  // In thứ hạng của nó
   int pos = trr.order_of_key(*it2);
-  cout << pos << endl;  // 输出：1
+  cout << pos << endl;  // Output: 1
 
-  // 按照 it2 分裂 trr
+  // Tách trr theo it2
   decltype(trr) newtr;
   trr.split(*it2, newtr);
   for (auto i = newtr.begin(); i != newtr.end(); ++i) {
-    cout << (*i).first << ' ';  // 输出：4 5
+    cout << (*i).first << ' ';  // Output: 4 5
   }
   cout << endl;
 
-  // 将 newtr 树并入 trr 树，newtr 树被清空．
+  // Gộp cây newtr vào trr, newtr bị làm rỗng.
   trr.join(newtr);
   for (auto i = trr.begin(); i != trr.end(); ++i) {
-    cout << (*i).first << ' ';  // 输出：1 3 4 5
+    cout << (*i).first << ' ';  // Output: 1 3 4 5
   }
   cout << endl;
-  cout << newtr.size() << endl;  // 输出：0
+  cout << newtr.size() << endl;  // Output: 0
 
   return 0;
 }
 ```
 
-## 参考资料
+## Tài liệu tham khảo
 
 -   [Tree-Based Containers](https://gcc.gnu.org/onlinedocs/libstdc++/ext/pb_ds/tree_based_containers.html)
--   [`join` 函数在 GCC 14.1.0 中的实现](https://gcc.gnu.org/onlinedocs/gcc-14.1.0/libstdc++/api/a18391_source.html#l00043)
--   [`erase` 函数在 GCC 14.1.0 中的实现](https://gcc.gnu.org/onlinedocs/gcc-14.1.0/libstdc++/api/a18211_source.html#l00043)
+-   [`join` trong GCC 14.1.0](https://gcc.gnu.org/onlinedocs/gcc-14.1.0/libstdc++/api/a18391_source.html#l00043)
+-   [`erase` trong GCC 14.1.0](https://gcc.gnu.org/onlinedocs/gcc-14.1.0/libstdc++/api/a18211_source.html#l00043)

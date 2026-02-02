@@ -1,32 +1,32 @@
 author: sbofgayschool
 
-`std::pair` 是标准库中定义的一个类模板．用于将两个变量关联在一起，组成一个「对」，而且两个变量的数据类型可以是不同的．
+`std::pair` là một class template được định nghĩa trong thư viện chuẩn, dùng để liên kết hai biến lại với nhau thành một “cặp”, và hai biến này có thể thuộc các kiểu dữ liệu khác nhau.
 
 ??? note "类模板"
-    类模板（class template）本身不是一个类，而是可以根据 **不同数据类型** 产生 **不同类** 的「模板」．
+    Class template (class template) bản thân không phải là một lớp, mà là một “khuôn mẫu” có thể sinh ra **những lớp khác nhau** dựa trên **các kiểu dữ liệu khác nhau**.
     
-    在使用时，编译器会根据传入的数据类型产生对应的类，再创建对应实例．
+    Khi sử dụng, trình biên dịch sẽ sinh ra lớp tương ứng theo kiểu dữ liệu được truyền vào, rồi tạo thể hiện tương ứng.
     
-    模板属于 C++ 较为高级的语言特性，在信息学竞赛中几乎不会出现．如果对此感兴趣，可以进一步阅读《C++ Primer》以学习更深层次的 C++ 知识．
+    Template là một đặc trưng ngôn ngữ nâng cao của C++, trong lập trình thi đấu hầu như không xuất hiện. Nếu quan tâm, bạn có thể đọc thêm 《C++ Primer》 để học sâu hơn về C++.
 
-通过灵活使用 `pair`，可以轻松应对 **需要将关联数据捆绑存储、处理** 的场景．
+Thông qua việc sử dụng `pair` một cách linh hoạt, có thể dễ dàng xử lý **các tình huống cần gộp dữ liệu có liên hệ để lưu trữ và xử lý**.
 
 ??? note "Struct"
-    与自定义的 `struct` 相比，`pair` 不需要额外定义结构与重载运算符，因此使用起来更加简便．
+    So với `struct` tự định nghĩa, `pair` không cần định nghĩa thêm cấu trúc hay nạp chồng toán tử, nên sử dụng tiện hơn.
     
-    然而，自定义 `struct` 的变量命名往往更加清晰（`pair` 只能使用 `first` 与 `second` 访问包含的两个变量）．同时，如果需要将两个以上的变量进行关联，自定义 `struct` 会更加合适．
+    Tuy nhiên, tên biến trong `struct` tự định nghĩa thường rõ nghĩa hơn (`pair` chỉ có thể truy cập hai biến bằng `first` và `second`). Đồng thời, nếu cần liên kết nhiều hơn hai biến, `struct` tự định nghĩa sẽ phù hợp hơn.
 
-## 使用
+## Sử dụng
 
-### 初始化
+### Khởi tạo
 
-可以在定义时直接完成 `pair` 的初始化．
+Có thể khởi tạo `pair` trực tiếp khi định nghĩa.
 
 ```cpp
 pair<int, double> p0(1, 2.0);
 ```
 
-也可以使用先定义，后赋值的方法完成 `pair` 的初始化．
+Cũng có thể khởi tạo `pair` bằng cách định nghĩa trước rồi gán sau.
 
 ```cpp
 pair<int, double> p1;
@@ -34,42 +34,42 @@ p1.first = 1;
 p1.second = 2.0;
 ```
 
-还可以使用 `std::make_pair` 函数．该函数接受两个变量，并返回由这两个变量组成的 `pair`．
+Cũng có thể dùng hàm `std::make_pair`. Hàm này nhận hai biến và trả về `pair` được tạo từ hai biến đó.
 
 ```cpp
 pair<int, double> p2 = make_pair(1, 2.0);
 ```
 
-一种常用的方法是使用宏定义 `#define mp make_pair`，将有些冗长的 `make_pair` 化简为 `mp`．
+Một cách thường dùng là định nghĩa macro `#define mp make_pair`, rút gọn `make_pair` (hơi dài) thành `mp`.
 
-在 C++11 以及之后的版本中，`make_pair` 可以配合 `auto` 使用，以避免显式声明数据类型．
+Trong C++11 trở lên, `make_pair` có thể kết hợp với `auto` để tránh khai báo kiểu dữ liệu một cách tường minh.
 
 ```cpp
 auto p3 = make_pair(1, 2.0);
 ```
 
-关于 `auto` 的在信息学竞赛中的使用，参见 [迭代器](./iterator.md) 部分的说明．
+Về việc sử dụng `auto` trong lập trình thi đấu, xem phần [迭代器](./iterator.md).
 
-### 访问
+### Truy cập
 
-通过成员函数 `first` 与 `second`，可以访问 `pair` 中包含的两个变量．
+Thông qua các thành viên `first` và `second`, có thể truy cập hai biến trong `pair`.
 
 ```cpp
 int i = p0.first;
 double d = p0.second;
 ```
 
-也可以对其进行修改．
+Cũng có thể sửa chúng.
 
 ```cpp
 p1.first++;
 ```
 
-### 比较
+### So sánh
 
-`pair` 已经预先定义了所有的比较运算符，包括 `<`、`>`、`<=`、`>=`、`==`、`!=`．当然，这需要组成 `pair` 的两个变量所属的数据类型定义了 `==` 和/或 `<` 运算符．
+`pair` đã định nghĩa sẵn tất cả các toán tử so sánh, bao gồm `<`、`>`、`<=`、`>=`、`==`、`!=`. Tất nhiên, điều này yêu cầu kiểu dữ liệu của hai biến trong `pair` đã định nghĩa toán tử `==` và/hoặc `<`.
 
-其中，`<`、`>`、`<=`、`>=` 四个运算符会先比较两个 `pair` 中的第一个变量，在第一个变量相等的情况下再比较第二个变量．
+Trong đó, bốn toán tử `<`、`>`、`<=`、`>=` sẽ so sánh biến thứ nhất của hai `pair` trước; khi biến thứ nhất bằng nhau thì so sánh biến thứ hai.
 
 ```cpp
 if (p2 >= p3) {
@@ -77,78 +77,78 @@ if (p2 >= p3) {
 }
 ```
 
-由于 `pair` 定义了 STL 中常用的 `<` 与 `==`，使得其能够很好的与其他 STL 函数或数据结构配合．比如，`pair` 可以作为 `priority_queue` 的数据类型．
+Vì `pair` định nghĩa sẵn các toán tử thường dùng trong STL như `<` và `==`, nên có thể phối hợp tốt với các hàm hay cấu trúc dữ liệu STL khác. Ví dụ, `pair` có thể làm kiểu dữ liệu cho `priority_queue`.
 
 ```cpp
 priority_queue<pair<int, double>> q;
 ```
 
-### 赋值与交换
+### Gán và hoán đổi
 
-可以将 `pair` 的值赋给另一个类型一致的 `pair`．
+Có thể gán giá trị của một `pair` cho một `pair` khác có cùng kiểu.
 
 ```cpp
 p0 = p1;
 ```
 
-也可以使用 `swap` 函数交换 `pair` 的值．
+Cũng có thể dùng `swap` để hoán đổi giá trị của `pair`.
 
 ```cpp
 swap(p0, p1);
 p2.swap(p3);
 ```
 
-## 应用举例
+## Ví dụ ứng dụng
 
-### 离散化
+### Rời rạc hóa
 
-`pair` 可以轻松实现离散化．
+`pair` có thể dễ dàng hiện thực rời rạc hóa.
 
-我们可以创建一个 `pair` 数组，将原始数据的值作为每个 `pair` 第一个变量，将原始数据的位置作为第二个变量．在排序后，将原始数据值的排名（该值排序后所在的位置）赋给该值原本所在的位置即可．
+Ta có thể tạo một mảng `pair`, lấy giá trị dữ liệu gốc làm biến thứ nhất của mỗi `pair`, và vị trí của dữ liệu gốc làm biến thứ hai. Sau khi sắp xếp, gán thứ hạng (vị trí sau khi sắp xếp) của giá trị đó về lại vị trí ban đầu.
 
 ```cpp
-// a为原始数据
+// a là dữ liệu gốc
 pair<int, int> a[MAXN];
-// ai为离散化后的数据
+// ai là dữ liệu sau khi rời rạc hóa
 int ai[MAXN];
 for (int i = 0; i < n; i++) {
-  // first为原始数据的值，second为原始数据的位置
+  // first là giá trị dữ liệu gốc, second là vị trí của dữ liệu gốc
   scanf("%d", &a[i].first);
   a[i].second = i;
 }
-// 排序
+// Sắp xếp
 sort(a, a + n);
 for (int i = 0; i < n; i++) {
-  // 将该值的排名赋给该值原本所在的位置
+  // Gán thứ hạng của giá trị đó về đúng vị trí ban đầu
   ai[a[i].second] = i;
 }
 ```
 
 ### Dijkstra
 
-如前所述，`pair` 可以作为 `priority_queue` 的数据类型．
+Như đã nói ở trên, `pair` có thể làm kiểu dữ liệu cho `priority_queue`.
 
-那么，在 Dijkstra 算法的堆优化中，可以使用 `pair` 与 `priority_queue` 维护节点，将节点当前到起点的距离作为第一个变量，将节点编号作为第二个变量．
+Vậy trong tối ưu hóa bằng heap của thuật toán Dijkstra, có thể dùng `pair` cùng `priority_queue` để quản lý các đỉnh, trong đó khoảng cách từ đỉnh đến nguồn là biến thứ nhất, và chỉ số đỉnh là biến thứ hai.
 
 ```cpp
 priority_queue<pair<int, int>, std::vector<pair<int, int>>,
                std::greater<pair<int, int>>>
     q;
 ... while (!q.empty()) {
-  // dis为入堆时节点到起点的距离，i为节点编号
+  // dis là khoảng cách của đỉnh đến nguồn khi được đưa vào heap, i là chỉ số đỉnh
   int dis = q.top().first, i = q.top().second;
   q.pop();
   ...
 }
 ```
 
-### pair 与 map
+### pair và map
 
-`map` 的是 C++ 中存储键值对的数据结构．很多情况下，`map` 中存储的键值对通过 `pair` 向外暴露．
+`map` là cấu trúc dữ liệu lưu trữ các cặp khóa–giá trị trong C++. Trong nhiều trường hợp, các cặp khóa–giá trị trong `map` được lộ ra ngoài thông qua `pair`.
 
 ```cpp
 map<int, double> m;
 m.insert(make_pair(1, 2.0));
 ```
 
-关于 `map` 更多的内容，请见 [关联式容器](./associative-container.md) 与 [无序关联式容器](./unordered-container.md) 中相关部分．
+Về `map`, xem thêm phần liên quan trong [关联式容器](./associative-container.md) và [无序关联式容器](./unordered-container.md).

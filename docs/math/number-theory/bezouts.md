@@ -1,24 +1,24 @@
-裴蜀定理揭示了最大公约数与整数线性组合之间的深刻联系，是数论中最基础也最重要的结论之一．基于此，本文进一步讨论了一次不定方程的求解方法．
+Định lý Bézout揭示 mối liên hệ sâu sắc giữa ƯCLN và tổ hợp tuyến tính nguyên, là một trong những kết quả cơ bản và quan trọng nhất của số học. Dựa vào đó, bài viết tiếp tục thảo luận cách giải phương trình một ẩn bất định.
 
-## 裴蜀定理
+## Định lý Bézout
 
-**裴蜀定理**（Bézout's lemma），也译作贝祖定理，或称作贝祖等式（Bézout's identity），给出了一个整数能够表示为两个整数的整系数线性组合的充分必要条件．
+**Định lý Bézout** (Bézout's lemma), còn gọi là **đẳng thức Bézout** (Bézout's identity), cho điều kiện cần và đủ để một số nguyên có thể biểu diễn dưới dạng tổ hợp tuyến tính nguyên của hai số nguyên.
 
-???+ note "裴蜀定理"
-    设 $a,b$ 是不全为零的整数．那么，对于任意整数 $x,y$，都有 $\gcd(a,b)\mid ax+by$ 成立；而且，存在整数 $x,y$，使得 $ax+by=\gcd(a,b)$ 成立．
+???+ note "Định lý Bézout"
+    Cho $a,b$ không đồng thời bằng $0$. Với mọi $x,y$ nguyên, luôn có $\gcd(a,b)\mid ax+by$; hơn nữa tồn tại $x,y$ sao cho $ax+by=\gcd(a,b)$.
 
-??? note "证明"
-    记 $d=\gcd(a,b)$．因为 $d\mid a,b$，所以，存在整数 $u,v$ 使得 $a=du,~b=dv$ 成立．因此，总有
+??? note "Chứng minh"
+    Đặt $d=\gcd(a,b)$. Vì $d\mid a,b$ nên tồn tại $u,v$ sao cho $a=du,~b=dv$. Do đó
     
     $$
     ax + by = d(ux+vy).
     $$
     
-    这就说明 $d\mid ax+by$．
+    Suy ra $d\mid ax+by$.
     
-    反过来，需要说明存在 $x,y$ 使得等式成立．如果 $a,b$ 之一是 $0$，不妨设 $b=0$，那么它们的最大公约数为 $d=a$，显然有 $(x,y)=(1,0)$ 使得等式成立．接下来，考虑 $a,b$ 均不为零的情形．由于 $\gcd(a,b)=\gcd(-a,b)=\gcd(a,-b)$，所以不妨设 $a,b$ 都是正数．
+    Ngược lại, cần chứng minh tồn tại $x,y$. Nếu một trong $a,b$ là $0$, giả sử $b=0$, thì $d=a$ và chọn $(x,y)=(1,0)$ là được. Xét trường hợp $a,b$ đều khác $0$. Do $\gcd(a,b)=\gcd(-a,b)=\gcd(a,-b)$, không mất tính tổng quát giả sử $a,b>0$.
     
-    考虑辗转相除法的过程，有
+    Xét thuật toán Euclid:
     
     $$
     \begin{aligned}
@@ -32,19 +32,19 @@
     \end{aligned}
     $$
     
-    由于最大公约数是 $d$，最后一步辗转相除时，一定有 $r_n=d$．所以，倒数第二个等式可以写作
+    Vì ƯCLN là $d$, nên $r_n=d$. Do đó
     
     $$
     d = r_n = r_{n-2} - q_nr_{n-1}.
     $$
     
-    从倒数第三个等式中解出
+    Từ phương trình trước đó:
     
     $$
-    r_{n-1} = r_{n-3} - q_{n-1}r_{n-2}
+    r_{n-1} = r_{n-3} - q_{n-1}r_{n-2}.
     $$
     
-    再代入上式，就可以消去 $r_{n-1}$：
+    Thế vào, được
     
     $$
     \begin{aligned}
@@ -53,134 +53,128 @@
     \end{aligned}
     $$
     
-    类似地，可以逐步地消去所有 $r_{n-2},r_{n-3},\cdots,r_2,r_1$，最终得到
+    Tiếp tục khử $r_{n-2},r_{n-3},\cdots,r_2,r_1$ ta được
     
     $$
     d = xa + yb.
     $$
     
-    这就证明了存在 $x,y$ 使得 $ax+by=d$ 成立．由前文分析可知，这也证明了原命题．
+    Vậy tồn tại $x,y$ thỏa. Kết hợp với phần trên, mệnh đề được chứng minh.
 
-此处，关于存在性的证明是构造性的，它同时给出了该系数的一种计算方法．这一计算方法就是 [扩展欧几里得算法](./gcd.md#扩展欧几里得算法)．
+Chứng minh tồn tại ở đây là xây dựng, đồng thời cung cấp cách tính hệ số, chính là [thuật toán Euclid mở rộng](./gcd.md#扩展欧几里得算法).
 
-考虑裴蜀定理在 $\gcd(a,b)=1$ 时的特殊情形，可以得到如下推论：
+Xét trường hợp $\gcd(a,b)=1$ ta có hệ quả:
 
-???+ note "推论"
-    整数 $a,b$ 互素，当且仅当存在整数 $x,y$，使得 $ax+by=1$ 成立．
+???+ note "Hệ quả"
+    Hai số nguyên $a,b$ nguyên tố cùng nhau khi và chỉ khi tồn tại $x,y$ sao cho $ax+by=1$.
 
-### 多个整数的情形
+### Trường hợp nhiều số nguyên
 
-裴蜀定理可以推广到多个整数的情形．
+Định lý Bézout có thể mở rộng cho nhiều số nguyên.
 
-???+ note "定理"
-    设 $a_1,a_2,\cdots,a_n$ 是不全为零的整数．那么，对于任意整数 $x_1,x_2,\cdots,x_n$，都有 $\gcd(a_1,a_2,\cdots,a_n)\mid a_1x_1+a_2x_2+\cdots+a_nx_n$ 成立；而且，存在整数 $x_1,x_2,\cdots,x_n$，使得 $\gcd(a_1,a_2,\cdots,a_n)=a_1x_1+a_2x_2+\cdots+a_nx_n$ 成立．
+???+ note "Định lý"
+    Cho $a_1,a_2,\cdots,a_n$ không đồng thời bằng $0$. Với mọi $x_1,\cdots,x_n$ nguyên, $\gcd(a_1,\cdots,a_n)\mid a_1x_1+\cdots+a_nx_n$; hơn nữa tồn tại $x_1,\cdots,x_n$ sao cho $\gcd(a_1,\cdots,a_n)=a_1x_1+\cdots+a_nx_n$.
 
-??? note "证明"
-    利用 $\gcd(a_1,a_2,\cdots,a_n)=\gcd(\gcd(a_1,a_2,\cdots,a_{n-1}),a_n)$ 这一点，对 $n$ 进行归纳即可．
+??? note "Chứng minh"
+    Dùng $\gcd(a_1,\cdots,a_n)=\gcd(\gcd(a_1,\cdots,a_{n-1}),a_n)$ và quy nạp theo $n$.
 
-### 例题
+### Ví dụ
 
 ???+ example "[Codeforces 510 D. Fox And Jumping](https://codeforces.com/problemset/problem/510/D)"
-    给出 $n\le 300$ 张卡片，分别有 $l_i$ 和 $c_i$．在一条无限长的纸带上，你可以选择花 $c_i$ 的钱来购买卡片 $i$，从此以后可以向左或向右跳 $l_i$ 个单位任意次．问你至少花多少元钱才能够跳到纸带上全部位置．若不行，输出 $-1$．
+    Cho $n\le 300$ thẻ, mỗi thẻ có $l_i$ và $c_i$. Trên một dải giấy vô hạn, bạn có thể trả $c_i$ để mua thẻ $i$, từ đó có thể nhảy trái/phải $l_i$ đơn vị bất kỳ lần nào. Hỏi chi phí tối thiểu để có thể đến mọi vị trí; nếu không được, in $-1$.
 
-??? note "解答"
-    分析该问题，发现想要跳到每一个格子上，必须使得所选数 $l_{i_1}, \cdots, l_{i_k}$ 通过数次相加或相减得出的绝对值为 $1$．也就是说，存在整数 $x_1, \cdots, x_k$ 使得 $l_{i_1} x_1 + \cdots + l_{i_k} x_k = 1$．由多个整数的裴蜀定理，这相当于从数组 $l_1, \cdots, l_n$ 中选择若干个数，满足它们的最大公约数为 $1$，同时要求代价和最小．
+??? note "Lời giải"
+    Để đến mọi ô, cần chọn $l_{i_1},\cdots,l_{i_k}$ sao cho có tổ hợp nguyên dương/âm bằng $1$, tức tồn tại $x_1,\cdots,x_k$ với $l_{i_1}x_1+\cdots+l_{i_k}x_k=1$. Theo Bézout nhiều biến, điều này tương đương chọn một tập $l_1,\cdots,l_n$ sao cho ƯCLN bằng $1$ và tổng chi phí nhỏ nhất.
     
-    **解法 1**：将最小代价和看作是最短路径问题，可以用 Dijkstra 算法求解．图的顶点处存储了当前的最大公约数的取值．图的起点是 $0$，要到达的目标点是 $1$．每走一步，就从当前顶点 $x$ 出发，沿着长度为 $c_i$ 的边走到顶点 $\gcd(x,l_i)$．这一算法的时间复杂度为 $O(n^2\log n)$．
+    **Cách 1**: Xem bài toán là đường đi ngắn. Mỗi đỉnh là một giá trị ƯCLN hiện tại. Đỉnh xuất phát $0$, đích $1$. Mỗi bước từ $x$ sang $\gcd(x,l_i)$ với trọng số $c_i$. Dùng Dijkstra, độ phức tạp $O(n^2\log n)$.
     
-    **解法 2**：从数组 $l_1, \cdots, l_n$ 选择若干个数，满足它们的最大公因数为 $1$，且代价和最小，由此可以想到 0-1 背包问题．
-    
-    设 $f_{i, j}$ 表示考虑前 $i$ 个数且最大公因数为 $j$ 的最小代价，则有转移方程：
+    **Cách 2**: Xem như 0-1 knapsack. Đặt $f_{i,j}$ là chi phí nhỏ nhất khi xét $i$ số đầu và ƯCLN là $j$:
     
     $$
     f_{i, j} = \min_{\gcd(k, l_i) = j} f_{i - 1, k} + c_i.
     $$
     
-    DP 后最终的总代价即为 $f_{n, 1}$．
+    Kết quả là $f_{n,1}$. Dùng mảng cuộn; vì các ƯCLN có thể xuất hiện thưa, dùng hash để lưu.
     
-    如同一般的 0-1 背包问题，可以用滚动数组优化，去掉第一维．而这里 300 个数可以组成的最大公约数 $j$ 是很稀疏的，可以用哈希表储存．
-    
-    实际上，这里解法 1 建出的图便是解法 2 中动态规划的状态转移图，解法 2 相当于用动态规划求有向无环图的最短路，因此解法 1 和解法 2 是等价的．但解法 2 无需储存全图，同时 DP 的时间复杂度为 $O(n + m)$，相比 Dijkstra 算法更低，因此解法 2 在时间和空间上更优．
+    Thực ra, đồ thị ở cách 1 chính là đồ thị chuyển trạng thái của DP ở cách 2; cách 2 là tìm đường ngắn trên DAG, nên hai cách tương đương. Cách 2 không cần lưu toàn đồ thị và có độ phức tạp $O(n+m)$ nên tối ưu hơn.
 
-## 一次不定方程
+## Phương trình bất định tuyến tính
 
-**一次不定方程**（linear Diophantine equation）是形如
+**Phương trình bất định tuyến tính** (linear Diophantine equation) có dạng
 
 $$
 a_1x_1 + a_2x_2 + \cdots + a_nx_n = b
 $$
 
-的不定方程，其中，$a_1,a_2,\cdots,a_n$ 都是整数．本节的目标是寻找它的全体整数解．
+trong đó $a_1,\cdots,a_n$ nguyên. Mục tiêu là tìm toàn bộ nghiệm nguyên.
 
-### 两个变量的情形
+### Hai biến
 
-首先考虑二元一次不定方程：
+Xét
 
 $$
 a_1x_1 + a_2x_2 = b.
 $$
 
-裴蜀定理指出，该方程有解，当且仅当
+Theo Bézout, có nghiệm khi và chỉ khi
 
 $$
 d = \gcd(a_1,a_2) \mid b.
 $$
 
-接下来，假设这一条件成立．利用扩展欧几里得算法可以求出方程 $a_1x_1 + a_2x_2 = d$ 的一组整数解 $(x_1^*,x_2^*)$．由此，可以得到原方程的一组特解
+Giả sử điều kiện đúng. Dùng Euclid mở rộng tìm một nghiệm $(x_1^*,x_2^*)$ của $a_1x_1+a_2x_2=d$. Khi đó một nghiệm riêng là
 
 $$
 (x_1^\circ,x_2^\circ) = \left(\frac{b}{d}x_1^*,\frac{b}{d}x_2^*\right).
 $$
 
-要得到全部解，可以考虑将原方程与恒等式 $a_1x_1^\circ+a_2x_2^\circ = b$ 相减，就有
+Trừ đi phương trình $a_1x_1^\circ+a_2x_2^\circ=b$ ta được
 
 $$
 a_1(x_1 - x_1^\circ) + a_2(x_2 - x_2^\circ) = 0.
 $$
 
-这是一个关于 $(x_1-x_1^\circ,x_2-x_2^\circ)$ 的齐次一次不定方程，它有通解
+Phương trình thuần nhất có nghiệm tổng quát
 
 $$
 (x_1-x_1^\circ,x_2-x_2^\circ) = \left(t\dfrac{a_2}{d},-t\dfrac{a_1}{d}\right).\quad(t\in\mathbf Z)
 $$
 
-因此，原方程的通解就是
+Do đó nghiệm tổng quát:
 
 $$
 (x_1,x_2) = \left(x_1^\circ + t\dfrac{a_2}{d},x_2^\circ - t\dfrac{a_1}{d}\right).\quad(t\in\mathbf Z)
 $$
 
-这是直线 $a_1x_1+a_2x_2 = b$ 上一系列等间隔分布的整点．
+Đây là các điểm nguyên cách đều trên đường thẳng $a_1x_1+a_2x_2=b$.
 
-### 多个变量的情形
+### Nhiều biến
 
-解决了二元的情形，多元的情形也就容易解决了．对于 $n$ 元一次不定方程
+Với $n$ biến ($n>3$):
 
 $$
-a_1x_1 + a_2x_2 + \cdots + a_nx_n = b,\quad (n>3)
+a_1x_1 + a_2x_2 + \cdots + a_nx_n = b
 $$
 
-由裴蜀定理可知，方程有解当且仅当
+Có nghiệm khi và chỉ khi
 
 $$
 \gcd(a_1,a_2,\cdots,a_n) \mid b.
 $$
 
-和二元的情形类似，多元一次不定方程的通解同样可以写作
+Nghiệm tổng quát có dạng
 
 $$
-(x_1^\circ,x_2^\circ,\cdots,x_n^\circ) + \sum_{k=1}^{n-1} t_k(x_1^{(k)},x_2^{(k)},\cdots,x_n^{(k)})
+(x_1^\circ,x_2^\circ,\cdots,x_n^\circ) + \sum_{k=1}^{n-1} t_k(x_1^{(k)},x_2^{(k)},\cdots,x_n^{(k)}).
 $$
 
-的形式，其中，$x^\circ$ 为一个特解，$x^{(k)}$ 为相应的齐次方程的 $(n-1)$ 个解．
-
-要求出通解的具体形式，可以通过将 $n$ 元方程转化为 $(n-1)$ 元方程来完成．不妨设 $d_1 = \gcd(a_1,a_2)$，那么，根据裴蜀定理，$a_1x_1+a_2x_2$ 的全体恰为 $d_1$ 的所有倍数．因此，可以首先求解 $(n-1)$ 元一次不定方程：
+Để tìm cụ thể, đưa về $(n-1)$ biến. Đặt $d_1=\gcd(a_1,a_2)$, ta có mọi giá trị của $a_1x_1+a_2x_2$ chính là bội của $d_1$. Trước hết giải
 
 $$
 d_1y_1 + a_3x_3 + a_4x_4 + \cdots + a_nx_n = b.
 $$
 
-设得到的它的通解为
+Giả sử nghiệm tổng quát:
 
 $$
 \begin{aligned}
@@ -189,13 +183,13 @@ x_i &= x_i^\circ + \sum_{k=2}^{n-1}t_kx_i^{(k)},\quad i=3,\cdots,n.
 \end{aligned}
 $$
 
-设 $a_1x_1+a_2x_2=d_1$ 的一组特解为 $(x_1^*,x_2^*)$，那么，根据前一节的讨论可知，关于 $x_1,x_2$ 的二元一次不定方程 $a_1x_1+a_2x_2=d_1y_1$ 的通解就是
+Gọi $(x_1^*,x_2^*)$ là nghiệm của $a_1x_1+a_2x_2=d_1$. Khi đó nghiệm tổng quát của $a_1x_1+a_2x_2=d_1y_1$ là
 
 $$
 x_1 = x_1^*y_1 + t_1\dfrac{a_2}{d_1},~x_2 = x_2^*y_1 - t_1\dfrac{a_1}{d_1}.
 $$
 
-代入 $y_1$ 的表达式，就得到原方程的通解
+Thế $y_1$ vào, ta được nghiệm tổng quát của bài toán gốc:
 
 $$
 \begin{aligned}
@@ -205,99 +199,95 @@ x_i &= x_i^\circ + \sum_{k=2}^{n-1}t_kx_i^{(k)},\quad i=3,\cdots,n.
 \end{aligned}
 $$
 
-## Frobenius 硬币问题
+## Bài toán đồng xu Frobenius
 
-裴蜀定理给出了一个整数可以由若干个整数线性表出的充分必要条件．与此紧密相关的是 **Frobenius 硬币问题**（Frobenius coin problem）：
+Định lý Bézout cho điều kiện một số nguyên là tổ hợp tuyến tính nguyên. Liên quan chặt chẽ là **bài toán đồng xu Frobenius**:
 
--   如果硬币共有 $a_1,a_2,\cdots,a_n$ 等若干种整数面值，且 $\gcd(a_1,a_2,\cdots,a_n)=1$，那么，不能够由这些硬币组成的最大整数是多少？
+-   Với các mệnh giá $a_1,\cdots,a_n$ nguyên dương, $\gcd(a_1,\cdots,a_n)=1$, số nguyên lớn nhất không thể biểu diễn bằng các mệnh giá đó là bao nhiêu?
 
-同样是在考察整数 $k$ 什么时候可以表示为 $a_1x_1+a_2x_2+\cdots+a_nx_n$ 的形式，裴蜀定理中 $x_i$ 可以是任意整数，而 Frobenius 硬币问题中 $x_i$ 只能是自然数．
+Ở đây $x_i$ bị ràng buộc là số tự nhiên. Trường hợp $n=1$ là tầm thường, $n>2$ phức tạp; phần này chỉ xét $n=2$.
 
-只有一种硬币的情形是平凡的，因为只能有 $a_1=1$，所有自然数都可以由它表示．而 $n>2$ 的情形又太过复杂，所以，本节仅讨论 $n=2$ 的情形．
+### Định lý Sylvester
 
-### Sylvester 定理
+Năm 1882, Sylvester giải trường hợp $n=2$:
 
-在 1882 年，Sylvester 完全解决了 $n = 2$ 时的 Frobenius 硬币问题：
+???+ note "Định lý (Sylvester)"
+    Với $a_1,a_2$ nguyên dương nguyên tố cùng nhau, số nguyên lớn nhất không thể biểu diễn dưới dạng $a_1x_1+a_2x_2~(x_1,x_2\in\mathbf N)$ là $C=a_1a_2-a_1-a_2$. Hơn nữa, với mọi $k\in\mathbf Z$, trong hai số $k$ và $C-k$ có đúng một số biểu diễn được.
 
-???+ note "定理（Sylvester）"
-    对于互素的正整数 $a_1,a_2$，不能够写作 $a_1x_1+a_2x_2~(x_1,x_2\in\mathbf N)$ 的最大整数是 $C = a_1a_2 - a_1 - a_2$．而且，对于所有 $k\in\mathbf Z$，整数 $k$ 和 $C-k$ 中有且只有一个可以写作该形式．
+Gọi số có thể biểu diễn dưới dạng $a_1x_1+a_2x_2$ (với $x_i\in\mathbf N$) là **có thể biểu diễn**.
 
-为表述方便，称可以写作 $a_1x_1+a_2x_2~(x_1,x_2\in\mathbf N)$ 形式的整数为 **可表示的**．
-
-??? note "证明一"
-    由于 $a_1,a_2$ 互素，对于任意整数 $k$，方程 $a_1x_1+a_2x_2=k$ 一定有解，且通解为
+??? note "Chứng minh 1"
+    Vì $a_1,a_2$ nguyên tố cùng nhau, phương trình $a_1x_1+a_2x_2=k$ luôn có nghiệm nguyên và nghiệm tổng quát
     
     $$
     (x_1,x_2) = (x_1^\circ + ta_2, x_2^\circ - ta_1).\quad(t\in\mathbf Z)
     $$
     
-    取 $t$ 为 $x_2^\circ$ 对 $a_1$ 作带余除法得到的商，那么，余数 $x_2 = x_2^\circ-ta_1$ 位于 $0$ 和 $a_1-1$ 之间．考察此时得到的一组解 $(x_1,x_2)$．因为 $x_2$ 是它能够取到的最小非负整数值，所以 $n$ 可表示当且仅当 $x_1\ge 0$．
+    Chọn $t$ là thương của $x_2^\circ$ khi chia cho $a_1$, khi đó $x_2=x_2^\circ-ta_1$ nằm trong $[0,a_1-1]$. Vì $x_2$ là nhỏ nhất không âm, $k$ biểu diễn được khi và chỉ khi $x_1\ge 0$.
     
-    **第一步**：证明大于 $C$ 的整数都是可表示的．
+    **Bước 1**: Chứng minh mọi $k>C$ đều biểu diễn được.
     
-    当 $k > C$ 时，有
+    Với $k>C$:
     
     $$
     a_1x_1 = k - a_2x_2 > C - a_2(a_1-1) = -a_1.
     $$
     
-    所以，$x_1 > -1$，也就是说，$x_1\ge 0$．这说明，$(x_1,x_2)$ 是一组自然数解．此时，$k$ 可以写作所求形式．
+    Suy ra $x_1>-1$ nên $x_1\ge 0$. Do đó $k$ biểu diễn được.
     
-    **第二步**：证明 $C$ 不可表示．进而，$C$ 是最大的不可表示的整数，且 $k$ 和 $C-k$ 并非都可表示的．
+    **Bước 2**: Chứng minh $C$ không biểu diễn được, suy ra $C$ là lớn nhất, và $k$ và $C-k$ không thể cùng biểu diễn được.
     
-    反证法．假设 $C$ 可以表示，即存在 $x_1,x_2\in\mathbf N$ 使得 $a_1x_1+a_2x_2=C$ 成立．代入 $C$ 的表达式，可知
+    Giả sử $C$ biểu diễn được, tồn tại $x_1,x_2\in\mathbf N$ sao cho $a_1x_1+a_2x_2=C$. Thay $C$:
     
     $$
     a_1a_2 = a_1(x_1+1) + a_2(x_2+1).
     $$
     
-    因此，$a_2\mid (x_1+1)$ 且 $a_1\mid (x_2+1)$．又因为 $x_1+1,x_2+1$ 都是正数，所以，有
+    Suy ra $a_2\mid (x_1+1)$ và $a_1\mid (x_2+1)$, nên
     
     $$
-    a_1a_2 \ge a_1a_2 + a_2a_1 = 2a_1a_2.
+    a_1a_2 \ge a_1a_2 + a_2a_1 = 2a_1a_2,
     $$
     
-    矛盾．这就说明 $C$ 不可表示．结合第一步，它也就是不可表示的最大整数．
+    mâu thuẫn. Vậy $C$ không biểu diễn được. Nếu $k$ và $C-k$ cùng biểu diễn được thì cộng hai biểu diễn sẽ cho biểu diễn của $C$, mâu thuẫn. Do đó tối đa một số biểu diễn được.
     
-    如果 $k$ 和 $C-k$ 都可以表示，那么，将 $k$ 和 $C-k$ 的表示中的系数相加就得到 $C$ 的表示中的系数，这与 $C$ 不可表示矛盾，故而 $k$ 和 $C-k$ 至多只有一个可以表示．
+    **Bước 3**: Nếu $k$ không biểu diễn được thì $C-k$ biểu diễn được.
     
-    **第三步**：证明如果 $k$ 不可表示，那么 $C-k$ 一定是可表示的．
-    
-    设 $(x_1,x_2)$ 是前文所设的方程 $a_1x_1+a_2x_2=k$ 的整数解．那么，前文已经说明 $k$ 不可表示，就等价于 $x_1<0$．因此，有
+    Gọi $(x_1,x_2)$ là nghiệm nguyên của $a_1x_1+a_2x_2=k$. Khi $k$ không biểu diễn được thì $x_1<0$. Khi đó
     
     $$
     C - k = a_1a_2 - a_1 - a_2 - a_1x_1 - a_2x_2 = a_1(-1-x_1) + a_2(a_1-1-x_2).
     $$
     
-    其中，$-1-x_1$ 和 $a_1-1-x_2$ 都是非负整数，所以，$C-k$ 可以表示．
+    Với $-1-x_1$ và $a_1-1-x_2$ không âm, nên $C-k$ biểu diễn được.
 
-??? note "证明二"
-    此处仅证明 $C=a_1a_2-a_1-a_2$ 是最大的不可表示的自然数，其余部分的证明类似证明一．
+??? note "Chứng minh 2"
+    Ở đây chỉ chứng minh $C=a_1a_2-a_1-a_2$ là số tự nhiên lớn nhất không biểu diễn được; phần còn lại tương tự chứng minh 1.
     
-    考虑模 $a_2$ 意义下，每个剩余系中最小的可表示的自然数．因为同一个剩余系中的不同自然数可以通过加减若干个 $a_2$ 互相转化，所以，在讨论最小可表示数时，只需要考虑加减 $a_1$ 的可能性就可以了．由于 $a_1$ 和 $a_2$ 互素，所以，每个剩余系中最小的可表示的自然数恰好就是 $a_1$ 的倍数
+    Xét modulo $a_2$: trong mỗi lớp dư, số tự nhiên nhỏ nhất có thể biểu diễn là duy nhất. Vì các số trong cùng lớp dư sai khác bội $a_2$, khi tìm số nhỏ nhất chỉ cần xét cộng/trừ $a_1$. Do $a_1$ và $a_2$ nguyên tố cùng nhau, số nhỏ nhất trong mỗi lớp dư là bội của $a_1$:
     
     $$
     0,~a_1,~2a_1,~\cdots,~(a_2-1)a_1.
     $$
     
-    因此，最大的不可表示数为
+    Vậy số lớn nhất không biểu diễn được là
     
     $$
     \max_{0\le i < a_2} ia_1 - a_2 = (a_2-1)a_1 - a_2 = C.
     $$
 
-### 几何意义
+### Ý nghĩa hình học
 
-将方程 $a_1x_1 + a_2x_2 = k$ 看作是一条直线．那么，$k$ 可表示，当且仅当这条直线在第一象限（包括坐标轴）内通过一个整点．当 $k < ab$ 时，这条直线在第一象限至多只能通过一个整点．因此，对于 $0\le k < ab$，整数 $k$ 可以表示，当且仅当 $k$ 在第一象限通过恰好一个整点．
+Xem $a_1x_1+a_2x_2=k$ là một đường thẳng. Khi đó $k$ biểu diễn được khi và chỉ khi đường thẳng đi qua một điểm nguyên trong góc phần tư thứ nhất (kể cả trục). Khi $k<ab$, đường thẳng đi qua tối đa một điểm nguyên. Do đó với $0\le k<ab$, $k$ biểu diễn được khi và chỉ khi có đúng một điểm nguyên.
 
-因此，小于等于 $k < ab$ 且可以表示的自然数的数量，恰好等于第一象限内直线 $a_1x_1 + a_2x_2 = k$ 下的整点个数（包含边界上的点）．这一数量就等于
+Vì thế, số lượng $k<ab$ có thể biểu diễn bằng số điểm nguyên dưới đường $a_1x_1+a_2x_2=k$ (kể cả biên). Con số này bằng
 
 $$
 \sum_{i=0}^{\lfloor k / a_1 \rfloor} \left\lfloor\dfrac{k-ia_1}{a_2}\right\rfloor.
 $$
 
-这是经典的直线下整点问题，可以用 [类欧几里得算法](./euclidean.md#类欧几里得算法) 在 $O(\log\min\{a_1,a_2,k\})$ 时间求解．
+Đây là bài toán đếm điểm nguyên dưới đường thẳng, có thể giải bằng [thuật toán kiểu Euclid](./euclidean.md#类欧几里得算法) trong $O(\log\min\{a_1,a_2,k\})$.
 
-### 习题
+### Bài tập
 
 -   [Luogu P3951 NOIP2017 提高组 小凯的疑惑/蓝桥杯 2013 省 买不到的数目](https://www.luogu.com.cn/problem/P3951)
