@@ -1,14 +1,14 @@
-形式幂级数的复合和复合逆也是常见的形式幂级数操作，对于没有特殊性质的 $f$ 之前我们一直使用的多是 $O\left(n^2\right)$ 的算法来计算 $f(g) \bmod{x^n}$ 其中 $f\in\mathbb{C}\left\lbrack\left\lbrack x\right\rbrack\right\rbrack,g\in x\mathbb{C}\left\lbrack\left\lbrack x\right\rbrack\right\rbrack$，但是因为效率较低应用较少．我们介绍 Kinoshita–Li 的 $O\left(\mathsf{M}\left(n\right)\log n\right)$ 的算法，其中 $O\left(\mathsf{M}\left(n\right)\right)$ 为两个次数为 $O\left( n\right)$ 的多项式相乘的时间．
+Chuỗi lũy thừa hình thức có phép hợp và nghịch hợp là các thao tác thường gặp. Với $f$ không có tính chất đặc biệt, trước đây ta thường dùng thuật toán $O\left(n^2\right)$ để tính $f(g) \bmod{x^n}$ với $f\in\mathbb{C}\left\lbrack\left\lbrack x\right\rbrack\right\rbrack,g\in x\mathbb{C}\left\lbrack\left\lbrack x\right\rbrack\right\rbrack$, nhưng do hiệu năng thấp nên ít ứng dụng. Ở đây giới thiệu thuật toán $O\left(\mathsf{M}\left(n\right)\log n\right)$ của Kinoshita–Li, trong đó $O\left(\mathsf{M}\left(n\right)\right)$ là thời gian nhân hai đa thức bậc $O\left( n\right)$.
 
-## 形式幂级数/多项式的复合
+## Hợp chuỗi lũy thừa hình thức/đa thức
 
-若要计算 $f\left(g\left(x\right)\right)\bmod{x^n}$ 那么需要 $f\left(g\left(x\right)\right)$ 的每一项系数都是有限项之和，所以之前要求 $f(x)\in\mathbb{C}\left\lbrack\left\lbrack x\right\rbrack\right\rbrack,g(x)\in x\mathbb{C}\left\lbrack\left\lbrack x\right\rbrack\right\rbrack$，而如果 $f(x),g(x)\in\mathbb{C}\left\lbrack x\right\rbrack$ 也可以满足这个条件．因为我们需要将 $f\left(g\left(x\right)\right)$ 的系数截断，不妨直接考虑 $f(x),g(x)$ 都是多项式的情况．对于 $f(x)=\sum_{j=0}^{n-1}f_jx^j$，有
+Để tính $f\left(g\left(x\right)\right)\bmod{x^n}$ thì cần mọi hệ số của $f\left(g\left(x\right)\right)$ đều là tổng hữu hạn, nên trước đây yêu cầu $f(x)\in\mathbb{C}\left\lbrack\left\lbrack x\right\rbrack\right\rbrack,g(x)\in x\mathbb{C}\left\lbrack\left\lbrack x\right\rbrack\right\rbrack$; nếu $f(x),g(x)\in\mathbb{C}\left\lbrack x\right\rbrack$ thì cũng thỏa điều kiện này. Vì cần cắt cụt hệ số của $f\left(g\left(x\right)\right)$, ta có thể trực tiếp xét trường hợp $f(x),g(x)$ đều là đa thức. Với $f(x)=\sum_{j=0}^{n-1}f_jx^j$, có
 
 $$
 f\left(g\left(x\right)\right)=\sum_{j=0}^{n-1}f_jg\left(x\right)^j
 $$
 
-我们考虑环 $\mathbb{C}\left\lbrack x\right\rbrack\left(\left( y\right)\right)$ 上的有理函数
+Xét hàm hữu tỉ trên vành $\mathbb{C}\left\lbrack x\right\rbrack\left(\left( y\right)\right)$:
 
 $$
 \begin{aligned}
@@ -17,7 +17,7 @@ f\left(g\left(x\right)\right)&=\left\lbrack y^0\right\rbrack\frac{f\left(y^{-1}\
 \end{aligned}
 $$
 
-根据 [常系数齐次线性递推](./linear-recurrence.md) 中提到的 Bostan–Mori 算法，Kinoshita 和 Li 指出可以将其修改为二元形式：
+Theo thuật toán Bostan–Mori trong [truy hồi tuyến tính thuần nhất hệ số hằng](./linear-recurrence.md), Kinoshita và Li chỉ ra rằng có thể sửa thành dạng hai biến:
 
 $$
 \begin{aligned}
@@ -27,13 +27,13 @@ $$
 \end{aligned}
 $$
 
-这样递归的计算在 $n=1$ 时我们只需计算
+Như vậy phép tính đệ quy, khi $n=1$ chỉ cần:
 
 $$
 \frac{P(y)}{Q(x,y)}\bmod{x}=\frac{P(y)}{Q(0,y)}\in\mathbb{C}\left(\left( y\right)\right)
 $$
 
-在计算 $\dfrac{P(y)}{V(z,y)}\bmod{z^{\left\lceil n/2\right\rceil}}\in\mathbb{C}\left\lbrack z\right\rbrack\left(\left( y\right)\right)$ 时我们不需要保留所有 $y$ 的系数，因为最后我们只需要提取 $y^0$ 的系数，所以 $y^{>0}$ 的系数是不需要的，而因为求出前者之后需要将其乘以若干个形如 $Q(-x,y)\in\mathbb{C}\left\lbrack x,y\right\rbrack$ 的「**多项式**」，所以只需要保留对于 $y^0$ 有贡献的系数即可．我们准备好给出伪代码：
+Khi tính $\dfrac{P(y)}{V(z,y)}\bmod{z^{\left\lceil n/2\right\rceil}}\in\mathbb{C}\left\lbrack z\right\rbrack\left(\left( y\right)\right)$, ta không cần giữ toàn bộ hệ số theo $y$, vì cuối cùng chỉ cần hệ số của $y^0$, nên các hệ số $y^{>0}$ không cần. Mặt khác vì sau đó phải nhân với các đa thức dạng $Q(-x,y)\in\mathbb{C}\left\lbrack x,y\right\rbrack$, nên chỉ cần giữ các hệ số có đóng góp đến $y^0$. Ta đưa ra giả mã:
 
 $$
 \begin{array}{ll}
@@ -51,19 +51,19 @@ $$
 \end{array}
 $$
 
-那么我们有
+Do đó
 
 $$
 f\left(g\left(x\right)\right)\bmod{x^n}=\operatorname{\mathsf{Comp}}\left(f\left(y^{-1}\right),1-y\cdot g(x),\max\left\lbrace 1+\deg f,n\right\rbrace ,1\right)\bmod{x^n}
 $$
 
-注意第三个参数是因为 $g(0)$ 可能不为零，如果 $\deg f\geq n$ 此时不能截断 $f(x)$ 来计算 $f\left(g(x)\right)$，我们也可以选择计算 $f(g)=f\circ \left(x+g(0)\right)\circ \left(g-g(0)\right)$，此时可以取 $F:=f\left(x+g(0)\right)\bmod{x^n}$ 和 $G:=g-g(0)$ 转而计算 $\operatorname{\mathsf{Comp}}\left(F\left(y^{-1}\right),1-y\cdot G(x),n,1\right)$．
+Lưu ý tham số thứ ba là vì $g(0)$ có thể khác $0$; nếu $\deg f\geq n$ thì không thể cắt cụt $f(x)$ để tính $f\left(g(x)\right)$. Ta cũng có thể tính $f(g)=f\circ \left(x+g(0)\right)\circ \left(g-g(0)\right)$, khi đó lấy $F:=f\left(x+g(0)\right)\bmod{x^n}$ và $G:=g-g(0)$ rồi tính $\operatorname{\mathsf{Comp}}\left(F\left(y^{-1}\right),1-y\cdot G(x),n,1\right)$.
 
-另外因为调用的限制最后递归终止时的 $Q(0,y)^{-1}$ 是可以直接导出的，不需要使用形式幂级数的乘法逆元算法来计算，我们只需计算一次乘法然后提取需要的系数．
+Ngoài ra, do giới hạn khi gọi đệ quy, ở điểm kết thúc ta có thể trực tiếp suy ra $Q(0,y)^{-1}$, không cần dùng thuật toán nghịch đảo nhân của chuỗi lũy thừa; chỉ cần nhân một lần rồi trích hệ số cần thiết.
 
-## 常见的特殊形式复合
+## Một số dạng hợp đặc biệt
 
-我们常用的 [多项式初等函数](./elementary-func.md) 都可以通过复合计算：
+Các [hàm sơ cấp đa thức](./elementary-func.md) thường dùng có thể tính qua phép hợp:
 
 $$
 \begin{aligned}
@@ -74,69 +74,69 @@ g(0)=1&,\space g^e=1+\dfrac{e}{1}(g-1)+\dfrac{e(e-1)}{2}(g-1)^2+\cdots
 \end{aligned}
 $$
 
-在复合逆的计算中我们也会用到求幂函数．
+Trong tính nghịch hợp, ta cũng sẽ dùng phép tính lũy thừa.
 
-### Kronecker 代换
+### Thay thế Kronecker
 
-在分析时间复杂度之前我们先考虑如何作二元多项式乘法，一种想法是将系数「打包」，这一方法由 Kronecker 在 1882 年通过 $y\mapsto x^N$ 将 $R\left\lbrack x,y\right\rbrack$ 上的乘法缩减为 $R\left\lbrack x\right\rbrack$ 上的乘法，但是要求 $N$ 足够大．
+Trước khi phân tích độ phức tạp, ta xét cách nhân đa thức hai biến. Một ý tưởng là “đóng gói” hệ số; phương pháp này do Kronecker (1882) đề xuất bằng phép thế $y\mapsto x^N$ để quy phép nhân trên $R\left\lbrack x,y\right\rbrack$ về phép nhân trên $R\left\lbrack x\right\rbrack$, nhưng cần $N$ đủ lớn.
 
-不妨设 $\deg_x \left(AB\right)<N$，那么我们计算 $A\left(x,x^N\right)B\left(x,x^N\right)$ 之后仍然可以还原出 $A(x,y)B(x,y)$ 且「打包」和「拆包」的时间为线性．
+Giả sử $\deg_x \left(AB\right)<N$, thì sau khi tính $A\left(x,x^N\right)B\left(x,x^N\right)$ vẫn có thể khôi phục $A(x,y)B(x,y)$, và thời gian “đóng gói/giải đóng gói” là tuyến tính.
 
-我们使用 Kronecker 代换再计算一元多项式乘法即可，不难发现在 $n$ 为二的幂时上述算法可以在 $O\left(\mathsf{M}\left(n\right)\log n\right)$ 时间完成，因为每一次递归中 $y$ 的次数翻倍，但是 $x$ 的次数减半．
+Dùng thay thế Kronecker rồi nhân đa thức một biến, không khó thấy khi $n$ là lũy thừa của $2$, thuật toán trên chạy trong $O\left(\mathsf{M}\left(n\right)\log n\right)$, vì mỗi lần đệ quy bậc theo $y$ tăng gấp đôi, còn bậc theo $x$ giảm một nửa.
 
-??? note "模板（[P5373【模板】多项式复合函数](https://www.luogu.com.cn/problem/P5373)）"
-    代码相对于原算法作了一些简化及修改，使得代码更短．
+??? note "Mẫu ( [P5373【Mẫu】Hàm hợp đa thức](https://www.luogu.com.cn/problem/P5373) )"
+    Mã đã đơn giản hóa và sửa đổi một số chỗ so với thuật toán gốc, giúp ngắn hơn.
     
     ```cpp
     --8<-- "docs/math/code/poly/comp-rev/comp_1.cpp"
     ```
 
-## 形式幂级数的复合逆
+## Nghịch hợp chuỗi lũy thừa hình thức
 
-现给出 $f\in x\mathbb{C}\left\lbrack\left\lbrack x\right\rbrack\right\rbrack$ 且 $f'(0)\neq 0$，求出 $g(x)\bmod{x^n}$ 满足 $f(g)\equiv g(f)\equiv x\pmod{x^n}$．
+Cho $f\in x\mathbb{C}\left\lbrack\left\lbrack x\right\rbrack\right\rbrack$ và $f'(0)\neq 0$, cần tìm $g(x)\bmod{x^n}$ sao cho $f(g)\equiv g(f)\equiv x\pmod{x^n}$.
 
-根据 [Lagrange 反演](./lagrange-inversion.md)，对于 $n>1,k\geq 0$ 我们有
+Theo [phản diễn Lagrange](./lagrange-inversion.md), với $n>1,k\geq 0$ ta có
 
 $$
 \left\lbrack x^{n-1}\right\rbrack f(x)^k=\frac{k}{n-1}\left\lbrack x^{n-1-k}\right\rbrack \left(\frac{g(x)}{x}\right)^{-(n-1)}
 $$
 
-也就是我们如果能对 $k=0,1,\dots ,n-1$ 求出 $\left\lbrack x^{n-1}\right\rbrack f(x)^k$，那么就可以求出其复合逆．
+Tức là nếu ta tính được $\left\lbrack x^{n-1}\right\rbrack f(x)^k$ với $k=0,1,\dots ,n-1$ thì có thể suy ra nghịch hợp.
 
-Kinoshita 和 Li 指出我们可以考虑二元有理函数
+Kinoshita và Li chỉ ra rằng ta có thể xét hàm hữu tỉ hai biến
 
 $$
 \frac{1}{1-y\cdot f(x)}=\sum_{j\geq 0}f(x)^jy^j
 $$
 
-且这个问题有一个更一般的形式即 Power Projection 问题：我们考虑计算
+và bài toán này có dạng tổng quát hơn là Power Projection: tính
 
 $$
 u:=\left\lbrack x^{n-1}\right\rbrack\frac{P(x,y)}{Q(x,y)}\bmod{y^m}
 $$
 
-当 $n-1=0$ 时显然有 $u=\dfrac{P(0,y)}{Q(0,y)}\bmod{y^m}$，否则我们有
+Khi $n-1=0$ thì $u=\dfrac{P(0,y)}{Q(0,y)}\bmod{y^m}$; ngược lại
 
 $$
 \frac{P(x,y)}{Q(x,y)}=\frac{P(x,y)Q(-x,y)}{Q(x,y)Q(-x,y)}=\frac{U_e\left(x^2,y\right)+xU_o\left(x^2,y\right)}{V\left(x^2,y\right)}
 $$
 
-那么
+Do đó
 
 $$
 \begin{aligned}
 u&=\begin{cases}
-\left\lbrack x^{n-1}\right\rbrack\dfrac{U_e\left(x^2,y\right)}{V\left(x^2,y\right)}&\text{ if }n-1\text{ is even,} \\
-\left\lbrack x^{n-1}\right\rbrack\dfrac{xU_o\left(x^2,y\right)}{V\left(x^2,y\right)}&\text{ if }n-1\text{ is odd.}
+\left\lbrack x^{n-1}\right\rbrack\dfrac{U_e\left(x^2,y\right)}{V\left(x^2,y\right)}&\text{ nếu }n-1\text{ chẵn,} \\
+\left\lbrack x^{n-1}\right\rbrack\dfrac{xU_o\left(x^2,y\right)}{V\left(x^2,y\right)}&\text{ nếu }n-1\text{ lẻ.}
 \end{cases} \\
 &=\begin{cases}
-\left\lbrack x^{\left\lceil n/2\right\rceil-1}\right\rbrack\dfrac{U_e\left(x,y\right)}{V\left(x,y\right)}&\text{ if }n-1\text{ is even,} \\
-\left\lbrack x^{\left\lceil n/2\right\rceil-1}\right\rbrack\dfrac{U_o\left(x,y\right)}{V\left(x,y\right)}&\text{ if }n-1\text{ is odd.}
+\left\lbrack x^{\left\lceil n/2\right\rceil-1}\right\rbrack\dfrac{U_e\left(x,y\right)}{V\left(x,y\right)}&\text{ nếu }n-1\text{ chẵn,} \\
+\left\lbrack x^{\left\lceil n/2\right\rceil-1}\right\rbrack\dfrac{U_o\left(x,y\right)}{V\left(x,y\right)}&\text{ nếu }n-1\text{ lẻ.}
 \end{cases}
 \end{aligned}
 $$
 
-我们给出其伪代码：
+Giả mã:
 
 $$
 \begin{array}{ll}
@@ -159,12 +159,12 @@ $$
 \end{array}
 $$
 
-同样的我们也可以直接导出 $Q(0,y)^{-1}$ 而不需要计算形式幂级数的乘法逆元，那么复合逆的算法就是
+Tương tự, có thể trực tiếp suy ra $Q(0,y)^{-1}$ mà không cần tính nghịch đảo nhân chuỗi lũy thừa; do đó thuật toán nghịch hợp là
 
 $$
 \begin{array}{ll} &\textbf{Algorithm }\operatorname{\mathsf{Rev}}(f(x),n)\text{:} \\
 &\textbf{Input}\text{: }f\in x\mathbb{C}\left\lbrack\left\lbrack x\right\rbrack\right\rbrack, f'(0)\neq 0,n\in\mathbb{N}_{\geq 2}\text{.} \\
-&\textbf{Output}\text{: }g(x)\bmod{x^n} \text{ such that }f(g)\equiv g(f)\equiv x\pmod{x^n}\text{.} \\
+&\textbf{Output}\text{: }g(x)\bmod{x^n} \text{ sao cho }f(g)\equiv g(f)\equiv x\pmod{x^n}\text{.} \\
 1&t\gets f'(0) \\
 2&F(x)\gets f\left(t^{-1}x\right) \\
 3&\sum_{k=0}^{n-1}a_ky^k\gets \operatorname{\mathsf{PowProj}}\left(1,1-y\cdot F(x),n,n\right) \\
@@ -174,18 +174,18 @@ $$
 \end{array}
 $$
 
-??? note "模板（[P5809【模板】多项式复合逆](https://www.luogu.com.cn/problem/P5809)）"
-    代码相对于原算法作了一些简化及修改，使得代码更短．
+??? note "Mẫu ( [P5809【Mẫu】Nghịch hợp đa thức](https://www.luogu.com.cn/problem/P5809) )"
+    Mã đã đơn giản hóa và sửa đổi một số chỗ so với thuật toán gốc, giúp ngắn hơn.
     
     ```cpp
     --8<-- "docs/math/code/poly/comp-rev/rev_1.cpp"
     ```
 
-### 由转置原理导出
+### Suy ra từ nguyên lý chuyển vị
 
-Power Projection 问题是 Modular Composition 的转置，Kinoshita 和 Li 指出我们前文的复合算法可以由 Power Projection 算法直接转置得到．同样的，如果优化可以应用于 Power Projection 算法，其也可以应用于 Modular Composition 算法．我们省略细节．
+Bài toán Power Projection là chuyển vị của Modular Composition. Kinoshita và Li chỉ ra thuật toán hợp ở trên có thể suy ra trực tiếp từ Power Projection bằng phép chuyển vị. Tương tự, nếu có tối ưu cho Power Projection thì cũng áp dụng cho Modular Composition. Ta bỏ qua chi tiết.
 
-## 参考文献
+## Tài liệu tham khảo
 
 1.  Yasunori Kinoshita, Baitian Li.[Power Series Composition in Near-Linear Time](https://arxiv.org/abs/2404.05177). FOCS 2024.
 2.  Alin Bostan, Ryuhei Mori.[A Simple and Fast Algorithm for Computing the N-th Term of a Linearly Recurrent Sequence](https://arxiv.org/abs/2008.08822). SOSA 2021: 118-132

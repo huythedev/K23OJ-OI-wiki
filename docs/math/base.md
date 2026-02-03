@@ -1,63 +1,63 @@
-在计算机中，除了二进制，比较常用的还有八进制和十六进制．
+Trong máy tính, ngoài nhị phân, thường dùng bát phân và thập lục phân.
 
-## 二进制
+## Nhị phân
 
-二进制是计算机内部运算中采用的进制，在这样的进制系统下，只有 $0,1$ 两个数字，计算机内部的所有运算（包括位操作）都是在二进制的基础上进行的．
+Nhị phân là hệ cơ số dùng trong tính toán nội bộ của máy tính. Trong hệ này chỉ có $0,1$, và mọi phép toán nội bộ (bao gồm phép toán bit) đều dựa trên nhị phân.
 
-但用二进制表示数字会让数字过长，因此为了方便表示的需要，通常会把二进制数转换为八进制或十六进制表示．
+Tuy nhiên, biểu diễn nhị phân thường dài, nên để thuận tiện, người ta thường chuyển sang bát phân hoặc thập lục phân.
 
-## 八进制
+## Bát phân
 
-在八进制下，有 $0,1,2,3,4,5,6,7$ 八个数字．
+Trong bát phân, có các chữ số $0,1,2,3,4,5,6,7$.
 
-一般情况下，八进制数以 `oxx`（其中 `o` 为八进制的前缀，`xx` 代表八进制数）的形式来表示．
+Thông thường, số bát phân được viết dưới dạng `oxx` (trong đó `o` là tiền tố bát phân, `xx` là số bát phân).
 
-## 十六进制
+## Thập lục phân
 
-在十六进制下，有 $0,1,2,3,4,5,6,7,8,9,A(10),B(11),C(12),D(13),E(14),F(15)$ 十六个数字．
+Trong thập lục phân có các chữ số $0,1,2,3,4,5,6,7,8,9,A(10),B(11),C(12),D(13),E(14),F(15)$.
 
-十六进制与二进制相比，最大的优点就是表示的数字长度较短，一位十六进制数可以表示 4 位二进制数．
+Ưu điểm lớn nhất của thập lục phân so với nhị phân là độ dài biểu diễn ngắn hơn: một chữ số thập lục phân tương ứng 4 bit nhị phân.
 
-一般情况下，十六进制数以 `0xdbf`（其中 `0x` 为十六进制数的前缀）的形式来表示．
+Thông thường, số thập lục phân được viết dưới dạng `0xdbf` (trong đó `0x` là tiền tố).
 
-## 进制间的相互转化
+## Chuyển đổi giữa các hệ
 
-### 十进制转二进制/八进制/十六进制
+### Thập phân sang nhị phân/bát phân/thập lục phân
 
-这里以二进制为例来演示，其他进制的原理与其类似．
+Lấy nhị phân làm ví dụ, các hệ khác tương tự.
 
-整数部分，把十进制数不断执行除 2 操作，直至商数为 0，之后从下到上，取所有余数的数字，即为二进制的整数部分数字．小数部分，则用其乘 2，取其整数部分的结果，再用计算后的小数部分依此重复计算，算到小数部分全为 0 为止，之后从上到下，取所有计算后整数部分的数字，即为二进制的小数部分数字．
+Phần nguyên: liên tục chia số thập phân cho 2 đến khi thương bằng 0, rồi lấy các số dư từ dưới lên. Phần thập phân: nhân với 2, lấy phần nguyên, lặp lại với phần thập phân còn lại cho đến khi bằng 0, rồi lấy các phần nguyên từ trên xuống.
 
 ```text
-将35.25转化为二进制数
-整数部分：
+Chuyển 35.25 sang nhị phân
+Phần nguyên:
 35/2=17  ......1
 17/2=8   ......1
 8/2=4    ......0
 4/2=2    ......0
 2/2=1    ......0
 1/2=0    ......1
-小数部分：
+Phần thập phân:
 0.25*2=0.5     0
 0.5*2=1        1
 ```
 
-即 $35.25 = (100011.01)_2$
+Tức $35.25 = (100011.01)_2$
 
-### 二进制/八进制/十六进制转十进制
+### Nhị phân/bát phân/thập lục phân sang thập phân
 
-还是以二进制为例．
+Vẫn lấy nhị phân làm ví dụ.
 
-二进制数转换为十进制数，只需将每个位的值，乘以 $2^i$ 次即可，其中 $i$ 为当前位的位数，个位的位数为 0．
+Chuyển nhị phân sang thập phân bằng cách nhân từng bit với $2^i$, trong đó $i$ là vị trí (bit thấp nhất có $i=0$).
 
 ```text
-将11010.01(2)转换为十进制数
+Chuyển 11010.01(2) sang thập phân
 11010.01(2)=1*2^4+1*2^3+0*2^2+1*2^1+0*2^0+0*2^(-1)+1*2(-2)
         =26.25
 ```
 
-即 $(11010.01)_2 = (26.25)_{10}$
+Tức $(11010.01)_2 = (26.25)_{10}$
 
-### 二进制/八进制/十六进制间的相互转换
+### Chuyển đổi giữa nhị phân/bát phân/thập lục phân
 
-一个八进制位可以用 3 个二进制位来表示（因为 $2^3 =8$），一个十六进制位可以用 4 个二进制位来表示（$2^4 = 16$），反之同理．
+Một chữ số bát phân tương ứng 3 bit nhị phân (vì $2^3 =8$), một chữ số thập lục phân tương ứng 4 bit nhị phân ($2^4 = 16$), và ngược lại.

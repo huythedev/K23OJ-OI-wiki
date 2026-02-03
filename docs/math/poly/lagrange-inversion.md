@@ -1,50 +1,50 @@
-## 形式 Laurent 级数
+## Chuỗi Laurent hình thức
 
-我们已经知道形式幂级数环 $\mathbb{C}\lbrack\lbrack x\rbrack\rbrack$ 了，定义形式 Laurent 级数环：
+Ta đã biết vành chuỗi lũy thừa hình thức $\mathbb{C}\lbrack\lbrack x\rbrack\rbrack$, định nghĩa vành chuỗi Laurent hình thức:
 
 $$
 \mathbb{C}\left(\left(x\right)\right):=\left\lbrace \sum_{k\geq N}a_kx^k : N\in\mathbb{Z},a_k\in \mathbb{C}\right\rbrace
 $$
 
-我们可以仿照形式幂级数的乘法逆元定义来定义 $\mathbb{C}\left(\left(x\right)\right)$ 上元素的乘法逆元：
+Ta định nghĩa nghịch đảo nhân của phần tử trong $\mathbb{C}\left(\left(x\right)\right)$ tương tự chuỗi lũy thừa:
 
-若对于 $f:=\sum_{k\geq N}f_kx^k$ 且 $f_N\neq 0$ 存在 $g=\sum_{k\geq -N}g_kx^k$ 满足 $fg=1$ 那么
+Với $f:=\sum_{k\geq N}f_kx^k$ và $f_N\neq 0$, tồn tại $g=\sum_{k\geq -N}g_kx^k$ sao cho $fg=1$, thì
 
 $$
 g_k:=
 \begin{cases}
-f_N^{-1}, &\text{ if }k=-N\text{,} \\
--f_N^{-1}\sum_{i> N}f_ig_{k-i}, &\text{ otherwise}
+f_N^{-1}, &\text{ nếu }k=-N, \\
+-f_N^{-1}\sum_{i> N}f_ig_{k-i}, &\text{ các trường hợp khác}
 \end{cases}
 $$
 
-与形式幂级数类似的，我们也对非零的 $f(x)=\sum_{k\geq N}f_kx^k$ 定义：
+Tương tự chuỗi lũy thừa, với $f(x)=\sum_{k\geq N}f_kx^k\neq 0$, định nghĩa:
 
 $$
 \operatorname{ord} f:=\min\lbrace k:f_k\neq 0\rbrace
 $$
 
-显然对于 $g\neq 0$ 有
+Hiển nhiên với $g\neq 0$:
 
 $$
 \operatorname{ord} (fg)=\operatorname{ord}(f)+\operatorname{ord}(g)
 $$
 
-## 形式留数
+## Phần dư hình thức
 
-形式留数是形式 Laurent 级数中 $x^{-1}$ 项的系数．记 $\operatorname{res} f:=\lbrack x^{-1}\rbrack f$．
+Phần dư hình thức là hệ số của $x^{-1}$ trong chuỗi Laurent. Ký hiệu $\operatorname{res} f:=\lbrack x^{-1}\rbrack f$.
 
-**引理**：对于任何形式 Laurent 级数 $f$ 有 $\operatorname{res} f'=0$．
+**Bổ đề**: Với mọi chuỗi Laurent hình thức $f$, ta có $\operatorname{res} f'=0$.
 
-**证明**：考虑形式导数的定义 $\left(x^k\right)'=kx^{k-1}$．
+**Chứng minh**: Theo định nghĩa đạo hàm hình thức $\left(x^k\right)'=kx^{k-1}$.
 
-**引理**：对于任何形式 Laurent 级数 $f,g$ 有 $\operatorname{res}(f'g)=-\operatorname{res}(fg')$．
+**Bổ đề**: Với mọi chuỗi Laurent hình thức $f,g$, ta có $\operatorname{res}(f'g)=-\operatorname{res}(fg')$.
 
-**证明**：考虑乘法法则 $(fg)'=f'g+fg'$ 所以 $0=\operatorname{res}((fg)')=\operatorname{res}(f'g)+\operatorname{res}(fg')$．
+**Chứng minh**: Theo quy tắc nhân $(fg)'=f'g+fg'$, nên $0=\operatorname{res}((fg)')=\operatorname{res}(f'g)+\operatorname{res}(fg')$.
 
-**引理**：对于形式 Laurent 级数 $f(x)\neq 0$ 有 $\operatorname{res}(f'/f)=\operatorname{ord}f$．
+**Bổ đề**: Với chuỗi Laurent hình thức $f(x)\neq 0$, $\operatorname{res}(f'/f)=\operatorname{ord}f$.
 
-**证明**：设 $\operatorname{ord}f=k$ 那么
+**Chứng minh**: Đặt $\operatorname{ord}f=k$:
 
 $$
 \begin{aligned}
@@ -54,9 +54,9 @@ $$
 \end{aligned}
 $$
 
-**引理**：对于形式 Laurent 级数 $f$ 和形式幂级数 $g\neq 0$ 有 $\operatorname{res}(f)\operatorname{ord}(g)=\operatorname{res}(f(g)g')$．
+**Bổ đề**: Với chuỗi Laurent hình thức $f$ và chuỗi lũy thừa hình thức $g\neq 0$, ta có $\operatorname{res}(f)\operatorname{ord}(g)=\operatorname{res}(f(g)g')$.
 
-**证明**：考虑线性性，我们只需证明 $f=x^k$ 其中 $k\in\mathbb{Z}$ 的情况即可，若 $k\neq -1$ 那么
+**Chứng minh**: Nhờ tính tuyến tính, chỉ cần chứng minh $f=x^k$ với $k\in\mathbb{Z}$. Nếu $k\neq -1$:
 
 $$
 \begin{aligned}
@@ -67,7 +67,7 @@ $$
 \end{aligned}
 $$
 
-若 $k=-1$ 那么
+Nếu $k=-1$:
 
 $$
 \begin{aligned}
@@ -78,13 +78,13 @@ $$
 \end{aligned}
 $$
 
-## 复合逆
+## Nghịch đảo hợp
 
-记 $A(x)\circ B(x):=A(B(x))$．
+Ký hiệu $A(x)\circ B(x):=A(B(x))$.
 
-**命题**：$f(x):=\sum_{k\geq 1}f_kx^k$ 存在复合逆 $f^{\langle -1\rangle}(x)$ 当且仅当 $f(0)=0\neq f'(0)$，此时 $f^{\langle -1\rangle}(x)$ 是唯一的．进一步说：若 $g(x)=\sum_{k\geq 1}g_kx^k$ 满足 $f(g(x))=x$ 或 $g(f(x))=x$ 那么 $g(x)=f^{\langle -1\rangle}(x)$．
+**Mệnh đề**: $f(x):=\sum_{k\geq 1}f_kx^k$ có nghịch đảo hợp $f^{\langle -1\rangle}(x)$ khi và chỉ khi $f(0)=0\neq f'(0)$. Khi đó $f^{\langle -1\rangle}(x)$ là duy nhất. Hơn nữa, nếu $g(x)=\sum_{k\geq 1}g_kx^k$ thỏa $f(g(x))=x$ hoặc $g(f(x))=x$ thì $g(x)=f^{\langle -1\rangle}(x)$.
 
-**证明**：考虑
+**Chứng minh**: Xét
 
 $$
 \begin{aligned}
@@ -96,7 +96,7 @@ g(f(x))&=g_1(f_1x+f_2x^2+f_3x^3+\cdots ) \\
 \end{aligned}
 $$
 
-因为 $g(f(x))=x$ 所以有下面的方程组
+Vì $g(f(x))=x$ nên hệ:
 
 $$
 \begin{cases}
@@ -107,13 +107,13 @@ g_1f_3+2g_2f_1f_2+g_3f_1^3&=0 \\
 \end{cases}
 $$
 
-我们只能在 $f_1\neq 0$ 时才能解出第一个等式，然后依次可以解出 $g_2,\dots$．
+Chỉ khi $f_1\neq 0$ mới giải được phương trình đầu, rồi suy ra $g_2,\dots$.
 
-特别的，考虑 $f(h(x))=x$ 那么 $g(f(h(x)))=g(x)$，进而 $g(x)=g\circ f\circ h(x)=x\circ h(x)=h(x)$．
+Đặc biệt, nếu $f(h(x))=x$ thì $g(f(h(x)))=g(x)$, nên $g(x)=g\circ f\circ h(x)=x\circ h(x)=h(x)$.
 
-## Lagrange 反演公式
+## Công thức phản diễn Lagrange
 
-令 $f(x),g(x)\in\mathbb{C}\lbrack\lbrack x\rbrack\rbrack$ 满足 $f(g(x))=g(f(x))=x$．取 $\Phi(x)\in\mathbb{C}\lbrack\lbrack x\rbrack\rbrack$（或 $\Phi(x)\in\mathbb{C}\left(\left(x\right)\right)$），那么
+Cho $f(x),g(x)\in\mathbb{C}\lbrack\lbrack x\rbrack\rbrack$ sao cho $f(g(x))=g(f(x))=x$. Lấy $\Phi(x)\in\mathbb{C}\lbrack\lbrack x\rbrack\rbrack$ (hoặc $\Phi(x)\in\mathbb{C}\left(\left(x\right)\right)$), khi đó
 
 $$
 \begin{aligned}
@@ -122,7 +122,7 @@ $$
 \end{aligned}
 $$
 
-**证明**：
+**Chứng minh**:
 
 $$
 \begin{aligned}
@@ -132,13 +132,13 @@ $$
 \end{aligned}
 $$
 
-一些读者可能会更加熟悉下面的版本：对于 $k\in\mathbb{Z}_{\geq 0},n\in\mathbb{Z}_{>0}$ 有
+Một số độc giả quen với dạng: với $k\in\mathbb{Z}_{\geq 0},n\in\mathbb{Z}_{>0}$:
 
 $$
 \lbrack x^n\rbrack f(x)^k=\frac{k}{n}\lbrack x^{n-k}\rbrack\left(\frac{x}{g(x)}\right)^n
 $$
 
-或者
+hoặc
 
 $$
 \begin{aligned}
@@ -147,7 +147,7 @@ $$
 \end{aligned}
 $$
 
-发现
+Ta thấy
 
 $$
 \begin{aligned}
@@ -156,9 +156,9 @@ $$
 \end{aligned}
 $$
 
-可以通过我们已经证明的部分导出．
+có thể suy ra từ các phần trước.
 
-## 参考文献
+## Tài liệu tham khảo
 
 1.  Richard P. Stanley and Sergey P. Fomin. Enumerative Combinatorics Volume 2 (Edition 1).
 2.  Ira M. Gessel. Lagrange Inversion.

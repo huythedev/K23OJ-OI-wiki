@@ -1,71 +1,71 @@
-## 概述
+## Khái quát
 
-当某事件已经发生时，一些随机事件的概率会因为已知信息的增加发生变化．例如在手游抽卡时，我们可能会认为单次抽卡出六星与不出六星是等概率的，但随着我们连抽 $50$ 发一个六星都没有，再固执地认为「出六星与不出六星等概率」就显得不是那么明智．
+Khi một biến cố đã xảy ra, xác suất của các biến cố khác có thể thay đổi do thêm thông tin. Ví dụ khi rút thẻ trong game, ta có thể cho rằng “ra 6 sao” và “không ra 6 sao” là như nhau, nhưng nếu đã rút 50 lần không ra 6 sao thì việc tiếp tục tin “xác suất như nhau” không còn hợp lý.
 
-总之，研究在某些已知条件下事件发生的概率是必要的．
+Tóm lại, nghiên cứu xác suất trong điều kiện đã biết là cần thiết.
 
-## 条件概率
+## Xác suất có điều kiện
 
-### 定义
+### Định nghĩa
 
-若已知事件 $A$ 发生，在此条件下事件 $B$ 发生的概率称为 **条件概率**，记作 $P(B|A)$．
+Biết biến cố $A$ xảy ra, xác suất biến cố $B$ xảy ra trong điều kiện đó gọi là **xác suất có điều kiện**, ký hiệu $P(B|A)$.
 
-在概率空间 $(\Omega, \mathcal{F}, P)$ 中，若事件 $A \in \mathcal{F}$ 满足 $P(A) > 0$，则条件概率 $P(\cdot|A)$ 定义为
+Trong không gian xác suất $(\Omega, \mathcal{F}, P)$, nếu $A \in \mathcal{F}$ và $P(A) > 0$, thì xác suất có điều kiện $P(\cdot|A)$ được định nghĩa bởi
 
 $$
 P(B|A) = \frac{P(AB)}{P(A)} \quad \forall B \in \mathcal{F}
 $$
 
-可以验证根据上式定义出的 $P(\cdot|A)$ 是 $(\Omega, \mathcal{F})$ 上的概率函数．
+Có thể kiểm tra $P(\cdot|A)$ là hàm xác suất trên $(\Omega, \mathcal{F})$.
 
-根据条件概率的定义可以直接推出下面两个等式：
+Từ định nghĩa suy ra hai công thức:
 
--   **概率乘法公式**：在概率空间 $(\Omega, \mathcal{F}, P)$ 中，若 $P(A) > 0$，则对任意事件 $B$ 都有
+-   **Công thức nhân xác suất**: trong $(\Omega, \mathcal{F}, P)$, nếu $P(A) > 0$ thì với mọi $B$,
 
 $$
 P(AB) = P(A)P(B|A)
 $$
 
--   **全概率公式**：在概率空间 $(\Omega, \mathcal{F}, P)$ 中，若一组事件 $A_1, \cdots, A_n$ 两两不交且和为 $\Omega$，则对任意事件 $B$ 都有
+-   **Công thức xác suất toàn phần**: nếu $A_1, \cdots, A_n$ đôi một rời nhau và hợp bằng $\Omega$, thì với mọi $B$,
 
 $$
 P(B) = \sum_{i=1}^{n} P(A_i)P(B|A_i)
 $$
 
-### Bayes 公式
+### Công thức Bayes
 
-一般来说，设可能导致事件 $B$ 发生的原因为 $A_1, A_2, \cdots, A_n$，则在 $P(A_i)$ 和 $P(B|A_i)$ 已知时可以通过全概率公式计算事件 $B$ 发生的概率．但在很多情况下，我们需要根据「事件 $B$ 发生」这一结果反推其各个原因事件的发生概率．于是有
+Giả sử các nguyên nhân có thể gây ra $B$ là $A_1, A_2, \cdots, A_n$. Khi biết $P(A_i)$ và $P(B|A_i)$, ta tính $P(B)$ bằng công thức toàn phần. Nhưng nhiều khi cần suy ngược: biết $B$ đã xảy ra, tìm xác suất các nguyên nhân. Khi đó
 
 $$
 P(A_i|B) = \frac{P(A_iB)}{P(B)} = \frac{P(A_i)P(B|A_i)}{\sum_{j=1}^{n} P(A_j)P(B|A_j)}
 $$
 
-上式即 Bayes 公式．
+Đây là công thức Bayes.
 
-## 事件的独立性
+## Tính độc lập của biến cố
 
-在研究条件概率的过程中，可能会出现 $P(B|A) = P(B)$ 的情况．从直观上讲就是事件 $B$ 是否发生并不会告诉我们关于事件 $A$ 的任何信息，即事件 $B$ 与事件 $A$「无关」．于是我们就有了下面的定义
+Khi xét xác suất có điều kiện, có thể gặp $P(B|A) = P(B)$, tức $B$ không cung cấp thông tin về $A$. Khi đó $A$ và $B$ “không liên quan”, dẫn đến định nghĩa sau.
 
-### 定义
+### Định nghĩa
 
-若同一概率空间中的事件 $A$,$B$ 满足
+Với biến cố $A$,$B$ trong cùng không gian xác suất, nếu
 
 $$
 P(AB) = P(A)P(B)
 $$
 
-则称 $A$,$B$  **独立**．对于多个事件 $A_1, A_2, \cdots, A_n$，我们称其独立，当且仅当对任意一组事件 $\{ A_{i_k} : 1 \leq i_1 < i_2 < \cdots < i_k \leq n \}$ 都有
+thì gọi $A$,$B$ **độc lập**. Với nhiều biến cố $A_1, A_2, \cdots, A_n$, gọi là độc lập khi và chỉ khi với mọi tập con $\{ A_{i_k} : 1 \leq i_1 < i_2 < \cdots < i_k \leq n \}$,
 
 $$
 P( A_{i_1}A_{i_2} \cdots A_{i_r} ) = \prod_{k=1}^{r} P(A_{i_k})
 $$
 
-### 多个事件的独立性
+### Độc lập của nhiều biến cố
 
-对于多个事件，一般不能从两两独立推出这些事件独立．考虑以下反例：
+Không thể suy từ độc lập từng đôi ra độc lập chung. Phản ví dụ:
 
-有一个正四面体骰子，其中三面被分别涂成红色、绿色、蓝色，另一面则三色皆有．现在扔一次该骰子，令事件 $A$,$B$,$C$ 分别表示与桌面接触的一面包含红色、绿色、蓝色．
+Có một con xúc xắc tứ diện đều, ba mặt tô đỏ, xanh lá, xanh dương; mặt còn lại có đủ ba màu. Gieo một lần, gọi $A$,$B$,$C$ lần lượt là “mặt chạm bàn có đỏ, có xanh lá, có xanh dương”.
 
-不难计算 $P(A) = P(B) = P(C) = \frac{1}{2}$，而 $P(AB) = P(BC) = P(CA) = P(ABC) = \frac{1}{4}$．
+Ta có $P(A) = P(B) = P(C) = \frac{1}{2}$ và $P(AB) = P(BC) = P(CA) = P(ABC) = \frac{1}{4}$.
 
-显然 $A, B, C$ 两两独立，但由于 $P(ABC) \neq P(A)P(B)P(C)$，故 $A, B, C$ 不独立．
+Rõ ràng $A, B, C$ đôi một độc lập, nhưng $P(ABC) \neq P(A)P(B)P(C)$, nên không độc lập.

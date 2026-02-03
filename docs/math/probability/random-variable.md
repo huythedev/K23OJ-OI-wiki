@@ -1,18 +1,18 @@
-## 相关概念
+## Các khái niệm liên quan
 
-### 随机变量
+### Biến ngẫu nhiên
 
-给定概率空间 $(\Omega, \mathcal{F}, P)$，定义在样本空间 $\Omega$ 上的函数 $X : \Omega \to \mathbb{R}$ 若满足：对任意 $t \in \mathbb{R}$ 都有
+Cho không gian xác suất $(\Omega, \mathcal{F}, P)$, một hàm $X : \Omega \to \mathbb{R}$ xác định trên không gian mẫu $\Omega$ nếu thỏa: với mọi $t \in \mathbb{R}$ đều có
 
 $$
 \{ \omega \in \Omega : X(\omega) \le t \} \in \mathcal{F}
 $$
 
-则称 $X$ 为 **随机变量**．
+thì gọi $X$ là **biến ngẫu nhiên**.
 
-### 示性函数
+### Hàm chỉ thị
 
-对于样本空间 $\Omega$ 上的事件 $A$，定义随机变量
+Với biến cố $A$ trên không gian mẫu $\Omega$, định nghĩa biến ngẫu nhiên
 
 $$
 I_A(\omega) = \begin{cases}
@@ -21,81 +21,81 @@ I_A(\omega) = \begin{cases}
 \end{cases}
 $$
 
-称 $I_A$ 是事件 $A$ 的 **示性函数**．
+gọi $I_A$ là **hàm chỉ thị** của biến cố $A$.
 
-### 分布函数
+### Hàm phân phối
 
-对于随机变量 $X$，称函数
+Với biến ngẫu nhiên $X$, hàm
 
 $$
 F(x) = P( X \leq x )
 $$
 
-为随机变量 $X$ 的 **分布函数**．记作 $X \sim F(x)$．
+được gọi là **hàm phân phối** của $X$. Ký hiệu $X \sim F(x)$.
 
-分布函数具有以下性质：
+Hàm phân phối có các tính chất:
 
--   **右连续性**：$F(x) = F(x + 0)$
--   **单调性**：在 $\mathbb{R}$ 上单调递增（非严格）
+-   **Tính liên tục phải**: $F(x) = F(x + 0)$
+-   **Tính đơn điệu**: đơn điệu tăng (không nhất thiết chặt) trên $\mathbb{R}$
 -   $F(-\infty) = 0$,$F(+\infty) = 1$
 
-同时我们可以证明，满足上述要求的函数都是某个随机变量的分布函数．因此，分布函数与随机变量之间一一对应．
+Đồng thời có thể chứng minh mọi hàm thỏa các điều kiện trên đều là hàm phân phối của một biến ngẫu nhiên. Do đó, hàm phân phối và biến ngẫu nhiên tương ứng một-một.
 
-## 随机变量的分类
+## Phân loại biến ngẫu nhiên
 
-随机变量按其值域（根据定义，随机变量是一个函数）是否可数分为 **离散型** 和 **连续型** 两种．
+Theo miền giá trị (theo định nghĩa, biến ngẫu nhiên là một hàm), biến ngẫu nhiên chia thành hai loại: **rời rạc** và **liên tục**.
 
-### 离散型随机变量
+### Biến ngẫu nhiên rời rạc
 
-设 $X$ 为离散型随机变量，其所有可能的取值为 $x_1, x_2, \cdots$，则我们可以用一系列形如 $P\{ X = x_i \} = p_i$ 的等式来描述 $X$．这就是我们在高中课本中学过的 **分布列**．
+Giả sử $X$ rời rạc, các giá trị có thể là $x_1, x_2, \cdots$, ta có thể mô tả bằng các đẳng thức dạng $P\{ X = x_i \} = p_i$. Đây chính là **dãy phân phối** trong sách phổ thông.
 
-### 连续型随机变量
+### Biến ngẫu nhiên liên tục
 
-设 $X$ 为连续型随机变量，考察 $P\{ X = x \}$ 往往是无意义的（因为这一概率很可能是 $0$）．
+Giả sử $X$ liên tục, xét $P\{ X = x \}$ thường là vô nghĩa (vì xác suất này rất có thể bằng $0$).
 
-??? note "为什么说概率「很可能」是 $0$"
-    考虑这样的随机变量 $X$：它以 $\frac{1}{2}$ 的概率取 $0$，以 $\frac{1}{2}$ 的概率服从开区间 $(0, 1)$ 上的均匀分布．显然 $X$ 满足连续型随机变量的定义．
+??? note "Vì sao xác suất “rất có thể” là $0$"
+    Xét biến ngẫu nhiên $X$: lấy giá trị $0$ với xác suất $\frac{1}{2}$, và với xác suất $\frac{1}{2}$ tuân theo phân phối đều trên khoảng mở $(0, 1)$. Rõ ràng $X$ thỏa định nghĩa biến liên tục.
     
-    对任何实数 $r \in (0, 1)$，不难得到 $P\{ X = r \} = 0$，但同时有 $P\{ X = 0 \} = \frac{1}{2}$．
+    Với mọi $r \in (0, 1)$, ta có $P\{ X = r \} = 0$, nhưng lại có $P\{ X = 0 \} = \frac{1}{2}$.
 
-另一方面，设 $X \sim F(x)$，则
+Mặt khác, với $X \sim F(x)$, ta có
 
 $$
 P( l < x \leq l + \Delta x ) = F(l + \Delta x) - F(l)
 $$
 
-一个自然的想法是用极限 $\lim\limits_{\Delta x \to 0^+} \frac{F(l + \Delta x) - F(l)}{\Delta x}$ 来描述 $X$ 取值为 $l$ 的可能性．
+Một ý tưởng tự nhiên là dùng giới hạn $\lim\limits_{\Delta x \to 0^+} \frac{F(l + \Delta x) - F(l)}{\Delta x}$ để mô tả khả năng $X$ nhận giá trị $l$.
 
-这个式子就是我们熟知的导数，于是问题转化为寻找一个非负函数 $f(x)$ 使得
+Biểu thức này chính là đạo hàm, nên ta tìm một hàm không âm $f(x)$ sao cho
 
 $$
 F(x) = \int_{-\infty}^{x} f(x) \text{d} x
 $$
 
-若这样的 $f(x)$ 存在，则称之为 $X$ 的 **密度函数**．
+Nếu tồn tại $f(x)$ như vậy, gọi $f(x)$ là **hàm mật độ** của $X$.
 
-## 随机变量的独立性
+## Tính độc lập của biến ngẫu nhiên
 
-前面讨论了随机事件的独立性．由于随机变量和随机事件紧密联系，我们还可以类似地给出随机变量独立性的定义．
+Đã bàn về tính độc lập của biến cố; do biến ngẫu nhiên và biến cố liên hệ chặt chẽ, ta có thể định nghĩa tương tự cho biến ngẫu nhiên.
 
-### 定义
+### Định nghĩa
 
-若随机变量 $X, Y$ 满足对任意的 $x, y \in \mathbb{R}$ 都有
+Nếu biến ngẫu nhiên $X, Y$ thỏa với mọi $x, y \in \mathbb{R}$:
 
 $$
 P( X \leq x, Y \leq y ) = P( X \leq x ) P( Y \leq y )
 $$
 
-则称随机变量 $X, Y$  **独立**．
+thì gọi $X, Y$ **độc lập**.
 
 ??? note "Note"
-    有些同学也许会注意到，中学课本中对随机变量独立性的定义是用形如 $P(X = \alpha)$ 的概率定义的，但由于连续性随机变量取特定值的概率通常是 $0$，故在更一般的情形下借助分布函数定义才是更加明智的选择．
+    Một số bạn có thể thấy sách phổ thông định nghĩa độc lập qua xác suất dạng $P(X = \alpha)$, nhưng với biến liên tục thì xác suất tại một điểm thường là $0$, nên trong trường hợp tổng quát dùng hàm phân phối là hợp lý hơn.
 
-### 性质
+### Tính chất
 
-若随机变量 $X$,$Y$ 相互独立，则对于任意函数 $f, g$，随机变量 $f(X)$ 与 $g(Y)$ 相互独立．
+Nếu $X$,$Y$ độc lập thì với mọi hàm $f, g$, các biến $f(X)$ và $g(Y)$ độc lập.
 
-??? warning "注意"
-    有时候我们会研究相互独立的随机变量 $X$,$Y$ 的某一函数 $f(X, Y)$（如 $XY^2$）的分布．
+??? warning "Chú ý"
+    Đôi khi ta xét hàm $f(X, Y)$ (như $XY^2$) của hai biến độc lập $X$,$Y$.
     
-    尽管 $X$ 与 $Y$ 是独立的，但不能想当然地认为对 $Y$ 的某一取值 $y$，$f(X, y)$ 与 $f(X, Y)$ 服从同样的分布．
+    Dù $X$ và $Y$ độc lập, không thể suy đoán rằng với một giá trị $y$ bất kỳ, $f(X, y)$ và $f(X, Y)$ có cùng phân phối.

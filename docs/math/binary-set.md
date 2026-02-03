@@ -1,20 +1,20 @@
-前置知识：[位运算](./bit.md#位运算)、[整数与位序列](./bit.md#整数与位序列)．
+Kiến thức trước: [phép toán bit](./bit.md#位运算)、[số nguyên và dãy bit](./bit.md#整数与位序列)．
 
-一个数的二进制表示可以看作是一个集合（$0$ 表示不在集合中，$1$ 表示在集合中）．比如集合 $\{1,3,4,8\}$，可以表示成 $(100011010)_2$．而对应的位运算也就可以看作是对集合进行的操作．
+Biểu diễn nhị phân của một số có thể xem như một tập hợp (`0` là không thuộc tập, `1` là thuộc tập). Ví dụ tập $\{1,3,4,8\}$ có thể biểu diễn thành $(100011010)_2$. Các phép toán bit tương ứng có thể xem là phép toán trên tập hợp.
 
-| 操作   |    集合表示     |         位运算表示          |
+| Phép toán   |    Biểu diễn tập     |         Biểu diễn bit          |
 | ------ | :-------------: | :-------------------------: |
-| 交集   |   $a \cap b$    | $a \operatorname{AND} b$ |
-| 并集   |   $a \cup b$    | $a \operatorname{OR} b$ |
-| 补集   |    $\bar{a}$    | $\operatorname{NOT} a$（全集为二进制都是 1） |
-| 差集   | $a \setminus b$ | $a \operatorname{AND} \operatorname{NOT} b$ |
-| 对称差 | $a\triangle b$  | $a \operatorname{XOR} b$  |
+| Giao   |   $a \cap b$    | $a \operatorname{AND} b$ |
+| Hợp    |   $a \cup b$    | $a \operatorname{OR} b$ |
+| Phần bù   |    $\bar{a}$    | $\operatorname{NOT} a$（vũ trụ có tất cả bit là 1） |
+| Hiệu   | $a \setminus b$ | $a \operatorname{AND} \operatorname{NOT} b$ |
+| Hiệu đối xứng | $a\triangle b$  | $a \operatorname{XOR} b$  |
 
-在进一步介绍集合的子集遍历操作之前，先看位运算的有关应用例子．
+Trước khi giới thiệu duyệt các tập con, hãy xem một vài ứng dụng của phép toán bit.
 
-### 模 2 的幂
+### Modulo theo lũy thừa của 2
 
-一个数对 $2$ 的非负整数次幂取模，等价于取二进制下一个数的后若干位，等价于和 $mod-1$ 进行与操作．
+Một số lấy modulo với $2$ lũy thừa nguyên không âm tương đương với việc lấy vài bit thấp nhất của số đó trong nhị phân, tương đương với phép AND với $mod-1$.
 
 === "C++"
     ```cpp
@@ -27,11 +27,11 @@
         return x & (mod - 1)
     ```
 
-于是可以知道，$2$ 的非负整数次幂对它本身取模，结果为 $0$，即如果 $n$ 是 $2$ 的非负整数次幂，$n$ 和 $n-1$ 的与操作结果为 $0$．
+Suy ra, $2$ lũy thừa nguyên không âm lấy modulo với chính nó bằng $0$, tức nếu $n$ là $2$ lũy thừa nguyên không âm thì $n$ AND $(n-1)$ bằng $0$.
 
-事实上，对于一个正整数 $n$，$n-1$ 会将 $n$ 的最低 $1$ 位置零，并将后续位数全部置 $1$．因此，$n$ 和 $n-1$ 的与操作等价于删掉 $n$ 的最低 $1$ 位．
+Thật vậy, với số nguyên dương $n$, $n-1$ sẽ xóa bit `1` thấp nhất của $n$ và đặt tất cả các bit phía sau thành `1`. Do đó, $n$ AND $(n-1)$ tương đương với việc xóa bit `1` thấp nhất của $n$.
 
-借此可以判断一个数是不是 $2$ 的非负整数次幂．当且仅当 $n$ 的二进制表示只有一个 $1$ 时，$n$ 为 $2$ 的非负整数次幂．
+Nhờ đó có thể kiểm tra một số có phải là lũy thừa của $2$ không. Khi và chỉ khi biểu diễn nhị phân của $n$ chỉ có một bit `1`, thì $n$ là lũy thừa của $2$.
 
 === "C++"
     ```cpp
@@ -44,95 +44,95 @@
         return n > 0 and (n & (n - 1)) == 0
     ```
 
-### 子集遍历
+### Duyệt tập con
 
-遍历一个二进制数表示的集合的全部子集，等价于枚举二进制数对应掩码的所有子掩码．
+Duyệt toàn bộ tập con của một tập biểu diễn bằng nhị phân tương đương với liệt kê mọi submask của mask nhị phân đó.
 
-掩码是一串二进制码，用于和源码进行与运算，得到屏蔽源码的若干输入位后的新操作数．
+Mask là một chuỗi bit dùng để AND với nguồn, tạo ra toán hạng mới sau khi che đi một số bit.
 
-掩码对于源码可以起到遮罩的作用，掩码中的 $1$ 位意味着源码的相应位得到保留，掩码中的 $0$ 位意味着源码的相应位进行置 $0$ 操作．将掩码的若干 $1$ 位改为 $0$ 位可以得到掩码的子掩码，掩码本身也是自己的子掩码．
+Mask có tác dụng che: bit `1` trong mask giữ nguyên bit tương ứng ở nguồn, bit `0` trong mask sẽ đặt bit tương ứng thành `0`. Đổi một số bit `1` thành `0` sẽ tạo ra submask; mask cũng là submask của chính nó.
 
-给定一个掩码 $m$，希望有效迭代 $m$ 的所有子掩码 $s$，可以考虑基于位运算技巧的实现．
+Cho một mask $m$, muốn lặp hiệu quả qua mọi submask $s$ của $m$ có thể dùng mẹo bit sau.
 
 ```cpp
-// 降序遍历 m 的非空子集
+// Duyệt giảm dần các tập con khác rỗng của m
 int s = m;
 while (s > 0) {
-  // s 是 m 的一个非空子集
+  // s là một tập con khác rỗng của m
   s = (s - 1) & m;
 }
 ```
 
-或者使用更紧凑的 for 语句：
+Hoặc dùng for gọn hơn:
 
 ```cpp
-// 降序遍历 m 的非空子集
+// Duyệt giảm dần các tập con khác rỗng của m
 for (int s = m; s; s = (s - 1) & m)
-// s 是 m 的一个非空子集
+// s là một tập con khác rỗng của m
 ```
 
-这两段代码都不会处理等于 $0$ 的子掩码，要想处理等于 $0$ 的子掩码可以使用其他办法，例如：
+Hai đoạn code này không xử lý submask bằng $0$. Muốn xử lý $0$ có thể dùng:
 
 ```cpp
-// 降序遍历 m 的子集
+// Duyệt giảm dần các tập con của m
 for (int s = m;; s = (s - 1) & m) {
-  // s 是 m 的一个子集
+  // s là một tập con của m
   if (s == 0) break;
 }
 ```
 
-接下来证明，上面的代码访问了所有 $m$ 的子掩码，没有重复，并且按降序排列．
+Tiếp theo chứng minh đoạn code trên duyệt đủ mọi submask của $m$, không lặp và theo thứ tự giảm dần.
 
-假设有一个当前位掩码 $s$，并且想继续访问下一个位掩码．在掩码 $s$ 中减去 $1$，等价于删除掩码 $s$ 中最右边的设置位，并将其右边的所有位变为 $1$．
+Giả sử đang ở submask $s$ và muốn chuyển sang submask tiếp theo. Trừ $1$ khỏi $s$ tương đương với xóa bit `1` phải nhất và đặt tất cả bit phía phải thành `1`.
 
-为了使 $s-1$ 变为新的子掩码，需要删除掩码 $m$ 中未包含的所有额外的 $1$ 位，可以使用位运算 `(s - 1) & m` 来进行此移除．
+Để $s-1$ trở thành submask, cần xóa các bit `1` không có trong $m$, có thể dùng phép `(s - 1) & m`.
 
-这两步操作等价于切割掩码 $s-1$，以确定算术上可以取到的最大值，即按降序排列的 $s$ 之后的下一个子掩码．
+Hai bước này tương đương cắt bớt $s-1$ để tạo ra giá trị lớn nhất có thể tiếp theo, tức submask kế tiếp theo thứ tự giảm dần.
 
-因此，该算法按降序生成该掩码的所有子掩码，每次迭代仅执行两个操作．
+Do đó, thuật toán sinh mọi submask theo thứ tự giảm dần, mỗi vòng lặp chỉ có hai thao tác.
 
-特殊情况是 $s=0$．在执行 $s-1$ 之后得到 $-1$，其中所有位都为 $1$．在 `(s - 1) & m` 操作之后将得到新的 $s$ 等于 $m$．因此，如果循环不以 $s=0$ 结束，算法的循环将无法终止．
+Trường hợp đặc biệt là $s=0$. Khi đó $s-1=-1$, tất cả bit là `1`. Sau khi AND với $m$ sẽ quay về $m$. Vì vậy nếu không dừng ở $s=0$ thì vòng lặp không kết thúc.
 
-使用 $\text{popcount}(m)$ 表示 $m$ 二进制中 $1$ 的个数，用这种方法可以在 $O(2^{\text{popcount}(m)})$ 的时间复杂度内遍历集合 $m$ 的子集．
+Gọi $\text{popcount}(m)$ là số bit `1` của $m$, cách này duyệt mọi submask của $m$ trong thời gian $O(2^{\text{popcount}(m)})$.
 
-### 遍历所有掩码的子掩码
+### Duyệt submask của mọi mask
 
-在使用状压 DP 的问题中，有时会希望对于每个掩码，遍历掩码的所有子掩码：
+Trong các bài toán quy hoạch động trạng thái, đôi khi cần với mỗi mask, duyệt mọi submask của nó:
 
 ```cpp
 for (int m = 0; m < (1 << n); ++m)
-  // 降序遍历 m 的非空子集
+  // Duyệt giảm dần các tập con khác rỗng của m
   for (int s = m; s; s = (s - 1) & m)
-// s 是 m 的一个非空子集
+// s là một tập con khác rỗng của m
 ```
 
-这样做可以遍历大小为 $n$ 的集合的每个子集的子集．
+Cách này duyệt mọi “tập con của tập con” trong tập kích thước $n$.
 
-接下来证明，该操作的时间复杂度为 $O(3^n)$，$n$ 为掩码总共的位数，即集合中元素的总数．
+Tiếp theo chứng minh độ phức tạp là $O(3^n)$, với $n$ là số bit của mask, tức số phần tử của tập.
 
-考虑第 $i$ 位，即集合中第 $i$ 个元素，有三种情况：
+Xét bit thứ $i$ (phần tử thứ $i$), có ba trường hợp:
 
-- 在掩码 $m$ 中为 $0$，因此在子掩码 $s$ 中为 $0$，即元素不在大小子集中．
-- 在 $m$ 中为 $1$，但在 $s$ 中为 $0$，即元素只在大子集中，不在小子集中．
-- 在 $m$ 和 $s$ 中均为 $1$，即元素同时在大小子集中．
+- Trong $m$ là `0`, nên trong $s$ cũng là `0`, tức phần tử không ở cả hai tập.
+- Trong $m$ là `1` nhưng trong $s$ là `0`, tức chỉ ở tập lớn, không ở tập nhỏ.
+- Trong cả $m$ và $s$ đều là `1`, tức phần tử ở cả hai tập.
 
-总共有 $n$ 位，因此有 $3^n$ 个不同的组合．
+Có $n$ bit nên có $3^n$ tổ hợp khác nhau.
 
-还有一种证明方法是：
+Một cách chứng minh khác:
 
-如果掩码 $m$ 具有 $k$ 个 $1$，那么它有 $2^k$ 个子掩码．对于给定的 $k$，对应有 $\dbinom{n}{k}$ 个掩码 $m$，那么所有掩码的总数为：
+Nếu mask $m$ có $k$ bit `1` thì có $2^k$ submask. Với mỗi $k$ có $\dbinom{n}{k}$ mask $m$, tổng số là:
 
 $$
 \sum_{k=0}^n \dbinom{n}{k} 2^k
 $$
 
-上面的和等于使用二项式定理对 $(1+2)^n$ 的展开，因此有 $3^n$ 个不同的组合．
+Tổng trên bằng khai triển nhị thức của $(1+2)^n$, do đó có $3^n$ tổ hợp.
 
-### 参考资料
+### Tài liệu tham khảo
 
-**本页面主要译自博文 [Перебор всех подмасок данной маски](http://e-maxx.ru/algo/all_submasks) 与其英文翻译版 [Submask Enumeration](https://cp-algorithms.com/algebra/all-submasks.html)．其中俄文版版权协议为 Public Domain + Leave a Link；英文版版权协议为 CC-BY-SA 4.0．**
+**Trang này chủ yếu dịch từ bài [Перебор всех подмасок данной маски](http://e-maxx.ru/algo/all_submasks) và bản dịch tiếng Anh [Submask Enumeration](https://cp-algorithms.com/algebra/all-submasks.html). Bản tiếng Nga có giấy phép Public Domain + Leave a Link; bản tiếng Anh có giấy phép CC-BY-SA 4.0.**
 
-### 习题
+### Bài tập
 
 - [Atcoder - Close Group](https://atcoder.jp/contests/abc187/tasks/abc187_f)
 - [Codeforces - Nuclear Fusion](http://codeforces.com/problemset/problem/71/E)

@@ -1,73 +1,69 @@
-如果您已经学习过复数相关知识，请跳过本页面．
+Nếu bạn đã học qua về số phức, hãy bỏ qua trang này．
 
-学习复数知识需要一部分向量基础，如果并未学习过向量知识请移步 [向量页面](../math/linear-algebra/vector.md)．
+Học số phức cần một chút nền tảng vector, nếu chưa học hãy xem [trang vector](../math/linear-algebra/vector.md)．
 
-## 复数
+## Số phức
 
-### 引入
+### Dẫn nhập
 
 ???+ note "注"
-    下面的引入方法来自人教版高中数学 A 版必修二．
+    Phần dẫn nhập sau lấy từ SGK toán THPT A bản bắt buộc 2．
 
-从方程的角度看，负实数能不能开平方，就是方程 $x^2+a=0 (a>0)$ 有没有解，进而可以归结为方程 $x^2+1=0$ 有没有解．
+Từ góc nhìn phương trình, “số thực âm có khai căn được không” là hỏi phương trình $x^2+a=0 (a>0)$ có nghiệm hay không, quy về phương trình $x^2+1=0$ có nghiệm hay không．
 
-回顾已有的数集扩充过程，可以看到，每次扩充都与实际需求密切相关．例如，为了解决正方形对角线的度量，以及 $x^2-2=0$ 这样的方程在有理数集中无解的问题，人们把有理数集扩充到了实数集．数集扩充后，在实数集中规定的加法运算、乘法运算，与原来在有理数集中规定的加法运算、乘法运算协调一致，并且加法和乘法都满足交换律和结合律，乘法对加法满足分配律．
+Nhìn lại quá trình mở rộng tập số, ta thấy mỗi lần mở rộng đều gắn với nhu cầu thực tế．Ví dụ, để giải vấn đề độ dài đường chéo hình vuông, hoặc phương trình $x^2-2=0$ vô nghiệm trong hữu tỷ, người ta mở rộng lên số thực．Sau mở rộng, phép cộng/nhân trong số thực vẫn thống nhất với phép cộng/nhân trong hữu tỷ, và thỏa giao hoán, kết hợp, phân phối．
 
-依照这种思想，为了解决 $x^2+1=0$ 这样的方程在实数系中无解的问题，我们设想引入一个新数 $\mathrm{i}$，使得 $x=\mathrm{i}$ 是方程 $x^2+1=0$ 的解，即使得 $\mathrm{i}^2=-1$．
+Theo tư tưởng đó, để giải $x^2+1=0$ vô nghiệm trong số thực, ta giả sử có số mới $\mathrm{i}$ sao cho $x=\mathrm{i}$ là nghiệm, tức $\mathrm{i}^2=-1$．
 
-思考：把新引进的数 $\mathrm{i}$ 添加到实数集中，我们希望数 $\mathrm{i}$ 和实数之间仍然能像实数那样进行加法和乘法运算，并希望加法和乘法都满足交换律、结合律，以及乘法对加法满足分配律．那么，实数系经过扩充后，得到的新数系由哪些数组成呢？
+Suy nghĩ: thêm $\mathrm{i}$ vào số thực, ta muốn $\mathrm{i}$ và số thực vẫn cộng/nhân như số thực, và các luật giao hoán, kết hợp, phân phối vẫn đúng．Vậy hệ số mới gồm những số nào?
 
-依照以上设想，把实数 $b$ 与 $\mathrm{i}$ 相乘，结果记作 $b\mathrm{i}$；把实数 $a$ 与 $b\mathrm{i}$ 相加，结果记作 $a+b\mathrm{i}$．注意到所有实数以及 $\mathrm{i}$ 都可以写成 $a+b\mathrm{i}(a,b\in \mathbf{R})$ 的形式，从而这些数都在扩充后的新数集中．
+Theo giả thiết, với số thực $b$ và $\mathrm{i}$, ký hiệu $b\mathrm{i}$; với số thực $a$ và $b\mathrm{i}$, ký hiệu $a+b\mathrm{i}$．Nhận thấy mọi số thực và $\mathrm{i}$ đều có dạng $a+b\mathrm{i}(a,b\in \mathbf{R})$, nên các số này đều thuộc hệ số mới．
 
-### 定义
+### Định nghĩa
 
-我们定义形如 $a+b\mathrm{i}$，其中 $a,b\in \mathbf{R}$ 的数叫做 **复数**，其中 $\mathrm{i}$ 被称为 **虚数单位**，全体复数的集合叫做 **复数集**，记作 $\mathbf{C}$．
+Định nghĩa các số dạng $a+b\mathrm{i}$ với $a,b\in \mathbf{R}$ là **số phức**; $\mathrm{i}$ gọi là **đơn vị ảo**; tập tất cả số phức gọi là **tập số phức**, ký hiệu $\mathbf{C}$．
 
-复数通常用 $z$ 表示，即 $z=a+b\mathrm{i}$．这种形式被称为 **复数的代数形式**．其中 $a$ 称为复数 $z$ 的 **实部**，记作 $\operatorname{Re}(z)$，$b$ 称为复数 $z$ 的 **虚部**，记作 $\operatorname{Im}(z)$．如无特殊说明，都有 $a,b\in \mathbf{R}$．
+Số phức thường ký hiệu $z$, tức $z=a+b\mathrm{i}$．Dạng này gọi là **dạng đại số**．Trong đó $a$ là **phần thực** $\operatorname{Re}(z)$, $b$ là **phần ảo** $\operatorname{Im}(z)$．Nếu không nói rõ, luôn có $a,b\in \mathbf{R}$．
 
-对于一个复数 $z$，当且仅当 $b=0$ 时，它是实数，当 $b\not = 0$ 时，它是虚数，当 $a=0$ 且 $b\not = 0$ 时，它是纯虚数．
+Với số phức $z$, khi và chỉ khi $b=0$ thì là số thực; khi $b\not = 0$ thì là số ảo; khi $a=0$ và $b\not = 0$ thì là số ảo thuần．
 
-纯虚数，虚数，实数，复数的关系如下图所示．
+Quan hệ giữa số ảo thuần, số ảo, số thực, số phức như hình：
 
 ![](./images/complex-relation.svg)
 
-## 性质与运算
+## Tính chất và phép toán
 
-### 几何意义
+### Ý nghĩa hình học
 
-我们知道了 $a+b\mathrm{i}$ 这样类似的形式的数被称为复数，并且给出了定义和分类，我们还可以挖掘一下更深层的性质．
+Ta biết số thực tương ứng một-một với điểm trên trục số．Ta xét số phức tương tự．
 
-我们把所有实数都放在了数轴上，并且发现数轴上的点与实数一一对应．我们考虑对复数也这样处理．
+Trước hết định nghĩa **hai số phức bằng nhau**: $z_1=a+b\mathrm{i},z_2=c+d\mathrm{i}$ bằng nhau khi và chỉ khi $a=c$ và $b=d$．
 
-首先我们定义 **复数相等**：两个复数 $z_1=a+b\mathrm{i},z_2=c+d\mathrm{i}$ 是相等的，当且仅当 $a=c$ 且 $b=d$．
+Vì vậy, mỗi số phức tương ứng duy nhất với cặp $(a,b)$．Liên hệ với hệ tọa độ Descartes, ta thấy **tập số phức tương ứng một-một với tập điểm trong mặt phẳng**．Đó là ý nghĩa hình học của số phức．
 
-这么定义是十分自然的，在此不做过多解释．
+Mặt phẳng này không còn là Descartes thường nữa, vì điểm mang ý nghĩa số phức; ta gọi đó là **mặt phẳng phức**，trục $x$ là **trục thực**, trục $y$ là **trục ảo**．Ta nói: **tập số phức tương ứng một-một với tập điểm trong mặt phẳng phức**．
 
-也就是说，我们可以用唯一的有序实数对 $(a,b)$ 表示一个复数 $z=a+b\mathrm{i}$．这样，联想到平面直角坐标系，我们可以发现 **复数集与平面直角坐标系中的点集一一对应**．好了，我们找到了复数的一种几何意义．
+Từ kiến thức vector, tọa độ vector cũng là cặp $(a,b)$, nên $z=a+b\mathrm{i}$ tương ứng điểm $Z(a,b)$ và vector $\overrightarrow{OZ}=(a,b)$; vậy số phức còn có ý nghĩa: **tập số phức tương ứng một-một với tập vector trong mặt phẳng phức (số thực 0 tương ứng vector không)**．
 
-那么这个平面直角坐标系就不再一般，因为平面直角坐标系中的点具有了特殊意义——表示一个复数，所以我们把这样的平面直角坐标系称为 **复平面**，$x$ 轴称为 **实轴**，$y$ 轴称为 **虚轴**．我们进一步地说：**复数集与复平面内所有的点所构成的集合是一一对应的**．
+Do đó ta định nghĩa **mô-đun** của số phức là độ dài vector tương ứng: $|z|=\sqrt{a^2+b^2}$．
 
-我们考虑到学过的平面向量的知识，发现向量的坐标表示也是一个有序实数对 $(a,b)$，显然，复数 $z=a+b\mathrm{i}$ 对应复平面内的点 $Z(a,b)$，那么它还对应平面向量 $\overrightarrow{OZ}=(a,b)$，于是我们又找到了复数的另一种几何意义：**复数集与复平面内的向量所构成的集合是一一对应的（实数 $0$ 与零向量对应）**．
+Để tiện, ta thường gọi số phức $z=a+b\mathrm{i}$ là điểm $Z$ hoặc vector $\overrightarrow {OZ}$, và xem các vector bằng nhau là cùng một số phức．
 
-于是，我们由向量的知识迁移到复数上来，定义 **复数的模** 就是复数所对应的向量的模．复数 $z=a+b\mathrm{i}$ 的模 $|z|=\sqrt{a^2+b^2}$．
+Từ vector, ta thấy số ảo không thể so sánh lớn nhỏ (trong khi số thực thì có)．
 
-于是为了方便，我们常把复数 $z=a+b\mathrm{i}$ 称为点 $Z$ 或向量 $\overrightarrow {OZ}$，并规定相等的向量表示同一个复数．
+### Cộng và trừ
 
-并且由向量的知识我们发现，虚数不可以比较大小（但是实数是可以的）．
-
-### 加法与减法
-
-对复数 $z_1=a+b\mathrm{i},z_2=c+d\mathrm{i}$，定义加法规则如下：
+Với $z_1=a+b\mathrm{i},z_2=c+d\mathrm{i}$, định nghĩa cộng:
 
 $$
 z_1+z_2=(a+c)+(b+d)\mathrm{i}
 $$
 
-很明显，两个复数的和仍为复数．
+Rõ ràng tổng vẫn là số phức．
 
-考虑到向量的加法运算，我们发现复数的加法运算符合向量的加法运算法则，这同样证明了复数的几何意义的正确性．
+Từ cộng vector, ta thấy cộng số phức phù hợp với cộng vector, củng cố ý nghĩa hình học．
 
-同样可以验证，复数的加法满足 **交换律** 和 **结合律**．即：
+Cộng số phức thỏa **giao hoán** và **kết hợp**：
 
 $$
 \begin{aligned}
@@ -76,17 +72,17 @@ z_1+z_2&=z_2+z_1\\
 \end{aligned}
 $$
 
-减法作为加法的逆运算，我们可以通过加法法则与复数相等的定义来推导出减法法则：
+Trừ là phép ngược của cộng, suy ra:
 
 $$
 z_1-z_2=(a-c)+(b-d)\mathrm{i}
 $$
 
-这同样符合向量的减法运算．
+Cũng phù hợp với trừ vector．
 
-### 乘法、除法与共轭
+### Nhân, chia và liên hợp
 
-对复数 $z_1=a+b\mathrm{i},z_2=c+d\mathrm{i}$，定义乘法规则如下：
+Với $z_1=a+b\mathrm{i},z_2=c+d\mathrm{i}$, định nghĩa nhân:
 
 $$
 \begin{aligned}
@@ -96,19 +92,19 @@ z_1z_2&=(a+b\mathrm{i})(c+d\mathrm{i})\\
 \end{aligned}
 $$
 
-可以看出，两个复数相乘类似于两个多项式相乘，只需要把 $\mathrm{i}^2$ 换成 $-1$，并将实部与虚部分别合并即可．
+Nhân số phức tương tự nhân đa thức, chỉ cần thay $\mathrm{i}^2$ bằng $-1$ rồi gom phần thực/ảo．
 
-复数的乘法与向量的向量积形式类似．
+Nhân số phức tương tự tích vector theo tọa độ．
 
-易得复数乘法满足 **交换律**，**结合律** 和 **对加法的分配律**，即：
+Dễ thấy nhân số phức thỏa **giao hoán**, **kết hợp**, **phân phối**：
 
 -   $z_1z_2=z_2z_1$
 -   $(z_1z_2)z_3=z_1(z_2z_3)$
 -   $z_1(z_2+z_3)=z_1z_2+z_1z_3$
 
-由于满足运算律，我们可以发现实数域中的 **乘法公式在复数域中同样适用**．
+Do thỏa các luật, các **hằng đẳng thức nhân** trong số thực cũng đúng trong số phức．
 
-除法运算是乘法运算的逆运算，我们可以推导一下：
+Chia là phép ngược của nhân:
 
 $$
 \begin{aligned}
@@ -117,13 +113,13 @@ $$
 \end{aligned}
 $$
 
-由于向量没有除法，这里不讨论与向量的关系．
+Vector không có phép chia nên không bàn ở đây．
 
-为了分母实数化，我们乘了一个 $c-d\mathrm{i}$，这个式子很有意义．
+Để mẫu là số thực, ta nhân với $c-d\mathrm{i}$, đây là biểu thức có ý nghĩa．
 
-对复数 $z=a+b\mathrm{i}$，称 $a-b\mathrm{i}$ 为 $z$ 的 **共轭复数**，通常记为 $\bar z$．我们可以发现，若两个复数互为共轭复数，那么它们 **关于实轴对称**．
+Với $z=a+b\mathrm{i}$, gọi $a-b\mathrm{i}$ là **liên hợp** của $z$, ký hiệu $\bar z$．Hai số liên hợp **đối xứng qua trục thực**．
 
-对复数 $z,w$，复数共轭有如下性质
+Với $z,w$, liên hợp có các tính chất:
 
 -   $z\cdot\bar{z}=|z|^2$
 -   $\overline{\overline{z}}=z$
@@ -132,65 +128,65 @@ $$
 -   $\overline{zw}=\bar{z}\bar{w}$
 -   $\overline{z/w}=\bar{z}/\bar{w}$
 
-### 辐角和辐角主值
+### Góc (argument) và góc chính
 
-如果设定实数单位 $1$ 作为水平正方向，虚数单位 $\mathrm{i}$ 作为竖直正方向，得到的就是直角坐标视角下的复平面．
+Chọn đơn vị thực $1$ làm chiều dương ngang, đơn vị ảo $\mathrm{i}$ làm chiều dương dọc, ta có mặt phẳng phức theo tọa độ Descartes．
 
-表示复数 $z$ 的位置，也可以借助于极坐标 $(r, \theta)$ 确定．前文已经提到了 $r$ 为复数 $z$ 的模．
+Vị trí số phức $z$ có thể biểu diễn bằng tọa độ cực $(r, \theta)$; $r$ là mô-đun của $z$．
 
-从实轴正向到 **非零** 复数 $z=x+\mathrm{i}y$ 对应向量的夹角 $\theta$ 满足关系：
+Từ trục thực dương đến **số phức khác 0** $z=x+\mathrm{i}y$, góc $\theta$ thỏa:
 
 $$
 \tan \theta=\frac{y}{x}
 $$
 
-称为复数 $z$ 的 **辐角**，记为：
+Gọi là **góc (argument)** của $z$, ký hiệu:
 
 $$
 \theta= \arg z
 $$
 
-任一个 **非零** 复数 $z$ 有无穷多个辐角，故 $\arg z$ 事实上是一个集合．借助开头大写的 $\operatorname{Arg} z$ 表示 **其中一个特定值**，满足条件：
+Mỗi số phức khác 0 có vô số góc, nên $\arg z$ là một tập．Ký hiệu $\operatorname{Arg} z$ là **một giá trị cụ thể**, thỏa:
 
 $$
 -\pi<\operatorname{Arg} z \le \pi
 $$
 
-称 $\operatorname{Arg} z$ 为 **辐角主值** 或 **主辐角**．辐角就是辐角主值基础上加若干整数个（可以为零或负整数）$2k\pi$，即 $\arg z = \{\operatorname{Arg} z + 2k\pi \mid k\in \mathbf Z\}$．
+Gọi $\operatorname{Arg} z$ là **góc chính**．Góc $\arg z$ là $\operatorname{Arg} z$ cộng thêm $2k\pi$ với $k\in \mathbf Z$．
 
-需要注意的是两个辐角主值相加后不一定还是辐角主值，而两个辐角相加一定还是合法的辐角．
+Lưu ý tổng của hai góc chính không nhất thiết là góc chính, nhưng tổng của hai góc (argument) luôn là góc hợp lệ．
 
-称模小于 $1$ 的复数，在复平面上构成的图形为 **单位圆**．称模等于 $1$ 的复数为 **单位复数**，全体单位复数在复平面上构成的图形为 **单位圆周**．在不引起混淆的情况下，有时单位圆周也简称单位圆．
+Tập các số phức có mô-đun < 1 tạo thành **đĩa đơn vị**．Số phức có mô-đun = 1 gọi là **số phức đơn vị**; toàn bộ tạo thành **đường tròn đơn vị** (đôi khi gọi tắt là đĩa đơn vị nếu không nhầm)．
 
-在极坐标的视角下，复数的乘除法变得很简单．复数乘法，模相乘，辐角相加．复数除法，模相除，辐角相减．
+Trong tọa độ cực, nhân/chia số phức rất đơn giản: nhân thì nhân mô-đun, cộng góc; chia thì chia mô-đun, trừ góc．
 
-### 欧拉公式
+### Công thức Euler
 
 ???+ note "欧拉公式（Euler's formula）[^ref1]"
-    对任意实数 $x$，有
+    Với mọi $x\in\mathbf{R}$,
     
     $$
     \mathrm{e}^{\mathrm{i}x}=\cos x+\mathrm{i}\sin x
     $$
     
-    在补充 [复指数函数与复三角函数](#指数函数与三角函数) 的定义后，该公式可推广至全体复数．
+    Sau khi bổ sung định nghĩa [hàm mũ phức và hàm lượng giác phức](#指数函数与三角函数), công thức mở rộng cho mọi số phức．
 
-### 指数函数与三角函数
+### Hàm mũ và hàm lượng giác
 
-对于复数 $z=x+\mathrm{i}y$，函数 $f(z)=\mathrm{e}^x(\cos y+\mathrm{i}\sin y)$ 满足 $f(z_1+z_2)=f(z_1)f(z_2)$．由此给出 **复指数函数** 的定义：
+Với số phức $z=x+\mathrm{i}y$, hàm $f(z)=\mathrm{e}^x(\cos y+\mathrm{i}\sin y)$ thỏa $f(z_1+z_2)=f(z_1)f(z_2)$．Do đó định nghĩa **hàm mũ phức**：
 
 $$
 \exp z=\mathrm{e}^x(\cos y+\mathrm{i}\sin y)
 $$
 
-复指数函数在实数集上与实指数函数的定义完全一致．在复平面上拥有性质：
+Hàm mũ phức trên số thực trùng với hàm mũ thực．Tính chất:
 
--   模恒正：$|\exp z|=\exp x>0$．
--   辐角：$\arg(\exp z)=\{y + 2k\pi \mid k\in\mathbf Z\}$．
--   加法定理：$\exp (z_1+z_2)=\exp (z_1)\exp (z_2)$．
--   周期性：$\exp z$ 是以 $2\pi \mathrm{i}$ 为基本周期的周期函数．如果一个函数 $f(z)$ 的周期是某一周期的整倍数，称该周期为 **基本周期**．
+-   Mô-đun dương: $|\exp z|=\exp x>0$．
+-   Góc: $\arg(\exp z)=\{y + 2k\pi \mid k\in\mathbf Z\}$．
+-   Định lý cộng: $\exp (z_1+z_2)=\exp (z_1)\exp (z_2)$．
+-   Chu kỳ: $\exp z$ có chu kỳ cơ bản $2\pi \mathrm{i}$．Nếu chu kỳ của $f(z)$ là bội của một chu kỳ, gọi chu kỳ đó là **chu kỳ cơ bản**．
 
-**复三角函数**（也简称 **三角函数**）的定义如下：
+**Hàm lượng giác phức** (cũng gọi tắt là hàm lượng giác) định nghĩa:
 
 $$
 \cos z=\frac{\exp (\mathrm{i}z)+\exp (-\mathrm{i}z)}{2}
@@ -200,7 +196,7 @@ $$
 \sin z=\frac{\exp (\mathrm{i}z)-\exp (-\mathrm{i}z)}{2\mathrm{i}}
 $$
 
-若取 $z\in\mathbf{R}$，则由 [欧拉公式](#欧拉公式) 有：
+Nếu $z\in\mathbf{R}$, từ [công thức Euler](#欧拉公式):
 
 $$
 \cos z=\operatorname{Re}\left(\mathrm{e}^{\mathrm{i}z}\right)
@@ -210,131 +206,131 @@ $$
 \sin z=\operatorname{Im}\left(\mathrm{e}^{\mathrm{i}z}\right)
 $$
 
-复三角函数在实数集上与实三角函数的定义完全一致．在复平面上拥有性质：
+Trên số thực, định nghĩa trùng với hàm lượng giác thực．Tính chất trên mặt phẳng phức:
 
--   奇偶性：正弦函数是奇函数，余弦函数是偶函数．
--   三角恒等式：通常的三角恒等式都成立，例如平方和为 $1$，或者角的和差公式等．
--   周期性：正弦与余弦函数以 $2\pi$ 为基本周期．
--   零点：实正弦与实余弦函数的全体零点，构成了复正弦与复余弦函数的全体零点．这个推广没有引进新的零点．
--   模的无界性：复正弦与复余弦函数，模长可以大于任意给定的正数，不再像实正弦与实余弦函数一样被限制在 $1$ 的范围内．
+-   Tính chẵn lẻ: $\sin$ là hàm lẻ, $\cos$ là hàm chẵn．
+-   Đồng nhất thức lượng giác: các hằng đẳng thức như tổng bình phương bằng $1$, công thức cộng-trừ, v.v. đều đúng．
+-   Chu kỳ: $\sin$ và $\cos$ có chu kỳ cơ bản $2\pi$．
+-   Nghiệm: nghiệm của $\sin$ và $\cos$ thực tạo thành toàn bộ nghiệm của $\sin$ và $\cos$ phức; không phát sinh nghiệm mới．
+-   Mô-đun không bị chặn: mô-đun của $\sin$ và $\cos$ phức có thể lớn tùy ý, không bị giới hạn trong $[-1,1]$ như trường hợp thực．
 
-## 复数的三种形式
+## Ba dạng của số phức
 
-借助直角坐标系的视角以及极坐标系的视角，可以写出复数的三种形式．
+Dựa trên tọa độ Descartes và cực, ta có ba dạng biểu diễn số phức．
 
-复数的 **代数形式** 用于表示任意复数．
+**Dạng đại số** dùng cho mọi số phức:
 
 $$
 z=x+y\mathrm{i}
 $$
 
-代数形式用于计算复数的加减乘除四个运算比较方便．
+Dạng đại số thuận tiện cho cộng, trừ, nhân, chia．
 
-复数的 **三角形式** 和 **指数形式**，用于表示非零复数．
+**Dạng lượng giác** và **dạng mũ** dùng cho số phức khác 0:
 
 $$
 z=r(\cos \theta +\mathrm{i}\sin \theta)=r \exp (\mathrm{i}\theta)
 $$
 
-这两种形式用于计算复数的乘除两个运算以及后面的运算较为方便．如果只用高中见过的函数，可以使用三角形式．如果引入了复指数函数，写成等价的指数形式会更加方便．
+Hai dạng này thuận tiện cho nhân, chia và các phép tiếp theo．Nếu chỉ dùng hàm quen thuộc THPT, dùng dạng lượng giác; nếu có hàm mũ phức, dùng dạng mũ tiện hơn．
 
-## 单位根
+## Căn bậc $n$ của đơn vị
 
-考察方程 $x^n=1$ 在复数意义下的解．显然，这样的解有 $n$ 个，称这 $n$ 个解都是 **$n$ 次单位（复）根**（$n$-th root of unity）．根据复平面的知识，$n$ 次单位根把单位圆 $n$ 等分．
+Xét phương trình $x^n=1$ trong số phức．Rõ ràng có $n$ nghiệm, gọi là **$n$-th root of unity**．Theo mặt phẳng phức, các nghiệm chia đều đường tròn đơn vị thành $n$ phần．
 
-设 $\omega_n=\exp\dfrac{2\pi \mathrm{i}}{n}$（即幅角为 $2\pi/n$ 的单位复数），则 $x^n=1$ 的解集表示为 $\{\omega_n^k\mid k=0,1\cdots,n-1\}$，其中，
+Đặt $\omega_n=\exp\dfrac{2\pi \mathrm{i}}{n}$ (góc $2\pi/n$), tập nghiệm $x^n=1$ là $\{\omega_n^k\mid k=0,1\cdots,n-1\}$, trong đó：
 
 $$
 w_n^k = \exp\dfrac{2\pi k \mathrm{i}}{n} = \cos\dfrac{2\pi k}{n} + \mathrm{i}\sin\dfrac{2\pi k}{n}.
 $$
 
-如果不加说明，一般叙述中的 $n$ 次单位根，是指从 $1$ 开始逆时针方向的第一个解，即上述 $\omega_n$，其它解均可以用 $\omega_n$ 的幂表示．
+Nếu không nói rõ, “$n$-th root of unity” thường chỉ nghiệm đầu tiên từ $1$ theo chiều ngược kim đồng hồ, tức $\omega_n$; các nghiệm khác là lũy thừa của $\omega_n$．
 
-???+ tip "为什么通常提到 $n$ 次单位根，总是特指第一个？"
-    主要是为了应用时方便．所有 $n$ 次单位根都可以表示为第一个 $n$ 次单位根 $\omega_n$ 的幂次；而且，对于任意 $k < n$，复数 $\omega_n$ 都不是 $k$ 次单位根．
+???+ tip "Vì sao thường mặc định là nghiệm đầu tiên?"
+    Vì tiện ứng dụng: mọi nghiệm đều là lũy thừa của $\omega_n$; và với mọi $k < n$, $\omega_n$ không phải $k$-th root of unity．
 
-### 本原单位根
+### Căn nguyên thủy của đơn vị
 
-事实上，$n$ 次单位根中满足类似性质的不止 $\omega_n$ 一个．称集合
+Thực ra có nhiều nghiệm có tính chất tương tự $\omega_n$．Gọi tập
 
 $$
 \{\omega_n^k\mid 0\le k<n,~\gcd(n,k)=1\}
 $$
 
-中的元素为 **$n$ 次本原单位根**（$n$-th primitive root of unity）．根据上述表达式可知，全体 $n$ 次本原单位根共有 $\varphi(n)$ 个，其中，$\varphi(n)$ 为 [欧拉函数](./number-theory/euler-totient.md)．
+là các **căn nguyên thủy bậc $n$** (primitive root of unity)．Theo biểu thức trên, có $\varphi(n)$ phần tử, với $\varphi(n)$ là [hàm Euler](./number-theory/euler-totient.md)．
 
-任意一个本原单位根 $\omega$，都与上述 $\omega_n$ 具有相同的性质：对于任意的 $0<k<n$，$\omega$ 的 $k$ 次幂不为 $1$，也就是说，$\omega$ 不是 $k$ 次单位根．因此，借助任意一个本原单位根，都可以生成全体单位根．
+Mọi căn nguyên thủy $\omega$ đều có tính chất: với mọi $0<k<n$, $\omega^k\ne 1$; tức $\omega$ không là $k$-th root of unity．Bởi vậy, dùng một căn nguyên thủy bất kỳ đều có thể sinh toàn bộ nghiệm．
 
-为了理解 $n$ 次本原单位根的结构，需要考虑单位根的如下性质：
+Để hiểu cấu trúc, xét tính chất sau:
 
 ???+ note "性质"
-    对于整数 $n$ 和 $k$，设 $d=\gcd(n,k)$，有 $\omega_n^k = \omega_{n/d}^{k/d}$．
+    Với số nguyên $n,k$, đặt $d=\gcd(n,k)$, ta có $\omega_n^k = \omega_{n/d}^{k/d}$．
 
 ??? note "证明"
-    直接计算可知
+    Tính trực tiếp:
     
     $$
     w_n^k = \exp\dfrac{2\pi k\mathrm{i}}{n} = \exp\dfrac{2\pi (k/d)\mathrm{i}}{n/d} = \omega_{n/d}^{k/d}.
     $$
 
-这说明，只要 $\gcd(n,k)\neq 1$，那么，$\omega_n^k$ 就一定是 $\dfrac{n}{\gcd(n,k)}$ 次（本原）单位根．因此，满足前述性质的单位根 $\omega_n^k$ 一定是满足 $\gcd(n,k)=1$．这正是本原单位根具有上述定义的原因．
+Điều này cho thấy nếu $\gcd(n,k)\neq 1$ thì $\omega_n^k$ là $n/\gcd(n,k)$-th root of unity (có thể nguyên thủy)．Vì vậy, căn nguyên thủy cần có $\gcd(n,k)=1$．
 
-另外，作为这些分析的简单推论，有：
+Một hệ quả đơn giản:
 
 ???+ note "定理"
-    当 $k$ 遍历 $n$ 的因数，所有 $k$ 次本原单位根恰构成 $n$ 次单位根的一个划分．而且，对于 $\ell\perp n$，映射 $x\mapsto x^\ell$ 给出 $n$ 次单位根之间的双射，且保持上述划分不变：它将 $k\mid n$ 次本原单位根仍然映射到 $k$ 次本原单位根．
+    Khi $k$ chạy qua các ước của $n$, các căn nguyên thủy bậc $k$ tạo thành một phân hoạch của các nghiệm bậc $n$．Hơn nữa, với $\ell\perp n$, ánh xạ $x\mapsto x^\ell$ là song ánh trên các nghiệm bậc $n$ và giữ nguyên phân hoạch: nó đưa căn nguyên thủy bậc $k\mid n$ sang căn nguyên thủy bậc $k$．
 
-尽管本原单位根有很多选择，但是由于第一个根 $\omega_n$ 形式最为简单，算法竞赛中还是 $\omega_n$ 最为常用．对于部分场景，为提高计算效率，还可以考虑用某一模数下的 [本原单位根](./number-theory/residue.md#单位根) 代替复数域中的 $\omega_n$．
+Dù có nhiều lựa chọn căn nguyên thủy, trong lập trình thi đấu thường dùng $\omega_n$ vì đơn giản nhất．Một số tình huống, để tăng hiệu quả tính toán, có thể dùng [căn nguyên thủy theo modulo](./number-theory/residue.md#单位根) thay cho $\omega_n$ trong số phức．
 
-## 编程语言中的复数
+## Số phức trong ngôn ngữ lập trình
 
-### C 中的复数
+### Số phức trong C
 
-在 C99 标准中，有 `<complex.h>` 头文件．
+Chuẩn C99 có `<complex.h>`．
 
-在 `<complex.h>` 头文件中，提供了 `double complex`、`float complex` 和 `long double complex` 三种类型．
+Trong `<complex.h>`, có `double complex`, `float complex`, `long double complex`．
 
-算术运算符'+'、'-'、'\*'和'/'，可以用于浮点数和复数的任意混合．当表达式两端有一个为复数时，计算结果为复数．
+Các toán tử `+`, `-`, `*`, `/` dùng cho hỗn hợp số thực và số phức; nếu một vế là số phức thì kết quả là số phức．
 
-头文件 `<complex.h>` 提供了虚数单位 `I`，引入此头文件时，大写字母 `I` 不可以作为变量名使用．
+`<complex.h>` cung cấp đơn vị ảo `I`, khi include thì không dùng `I` làm tên biến．
 
-对于单个复数，`<complex.h>` 提供了若干操作：`creal` 函数用于提取实部，`cimag` 函数用于提取虚部，`cabs` 函数用于计算模，`carg` 函数用于计算辐角主值．
+Với một số phức, `<complex.h>` có `creal` (phần thực), `cimag` (phần ảo), `cabs` (mô-đun), `carg` (góc chính)．
 
-所有的函数根据类型不同，都有三个．例如 `creal` 函数有 `creal`、`crealf`、`creall` 三个，用于处理对应的 `double`、`float` 和 `long double` 三种类型．末尾什么都不带的默认处理 `double` 类型．以下所有函数均遵从此规律，不再特别说明．
+Các hàm có ba phiên bản theo kiểu: `creal`, `crealf`, `creall` cho `double`, `float`, `long double`．Mặc định không hậu tố là `double`．Các hàm khác tương tự．
 
-这些函数返回值都是一般的浮点数．可以将普通浮点数直接赋值给复数，但是不可以将复数直接赋值给浮点数，而是需要使用上述提取操作．
+Các hàm này trả về số thực．Có thể gán số thực cho số phức, nhưng không thể gán trực tiếp số phức sang số thực, cần dùng các hàm trích phần．
 
-函数 `conj` 用于计算共轭复数，返回值是复数．
+`conj` trả về liên hợp．
 
-函数 `cexp` 计算复指数，`clog` 计算对数主值，`csin` 计算正弦，`ccos` 计算余弦，`ctan` 计算正切．
+`cexp` mũ, `clog` log chính, `csin` sin, `ccos` cos, `ctan` tan．
 
-函数 `cpow` 计算幂函数，`csqrt` 计算平方根，`casin` 计算反正弦，`cacos` 计算反余弦，`catan` 计算反正切．这部分函数计算的全部都是多值函数的主值．
+`cpow` lũy thừa, `csqrt` căn bậc hai, `casin` arcsin, `cacos` arccos, `catan` arctan; tất cả là giá trị chính của hàm nhiều nhánh．
 
-### C++ 中的复数
+### Số phức trong C++
 
-在 C 里面的 `<ctype.h>`，到 C++ 会变成 `<cctype>`，几乎所有的头文件遵从这个命名规律．
+Trong C, `<ctype.h>` sang C++ là `<cctype>`, đa số header tuân quy ước này．
 
-但是，`<complex.h>` 不遵守，C++ 没有 `<ccomplex>` 头文件．C++ 的复数直接是 `<complex>`，并且装的东西和 C 完全不一样．
+Tuy nhiên, `<complex.h>` không theo, C++ không có `<ccomplex>`; C++ dùng `<complex>` và nội dung khác C．
 
-很有趣．这是因为，在 C++ 的第一个版本 C++98，即已经有了 `<complex>`，而 C 语言在 C99 才添加．
+Điều này do C++98 đã có `<complex>`, còn C99 mới thêm．
 
-在 C++ 中，复数类型定义使用 `complex<float>`、`complex<double>` 和 `complex<long double>`．由于面向对象的多态性，下面函数的名字都是唯一的，无需 f 或 l 的后缀．
+Trong C++, kiểu số phức là `complex<float>`, `complex<double>`, `complex<long double>`．Do đa hình, các hàm không cần hậu tố f/l．
 
-一个复数对象拥有成员函数 `real` 和 `imag`，可以访问实部和虚部．
+Một đối tượng số phức có thành viên `real` và `imag` để truy cập phần thực/ảo．
 
-一个复数对象拥有非成员函数 `real`、`imag`、`abs`、`arg`，返回实部、虚部、模和辐角．
+Các hàm không thành viên `real`, `imag`, `abs`, `arg` trả phần thực, ảo, mô-đun, góc．
 
-一个复数对象还拥有非成员函数：`norm` 为模的平方，`conj` 为共轭复数．
+Các hàm không thành viên khác: `norm` (bình phương mô-đun), `conj` (liên hợp)．
 
-一个复数对象还拥有非成员函数 `exp`、`log`（底为 $\mathrm{e}$ 的对数主值）、`log10`（底为 10 的对数主值，C 中没有）、`pow`、`sqrt`、`sin`、`cos`、`tan`，含义与 C 中的含义相同．
+Các hàm `exp`, `log` (log cơ số $\mathrm{e}$), `log10` (log cơ số 10, C không có), `pow`, `sqrt`, `sin`, `cos`, `tan` tương tự C．
 
-在 C++14 及以后的版本中，定义了 [字面量运算符 `std::literals::complex_literals::""if, ""i, ""il`](https://zh.cppreference.com/w/cpp/numeric/complex/operator%2522%2522i.html)．例如输入 `100if`、`100i` 和 `100il`，三者将分别返回 `std::complex<float>{0.0f, 100.0f}`、`std::complex<double>{0.0, 100.0}` 以及 `std::complex<long double>{0.0l, 100.0l}`．这使得我们可以方便地书写形如 `auto z = 4.0 + 3i` 的复数声明．
+Từ C++14, có [toán tử literal `std::literals::complex_literals::""if, ""i, ""il`](https://zh.cppreference.com/w/cpp/numeric/complex/operator%2522%2522i.html)．Ví dụ `100if`, `100i`, `100il` lần lượt tạo `std::complex<float>{0.0f, 100.0f}`, `std::complex<double>{0.0, 100.0}`, `std::complex<long double>{0.0l, 100.0l}`．Giúp viết nhanh như `auto z = 4.0 + 3i`．
 
-## 参考资料与链接
+## Tài liệu tham khảo
 
 -   [Complex number - Wikipedia](https://en.wikipedia.org/wiki/Complex_number)
 -   [Euler's formula - Wikipedia](https://en.wikipedia.org/wiki/Euler's_formula)
 -   [Complex number arithmetic - cppreference.com](https://en.cppreference.com/w/c/numeric/complex)
 -   [std::complex - cppreference.com](https://en.cppreference.com/w/cpp/numeric/complex)
 
-[^ref1]: 有关欧拉公式的更多介绍，可以参考两个视频：[欧拉公式与初等群论](https://www.bilibili.com/video/BV1fx41187tZ)、[微分方程概论 - 第五章：在 3.14 分钟内理解 $\mathrm{e}^{\mathrm{i}\pi}$](https://www.bilibili.com/video/BV1G4411D7kZ)．
+[^ref1]: Về công thức Euler có thể xem hai video: [欧拉公式与初等群论](https://www.bilibili.com/video/BV1fx41187tZ)、[微分方程概论 - 第五章：在 3.14 分钟内理解 $\mathrm{e}^{\mathrm{i}\pi}$](https://www.bilibili.com/video/BV1G4411D7kZ)．

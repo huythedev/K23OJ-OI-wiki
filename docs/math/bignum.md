@@ -1,37 +1,37 @@
-> 太长不看版：结尾自取模板……
+> Bản tóm tắt TL;DR: cuối bài tự lấy template…
 
-## 定义
+## Định nghĩa
 
-高精度计算（Arbitrary-Precision Arithmetic），也被称作大整数（bignum）计算，运用了一些算法结构来支持更大整数间的运算（数字大小超过语言内建整型）．
+Tính toán độ chính xác tùy ý (Arbitrary-Precision Arithmetic), còn gọi là tính toán số nguyên lớn (bignum), sử dụng một số cấu trúc thuật toán để hỗ trợ các phép toán giữa những số nguyên rất lớn (độ lớn vượt quá kiểu số nguyên dựng sẵn của ngôn ngữ).
 
-## 引入
+## Giới thiệu
 
-高精度问题包含很多小的细节，实现上也有很多讲究．
+Bài toán số học độ chính xác cao có rất nhiều chi tiết nhỏ, cách hiện thực cũng có nhiều điểm cần chú ý.
 
-所以今天就来一起实现一个简单的计算器吧．
+Vậy hôm nay hãy cùng nhau viết một chiếc máy tính đơn giản nhé.
 
-???+ note "任务"
-    输入：一个形如 `a <op> b` 的表达式．
+???+ note "Nhiệm vụ"
+    Input: một biểu thức dạng `a <op> b`.
     
-    -   `a`、`b` 分别是长度不超过 $1000$ 的十进制非负整数；
-    -   `<op>` 是一个字符（`+`、`-`、`*` 或 `/`），表示运算．
-    -   整数与运算符之间由一个空格分隔．
+    -   `a`, `b` là các số nguyên không âm hệ thập phân, độ dài không quá $1000$;
+    -   `<op>` là một ký tự (`+`, `-`, `*` hoặc `/`), biểu thị phép toán;
+    -   Số nguyên và toán tử cách nhau bởi một dấu cách.
     
-    输出：运算结果．
+    Output: kết quả phép toán.
     
-    -   对于 `+`、`-`、`*` 运算，输出一行表示结果；
-    -   对于 `/` 运算，输出两行分别表示商和余数．
-    -   保证结果均为非负整数．
+    -   Với `+`, `-`, `*` in ra một dòng là kết quả;
+    -   Với `/` in ra hai dòng lần lượt là thương và dư.
+    -   Đảm bảo kết quả đều là số nguyên không âm.
 
-## 存储
+## Lưu trữ
 
-在平常的实现中，高精度数字利用字符串表示，每一个字符表示数字的一个十进制位．因此可以说，高精度数值计算实际上是一种特别的字符串处理．
+Trong cách cài đặt thông thường, số lớn được biểu diễn bằng chuỗi, mỗi ký tự là một chữ số thập phân. Vì vậy có thể nói tính toán số lớn thực chất là một dạng xử lý chuỗi đặc biệt.
 
-读入字符串时，数字最高位在字符串首（下标小的位置）．但是习惯上，下标最小的位置存放的是数字的 **最低位**，即存储反转的字符串．这么做的原因在于，数字的长度可能发生变化，但我们希望同样权值位始终保持对齐（例如，希望所有的个位都在下标 `[0]`，所有的十位都在下标 `[1]`……）；同时，加、减、乘的运算一般都从个位开始进行（回想小学的竖式运算），这都给了「反转存储」以充分的理由．
+Khi đọc chuỗi, chữ số cao nhất nằm ở đầu chuỗi (chỉ số nhỏ). Nhưng theo thói quen, ta lưu chữ số **thấp nhất** ở vị trí chỉ số nhỏ nhất, tức là lưu chuỗi đảo ngược. Lý do là độ dài số có thể thay đổi, nhưng ta muốn các vị trí cùng trọng số luôn thẳng hàng (ví dụ: mọi hàng đơn vị ở chỉ số `[0]`, mọi hàng chục ở chỉ số `[1]`…); đồng thời, phép cộng, trừ, nhân thường bắt đầu từ hàng đơn vị (nhớ phép tính đặt dọc ở tiểu học), nên “lưu đảo” rất hợp lý.
 
-此后我们将一直沿用这一约定．定义一个常数 `LEN = 1004` 表示程序所容纳的最大长度．
+Từ đây về sau sẽ luôn dùng quy ước này. Định nghĩa hằng `LEN = 1004` là độ dài tối đa chương trình chứa được.
 
-由此不难写出读入高精度数字的代码：
+Từ đó dễ dàng viết mã đọc số lớn:
 
 ```cpp
 void clear(int a[]) {
@@ -45,14 +45,14 @@ void read(int a[]) {
   clear(a);
 
   int len = strlen(s);
-  // 如上所述，反转
+  // Như đã nói, đảo ngược
   for (int i = 0; i < len; ++i) a[len - i - 1] = s[i] - '0';
-  // s[i] - '0' 就是 s[i] 所表示的数码
-  // 有些同学可能更习惯用 ord(s[i]) - ord('0') 的方式理解
+  // s[i] - '0' chính là chữ số tương ứng
+  // Một số bạn quen hiểu theo ord(s[i]) - ord('0')
 }
 ```
 
-输出也按照存储的逆序输出．由于不希望输出前导零，故这里从最高位开始向下寻找第一个非零位，从此处开始输出；终止条件 `i >= 1` 而不是 `i >= 0` 是因为当整个数字等于 $0$ 时仍希望输出一个字符 `0`．
+In ra cũng theo thứ tự đảo ngược. Vì không muốn in số 0 ở đầu, ta tìm từ vị trí cao nhất xuống chữ số khác 0 đầu tiên rồi in từ đó; điều kiện dừng `i >= 1` thay vì `i >= 0` là để khi toàn bộ số bằng $0$ vẫn in ra ký tự `0`.
 
 ```cpp
 void print(int a[]) {
@@ -64,7 +64,7 @@ void print(int a[]) {
 }
 ```
 
-拼起来就是一个完整的复读机程序咯．
+Ghép lại là một chương trình “nhại lại” hoàn chỉnh.
 
 ??? note "`copycat.cpp`"
     ```cpp
@@ -105,32 +105,32 @@ void print(int a[]) {
     }
     ```
 
-## 四则运算
+## Bốn phép toán
 
-四则运算中难度也各不相同．最简单的是高精度加减法，其次是高精度—单精度（普通的 `int`）乘法和高精度—高精度乘法，最后是高精度—高精度除法．
+Trong bốn phép toán, độ khó không giống nhau. Dễ nhất là cộng/trừ số lớn, tiếp theo là nhân số lớn với số thường (`int`) và nhân số lớn với số lớn, cuối cùng là chia số lớn với số lớn.
 
-我们将按这个顺序分别实现所有要求的功能．
+Chúng ta sẽ hiện thực theo thứ tự này.
 
-### 加法
+### Cộng
 
-高精度加法，其实就是竖式加法啦．
+Cộng số lớn thực chất là cộng đặt dọc.
 
 ![](./images/plus.svg)
 
-也就是从最低位开始，将两个加数对应位置上的数码相加，并判断是否达到或超过 $10$．如果达到，那么处理进位：将更高一位的结果上增加 $1$，当前位的结果减少 $10$．
+Bắt đầu từ hàng thấp nhất, cộng từng cặp chữ số tương ứng rồi kiểm tra có đạt hoặc vượt $10$ không. Nếu có thì xử lý nhớ: tăng kết quả ở hàng cao hơn lên $1$, và giảm hàng hiện tại đi $10$.
 
 ```cpp
 void add(int a[], int b[], int c[]) {
   clear(c);
 
-  // 高精度实现中，一般令数组的最大长度 LEN 比可能的输入大一些
-  // 然后略去末尾的几次循环，这样一来可以省去不少边界情况的处理
-  // 因为实际输入不会超过 1000 位，故在此循环到 LEN - 1 = 1003 已经足够
+  // Trong hiện thực số lớn, thường đặt LEN lớn hơn độ dài input
+  // rồi bỏ qua vài vòng lặp cuối để giảm xử lý biên
+  // Vì input tối đa 1000 chữ số, nên lặp đến LEN - 1 = 1003 là đủ
   for (int i = 0; i < LEN - 1; ++i) {
-    // 将相应位上的数码相加
+    // Cộng chữ số cùng vị trí
     c[i] += a[i] + b[i];
     if (c[i] >= 10) {
-      // 进位
+      // Nhớ
       c[i + 1] += 1;
       c[i] -= 10;
     }
@@ -138,7 +138,7 @@ void add(int a[], int b[], int c[]) {
 }
 ```
 
-试着和上一部分结合，可以得到一个加法计算器．
+Kết hợp với phần trước, ta được máy tính cộng.
 
 ??? note "`adder.cpp`"
     ```cpp
@@ -194,23 +194,23 @@ void add(int a[], int b[], int c[]) {
     }
     ```
 
-### 减法
+### Trừ
 
-高精度减法，也就是竖式减法啦．
+Trừ số lớn chính là trừ đặt dọc.
 
 ![](./images/subtraction.svg)
 
-从个位起逐位相减，遇到负的情况则向上一位借 $1$．整体思路与加法完全一致．
+Từ hàng đơn vị trừ dần lên; nếu âm thì mượn $1$ từ hàng cao hơn. Ý tưởng giống hệt cộng.
 
 ```cpp
 void sub(int a[], int b[], int c[]) {
   clear(c);
 
   for (int i = 0; i < LEN - 1; ++i) {
-    // 逐位相减
+    // Trừ từng vị trí
     c[i] += a[i] - b[i];
     if (c[i] < 0) {
-      // 借位
+      // Mượn
       c[i + 1] -= 1;
       c[i] += 10;
     }
@@ -218,7 +218,7 @@ void sub(int a[], int b[], int c[]) {
 }
 ```
 
-将上一个程序中的 `add()` 替换成 `sub()`，就有了一个减法计算器．
+Thay `add()` bằng `sub()` là được máy tính trừ.
 
 ??? note "`subtractor.cpp`"
     ```cpp
@@ -274,69 +274,69 @@ void sub(int a[], int b[], int c[]) {
     }
     ```
 
-试一试，输入 `1 2`——输出 `/9999999`，诶这个 **OI Wiki** 怎么给了我一份假的代码啊……
+Thử nhập `1 2` —— kết quả `/9999999`, ủa **OI Wiki** sao lại cho code giả vậy…
 
-事实上，上面的代码只能处理减数 $a$ 大于等于被减数 $b$ 的情况．处理被减数比减数小，即 $a<b$ 时的情况很简单．
+Thực ra, đoạn code trên chỉ xử lý trường hợp số bị trừ $a$ lớn hơn hoặc bằng số trừ $b$. Khi $a<b$ thì rất đơn giản:
 
 $a-b=-(b-a)$
 
-要计算 $b-a$ 的值，因为有 $b>a$，可以调用以上代码中的 `sub` 函数，写法为 `sub(b,a,c)`．要得到 $a-b$ 的值，在得数前加上负号即可．
+Cần tính $b-a$ vì $b>a$ nên gọi `sub(b,a,c)`. Sau đó thêm dấu âm trước kết quả là được.
 
-### 乘法
+### Nhân
 
-#### 高精度—单精度
+#### Số lớn — số thường
 
-高精度乘法，也就是竖……等会儿等会儿！
+Nhân số lớn là… khoan đã!
 
-先考虑一个简单的情况：乘数中的一个是普通的 `int` 类型．有没有简单的处理方法呢？
+Trước hết xét trường hợp một thừa số là `int` thường. Có cách đơn giản không?
 
-一个直观的思路是直接将 $a$ 每一位上的数字乘以 $b$．从数值上来说，这个方法是正确的，但它并不符合十进制表示法，因此需要将它重新整理成正常的样子．
+Trực giác là nhân từng chữ số của $a$ với $b$. Về giá trị thì đúng, nhưng không đúng dạng thập phân nên cần chỉnh lại.
 
-重整的方式，也是从个位开始逐位向上处理进位．但是这里的进位可能非常大，甚至远大于 $9$，因为每一位被乘上之后都可能达到 $9b$ 的数量级．所以这里的进位不能再简单地进行 $-10$ 运算，而是要通过除以 $10$ 的商以及余数计算．详见代码注释，也可以参考下图展示的一个计算高精度数 $1337$ 乘以单精度数 $42$ 的过程．
+Cách chỉnh cũng xử lý nhớ từ thấp lên cao. Nhưng nhớ ở đây có thể rất lớn (tới cỡ $9b$), nên không thể chỉ trừ $10$; phải dùng thương và dư của phép chia cho $10$. Xem chú thích và hình dưới minh họa $1337 \times 42$.
 
 ![](./images/multiplication-short.png)
 
-当然，也是出于这个原因，这个方法需要特别关注乘数 $b$ 的范围．若它和 $10^9$（或相应整型的取值上界）属于同一数量级，那么需要慎用高精度—单精度乘法．
+Vì lý do này cần chú ý phạm vi của $b$. Nếu $b$ cùng cỡ $10^9$ (giới hạn `int`), cần cẩn thận với cách nhân số lớn—số thường.
 
 ```cpp
 void mul_short(int a[], int b, int c[]) {
   clear(c);
 
   for (int i = 0; i < LEN - 1; ++i) {
-    // 直接把 a 的第 i 位数码乘以乘数，加入结果
+    // Nhân trực tiếp chữ số thứ i với b, cộng vào kết quả
     c[i] += a[i] * b;
 
     if (c[i] >= 10) {
-      // 处理进位
-      // c[i] / 10 即除法的商数成为进位的增量值
+      // Xử lý nhớ
+      // c[i] / 10 là phần thương dùng làm tăng nhớ
       c[i + 1] += c[i] / 10;
-      // 而 c[i] % 10 即除法的余数成为在当前位留下的值
+      // c[i] % 10 là phần dư giữ lại ở vị trí hiện tại
       c[i] %= 10;
     }
   }
 }
 ```
 
-#### 高精度—高精度
+#### Số lớn — số lớn
 
-如果两个乘数都是高精度，那么竖式乘法又可以大显身手了．
+Nếu cả hai là số lớn, ta dùng nhân đặt dọc.
 
-回想竖式乘法的每一步，实际上是计算了若干 $a \times b_i \times 10^i$ 的和．例如计算 $1337 \times 42$，计算的就是 $1337 \times 2 \times 10^0 + 1337 \times 4 \times 10^1$．
+Nhớ rằng mỗi bước thực chất tính các tổng $a \times b_i \times 10^i$. Ví dụ $1337 \times 42$ là $1337 \times 2 \times 10^0 + 1337 \times 4 \times 10^1$.
 
-于是可以将 $b$ 分解为它的所有数码，其中每个数码都是单精度数，将它们分别与 $a$ 相乘，再向左移动到各自的位置上相加即得答案．当然，最后也需要用与上例相同的方式处理进位．
+Vì vậy ta tách $b$ thành từng chữ số, nhân từng chữ số (số thường) với $a$, dịch trái đến đúng vị trí rồi cộng. Cuối cùng xử lý nhớ như trên.
 
 ![](./images/multiplication-long.png)
 
-注意这个过程与竖式乘法不尽相同，我们的算法在每一步乘的过程中并不进位，而是将所有的结果保留在对应的位置上，到最后再统一处理进位，但这不会影响结果．
+Lưu ý quá trình này hơi khác nhân đặt dọc: trong mỗi bước không xử lý nhớ, mà dồn lại rồi cuối cùng mới xử lý. Kết quả vẫn đúng.
 
 ```cpp
 void mul(int a[], int b[], int c[]) {
   clear(c);
 
   for (int i = 0; i < LEN - 1; ++i) {
-    // 这里直接计算结果中的从低到高第 i 位，且一并处理了进位
-    // 第 i 次循环为 c[i] 加上了所有满足 p + q = i 的 a[p] 与 b[q] 的乘积之和
-    // 这样做的效果和直接进行上图的运算最后求和是一样的，只是更加简短的一种实现方式
+    // Trực tiếp tính chữ số thứ i của kết quả (từ thấp lên cao), kèm xử lý nhớ
+    // Vòng lặp i cộng vào c[i] tất cả tích a[p]*b[q] với p+q=i
+    // Hiệu quả tương đương nhân đặt dọc rồi cộng, nhưng gọn hơn
     for (int j = 0; j <= i; ++j) c[i] += a[j] * b[i - j];
 
     if (c[i] >= 10) {
@@ -347,30 +347,30 @@ void mul(int a[], int b[], int c[]) {
 }
 ```
 
-### 除法
+### Chia
 
-高精度除法的一种实现方式就是竖式长除法．
+Một cách thực hiện chia số lớn là phép chia đặt dọc.
 
 ![](./images/division.svg)
 
-竖式长除法实际上可以看作一个逐次减法的过程．例如上图中商数十位的计算可以这样理解：将 $45$ 减去三次 $12$ 后变得小于 $12$，不能再减，故此位为 $3$．
+Chia đặt dọc có thể xem như quá trình trừ lặp. Ví dụ hàng chục của thương trong hình: lấy $45$ trừ $12$ ba lần vẫn còn $\ge 12$, lần thứ tư thì < $12$, nên chữ số là $3$.
 
-为了减少冗余运算，我们提前得到被除数的长度 $l_a$ 与除数的长度 $l_b$，从下标 $l_a - l_b$ 开始，从高位到低位来计算商．这和手工计算时将第一次乘法的最高位与被除数最高位对齐的做法是一样的．
+Để giảm tính toán, ta biết trước độ dài bị chia $l_a$ và chia $l_b$, bắt đầu từ chỉ số $l_a-l_b$ và đi từ cao xuống thấp. Điều này giống việc căn thẳng chữ số cao nhất khi chia tay.
 
-参考程序实现了一个函数 `greater_eq()` 用于判断被除数以下标 `last_dg` 为最低位，是否可以再减去除数而保持非负．此后对于商的每一位，不断调用 `greater_eq()`，并在成立的时候用高精度减法从余数中减去除数，也即模拟了竖式除法的过程．
+Hàm `greater_eq()` kiểm tra phần bị chia (từ `last_dg` trở lên) có đủ lớn để trừ tiếp chia hay không. Với mỗi chữ số thương, ta lặp kiểm tra, nếu được thì trừ chia khỏi dư (tức mô phỏng chia đặt dọc).
 
 ```cpp
-// 被除数 a 以下标 last_dg 为最低位，是否可以再减去除数 b 而保持非负
-// len 是除数 b 的长度，避免反复计算
+// Kiểm tra bị chia a, lấy last_dg là chữ số thấp nhất, có thể trừ tiếp b mà vẫn không âm không
+// len là độ dài của b để tránh tính lại
 bool greater_eq(int a[], int b[], int last_dg, int len) {
-  // 有可能被除数剩余的部分比除数长，这个情况下最多多出 1 位，故如此判断即可
+  // Có thể phần còn lại dài hơn chia 1 chữ số, vậy kiểm tra vậy là đủ
   if (a[last_dg + len] != 0) return true;
-  // 从高位到低位，逐位比较
+  // So sánh từ cao xuống thấp
   for (int i = len - 1; i >= 0; --i) {
     if (a[last_dg + i] > b[i]) return true;
     if (a[last_dg + i] < b[i]) return false;
   }
-  // 相等的情形下也是可行的
+  // Bằng nhau cũng trừ được
   return true;
 }
 
@@ -383,19 +383,19 @@ void div(int a[], int b[], int c[], int d[]) {
     if (a[la - 1] != 0) break;
   for (lb = LEN - 1; lb > 0; --lb)
     if (b[lb - 1] != 0) break;
-  if (lb == 0) {  // 除数不能为零
+  if (lb == 0) {  // Chia cho 0 không được
     puts("> <");
     return;
   }
 
-  // c 是商
-  // d 是被除数的剩余部分，算法结束后自然成为余数
+  // c là thương
+  // d là phần còn lại của bị chia, sau khi kết thúc chính là dư
   for (int i = 0; i < la; ++i) d[i] = a[i];
   for (int i = la - lb; i >= 0; --i) {
-    // 计算商的第 i 位
+    // Tính chữ số thứ i của thương
     while (greater_eq(d, b, i, lb)) {
-      // 若可以减，则减
-      // 这一段是一个高精度减法
+      // Nếu trừ được thì trừ
+      // Đoạn này là phép trừ số lớn
       for (int j = 0; j < lb; ++j) {
         d[i + j] -= b[j];
         if (d[i + j] < 0) {
@@ -403,17 +403,17 @@ void div(int a[], int b[], int c[], int d[]) {
           d[i + j] += 10;
         }
       }
-      // 使商的这一位增加 1
+      // Tăng chữ số thương lên 1
       c[i] += 1;
-      // 返回循环开头，重新检查
+      // Quay lại kiểm tra
     }
   }
 }
 ```
 
-## 入门篇完成！
+## Hoàn thành phần nhập môn!
 
-将上面介绍的四则运算的实现结合，即可完成开头提到的计算器程序．
+Kết hợp bốn phép toán trên là xong chương trình máy tính như đầu bài.
 
 ??? note "`calculator.cpp`"
     ```cpp
@@ -555,42 +555,42 @@ void div(int a[], int b[], int c[], int d[]) {
     }
     ```
 
-## 压位高精度
+## Số lớn ép cơ số (压位高精度)
 
-### 引入
+### Giới thiệu
 
-在一般的高精度加法，减法，乘法运算中，我们都是将参与运算的数拆分成一个个单独的数码进行运算．
+Trong cộng, trừ, nhân số lớn, ta tách số thành từng chữ số rồi tính.
 
-例如计算 $8192\times 42$ 时，如果按照高精度乘高精度的计算方式，我们实际上算的是 $(8000+100+90+2)\times(40+2)$．
+Ví dụ $8192\times 42$ thì thực chất là $(8000+100+90+2)\times(40+2)$.
 
-在位数较多的时候，拆分出的数也很多，高精度运算的效率就会下降．
+Khi số có nhiều chữ số, số phần tử tách ra rất nhiều, hiệu năng giảm.
 
-有没有办法作出一些优化呢？
+Có thể tối ưu không?
 
-注意到拆分数字的方式并不影响最终的结果，因此我们可以将若干个数码进行合并．
+Nhận thấy cách tách không ảnh hưởng kết quả, nên có thể gộp nhiều chữ số lại thành một “chữ số” lớn.
 
-### 过程
+### Quá trình
 
-还是以上面这个例子为例，如果我们每两位拆分一个数，我们可以拆分成 $(8100+92)\times 42$．
+Với ví dụ trên, nếu mỗi “chữ số” gồm 2 chữ số thập phân thì ta tách thành $(8100+92)\times 42$.
 
-这样的拆分不影响最终结果，但是因为拆分出的数字变少了，计算效率也就提升了．
+Không ảnh hưởng kết quả, nhưng số phần tử giảm nên nhanh hơn.
 
-从 [进位制](./base.md) 的角度理解这一过程，我们通过在较大的进位制（上面每两位拆分一个数，可以认为是在 $100$ 进制下进行运算）下进行运算，从而达到减少参与运算的数字的位数，提升运算效率的目的．
+Từ góc nhìn [hệ cơ số](./base.md), ta thực hiện phép toán trong cơ số lớn hơn (mỗi 2 chữ số tương đương cơ số $100$), giúp giảm số “chữ số” tham gia tính toán.
 
-这就是 **压位高精度** 的思想．
+Đó là ý tưởng **ép cơ số**.
 
-下面我们给出压位高精度的加法代码，用于进一步阐述其实现方法：
+Dưới đây là cộng trong ép cơ số:
 
-??? note "压位高精度加法参考实现"
+??? note "Cài đặt tham khảo cho cộng ép cơ số"
     ```cpp
-    // 这里的 a,b,c 数组均为 p 进制下的数
-    // 最终输出答案时需要将数字转为十进制
+    // Các mảng a,b,c đều ở cơ số p
+    // Khi xuất kết quả cần đổi về thập phân
     void add(int a[], int b[], int c[]) {
       clear(c);
     
       for (int i = 0; i < LEN - 1; ++i) {
         c[i] += a[i] + b[i];
-        if (c[i] >= p) {  // 在普通高精度运算下，p=10
+        if (c[i] >= p) {  // Với số lớn thường thì p=10
           c[i + 1] += 1;
           c[i] -= p;
         }
@@ -598,34 +598,38 @@ void div(int a[], int b[], int c[], int d[]) {
     }
     ```
 
-### 压位高精下的高效竖式除法
+### Chia đặt dọc hiệu quả trong ép cơ số
 
-在使用压位高精时，如果试商时仍然使用上文介绍的方法，由于试商次数会很多，计算常数会非常大．例如在万进制下，平均每个位需要试商 5000 次，这个巨大的常数是不可接受的．因此我们需要一个更高效的试商办法．
+Trong ép cơ số, nếu vẫn thử thương theo cách cũ thì số lần thử rất nhiều. Ví dụ cơ số 10000 thì trung bình mỗi vị trí thử ~5000 lần, không chấp nhận được. Vì vậy cần cách ước lượng thương hiệu quả hơn.
 
-我们可以把 double 作为媒介．假设被除数有 4 位，是 $a_4,a_3,a_2,a_1$，除数有 3 位，是 $b_3,b_2,b_1$，那么我们只要试一位的商：使用 $base$ 进制，用式子 $\dfrac{a_4 base + a_3}{b_3 + b_2 base^{-1} + (b_1+1)base^{-2}}$ 来估商．而对于多个位的情况，就是一位的写法加个循环．由于除数使用 3 位的精度来参与估商，能保证估的商 q' 与实际商 q 的关系满足 $q-1 \le q' \le q$，这样每个位在最坏的情况下也只需要两次试商．但与此同时要求 $base^3$ 在 double 的有效精度内，即 $base^3 < 2^{53}$，所以在运用这个方法时建议不要超过 32768 进制，否则很容易因精度不足产生误差从而导致错误．
+Có thể dùng double làm trung gian. Giả sử bị chia có 4 chữ số $a_4,a_3,a_2,a_1$, chia có 3 chữ số $b_3,b_2,b_1$, thì chỉ cần ước lượng một chữ số thương bằng:
 
-另外，由于估的商总是小于等于实际商，所以还有再进一步优化的空间．绝大多数情况下每个位只估商一次，这样在下一个位估商时，虽然得到的商有可能因为前一位的误差造成试商结果大于等于 base，但这没有关系，只要在最后做统一进位便可．举个例子，假设 base 是 10，求 $395081/9876$，试商计算步骤如下：
+$\dfrac{a_4 base + a_3}{b_3 + b_2 base^{-1} + (b_1+1)base^{-2}}$.
 
-1.  首先试商计算得到 $3950/988=3$，于是 $395081-(9876 \times 3 \times 10^1) = 98801$，这一步出现了误差，但不用管，继续下一步计算．
-2.  对余数 98801 继续试商计算得到 $9880/988=10$，于是 $98801-(9876 \times 10 \times 10^0) = 41$，这就是最终余数．
-3.  把试商过程的结果加起来并处理进位，即 $3 \times 10^1 + 10 \times 10^0 = 40$ 便是准确的商．
+Với nhiều chữ số, lặp lại cách ước lượng một chữ số. Vì dùng 3 chữ số của chia để ước lượng, ta đảm bảo thương ước lượng $q'$ và thương thực $q$ thỏa $q-1 \le q' \le q$. Khi đó mỗi vị trí nhiều nhất thử 2 lần. Tuy nhiên yêu cầu $base^3 < 2^{53}$ (độ chính xác double), nên khuyến nghị không vượt 32768 cơ số, nếu không dễ sai do lỗi chính xác.
 
-方法虽然看着简单，但具体实现上很容易进坑，所以以下提供一个经过多番验证确认没有问题的实现供大家参考，要注意的细节也写在注释当中．
+Ngoài ra, vì ước lượng luôn $\le$ thương thực, còn có thể tối ưu: đa số trường hợp chỉ ước lượng một lần. Khi chuyển sang chữ số tiếp theo, thương có thể vượt base do sai số trước đó, nhưng chỉ cần dồn xử lý nhớ cuối cùng. Ví dụ base=10, tính $395081/9876$:
 
-??? note "压位高精度高效竖式除法参考实现"
+1.  Ước lượng $3950/988=3$, nên $395081-(9876 \times 3 \times 10^1)=98801$. Có sai số nhưng bỏ qua.
+2.  Với dư 98801 ước lượng $9880/988=10$, nên $98801-(9876 \times 10 \times 10^0)=41$ là dư cuối.
+3.  Cộng kết quả và xử lý nhớ: $3 \times 10^1 + 10 \times 10^0 = 40$ là thương đúng.
+
+Ý tưởng đơn giản nhưng dễ mắc bẫy. Dưới đây là một cài đặt đã được kiểm chứng:
+
+??? note "Cài đặt tham khảo chia đặt dọc hiệu quả trong ép cơ số"
     ```cpp
-    // 完整模板和实现 https://baobaobear.github.io/post/20210228-bigint1/
-    // 对b乘以mul再左移offset的结果相减，为除法服务
+    // Template đầy đủ và hiện thực https://baobaobear.github.io/post/20210228-bigint1/
+    // Trừ b * mul rồi dịch trái offset, phục vụ chia
     BigIntSimple &sub_mul(const BigIntSimple &b, int mul, int offset) {
       if (mul == 0) return *this;
       int borrow = 0;
-      // 与减法不同的是，borrow可能很大，不能使用减法的写法
+      // Khác với phép trừ, borrow có thể rất lớn, không thể dùng cách trừ thường
       for (size_t i = 0; i < b.v.size(); ++i) {
         borrow += v[i + offset] - b.v[i] * mul - BIGINT_BASE + 1;
         v[i + offset] = borrow % BIGINT_BASE + BIGINT_BASE - 1;
         borrow /= BIGINT_BASE;
       }
-      // 如果还有借位就继续处理
+      // Nếu còn mượn thì tiếp tục xử lý
       for (size_t i = b.v.size(); borrow; ++i) {
         borrow += v[i + offset] - BIGINT_BASE + 1;
         v[i + offset] = borrow % BIGINT_BASE + BIGINT_BASE - 1;
@@ -639,13 +643,14 @@ void div(int a[], int b[], int c[], int d[]) {
       r = *this;
       if (absless(b)) return d;
       d.v.resize(v.size() - b.v.size() + 1);
-      // 提前算好除数的最高三位+1的倒数，若最高三位是a3,a2,a1
-      // 那么db是a3+a2/base+(a1+1)/base^2的倒数，最后用乘法估商的每一位
-      // 此法在BIGINT_BASE<=32768时可在int32范围内用
-      // 但即使使用int64，那么也只有BIGINT_BASE<=131072时可用（受double的精度限制）
-      // 能保证估计结果q'与实际结果q的关系满足q'<=q<=q'+1
-      // 所以每一位的试商平均只需要一次，只要后面再统一处理进位即可
-      // 如果要使用更大的base，那么需要更换其它试商方案
+      // Tính sẵn nghịch đảo của 3 chữ số cao nhất +1 của b
+      // Nếu 3 chữ số cao nhất là a3,a2,a1
+      // db là 1 / (a3 + a2/base + (a1+1)/base^2), dùng để ước lượng thương
+      // Cách này với BIGINT_BASE<=32768 thì an toàn trong int32
+      // Dù dùng int64, cũng chỉ an toàn khi BIGINT_BASE<=131072 (giới hạn độ chính xác double)
+      // Đảm bảo q'<=q<=q'+1
+      // Nên mỗi chữ số trung bình chỉ thử 1 lần, sau đó dồn xử lý nhớ
+      // Nếu dùng base lớn hơn thì cần cách ước lượng khác
       double t = (b.get((unsigned)b.v.size() - 2) +
                   (b.get((unsigned)b.v.size() - 3) + 1.0) / BIGINT_BASE);
       double db = 1.0 / (b.v.back() + t / BIGINT_BASE);
@@ -654,17 +659,17 @@ void div(int a[], int b[], int c[], int d[]) {
         int m = std::max((int)(db * rm), r.get(i + 1));
         r.sub_mul(b, m, j);
         d.v[j] += m;
-        if (!r.get(i + 1))  // 检查最高位是否已为0，避免极端情况
+        if (!r.get(i + 1))  // Kiểm tra chữ số cao nhất đã về 0 chưa, tránh trường hợp cực đoan
           --i, --j;
       }
       r.trim();
-      // 修正结果的个位
+      // Sửa chữ số hàng đơn vị
       int carry = 0;
       while (!r.absless(b)) {
         r.subtract(b);
         ++carry;
       }
-      // 修正每一位的进位
+      // Sửa nhớ cho mỗi chữ số
       for (size_t i = 0; i < d.v.size(); ++i) {
         carry += d.v[i];
         d.v[i] = carry % BIGINT_BASE;
@@ -687,11 +692,11 @@ void div(int a[], int b[], int c[], int d[]) {
     }
     ```
 
-## Karatsuba 乘法
+## Nhân Karatsuba
 
-记高精度数字的位数为 $n$，那么高精度—高精度竖式乘法需要花费 $O(n^2)$ 的时间．本节介绍一个时间复杂度更为优秀的算法，由前苏联（俄罗斯）数学家 Anatoly Karatsuba 提出，是一种分治算法．
+Gọi số chữ số là $n$, nhân đặt dọc số lớn cần $O(n^2)$. Phần này giới thiệu thuật toán tốt hơn do Anatoly Karatsuba đề xuất, là một thuật toán chia để trị.
 
-考虑两个十进制大整数 $x$ 和 $y$，均包含 $n$ 个数码（可以有前导零）．任取 $0 < m < n$，记
+Xét hai số nguyên lớn $x,y$ hệ thập phân, đều có $n$ chữ số (có thể có số 0 đầu). Chọn $0 < m < n$, đặt
 
 $$
 \begin{aligned}
@@ -701,7 +706,7 @@ x \cdot y &= z_2 \cdot 10^{2m} + z_1 \cdot 10^m + z_0,
 \end{aligned}
 $$
 
-其中 $x_0, y_0, z_0, z_1 < 10^m$．可得
+với $x_0, y_0, z_0, z_1 < 10^m$. Khi đó
 
 $$
 \begin{aligned}
@@ -711,23 +716,23 @@ z_0 &= x_0 \cdot y_0.
 \end{aligned}
 $$
 
-观察知
+Quan sát
 
 $$
 z_1 = (x_1 + x_0) \cdot (y_1 + y_0) - z_2 - z_0,
 $$
 
-于是要计算 $z_1$，只需计算 $(x_1 + x_0) \cdot (y_1 + y_0)$，再与 $z_0$、$z_2$ 相减即可．
+nên để tính $z_1$ chỉ cần tính $(x_1 + x_0)(y_1 + y_0)$ rồi trừ $z_2$ và $z_0$.
 
-上式实际上是 Karatsuba 算法的核心，它将长度为 $n$ 的乘法问题转化为了 $3$ 个长度更小的子问题．若令 $m = \left\lceil \dfrac n 2 \right\rceil$，记 Karatsuba 算法计算两个 $n$ 位整数乘法的耗时为 $T(n)$，则有 $T(n) = 3 \cdot T \left(\left\lceil \dfrac n 2 \right\rceil\right) + O(n)$，由主定理可得 $T(n) = \Theta(n^{\log_2 3}) \approx \Theta(n^{1.585})$．
+Đây là hạt nhân của Karatsuba: bài toán nhân độ dài $n$ chuyển thành 3 bài toán nhỏ hơn. Lấy $m = \left\lceil \dfrac n 2 \right\rceil$, nếu $T(n)$ là thời gian nhân hai số $n$ chữ số, thì $T(n) = 3 \cdot T \left(\left\lceil \dfrac n 2 \right\rceil\right) + O(n)$, suy ra $T(n) = \Theta(n^{\log_2 3}) \approx \Theta(n^{1.585})$.
 
-整个过程可以递归实现．为清晰起见，下面的代码通过 Karatsuba 算法实现了多项式乘法，最后再处理所有的进位问题．
+Có thể hiện thực đệ quy. Để rõ ràng, đoạn mã dưới dùng Karatsuba để nhân đa thức, rồi xử lý nhớ.
 
 ??? note "karatsuba_mulc.cpp"
     ```cpp
     int *karatsuba_polymul(int n, int *a, int *b) {
       if (n <= 32) {
-        // 规模较小时直接计算，避免继续递归带来的效率损失
+        // Kích thước nhỏ thì tính trực tiếp, tránh đệ quy làm chậm
         int *r = new int[n * 2 + 1]();
         for (int i = 0; i <= n; ++i)
           for (int j = 0; j <= n; ++j) r[i + j] += a[i] * b[j];
@@ -741,8 +746,8 @@ $$
       z0 = karatsuba_polymul(m - 1, a, b);
       z2 = karatsuba_polymul(n - m, a + m, b + m);
     
-      // 计算 z1
-      // 临时更改，计算完毕后恢复
+      // Tính z1
+      // Tạm thời thay đổi, xong thì khôi phục
       for (int i = 0; i + m <= n; ++i) a[i] += a[i + m];
       for (int i = 0; i + m <= n; ++i) b[i] += b[i + m];
       z1 = karatsuba_polymul(m - 1, a, b);
@@ -751,7 +756,7 @@ $$
       for (int i = 0; i <= (m - 1) * 2; ++i) z1[i] -= z0[i];
       for (int i = 0; i <= (n - m) * 2; ++i) z1[i] -= z2[i];
     
-      // 由 z0、z1、z2 组合获得结果
+      // Ghép z0, z1, z2 thành kết quả
       for (int i = 0; i <= (m - 1) * 2; ++i) r[i] += z0[i];
       for (int i = 0; i <= (m - 1) * 2; ++i) r[i + m] += z1[i];
       for (int i = 0; i <= (n - m) * 2; ++i) r[i + m * 2] += z2[i];
@@ -774,35 +779,35 @@ $$
     }
     ```
 
-??? note "关于 `new` 和 `delete`"
-    见 [内存池](../contest/common-tricks.md#内存池)．
+??? note "Về `new` và `delete`"
+    Xem [memory pool](../contest/common-tricks.md#内存池).
 
-但是这样的实现存在一个问题：在 $b$ 进制下，多项式的每一个系数都有可能达到 $n \cdot b^2$ 量级，在压位高精度实现中可能造成整数溢出；而若在多项式乘法的过程中处理进位问题，则 $x_1 + x_0$ 与 $y_1 + y_0$ 的结果可能达到 $2 \cdot b^m$，增加一个位（如果采用 $x_1 - x_0$ 的计算方式，则不得不特殊处理负数的情况）．因此，需要依照实际的应用场景来决定采用何种实现方式．
+Tuy nhiên cách này có vấn đề: trong cơ số $b$, mỗi hệ số đa thức có thể tới cỡ $n \cdot b^2$, trong ép cơ số có thể tràn số; còn nếu xử lý nhớ trong quá trình nhân đa thức thì $x_1+x_0$ và $y_1+y_0$ có thể đạt $2 \cdot b^m$, tăng thêm một chữ số (nếu dùng $x_1-x_0$ thì phải xử lý số âm). Do đó cần chọn hiện thực phù hợp với bối cảnh.
 
-## 基于多项式的高效大整数乘法
+## Nhân số lớn hiệu quả dựa trên đa thức
 
-如果数据规模达到了 $10^{10^5}$ 或更大，普通的高精度乘法可能会超时．本节将介绍用多项式优化此类乘法的方法．
+Nếu dữ liệu tới cỡ $10^{10^5}$ hoặc lớn hơn, nhân số lớn thông thường có thể TLE. Phần này giới thiệu cách dùng đa thức tối ưu.
 
-对于一个 $n$ 位的十进制整数 $a$，可以将它看作一个每位系数均为整数且不超过 $10$ 的多项式 $A=a_{0} 10^0+a_{1} 10^1+\cdots+a_{n-1} 10^{n-1}$．这样，我们就将两个整数乘法转化为了两个多项式乘法．
+Với số $a$ có $n$ chữ số, có thể xem như đa thức $A=a_{0} 10^0+a_{1} 10^1+\cdots+a_{n-1} 10^{n-1}$ với hệ số nguyên không quá $10$. Như vậy nhân số nguyên chuyển thành nhân đa thức.
 
-普通的多项式乘法时间复杂度仍是 $O(n^2)$，但可以用多项式一节中的 [快速傅里叶变换](poly/fft.md)、[快速数论变换](poly/ntt.md) 等算法优化，优化后的时间复杂度是 $O(n\log n)$．
+Nhân đa thức thường là $O(n^2)$, nhưng có thể dùng [FFT](poly/fft.md), [NTT](poly/ntt.md) để giảm xuống $O(n\log n)$.
 
-## 封装类
+## Đóng gói thành lớp
 
-[这里](https://paste.ubuntu.com/p/7VKYzpC7dn/) 有一个封装好的高精度整数类，以及 [这里](https://github.com/Baobaobear/MiniBigInteger/blob/main/bigint_tiny.h) 支持动态长度及四则运算的超迷你实现类．
+[Ở đây](https://paste.ubuntu.com/p/7VKYzpC7dn/) có một lớp số lớn đóng gói sẵn, và [ở đây](https://github.com/Baobaobear/MiniBigInteger/blob/main/bigint_tiny.h) là một lớp siêu nhỏ hỗ trợ độ dài động và bốn phép toán.
 
-??? note "这里是另一个模板"
+??? note "Đây là một template khác"
     ```cpp
     constexpr int MAXN = 9999;
-    // MAXN 是一位中最大的数字
+    // MAXN là giá trị lớn nhất của một “chữ số”
     constexpr int MAXSIZE = 10024;
-    // MAXSIZE 是位数
+    // MAXSIZE là số chữ số
     constexpr int DLEN = 4;
     
-    // DLEN 记录压几位
+    // DLEN ghi số chữ số gộp vào một “chữ số”
     struct Big {
       int a[MAXSIZE], len;
-      bool flag;  // 标记符号'-'
+      bool flag;  // Đánh dấu dấu '-' cho số âm
     
       Big() {
         len = 1;
@@ -822,7 +827,7 @@ $$
       Big operator^(const int&) const;
       // TODO: Big ^ Big;
     
-      // TODO: Big 位运算;
+      // TODO: Big phép toán bit;
     
       int operator%(const int&) const;
       // TODO: Big ^ Big;
@@ -863,7 +868,7 @@ $$
     Big::Big(const Big& T) : len(T.len) {
       CLR(a);
       f(i, 0, len) a[i] = T.a[i];
-      // TODO:重载此处？
+      // TODO: có cần overload chỗ này?
     }
     
     Big& Big::operator=(const Big& T) {
@@ -1010,7 +1015,7 @@ $$
     char s[100024];
     ```
 
-## 习题
+## Bài tập
 
 -   [NOIP 2012 国王游戏](https://loj.ac/problem/2603)
 -   [SPOJ - Fast Multiplication](http://www.spoj.com/problems/MUL/en/)
@@ -1019,6 +1024,6 @@ $$
 -   [UVa - Fibonacci Freeze](https://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=436)
 -   [Codeforces - Notepad](http://codeforces.com/contest/17/problem/D)
 
-## 参考资料与链接
+## Tài liệu tham khảo & liên kết
 
 1.  [Karatsuba algorithm - Wikipedia](https://en.wikipedia.org/wiki/Karatsuba_algorithm)

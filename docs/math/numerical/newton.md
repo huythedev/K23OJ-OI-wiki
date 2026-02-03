@@ -1,46 +1,46 @@
 author: Marcythm, iamtwz, nutshellfool, sshwy, allenanswerzq, countercurrent-time, Enter-tainer, H-J-Granger, hly1204, Ir1d, Menci, NachtgeistW, SukkaW, Tiphereth-A, Xeonacid
 
-## 引入
+## Giới thiệu
 
-本文介绍如何用牛顿迭代法（Newton's method for finding roots）求方程的近似解，该方法于 17 世纪由牛顿提出．
+Bài viết này giới thiệu cách dùng phương pháp Newton (Newton's method for finding roots) để tìm nghiệm gần đúng của phương trình; phương pháp này do Newton đề xuất vào thế kỷ 17.
 
-具体的任务是，对于在 $[a,b]$ 上连续且单调的函数 $f(x)$，求方程 $f(x)=0$ 的近似解．
+Nhiệm vụ cụ thể là: với hàm $f(x)$ liên tục và đơn điệu trên $[a,b]$, tìm nghiệm gần đúng của phương trình $f(x)=0$.
 
-## 解释
+## Giải thích
 
-初始时我们从给定的 $f(x)$ 和一个近似解 $x_0$ 开始（初值的问题与 Newton 分形有关，可参考 3Blue1Brown 的 [牛顿分形](https://www.bilibili.com/video/BV1HQ4y1q78v)）．
+Ban đầu ta có $f(x)$ và một nghiệm gần đúng $x_0$ (vấn đề chọn giá trị đầu liên quan đến fractal Newton, có thể xem [Newton fractal](https://www.bilibili.com/video/BV1HQ4y1q78v) của 3Blue1Brown).
 
-假设我们目前的近似解是 $x_i$，我们画出与 $f(x)$ 切于点 $(x_i,f(x_i))$ 的直线 $l$，将 $l$ 与 $x$ 轴的交点横坐标记为 $x_{i+1}$，那么这就是一个更优的近似解．重复这个迭代的过程．
-根据导数的几何意义，可以得到如下关系：
+Giả sử nghiệm gần đúng hiện tại là $x_i$, ta vẽ đường thẳng $l$ tiếp xúc với đồ thị $f(x)$ tại điểm $(x_i,f(x_i))$, lấy giao điểm của $l$ với trục $x$ có hoành độ $x_{i+1}$, đó là một nghiệm gần đúng tốt hơn. Lặp lại quá trình này.
+Theo ý nghĩa hình học của đạo hàm, ta có:
 
 $$
  f'(x_i) = \frac{f(x_i)}{x_{i} - x_{i+1}}
 $$
 
-整理后得到如下递推式：
+Sắp xếp lại thu được công thức truy hồi:
 
 $$
  x_{i+1} = x_i - \frac{f(x_i)}{f'(x_i)}
 $$
 
-直观地说，如果 $f(x)$ 比较平滑，那么随着迭代次数的增加，$x_i$ 会越来越逼近方程的解．
+Trực quan mà nói, nếu $f(x)$ đủ trơn thì khi số lần lặp tăng, $x_i$ sẽ tiến dần đến nghiệm.
 
-牛顿迭代法的收敛率是平方级别的，这意味着每次迭代后近似解的精确数位会翻倍．
-关于牛顿迭代法的收敛性证明可参考 [citizendium - Newton method Convergence analysis](http://en.citizendium.org/wiki/Newton%27s_method#Convergence_analysis)
+Phương pháp Newton có tốc độ hội tụ bậc hai, tức mỗi lần lặp số chữ số chính xác tăng gấp đôi.
+Chứng minh hội tụ có thể xem [citizendium - Newton method Convergence analysis](http://en.citizendium.org/wiki/Newton%27s_method#Convergence_analysis).
 
-当然牛顿迭代法也同样存在着缺陷，详情参考 [Xiaolin Wu - Roots of Equations 第 18 - 20 页分析](https://www.ece.mcmaster.ca/~xwu/part2.pdf)
+Tất nhiên Newton cũng có nhược điểm, xem thêm [Xiaolin Wu - Roots of Equations trang 18 - 20](https://www.ece.mcmaster.ca/~xwu/part2.pdf).
 
-## 求解平方根
+## Tính căn bậc hai
 
-我们尝试用牛顿迭代法求解平方根．设 $f(x)=x^2-n$，这个方程的近似解就是 $\sqrt{n}$ 的近似值．于是我们得到
+Ta thử dùng Newton để tính căn bậc hai. Đặt $f(x)=x^2-n$, nghiệm gần đúng chính là xấp xỉ $\sqrt{n}$. Khi đó:
 
 $$
 x_{i+1}=x_i-\frac{x_i^2-n}{2x_i}=\frac{x_i+\frac{n}{x_i}}{2}
 $$
 
-在实现的时候注意设置合适的精度．代码如下
+Khi cài đặt cần chọn độ chính xác phù hợp. Mã như sau:
 
-### 实现
+### Cài đặt
 
 === "C++"
     ```cpp
@@ -69,11 +69,11 @@ $$
         return x
     ```
 
-## 求解整数平方根
+## Tính căn bậc hai nguyên
 
-尽管我们可以调用 `sqrt()` 函数来获取平方根的值，但这里还是讲一下牛顿迭代法的变种算法，用于求不等式 $x^2\le n$ 的最大整数解．我们仍然考虑一个类似于牛顿迭代的过程，但需要在边界条件上稍作修改．如果 $x$ 在迭代的过程中上一次迭代值得近似解变小，而这一次迭代使得近似解变大，那么我们就不进行这次迭代，退出循环．
+Dù có thể dùng `sqrt()` để lấy căn bậc hai, ở đây vẫn trình bày một biến thể Newton để tìm nghiệm nguyên lớn nhất của bất đẳng thức $x^2\le n$. Ta vẫn dùng quá trình tương tự Newton, nhưng chỉnh điều kiện biên: nếu trong quá trình lặp, giá trị gần đúng giảm ở lần trước và lần này lại tăng, thì không thực hiện bước lặp này và thoát vòng.
 
-### 实现
+### Cài đặt
 
 === "C++"
     ```cpp
@@ -104,13 +104,13 @@ $$
         return x
     ```
 
-## 高精度平方根
+## Căn bậc hai chính xác cao
 
-最后考虑高精度的牛顿迭代法．迭代的方法是不变的，但这次我们需要关注初始时近似解的设置，即 $x_0$ 的值．由于需要应用高精度的数一般都非常大，因此不同的初始值对于算法效率的影响也很大．一个自然的想法就是考虑 $x_0=2^{\left\lfloor\frac{1}{2}\log_2n\right\rfloor}$，这样既可以快速计算出 $x_0$，又可以较为接近平方根的近似解．
+Cuối cùng xét Newton độ chính xác cao. Phương pháp lặp không đổi, nhưng cần chú ý chọn giá trị gần đúng ban đầu $x_0$. Vì số cần tính thường rất lớn, chọn $x_0$ phù hợp sẽ ảnh hưởng đáng kể đến hiệu năng. Một ý tưởng tự nhiên là lấy $x_0=2^{\left\lfloor\frac{1}{2}\log_2n\right\rfloor}$, vừa tính nhanh, vừa gần với căn bậc hai.
 
-### 实现
+### Cài đặt
 
-给出 Java 代码的实现：
+Mã Java:
 
 ```java
 public static BigInteger isqrtNewton(BigInteger n) {
@@ -127,11 +127,11 @@ public static BigInteger isqrtNewton(BigInteger n) {
 }
 ```
 
-实践效果：在 $n=10^{1000}$ 的时候该算法的运行时间是 60 ms，如果我们不优化 $x_0$ 的值，直接从 $x_0=1$ 开始迭代，那么运行时间将增加到 120 ms．
+Kết quả thực nghiệm: với $n=10^{1000}$ thuật toán chạy 60 ms; nếu không tối ưu $x_0$ mà bắt đầu từ $x_0=1$, thời gian tăng lên 120 ms.
 
-## 习题
+## Bài tập
 
 -   [UVa 10428 - The Roots](https://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=16&page=show_problem&problem=1369)
 -   [LeetCode 69. x 的平方根](https://leetcode-cn.com/problems/sqrtx/)
 
-    **本页面主要译自博文 [Метод Ньютона (касательных) для поиска корней](http://e-maxx.ru/algo/roots_newton) 与其英文翻译版 [Newton's method for finding roots](https://cp-algorithms.com/num_methods/roots_newton.html)．其中俄文版版权协议为 Public Domain + Leave a Link；英文版版权协议为 CC-BY-SA 4.0．**
+    **Trang này chủ yếu dịch từ blog [Метод Ньютона (касательных) для поиска корней](http://e-maxx.ru/algo/roots_newton) và bản tiếng Anh [Newton's method for finding roots](https://cp-algorithms.com/num_methods/roots_newton.html). Bản tiếng Nga theo giấy phép Public Domain + Leave a Link; bản tiếng Anh theo CC-BY-SA 4.0.**

@@ -1,81 +1,81 @@
 author: sshwy
 
-序列 $a$ 的普通生成函数（ordinary generating function，OGF）定义为形式幂级数：
+Hàm sinh thường (ordinary generating function, OGF) của dãy $a$ được định nghĩa là chuỗi lũy thừa hình thức:
 
 $$
 F(x)=\sum_{n}a_n x^n
 $$
 
-$a$ 既可以是有穷序列，也可以是无穷序列．常见的例子（假设 $a$ 以 $0$ 为起点）：
+$a$ có thể là dãy hữu hạn hoặc vô hạn. Ví dụ thường gặp (giả sử $a$ bắt đầu từ $0$):
 
-1.  序列 $a=\langle 1,2,3\rangle$ 的普通生成函数是 $1+2x+3x^2$．
-2.  序列 $a=\langle 1,1,1,\cdots\rangle$ 的普通生成函数是 $\sum_{n\ge 0}x^n$．
-3.  序列 $a=\langle 1,2,4,8,16,\cdots\rangle$ 的生成函数是 $\sum_{n\ge 0}2^nx^n$．
-4.  序列 $a=\langle 1,3,5,7,9,\cdots\rangle$ 的生成函数是 $\sum_{n\ge 0}(2n+1)x^n$．
+1.  Dãy $a=\langle 1,2,3\rangle$ có OGF là $1+2x+3x^2$.
+2.  Dãy $a=\langle 1,1,1,\cdots\rangle$ có OGF là $\sum_{n\ge 0}x^n$.
+3.  Dãy $a=\langle 1,2,4,8,16,\cdots\rangle$ có OGF là $\sum_{n\ge 0}2^nx^n$.
+4.  Dãy $a=\langle 1,3,5,7,9,\cdots\rangle$ có OGF là $\sum_{n\ge 0}(2n+1)x^n$.
 
-换句话说，如果序列 $a$ 有通项公式，那么它的普通生成函数的系数就是通项公式．
+Nói cách khác, nếu dãy $a$ có công thức tổng quát, thì hệ số của OGF chính là công thức đó.
 
-## 基本运算
+## Phép toán cơ bản
 
-考虑两个序列 $a,b$ 的普通生成函数，分别为 $F(x),G(x)$．那么有
+Xét hai dãy $a,b$ với OGF tương ứng là $F(x),G(x)$. Khi đó
 
 $$
 F(x)\pm G(x)=\sum_n (a_n\pm b_n)x^n
 $$
 
-因此 $F(x)\pm G(x)$ 是序列 $\langle a_n\pm b_n\rangle$ 的普通生成函数．
+Vì vậy $F(x)\pm G(x)$ là OGF của dãy $\langle a_n\pm b_n\rangle$.
 
-考虑乘法运算，也就是卷积：
+Xét phép nhân, tức là tích chập:
 
 $$
 F(x)G(x)=\sum_n x^n \sum_{i=0}^na_ib_{n-i}
 $$
 
-因此 $F(x)G(x)$ 是序列 $\langle \sum_{i=0}^n a_ib_{n-i} \rangle$ 的普通生成函数．
+Vì vậy $F(x)G(x)$ là OGF của dãy $\langle \sum_{i=0}^n a_ib_{n-i} \rangle$.
 
-## 封闭形式
+## Dạng đóng
 
-在运用生成函数的过程中，我们不会一直使用形式幂级数的形式，而会适时地转化为封闭形式以更好地化简．
+Khi dùng hàm sinh, ta không luôn giữ dạng chuỗi lũy thừa hình thức mà sẽ chuyển sang dạng đóng để rút gọn.
 
-例如 $\langle 1,1,1,\cdots\rangle$ 的普通生成函数 $F(x)=\sum_{n\ge 0}x^n$，我们可以发现
+Ví dụ dãy $\langle 1,1,1,\cdots\rangle$ có OGF $F(x)=\sum_{n\ge 0}x^n$, ta thấy
 
 $$
 F(x)x+1=F(x)
 $$
 
-那么解这个方程得到
+Giải được
 
 $$
 F(x)=\frac{1}{1-x}
 $$
 
-这就是 $\sum_{n\ge 0}x^n$ 的封闭形式．
+Đó là dạng đóng của $\sum_{n\ge 0}x^n$.
 
-考虑等比数列 $\langle 1,p,p^2,p^3,p^4,\cdots\rangle$ 的生成函数 $F(x)=\sum_{n\ge 0}p^nx^n$，有
+Xét cấp số nhân $\langle 1,p,p^2,p^3,p^4,\cdots\rangle$ có OGF $F(x)=\sum_{n\ge 0}p^nx^n$, ta có
 
 $$
 \begin{aligned}F(x)px+1 &=F(x)\\F(x) &=\frac{1}{1-px}\end{aligned}
 $$
 
-等比数列的封闭形式与展开形式是常用的变换手段．
+Dạng đóng và dạng khai triển của cấp số nhân là phép biến đổi rất thường dùng.
 
-???+ note "小练习"
-    请求出下列数列的普通生成函数（形式幂级数形式和封闭形式）．难度是循序渐进的．
+???+ note "Bài tập nhỏ"
+    Hãy tìm OGF (dạng chuỗi và dạng đóng) của các dãy sau. Độ khó tăng dần.
     
-    1.  $a=\langle 0,1,1,1,1,\cdots\rangle$．
-    2.  $a=\langle 1,0,1,0,1,\cdots \rangle$．
-    3.  $a=\langle 1,2,3,4,\cdots \rangle$．
-    4.  $a_n=\binom{m}{n}$（$m$ 是常数，$n\ge 0$）．
-    5.  $a_n=\binom{m+n}{n}$（$m$ 是常数，$n\ge 0$）．
+    1.  $a=\langle 0,1,1,1,1,\cdots\rangle$.
+    2.  $a=\langle 1,0,1,0,1,\cdots \rangle$.
+    3.  $a=\langle 1,2,3,4,\cdots \rangle$.
+    4.  $a_n=\binom{m}{n}$ ($m$ là hằng số, $n\ge 0$).
+    5.  $a_n=\binom{m+n}{n}$ ($m$ là hằng số, $n\ge 0$).
 
-??? note "答案"
-    第一个：
+??? note "Đáp án"
+    Câu 1:
     
     $$
     F(x)=\sum_{n\ge 1}x^n=\dfrac{x}{1-x}
     $$
     
-    第二个：
+    Câu 2:
     
     $$
     \begin{aligned}
@@ -85,29 +85,29 @@ $$
     \end{aligned}
     $$
     
-    第三个（求导）：
+    Câu 3 (lấy đạo hàm):
     
     $$
     \begin{aligned}F(x)&=\sum_{n\ge 0}(n+1)x^n\\&=\sum_{n\ge 1}nx^{n-1}\\&=\sum_{n\ge 0}(x^n)'\\&=\left(\frac{1}{1-x}\right)'\\&=\frac{1}{(1-x)^2}\end{aligned}
     $$
     
-    第四个（二项式定理）：
+    Câu 4 (nhị thức Newton):
     
     $$
     F(x)=\sum_{n\ge 0}\binom{m}{n}x^n=(1+x)^m
     $$
     
-    第五个：
+    Câu 5:
     
     $$
     F(x)=\sum_{n\ge 0}\binom{m+n}{n}x^n=\frac{1}{(1-x)^{m+1}}
     $$
     
-    可以使用归纳法证明．
+    Có thể chứng minh bằng quy nạp.
     
-    首先当 $m=0$ 时，有 $F(x)=\dfrac{1}{1-x}$．
+    Trước hết khi $m=0$, ta có $F(x)=\dfrac{1}{1-x}$.
     
-    而当 $m>0$ 时，有
+    Khi $m>0$:
     
     $$
     \begin{aligned}
@@ -119,27 +119,27 @@ $$
     \end{aligned}
     $$
 
-## 斐波那契数列的生成函数
+## Hàm sinh của dãy Fibonacci
 
-接下来我们来推导斐波那契数列的生成函数．
+Tiếp theo ta suy ra hàm sinh của dãy Fibonacci.
 
-斐波那契数列定义为 $a_0=0,a_1=1,a_n=a_{n-1}+a_{n-2}\;(n>1)$．设它的普通生成函数是 $F(x)$，那么根据它的递推式，我们可以类似地列出关于 $F(x)$ 的方程：
+Dãy Fibonacci: $a_0=0,a_1=1,a_n=a_{n-1}+a_{n-2}\;(n>1)$. Gọi OGF là $F(x)$, từ truy hồi ta lập phương trình:
 
 $$
 F(x)=xF(x)+x^2F(x)-a_0x+a_1x+a_0
 $$
 
-那么解得
+Giải được
 
 $$
 F(x)=\frac{x}{1-x-x^2}
 $$
 
-那么接下来的问题是，如何求出它的展开形式？
+Câu hỏi tiếp theo: làm sao khai triển?
 
-### 展开方式一
+### Cách khai triển 1
 
-不妨将 $x+x^2$ 当作一个整体，那么可以得到
+Xem $x+x^2$ là một khối:
 
 $$
 \begin{aligned}
@@ -151,29 +151,29 @@ F(x) &= \dfrac{x}{1-(x+x^2)} \\
 \end{aligned}
 $$
 
-最后一步中，令 $n=k+i+1$ 并更换求和顺序．由此，可以得到通项公式：
+Bước cuối đặt $n=k+i+1$ và đổi thứ tự tổng. Suy ra công thức:
 
 $$
 a_n = \sum_{i=0}^{\lfloor(n-1)/2\rfloor}\binom{n-i-1}{i}.
 $$
 
-这并不是我们熟知的有关黄金分割比的形式．
+Đây không phải dạng liên quan tỉ lệ vàng quen thuộc.
 
-### 展开方式二
+### Cách khai triển 2
 
-考虑求解一个待定系数的方程：
+Xét phương trình hệ số bất định:
 
 $$
 \frac{A}{1-ax}+\frac{B}{1-bx}= \frac{x}{1-x-x^2}
 $$
 
-通分得到
+Quy đồng:
 
 $$
 \frac{A-Abx+B-aBx}{(1-ax)(1-bx)} = \frac{x}{1-x-x^2}
 $$
 
-待定项系数相等，我们得到
+So sánh hệ số, được:
 
 $$
 \begin{cases}
@@ -184,7 +184,7 @@ ab=-1
 \end{cases}
 $$
 
-解得
+Giải:
 
 $$
 \begin{cases}
@@ -195,30 +195,30 @@ b=\frac{1-\sqrt{5}}{2}
 \end{cases}
 $$
 
-那么我们根据等比数列的展开式，就可以得到斐波那契数列的通项公式：
+Từ khai triển cấp số nhân, ta thu được công thức:
 
 $$
 \frac{x}{1-x-x^2}=\sum_{n\ge 0}x^n
 \frac{1}{\sqrt{5}}\left( \left(\frac{1+\sqrt{5}}{2}\right)^n-\left(\frac{1-\sqrt{5}}{2}\right)^n \right)
 $$
 
-这也被称为斐波那契数列的另一个封闭形式（$\frac{x}{1-x-x^2}$ 是一个封闭形式）．
+Đây là dạng đóng khác của dãy Fibonacci.
 
-对于任意多项式 $P(x),Q(x)$，生成函数 $\dfrac{P(x)}{Q(x)}$ 的展开式都可以使用上述方法求出．在实际运用的过程中，我们往往先求出 $Q(x)$ 的根，把分母表示为 $\prod (1-p_ix)^{d_i}$ 的形式，然后再求分子．
+Với đa thức $P(x),Q(x)$, khai triển $\dfrac{P(x)}{Q(x)}$ có thể dùng phương pháp trên. Thực tế thường tìm nghiệm của $Q(x)$, viết mẫu dưới dạng $\prod (1-p_ix)^{d_i}$ rồi xử lý tử.
 
-当对分母进行因式分解但有重根时，每有一个重根就要多一个分式，如考虑生成函数
+Nếu mẫu có nghiệm bội, cần thêm phân thức. Ví dụ
 
 $$
 G(x)=\frac{1}{(1-x)(1-2x)^2}
 $$
 
-的系数的通项公式，那么有
+khi đó
 
 $$
 G(x)=\frac{c_0}{1-x}+\frac{c_1}{1-2x}+\frac{c_2}{(1-2x)^2}
 $$
 
-解得
+Giải được
 
 $$
 \begin{cases}
@@ -228,106 +228,106 @@ c_2&=2
 \end{cases}
 $$
 
-那么
+Suy ra
 
 $$
 [x^n]G(x)=1-2^{n+1}+(n+1)\cdot 2^{n+1}
 $$
 
-## 牛顿二项式定理
+## Nhị thức Newton
 
-我们重新定义组合数的运算：
+Định nghĩa lại tổ hợp:
 
 $$
 \binom{r}{k}=\frac{r^{\underline{k}}}{k!}\quad(r\in\mathbf{C},k\in\mathbf{N})
 $$
 
-注意 $r$ 的范围是复数域．在这种情况下．对于 $\alpha\in\mathbf{C}$，有
+Lưu ý $r$ là số phức. Khi đó với $\alpha\in\mathbf{C}$:
 
 $$
 (1+x)^{\alpha}=\sum_{n\ge 0}\binom{\alpha}{n}x^n
 $$
 
-二项式定理其实是牛顿二项式定理的一个特殊情况．
+Nhị thức thường là trường hợp đặc biệt của nhị thức Newton.
 
-## 卡特兰数的生成函数
+## Hàm sinh của số Catalan
 
-参考 [Catalan 数形式的代数推演](../combinatorics/catalan.md#代数推演)．
+Xem [Diễn giải đại số của số Catalan](../combinatorics/catalan.md#代数推演).
 
-## 应用
+## Ứng dụng
 
-接下来给出一些例题，来介绍生成函数在 OI 中的具体应用．
+Dưới đây là một số bài mẫu về ứng dụng OGF trong OI.
 
-### 食物
+### Food
 
-???+ note "[食物](https://hydro.ac/p/bzoj-P3028)"
-    在许多不同种类的食物中选出 $n$ 个，每种食物的限制如下：
+???+ note "[Food](https://hydro.ac/p/bzoj-P3028)"
+    Chọn $n$ món từ nhiều loại, mỗi loại có ràng buộc:
     
-    1.  承德汉堡：偶数个
-    2.  可乐：0 个或 1 个
-    3.  鸡腿：0 个，1 个或 2 个
-    4.  蜜桃多：奇数个
-    5.  鸡块：4 的倍数个
-    6.  包子：0 个，1 个，2 个或 3 个
-    7.  土豆片炒肉：不超过一个．
-    8.  面包：3 的倍数个
+    1.  Bánh hamburger: số lượng chẵn
+    2.  Coca: 0 hoặc 1
+    3.  Đùi gà: 0,1 hoặc 2
+    4.  Nước đào: số lượng lẻ
+    5.  Gà viên: bội của 4
+    6.  Bánh bao: 0,1,2 hoặc 3
+    7.  Thịt xào khoai tây: không quá 1
+    8.  Bánh mì: bội của 3
     
-    每种食物都是以「个」为单位，只要总数加起来是 $n$ 就算一种方案．对于给出的 $n$ 你需要计算出方案数，对 $10007$ 取模．
+    Mỗi loại tính theo “cái”, tổng số là $n$ tính là một phương án. Với $n$ cho trước, hãy tính số phương án modulo $10007$.
 
-这是一道经典的生成函数题．对于一种食物，我们可以设 $a_n$ 表示这种食物选 $n$ 个的方案数，并求出它的生成函数．而两种食物一共选 $n$ 个的方案数的生成函数，就是它们生成函数的卷积．多种食物选 $n$ 个的方案数的生成函数也是它们生成函数的卷积．
+Đây là bài kinh điển về hàm sinh. Với một loại, gọi $a_n$ là số cách chọn $n$ cái và lập hàm sinh. Hai loại thì số cách là tích chập, tương ứng với tích các hàm sinh. Nhiều loại thì tương tự.
 
-在理解了方案数可以用卷积表示以后，我们就可以构造生成函数（标号对应题目中食物的标号）：
+Các hàm sinh (theo số thứ tự):
 
-1.  $\displaystyle\sum_{n\ge 0}x^{2n}=\dfrac{1}{1-x^2}$．
-2.  $1+x$．
-3.  $1+x+x^2=\dfrac{1-x^3}{1-x}$．
-4.  $\dfrac{x}{1-x^2}$．
-5.  $\displaystyle \sum_{n\ge 0}x^{4n}=\dfrac{1}{1-x^4}$．
-6.  $1+x+x^2+x^3=\dfrac{1-x^4}{1-x}$．
-7.  $1+x$．
-8.  $\dfrac{1}{1-x^3}$．
+1.  $\displaystyle\sum_{n\ge 0}x^{2n}=\dfrac{1}{1-x^2}$.
+2.  $1+x$.
+3.  $1+x+x^2=\dfrac{1-x^3}{1-x}$.
+4.  $\dfrac{x}{1-x^2}$.
+5.  $\displaystyle \sum_{n\ge 0}x^{4n}=\dfrac{1}{1-x^4}$.
+6.  $1+x+x^2+x^3=\dfrac{1-x^4}{1-x}$.
+7.  $1+x$.
+8.  $\dfrac{1}{1-x^3}$.
 
-那么全部乘起来，得到答案的生成函数：
+Nhân lại:
 
 $$
 F(x)=\frac{(1+x)(1-x^3)x(1-x^4)(1+x)}{(1-x^2)(1-x)(1-x^2)(1-x^4)(1-x)(1-x^3)}
 =\frac{x}{(1-x)^4}
 $$
 
-然后将它转化为展开形式（使用封闭形式练习中第五个练习）：
+Đổi sang dạng khai triển (dùng bài tập thứ 5):
 
 $$
 F(x)=\sum_{n\ge 1}\binom{n+2}{n-1}x^n
 $$
 
-因此答案就是 $\dbinom{n+2}{n-1}=\dbinom{n+2}{3}$．
+Suy ra đáp án $\dbinom{n+2}{n-1}=\dbinom{n+2}{3}$.
 
 ### Sweet
 
 ???+ note "[「CEOI2004」Sweet](https://hydro.ac/p/bzoj-P3027)"
-    有 $n$ 堆糖果．不同的堆里糖果的种类不同（即同一个堆里的糖果种类是相同的，不同的堆里的糖果的种类是不同的）．第 $i$ 个堆里有 $m_i$ 个糖果．现在要吃掉至少 $a$ 个糖果，但不超过 $b$ 个．求有多少种方案．
+    Có $n$ đống kẹo. Các đống khác nhau có loại kẹo khác nhau (một đống chỉ một loại). Đống $i$ có $m_i$ cái. Ăn ít nhất $a$ và không quá $b$ cái. Hỏi số phương án.
     
-    两种方案不同当且仅当吃的个数不同，或者吃的糖果中，某一种糖果的个数在两个方案中不同．
+    Hai phương án khác nhau nếu tổng số kẹo khác nhau, hoặc số kẹo của một loại nào đó khác nhau.
     
-    $n\le 10,0\le a\le b\le 10^7,m_i\le 10^6$．
+    $n\le 10,0\le a\le b\le 10^7,m_i\le 10^6$.
 
-在第 $i$ 堆吃 $j$ 个糖果的方案数（显然为 1）的生成函数为
+Trong đống $i$, ăn $j$ cái (duy nhất một cách) có hàm sinh:
 
 $$
 F_i(x)=\sum_{j=0}^{m_i}x^j=\frac{1-x^{m_i+1}}{1-x}
 $$
 
-因此总共吃 $i$ 个糖果的方案数的生成函数就是
+Tổng số ăn $i$ cái có hàm sinh:
 
 $$
 G(x)=\prod_{i=1}^n F_i(x)=(1-x)^{-n}\prod_{i=1}^n(1-x^{m_i+1})
 $$
 
-现在我们要求的是 $\sum_{i=a}^b[x^i]G(x)$．
+Cần $\sum_{i=a}^b[x^i]G(x)$.
 
-由于 $n\le 10$，因此我们可以暴力展开 $\prod_{i=1}^n(1-x^{m_i+1})$（最多只有 $2^n$ 项）．
+Vì $n\le 10$, ta có thể triển khai $\prod_{i=1}^n(1-x^{m_i+1})$ bằng vét cạn (tối đa $2^n$ hạng).
 
-然后对 $(1-x)^{-n}$ 使用牛顿二项式定理：
+Sau đó với $(1-x)^{-n}$ dùng nhị thức Newton:
 
 $$
 \begin{aligned}
@@ -337,7 +337,7 @@ $$
 \end{aligned}
 $$
 
-我们枚举 $\prod_{i=1}^n(1-x^{m_i+1})$ 中 $x^k$ 项的系数，假设为 $c_k$．那么它和 $(1-x)^{-n}$ 相乘后，对答案的贡献就是
+Giả sử hệ số $x^k$ trong $\prod_{i=1}^n(1-x^{m_i+1})$ là $c_k$. Nhân với $(1-x)^{-n}$, đóng góp vào đáp án:
 
 $$
 c_k\sum_{i=a-k}^{b-k}\binom{n-1+i}{i}=c_k\left(
@@ -346,6 +346,6 @@ c_k\sum_{i=a-k}^{b-k}\binom{n-1+i}{i}=c_k\left(
 \right)
 $$
 
-这样就可以 $O(b)$ 地求出答案了．
+Như vậy tính được trong $O(b)$.
 
-时间复杂度 $O(2^n+b)$．
+Độ phức tạp $O(2^n+b)$.

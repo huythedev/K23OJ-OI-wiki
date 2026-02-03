@@ -1,81 +1,81 @@
-本文将介绍随机变量的期望、方差等数字特征．
+Bài viết này giới thiệu kỳ vọng, phương sai và các đặc trưng số của biến ngẫu nhiên.
 
-## 期望
+## Kỳ vọng
 
-### 定义
+### Định nghĩa
 
-#### 离散型随机变量
+#### Biến ngẫu nhiên rời rạc
 
-设离散型随机变量 $X$ 的概率分布为 $p_i = P\{ X = x_i \}$，若和式
+Gọi phân phối của biến rời rạc $X$ là $p_i = P\{ X = x_i \}$. Nếu tổng
 
 $$
 \sum x_i p_i
 $$
 
-绝对收敛，则称其值为 $X$ 的 **期望**，记作 $EX$．
+hội tụ tuyệt đối, thì gọi giá trị đó là **kỳ vọng** của $X$, ký hiệu $EX$.
 
-#### 连续型随机变量
+#### Biến ngẫu nhiên liên tục
 
-设连续型随机变量 $X$ 的密度函数为 $f(x)$．若积分
+Gọi mật độ của biến liên tục $X$ là $f(x)$. Nếu tích phân
 
 $$
 \int_{\mathbb{R}} xf(x) \text{d} x
 $$
 
-绝对收敛，则称其值为 $X$ 的 **期望**，记作 $EX$．
+hội tụ tuyệt đối, thì gọi giá trị đó là **kỳ vọng** của $X$, ký hiệu $EX$.
 
-#### 统一定义
+#### Định nghĩa thống nhất
 
-设随机变量 $X$ 的分布函数为 $F(x)$，若 [Stieltjes 积分](https://en.wikipedia.org/wiki/Riemann%E2%80%93Stieltjes_integral)
+Gọi hàm phân phối của $X$ là $F(x)$. Nếu [tích phân Stieltjes](https://en.wikipedia.org/wiki/Riemann%E2%80%93Stieltjes_integral)
 
 $$
 \int_{\mathbb{R}} x \text{d} F(x)
 $$
 
-绝对收敛，则称其值为 $X$ 的 **期望**，记作 $EX$．
+hội tụ tuyệt đối, thì giá trị này là **kỳ vọng** của $X$, ký hiệu $EX$.
 
-??? example "期望不存在的例子"
-    考虑有如下分布的离散型随机变量 $X$
+??? example "Ví dụ kỳ vọng không tồn tại"
+    Xét biến rời rạc $X$ có phân phối
     
     $$
     P\left\{ X = (-1)^k \frac{2^k}{k} \right\} = \frac{1}{2^k}, \quad k = 1, 2, \cdots
     $$
     
-    尽管和式 $\sum x_i p_i$ 收敛于 $- \ln 2$，但由于其不是绝对收敛的，故 $X$ 的期望不存在．
+    Dù $\sum x_i p_i$ hội tụ về $- \ln 2$, nhưng không hội tụ tuyệt đối nên kỳ vọng của $X$ không tồn tại.
     
-    再考虑有如下密度函数的连续型随机变量 $Y$
+    Xét tiếp biến liên tục $Y$ có mật độ
     
     $$
     f(y) = \frac{1}{\pi} \cdot \frac{1}{1 + y^2}, \quad y \in (-\infty, +\infty)
     $$
     
-    容易验证 $Y$ 的期望也不存在．
+    Dễ thấy kỳ vọng của $Y$ cũng không tồn tại.
 
-### 期望的性质
+### Tính chất của kỳ vọng
 
-#### 线性性
+#### Tính tuyến tính
 
-若随机变量 $X, Y$ 的期望存在，则
+Nếu kỳ vọng của $X, Y$ tồn tại thì
 
--   对任意实数 $a, b$，有 $E(aX + b) = a \cdot EX + b$．
--   $E(X + Y) = EX + EY$．
+-   Với mọi $a, b$ thực, $E(aX + b) = a \cdot EX + b$.
+-   $E(X + Y) = EX + EY$.
 
-#### 随机变量乘积的期望
+#### Kỳ vọng của tích
 
-若随机变量 $X$,$Y$ 的期望存在且 $X$,$Y$ 相互独立，则有
+Nếu kỳ vọng của $X$,$Y$ tồn tại và $X$,$Y$ độc lập thì
 
 $$
 E(XY) = EX \cdot EY
 $$
 
-注意：上述性质中的独立性 **并非** 必要条件．
+Lưu ý: tính độc lập **không** phải điều kiện cần.
 
-??? example "反例"
-    考察随机变量 $X$ 和 $Y$，其中 $X$ 服从 $[-1, 1]$ 上的均匀分布，$Y = X^2$．
+??? example "Phản ví dụ"
+    Xét $X$ phân phối đều trên $[-1, 1]$, và $Y = X^2$.
 
-### 期望与概率的转化
+### Chuyển đổi giữa kỳ vọng và xác suất
 
-对于随机事件 $A$，考虑其示性函数 $I_A$：
+Với biến cố $A$, xét hàm chỉ thị $I_A$:
 
 $$
 I_A(\omega) = \begin{cases}
@@ -84,60 +84,60 @@ I_A(\omega) = \begin{cases}
 \end{cases}
 $$
 
-根据定义可以求得其期望 $EI_A = P(A)$．这一转化在实际应用中非常常见．
+Theo định nghĩa, $EI_A = P(A)$. Chuyển đổi này rất phổ biến trong ứng dụng.
 
-??? example "例子"
-    假设对于一个长为 $n$ 的序列 $\{ a_i \}$，其中 $a_k$ 以 $p_k$ 的概率取 $k$，以 $1 - p_k$ 的概率取 $0$．考虑如何求 $S = \sum_{i=1}^{n} a_i$ 的期望．
+??? example "Ví dụ"
+    Với dãy dài $n$ là $\{ a_i \}$, trong đó $a_k$ nhận giá trị $k$ với xác suất $p_k$, nhận $0$ với xác suất $1 - p_k$. Tính kỳ vọng $S = \sum_{i=1}^{n} a_i$.
     
-    如果使用定义直接求，需要求出 $S$ 在每个可能取值处的概率，这个计算过程比较繁琐，这里不展开叙述．
+    Dùng định nghĩa trực tiếp cần phân phối của $S$, khá rườm rà, nên bỏ qua.
     
-    另一方面，用 $I_k$ 表示随机事件 $a_k = k$ 的示性函数，则有
+    Gọi $I_k$ là chỉ thị của biến cố $a_k = k$, khi đó
     
     $$
     S = \sum_{k=1}^{n} k \cdot I_k
     $$
     
-    进而不难求出
+    Suy ra
     
     $$
     ES = E \left( \sum_{k=1}^{n} k \cdot I_k \right) = \sum_{k=1}^{n} k \cdot E[I_k] = \sum_{k=1}^{n} k \cdot p_k
     $$
 
-## 条件分布与条件期望
+## Phân phối có điều kiện và kỳ vọng có điều kiện
 
-我们之前研究过条件概率，类似的也可以提出所谓条件期望的概念．
+Ta đã xét xác suất có điều kiện, tương tự có thể định nghĩa kỳ vọng có điều kiện.
 
-### 定义
+### Định nghĩa
 
-对于两个随机变量 $X$,$Y$，在已知 $Y = y$ 的条件下 $X$ 的概率分布（密度函数）称之为 **条件概率分布（条件概率密度）**，分别记作
+Với hai biến $X$,$Y$, trong điều kiện biết $Y = y$, phân phối (mật độ) của $X$ gọi là **phân phối có điều kiện (mật độ có điều kiện)**, ký hiệu
 
 $$
 P( X = x_i | Y = y ) \qquad f_{X|Y}(x|y)
 $$
 
-在此条件下，$X$ 的期望称为 **条件期望**，记作 $E[X|Y=y]$．
+Kỳ vọng của $X$ trong điều kiện này gọi là **kỳ vọng có điều kiện**, ký hiệu $E[X|Y=y]$.
 
-### 条件期望的性质
+### Tính chất của kỳ vọng có điều kiện
 
-条件期望的诸多性质可由条件概率推知，在此不做赘述．
+Các tính chất có thể suy ra từ xác suất có điều kiện, không trình bày chi tiết.
 
-值得一提的是 $E[X | Y]$ 一般是随机变量 $Y$ 的函数，且这个函数通常不是线性的．但实际上有
+Đáng chú ý, $E[X | Y]$ thường là hàm của $Y$ và không tuyến tính. Tuy nhiên luôn có
 
 $$
 E[E[X|Y]] = EX
 $$
 
-上式称作 **全期望公式**．
+gọi là **công thức kỳ vọng toàn phần**.
 
-### 应用
+### Ứng dụng
 
 ???+ example "[HDU 5984 Pocky](https://acm.hdu.edu.cn/showproblem.php?pid=5984)"
-    有一根长为 $L$ 的 Pocky，每次随机折成两段．若右边一段的长度不大于 $d$ 则停止，否则对右边一段重复上述过程．求重复次数的期望．
+    Có một que Pocky dài $L$, mỗi lần bẻ ngẫu nhiên thành hai đoạn. Nếu đoạn bên phải dài không quá $d$ thì dừng, nếu không thì lặp lại với đoạn bên phải. Hỏi kỳ vọng số lần lặp.
 
-??? note "题解"
-    记 $f(x)$ 表示长度为 $x$ 的期望次数．$x \leq d$ 的情形平凡．
+??? note "Lời giải"
+    Gọi $f(x)$ là kỳ vọng số lần khi độ dài là $x$. Trường hợp $x \leq d$ là hiển nhiên.
     
-    当 $x > d$ 时，不妨设折断的位置距右端的长度为 $k$，则显然 $k \sim U[0, x]$，此时期望的重复次数为
+    Khi $x > d$, giả sử vị trí bẻ cách đầu phải là $k$, thì $k \sim U[0, x]$. Kỳ vọng số lần:
     
     $$
     g(k) = \begin{cases}
@@ -146,101 +146,102 @@ $$
     \end{cases}
     $$
     
-    由全期望公式可知
+    Theo công thức kỳ vọng toàn phần
     
     $$
     f(x) = Eg(k) = 1 + \frac{1}{x} \cdot \int_{d}^{x} f(t) \text{d} t
     $$
     
-    解上述积分方程并代入初值条件得
+    Giải phương trình tích phân và thế điều kiện đầu được
     
     $$
     f(x) = 1 + \ln \frac{x}{d}
     $$
 
-## 方差
+## Phương sai
 
-### 定义
+### Định nghĩa
 
-设随机变量 $X$ 的期望 $EX$ 存在且期望
+Giả sử kỳ vọng $EX$ tồn tại và kỳ vọng
 
 $$
 E(X - EX)^2
 $$
 
-也存在，则称上式的值为随机变量 $X$ 的 **方差**，记作 $DX$ 或 $Var(x)$．方差的算术平方根称为 **标准差**，记作 $\sigma(X) = \sqrt{DX}$．
+cũng tồn tại, thì gọi giá trị này là **phương sai** của $X$, ký hiệu $DX$ hoặc $Var(X)$．
+Căn bậc hai của phương sai gọi là **độ lệch chuẩn**, ký hiệu $\sigma(X) = \sqrt{DX}$.
 
-### 方差的性质
+### Tính chất của phương sai
 
-若随机变量 $X$ 的方差存在，则
+Nếu phương sai của $X$ tồn tại thì
 
--   对任意常数 $a, b$ 都有 $D(aX + b) = a^2 \cdot DX$
+-   Với mọi hằng số $a, b$, $D(aX + b) = a^2 \cdot DX$
 -   $DX = E(X^2) - (EX)^2$
 
-## 协方差与相关系数
+## Hiệp phương sai và hệ số tương quan
 
-一般来说，等式 $D(X + Y) = DX + DY$ 并不成立，我们自然会提出两个问题：
+Nói chung, $D(X + Y) = DX + DY$ không đúng, nên đặt ra:
 
--   $D(X + Y)$ 与 $DX + DY$ 之间相差的部分到底是什么．
--   $D(X + Y)$ 与 $DX + DY$ 在什么情况下相等．
+-   Phần chênh giữa $D(X + Y)$ và $DX + DY$ là gì?
+-   Khi nào $D(X + Y)$ bằng $DX + DY$?
 
-对于第一个问题，我们引入协方差作为解答．
+Với câu hỏi đầu, ta dùng hiệp phương sai.
 
-### 协方差的定义
+### Định nghĩa hiệp phương sai
 
-对于随机变量 $X, Y$，称
+Với biến $X, Y$, gọi
 
 $$
 E((X - EX)(Y - EY))
 $$
 
-为 $X$ 与 $Y$ 的 **协方差**，记作 $\operatorname{Cov}(X, Y)$．
+là **hiệp phương sai** của $X$ và $Y$, ký hiệu $\operatorname{Cov}(X, Y)$.
 
-### 协方差的性质
+### Tính chất của hiệp phương sai
 
-对于随机变量 $X, Y, Z$，有
+Với $X, Y, Z$, ta có
 
 -   $\operatorname{Cov}(X, Y) = \operatorname{Cov}(Y, X)$
--   对任意常数 $a, b$，有 $\operatorname{Cov}(aX + bY, Z) = a \cdot \operatorname{Cov}(X, Z) + b \cdot \operatorname{Cov}(Y, Z)$
+-   Với mọi hằng số $a, b$, $\operatorname{Cov}(aX + bY, Z) = a \cdot \operatorname{Cov}(X, Z) + b \cdot \operatorname{Cov}(Y, Z)$
 
-同时协方差与方差也有如下联系：
+Quan hệ với phương sai:
 
 -   $DX = \operatorname{Cov}(X, X)$
 -   $D(X + Y) = DX + 2 \operatorname{Cov}(X, Y) + DY$
 
-??? note "关于协方差"
-    你可能会发现协方差的性质与向量内积的运算性质在形式上高度一致．
+??? note "Về hiệp phương sai"
+    Có thể nhận thấy tính chất của hiệp phương sai giống với tích vô hướng.
     
-    在泛函分析的视角下，对于给定的概率空间，其上的全体随机变量构成一个线性空间，而协方差是这个空间上的一个内积，标准差则是由该内积导出的范数．
+    Theo quan điểm giải tích hàm, tập các biến ngẫu nhiên trên một không gian xác suất tạo thành một không gian tuyến tính, hiệp phương sai là một tích vô hướng, và độ lệch chuẩn là chuẩn sinh từ tích vô hướng đó.
 
-对于刚才提出的第二个问题，不难看出 $D(X + Y) = DX + DY$ 当且仅当 $\operatorname{Cov}(X, Y) = 0$．一个直观的必要条件是 $X$ 与 $Y$ 独立，因为此时有
+Với câu hỏi thứ hai, $D(X + Y) = DX + DY$ khi và chỉ khi $\operatorname{Cov}(X, Y) = 0$. Một điều kiện đủ trực quan là $X$ và $Y$ độc lập, khi đó
 
 $$
 \operatorname{Cov}(X, Y) = E((X - EX)(Y - EY)) = E(X - EX) E(Y - EY) = 0
 $$
 
-但这个条件并不是充分的．为了描述满足 $\operatorname{Cov}(X, Y) = 0$ 的随机变量 $X$,$Y$ 之间的关系，我们引入相关系数
+Nhưng điều kiện này không đủ. Để mô tả quan hệ giữa $X$,$Y$ khi $\operatorname{Cov}(X, Y) = 0$, ta dùng hệ số tương quan.
 
-### 相关系数
+### Hệ số tương quan
 
-对于随机变量 $X, Y$，称
+Với $X, Y$, gọi
 
 $$
 \frac{ \operatorname{Cov}(X, Y)}{ \sigma(X)\sigma(Y) }
 $$
 
-为 $X$ 与 $Y$ 的 **Pearson 相关系数**，记作 $\rho_{X,Y}$．
+là **hệ số tương quan Pearson**, ký hiệu $\rho_{X,Y}$.
 
-Pearson 相关系数描述了两个随机变量之间线性关联的紧密程度．$|\rho_{X,Y}|$ 越大，则 $X$ 与 $Y$ 之间的线性关联程度越强．不难证明 $|\rho_{X,Y}| \leq 1$，且 $|\rho_{X,Y}| = 1$ 仅可能出现在以下两种情况
+Hệ số Pearson mô tả mức độ liên hệ tuyến tính. $|\rho_{X,Y}|$ càng lớn thì liên hệ tuyến tính càng mạnh. Có $|\rho_{X,Y}| \leq 1$, và $|\rho_{X,Y}| = 1$ chỉ khi
 
--   当存在实数 $a$ 和正实数 $b$ 使得 $P(X = a + bY) = 1$ 时，有 $\rho_{X,Y} = 1$；
--   当存在实数 $a$ 和负实数 $b$ 使得 $P(X = a + bY) = 1$ 时，有 $\rho_{X,Y} = -1$．
+-   Tồn tại $a$ thực và $b>0$ sao cho $P(X = a + bY) = 1$ thì $\rho_{X,Y} = 1$;
+-   Tồn tại $a$ thực và $b<0$ sao cho $P(X = a + bY) = 1$ thì $\rho_{X,Y} = -1$.
 
-当 $\rho_{X,Y} = 0$ 时我们称随机变量 $X$ 与 $Y$  **不相关**，此时 $X$ 和 $Y$ 之间不存在线性关系．
+Khi $\rho_{X,Y} = 0$ ta nói $X$ và $Y$ **không tương quan**, khi đó không có quan hệ tuyến tính.
 
-??? note "「不相关」与「独立」"
-    两随机变量不相关只是表明他们之间没有线性关联，并不代表没有其他形式的联系．
+??? note "“Không tương quan” và “độc lập”"
+    Không tương quan chỉ nói không có liên hệ tuyến tính, không loại trừ các dạng liên hệ khác.
     
-    因此两随机变量 $X, Y$ 不相关是他们相互独立的 **必要而不充分** 条件．
+    Do đó, không tương quan là điều kiện **cần nhưng không đủ** để độc lập.
 
-对于这一小节开头提到的第二个问题，我们给出结论：$\operatorname{Cov}(X, Y) = 0$ 的充要条件就是 $X$,$Y$ 中的某一个以概率 $1$ 取常值，或 $X, Y$ 不相关．
+Kết luận cho câu hỏi thứ hai: $\operatorname{Cov}(X, Y) = 0$ khi và chỉ khi một trong $X$,$Y$ là hằng với xác suất $1$, hoặc $X, Y$ không tương quan.

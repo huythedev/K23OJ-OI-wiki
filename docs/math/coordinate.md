@@ -1,106 +1,106 @@
 author: Ir1d, HeRaNO, Chrogeek, abc1763613206, mxdyzmx
 
-## 角的定义
+## Định nghĩa góc
 
-在小学或初中已经学习过角的 **静态定义**：具有公共端点的两条射线组成的图形叫做角．
+Ở tiểu học hoặc trung học cơ sở đã học định nghĩa **tĩnh** của góc: hình tạo bởi hai tia có chung đỉnh gọi là góc．
 
-但是该定义将角度限制在了 $[0, 360^\circ]$，这给深入研究带来了一定的困难，还有其他的问题无法解释清，比如：旋转 $720^\circ$ 是什么意思？
+Nhưng định nghĩa này giới hạn góc trong $[0, 360^\circ]$, gây khó khăn khi nghiên cứu sâu hơn và không giải thích được các trường hợp như: quay $720^\circ$ nghĩa là gì？
 
-在高中数学，讲了角的 **动态定义**：平面内一条射线绕其端点从一个位置旋转到另一个位置形成的图形叫做角．
+Ở trung học phổ thông, ta học định nghĩa **động** của góc: một tia trong mặt phẳng quay quanh đầu mút từ vị trí này đến vị trí khác tạo thành hình gọi là góc．
 
-开始的位置称为 **始边**，结束的位置称为 **终边**．并规定：
+Vị trí bắt đầu gọi là **cạnh đầu**, vị trí kết thúc gọi là **cạnh cuối**．Quy ước:
 
--   按 **逆时针** 方向旋转形成的角叫做 **正角**，其角度为正；
--   按 **顺时针** 方向旋转形成的角叫做 **负角**，其角度为负；
--   终边相对于始边没有做任何旋转的角叫做 **零角**，其角度为 $0^\circ$．
+-   Quay theo **ngược chiều kim đồng hồ** tạo góc **dương**, có số đo dương；
+-   Quay theo **thuận chiều kim đồng hồ** tạo góc **âm**, có số đo âm；
+-   Cạnh cuối trùng với cạnh đầu, không quay, gọi là **góc không**, số đo $0^\circ$．
 
-这样就把角的概念推向了 **任意角**．
+Như vậy khái niệm góc được mở rộng thành **góc bất kỳ**．
 
 ???+ note "注意"
-    零角始边和终边重合，但始边和终边重合的角并不都是零角，如以 $360^\circ$ 为倍数的角．
+    Góc không có cạnh đầu và cạnh cuối trùng nhau, nhưng không phải mọi góc có cạnh đầu trùng cạnh cuối đều là góc không, ví dụ các góc là bội của $360^\circ$．
 
-## 弧度制
+## Hệ radian
 
-实际应用中经常有角度到各种参数的转换，而使用弧度制描述角可以减少系数的使用．所以接下来，介绍 **弧度制**：
+Trong ứng dụng, thường cần chuyển đổi giữa góc và các tham số khác, dùng radian giúp giảm hệ số．Tiếp theo giới thiệu **hệ radian**：
 
-把长度等于半径长的弧所对的圆心角称为 $1$ 弧度的角，用符号 $\text{rad}$ 表示，读作：弧度．
+Cung có độ dài bằng bán kính chắn tại tâm một góc gọi là góc $1$ radian, ký hiệu $\text{rad}$, đọc là radian．
 
-根据前面的规定，正角的弧度为正，负角的弧度为负，零角的弧度为 $0$，如果半径为 $r$ 的圆的圆心角 $\alpha$ 所对弧长为 $l$，则：
+Theo quy ước trên, góc dương có radian dương, góc âm có radian âm, góc không là $0$，nếu bán kính $r$ của đường tròn có góc ở tâm $\alpha$ chắn cung dài $l$，thì：
 
 $$
 |\alpha|=\dfrac{l}{r}
 $$
 
-利用这个公式还可以写出弧长和扇形面积公式，在此略过．
+Từ đó có thể viết công thức độ dài cung và diện tích quạt (lược)．
 
-于是，$360^\circ$ 角的弧度为 $2\pi$，这样有了对应关系之后就可以进行角度值和弧度制的转化了：
+Do $360^\circ$ tương ứng $2\pi$ rad, ta có chuyển đổi:
 
 $$
 k \operatorname{rad} = \frac{\pi}{180^\circ} n^\circ
 $$
 
-考虑一个角，将其终边再旋转一周，甚至多周，始边位置不动，那么终边位置永远是相同的，称这些角为终边位置相同的角．
+Xét một góc, nếu quay cạnh cuối thêm một vòng hoặc nhiều vòng, cạnh đầu cố định thì cạnh cuối vẫn trùng vị trí ban đầu, gọi là các góc có cạnh cuối trùng nhau．
 
-与角 $\alpha$ 终边位置相同的角的集合很容易得出，为 $\{\varphi \mid \varphi = \alpha + 2k\pi, k \in \mathbf{Z}\}$．
+Tập các góc cùng cạnh cuối với $\alpha$ là $\{\varphi \mid \varphi = \alpha + 2k\pi, k \in \mathbf{Z}\}$．
 
-可以理解为：给这个角的边不停加转一圈，终边位置不变．
+Có thể hiểu là: mỗi lần quay thêm một vòng, cạnh cuối không đổi．
 
-???+ note "$\pi$ 和 $\tau$ 两个数学常数"
-    目前西方数学界有一些观点认为，「真正的圆周率」应为 $2\pi$，将这个值记为希腊字母 $\tau$．新圆周率的支持者们选择在 6 月 28 日庆祝「真正的」圆周率日．
+???+ note "$\pi$ và $\tau$"
+    Hiện có quan điểm cho rằng “hằng số tròn thực sự” là $2\pi$, ký hiệu $\tau$．Những người ủng hộ chọn 28/6 làm ngày $\tau$．
     
-    比如，在弧度制下，一个周角是 $2\pi$，直接对 $2\pi$ 进行等分可以得到周角的等分．又例如，在复变函数中频繁出现 $2\pi$ 的组合，等等．
+    Ví dụ, trong hệ radian, một vòng là $2\pi$, chia đều $2\pi$ cho phép chia đều vòng tròn．Trong giải tích phức cũng hay xuất hiện $2\pi$，v.v．
     
-    为了迎合中国各地区约定俗成的习惯，在 **OI Wiki**，采用参数 $\pi$ 表示圆周率．
+    Để phù hợp thói quen ở các vùng tại Trung Quốc, tại **OI Wiki** dùng $\pi$ cho hằng số tròn．
 
-???+ note "编程中圆周率的习惯写法"
-    在 C/C++ 语言中，一般取 $\pi$ 为 `acos(-1)`，只有这个值是最接近 $\pi$ 的浮点数．使用 `acos(-1)` 或者 `4 * atan(1)` 写出来的 $\pi$ 是 $3.14159265358979310000$．
+???+ note "Cách viết $\pi$ trong lập trình"
+    Trong C/C++, thường lấy $\pi$ là `acos(-1)` vì đây là giá trị gần nhất của $\pi$ ở dạng floating．`acos(-1)` hoặc `4 * atan(1)` cho $3.14159265358979310000$．
     
-    采用其他值，例如 `acos(-1.0/2.0)`，`acos(1.0/2.0)`，`asin(1.0/2.0)` 等等，写出来的 $\pi$ 是 $3.14159265358979360000$，这就不是最接近 $\pi$ 的浮点数了．
+    Dùng giá trị khác như `acos(-1.0/2.0)`，`acos(1.0/2.0)`，`asin(1.0/2.0)`，v.v. thì cho $3.14159265358979360000$，không gần bằng．
     
-    如果你背得下来，也可以直接写 $3.1415926535897932$．
+    Nếu nhớ được, có thể viết trực tiếp $3.1415926535897932$．
 
-## 平面直角坐标系
+## Hệ tọa độ Descartes phẳng
 
-在同一个平面上互相垂直且有公共原点的两条数轴构成平面直角坐标系（Rectangular Coordinates）．
+Trong cùng một mặt phẳng, hai trục số vuông góc và có chung gốc tạo thành hệ tọa độ Descartes．
 
-通常，两条数轴分别置于水平位置与垂直位置，取向右与向上的方向分别为两条数轴的正方向．水平的数轴叫做 $x$ 轴（x-axis）或横轴，垂直的数轴叫做 $y$ 轴（y-axis）或纵轴，$x$ 轴 $y$ 轴统称为坐标轴，它们的公共原点 $O$ 称为平面直角坐标系的原点（origin），以点 $O$ 为原点的平面直角坐标系记作平面直角坐标系 $xOy$．
+Thông thường, một trục đặt ngang, một trục đặt dọc, chọn chiều sang phải và lên trên là chiều dương．Trục ngang gọi là trục $x$ (x-axis), trục dọc gọi là trục $y$ (y-axis), gọi chung là trục tọa độ; gốc chung $O$ gọi là gốc tọa độ (origin), hệ tọa độ với gốc $O$ ký hiệu $xOy$．
 
-$x$ 轴 $y$ 轴将坐标平面分成了四个象限（quadrant），右上方的部分叫做第一象限，其他三个部分按逆时针方向依次叫做第二象限、第三象限和第四象限．象限以数轴为界，横轴、纵轴上的点及原点不在任何一个象限内．一般情况下，$x$ 轴 $y$ 轴取相同的单位长度，但在特殊的情况下，也可以取不同的单位长度．
+Trục $x$ và $y$ chia mặt phẳng thành bốn góc phần tư (quadrant): phía phải trên là góc phần tư I, các góc còn lại theo ngược chiều kim đồng hồ là II, III, IV．Các điểm trên trục và gốc không thuộc góc phần tư nào．Thông thường hai trục dùng cùng đơn vị, nhưng có thể khác trong trường hợp đặc biệt．
 
-### 平面直角坐标系下位置的描述
+### Mô tả vị trí trong hệ tọa độ Descartes phẳng
 
-在平面直角坐标系中，对于平面上的任意一点，都有唯一的一个有序数对（即点的坐标（coordinates））与它对应；反过来，对于任意一个有序数对，都有平面上唯一的一点与它对应．
+Trong hệ tọa độ Descartes phẳng, mỗi điểm có duy nhất một cặp số có thứ tự (tọa độ) tương ứng; ngược lại, mỗi cặp số có thứ tự xác định duy nhất một điểm．
 
-对于平面内任意一点 $C$，过点 $C$ 分别向 $x$ 轴、$y$ 轴作垂线，垂足在 $x$ 轴、$y$ 轴上的对应点 $a, b$ 分别叫做点 $C$ 的横坐标、纵坐标，有序数对（ordered pair）$(a, b)$ 叫做点 $C$ 的直角坐标．一个点在不同的象限或坐标轴上，其坐标都不一样．
+Với điểm $C$, kẻ vuông góc xuống trục $x$ và $y$, chân vuông góc lần lượt là $a,b$ thì $a$ gọi là hoành độ, $b$ là tung độ; cặp $(a,b)$ gọi là tọa độ trực giao của $C$．Một điểm ở các góc phần tư khác nhau hoặc trên trục có tọa độ khác nhau．
 
-## 平面极坐标系
+## Hệ tọa độ cực phẳng
 
-考虑实际情况，比如航海，说「点 $B$ 在点 $A$ 的北偏东 $30^\circ$ 方向上，距离为 $100$ 米」，而不是「以 $A$ 为原点建立平面直角坐标系，$B(50,50\sqrt 3)$」．
+Xét tình huống thực tế, ví dụ hàng hải: nói “điểm $B$ nằm về phía đông bắc $30^\circ$ so với $A$, cách $100$ mét” hơn là “lập hệ tọa độ Descartes tại $A$, $B(50,50\sqrt 3)$”．
 
-这样：
+Thiết lập hệ tọa độ cực:
 
-1.  在平面上选一定点 $O$，称为 **极点**；
-2.  自极点引出一条射线 $Ox$，称为 **极轴**；
-3.  选择一个单位长度（在数学问题中通常为 $1$），一个角度单位（通常为弧度）及其正方向（通常为逆时针方向）；
+1.  Chọn một điểm $O$ gọi là **cực**；
+2.  Từ cực vẽ tia $Ox$ gọi là **trục cực**；
+3.  Chọn đơn vị độ dài (thường là $1$), đơn vị góc (thường là radian) và chiều dương (thường ngược chiều kim đồng hồ)；
 
-就建立了 **极坐标系**．
+Thế là có **hệ tọa độ cực**．
 
-### 极坐标系下位置的描述
+### Mô tả vị trí trong hệ tọa độ cực
 
-设 $A$ 为平面上一点．
+Cho điểm $A$ trên mặt phẳng．
 
--   极点 $O$ 与 $A$ 之间的距离 $|OA|$ 称为 **极径**，记为 $\rho$；
--   以极轴为始边，$OA$ 为终边的角 $\angle xOA$ 称为 **极角**，记为 $\varphi$；
+-   Khoảng cách $|OA|$ gọi là **bán kính cực**, ký hiệu $\rho$；
+-   Góc $\angle xOA$ (lấy trục cực làm cạnh đầu, $OA$ làm cạnh cuối) gọi là **góc cực**, ký hiệu $\varphi$；
 
-那么有序数对 $(\rho,\varphi)$ 即为 $A$ 的 **极坐标**．
+Cặp $(\rho,\varphi)$ là **tọa độ cực** của $A$．
 
-由终边相同的角的定义可知，$(\rho,\varphi)$ 与 $(\rho,\varphi + 2k\pi)\ (k\in \mathbf{Z})$ 其实表示的是一样的点．特别地，极点的极坐标为 $(0,\varphi)\ (\varphi \in \mathbf{R})$，于是平面内的点的极坐标表示有无数多种．
+Do góc cùng cạnh cuối, $(\rho,\varphi)$ và $(\rho,\varphi + 2k\pi)\ (k\in \mathbf{Z})$ biểu diễn cùng một điểm．Đặc biệt, cực có tọa độ $(0,\varphi)\ (\varphi \in \mathbf{R})$，vì vậy một điểm có thể có vô số biểu diễn cực．
 
-如果规定 $\rho \ge 0,0 \le \varphi < 2\pi$，那么除极点外，其他平面内的点可以用唯一有序数对 $(\rho,\varphi)$ 表示，而极坐标 $(\rho,\varphi)$ 表示的点是唯一确定的．
+Nếu quy ước $\rho \ge 0,0 \le \varphi < 2\pi$，thì mọi điểm (trừ cực) có biểu diễn cực duy nhất, và biểu diễn cực là duy nhất．
 
-### 平面直角坐标系与极坐标系的相互转换
+### Chuyển đổi giữa Descartes phẳng và cực
 
-当然，有时候研究极坐标系下的图形有些不方便．要想转到直角坐标系下研究，有互化公式．点 $A(\rho,\varphi)$ 的直角坐标 $(x,y)$ 可以如下表示：
+Đôi khi nghiên cứu hình trong cực không tiện, cần đổi sang Descartes．Với $A(\rho,\varphi)$, tọa độ Descartes $(x,y)$:
 
 $$
 \begin{aligned}
@@ -109,7 +109,7 @@ y &= \rho \sin \varphi
 \end{aligned}
 $$
 
-进而可知：
+Suy ra:
 
 $$
 \begin{aligned}
@@ -118,9 +118,7 @@ $$
 \end{aligned}
 $$
 
-于是有 $\rho = \sqrt{x^2+y^2}$．
-
-但具有相同 $\dfrac{y}{x}$ 的 $\tan\varphi$ 有两个可能的 $\varphi$ 的值，此时还需要根据 $x, y$ 的值来确定方向．具体地，定义函数：
+Vì $\tan\varphi$ có hai góc, cần xác định góc dựa trên $x,y$．Định nghĩa:
 
 $$
 \operatorname{atan2}(y, x) = \begin{cases}
@@ -133,66 +131,66 @@ $$
 \end{cases}
 $$
 
-则 $\varphi = \operatorname{atan2}(y, x)$．注意上述函数的值域为 $(-\pi, \pi]$．
+khi đó $\varphi = \operatorname{atan2}(y, x)$．Chú ý giá trị nằm trong $(-\pi, \pi]$．
 
-在 C/C++ 语言的 `<math.h>` 或 `<cmath>` 库里定义了 [该函数](https://zh.cppreference.com/w/cpp/numeric/math/atan2)，调用 `atan2(y, x)` 即可．
+Trong C/C++ `<math.h>` hoặc `<cmath>` có [hàm này](https://zh.cppreference.com/w/cpp/numeric/math/atan2), gọi `atan2(y, x)`．
 
-## 空间直角坐标系
+## Hệ tọa độ Descartes không gian
 
-使用如下方法建立空间直角坐标系：
+Thiết lập như sau:
 
-1.  在空间内选定一点 $O$；
-2.  过点 $O$ 作三条互相垂直的数轴 $\overrightarrow{Ox}, \overrightarrow{Oy}, \overrightarrow{Oz}$，分别称作 $x$ 轴（横轴），$y$ 轴（纵轴），$z$ 轴（竖轴），统称为坐标轴；它们的正方向符合右手规则，即以右手握住 $z$ 轴，当右手的四个手指 $x$ 轴的正向以角度转向 $y$ 轴正向时，大拇指的指向就是 $z$ 轴的正向；
-3.  设定各轴上的长度单位，通常都设为 $1$．
+1.  Chọn điểm $O$ trong không gian；
+2.  Qua $O$ vẽ ba trục vuông góc $\overrightarrow{Ox}, \overrightarrow{Oy}, \overrightarrow{Oz}$, lần lượt gọi là trục $x$ (ngang), $y$ (dọc), $z$ (đứng), gọi chung là trục tọa độ; chiều dương theo quy tắc bàn tay phải: nắm tay phải theo trục $z$, bốn ngón từ chiều dương trục $x$ xoay đến chiều dương trục $y$ thì ngón cái chỉ chiều dương trục $z$；
+3.  Chọn đơn vị độ dài, thường là $1$．
 
-这样就构成了一个空间直角坐标系，称为空间直角坐标系 $O-xyz$．定点 $O$ 称为该坐标系的原点．
+Từ đó có hệ tọa độ không gian $O-xyz$．Điểm $O$ là gốc．
 
-任意两条坐标轴确定一个平面，这样可确定三个互相垂直的平面，统称为坐标面．其中 $x$ 轴与 $y$ 轴所确定的坐标面称为 $xOy$ 面，类似地有 $yOz$ 面和 $zOx$ 面．三个坐标面把空间分成八个部分，每一部分称为一个卦限．
+Bất kỳ hai trục xác định một mặt phẳng, tạo ba mặt phẳng vuông góc gọi là các mặt tọa độ: $xOy$, $yOz$, $zOx$．Ba mặt phẳng chia không gian thành tám phần gọi là các “octant”．
 
-### 空间直角坐标系下位置的描述
+### Mô tả vị trí trong hệ tọa độ Descartes không gian
 
-取定空间直角坐标系 $O-xyz$ 后，就可以建立空间的点与三元组之间的一一对应关系．
+Chọn hệ $O-xyz$, ta có quan hệ một-một giữa điểm và bộ ba số．
 
-设点 $M$ 为空间的一点，过点 $M$ 分别作垂直于 $x$ 轴、$y$ 轴和 $z$ 轴的平面．设三个平面与 $x$ 轴、$y$ 轴和 $z$ 轴的交点依次为 $P, Q, R$，点 $P, Q, R$ 分别称为点 $M$ 在 $x$ 轴、$y$ 轴和 $z$ 轴上的投影．又设点 $P, Q, R$ 在 $x$ 轴、$y$ 轴和 $z$ 轴上的坐标依次为 $x, y, z$，于是点 $M$ 确定了一个三元组 $(x, y, z)$．
+Cho điểm $M$, qua $M$ dựng các mặt phẳng vuông góc trục $x,y,z$ cắt các trục tại $P,Q,R$; $P,Q,R$ là hình chiếu của $M$ lên các trục．Gọi tọa độ của $P,Q,R$ lần lượt là $x,y,z$ thì điểm $M$ xác định bộ ba $(x,y,z)$．
 
-反之，如果给定一个三元组 $(x, y, z)$，可以在 $x$ 轴上取坐标为 $x$ 的点 $P$，在 $y$ 轴上取坐标为 $y$ 的点 $Q$，在 $z$ 轴上取坐标为 $z$ 的点 $R$，然后点 $P, Q, R$ 分别作垂直于 $x$ 轴、$y$ 轴和 $z$ 轴的三个平面，它们相交于空间的一点 $M$，点 $M$ 就是由三元组 $(x, y, z)$ 所确定的点．
+Ngược lại, với $(x,y,z)$, lấy điểm $P,Q,R$ trên các trục tương ứng, dựng các mặt phẳng vuông góc, chúng giao nhau tại điểm $M$．
 
-这样一来，空间的点 $M$ 与三元组 $(x, y, z)$ 之间就建立了一一对应的关系．把三元组 $(x, y, z)$ 称为点 $M$ 的坐标，记作 $M(x, y, z)$，其中 $x$ 称为横坐标、$y$ 称为纵坐标、$z$ 称为竖坐标．
+Như vậy thiết lập quan hệ một-một giữa điểm $M$ và bộ ba $(x,y,z)$, gọi là tọa độ của $M$, ký hiệu $M(x,y,z)$; $x$ là hoành độ, $y$ là tung độ, $z$ là cao độ．
 
-## 空间柱坐标系
+## Hệ tọa độ trụ
 
-空间柱坐标系，将极坐标扩展为三维的方式：从应用于平面工作中的极坐标系开始，然后过极点 $O$ 添加垂直于该平面的 $z$ 轴，方向朝上．
+Hệ trụ là mở rộng của cực lên 3D: từ hệ cực trong mặt phẳng, thêm trục $z$ vuông góc qua cực, hướng lên．
 
-为了找到由柱坐标 $(\rho, \varphi, z)$ 所描述的点，可以首先在极坐标系下处理 $\rho$ 和 $\varphi$，然后根据 $z$ 坐标沿着 $z$ 轴「向上」或「向下」移动．
+Để xác định điểm bởi $(\rho, \varphi, z)$, trước hết dùng $\rho,\varphi$ trong mặt phẳng cực, sau đó dịch theo $z$ “lên” hoặc “xuống”．
 
-### 柱坐标系与空间直角坐标系的相互转换
+### Chuyển đổi giữa hệ trụ và Descartes không gian
 
-两坐标系下 $z$ 的值是相同的．
+Giá trị $z$ là như nhau．
 
-$(x,y)$ 与 $(\rho, \varphi)$ 的相互转换参见上文 [平面直角坐标系与极坐标系的相互转换](#平面直角坐标系与极坐标系的相互转换)．
+Chuyển đổi $(x,y)$ và $(\rho, \varphi)$ xem ở [Chuyển đổi giữa Descartes phẳng và cực](#平面直角坐标系与极坐标系的相互转换)．
 
-## 空间球坐标系
+## Hệ tọa độ cầu
 
-球坐标可以通过以下方法确定：
+Tọa độ cầu xác định như sau:
 
-1.  站在原点，面向水平极轴的方向；垂直轴的指向是从脚指向头部；
-2.  手臂向上，指向垂直极轴方向；
-3.  逆时针旋转角度 $\varphi$；
-4.  将手臂向下旋转角度 $\vartheta$，手臂指向 $\varphi$ 和 $\vartheta$ 指定的方向；
-5.  沿着该方向从原点移位距离 $r$．
+1.  Đứng tại gốc, hướng về trục cực ngang; trục thẳng đứng hướng từ chân lên đầu；
+2.  Giơ tay chỉ theo trục cực đứng；
+3.  Quay ngược chiều kim đồng hồ góc $\varphi$；
+4.  Hạ tay xuống góc $\vartheta$，tay chỉ theo hướng xác định bởi $\varphi$ và $\vartheta$；
+5.  Tịnh tiến theo hướng đó một khoảng $r$．
 
-这样即可到达球坐标 $(r,\vartheta,\varphi)$ 所描述的点．其中 $\vartheta$ 称为 **天顶角**，$\varphi$ 称为 **方位角**．
+Ta đến điểm có tọa độ cầu $(r,\vartheta,\varphi)$, trong đó $\vartheta$ là **góc thiên đỉnh**, $\varphi$ là **góc phương vị**．
 
 ???+ warning "Warning"
-    由于诸多原因，有的地方使用 $\phi$ 表示天顶角，用 $\theta$ 表示方位角．阅读文章遇到球坐标系时请务必注意这一点．
+    Do nhiều lý do, đôi khi dùng $\phi$ cho góc thiên đỉnh và $\theta$ cho góc phương vị．Khi đọc tài liệu gặp tọa độ cầu cần chú ý．
     
-    同时，在写文章时，如果用到了球坐标系，建议提前声明清楚使用什么符号表示天顶角和方位角．
+    Khi viết bài có dùng tọa độ cầu, nên nêu rõ ký hiệu dùng cho thiên đỉnh và phương vị．
 
-### 柱坐标系与球坐标系的相互转换
+### Chuyển đổi giữa hệ trụ và hệ cầu
 
-两坐标系下 $\varphi$ 的值是相同的．
+Giá trị $\varphi$ giống nhau ở hai hệ．
 
-从柱坐标系到球坐标系：
+Từ trụ sang cầu:
 
 $$
 \begin{aligned}
@@ -205,9 +203,9 @@ r &= \sqrt{\rho^2 + z^2} \\
 \end{aligned}
 $$
 
-注意对于柱坐标系下的点 $(0,0,0)$，其球坐标的 $\vartheta$ 不明确．
+Lưu ý với điểm $(0,0,0)$ trong hệ trụ, $\vartheta$ trong hệ cầu không xác định．
 
-从球坐标系到柱坐标系：
+Từ cầu sang trụ:
 
 $$
 \begin{aligned}
@@ -216,11 +214,11 @@ z &= r \cos \vartheta
 \end{aligned}
 $$
 
-### 空间直角坐标系与球坐标系的相互转换
+### Chuyển đổi giữa Descartes không gian và hệ cầu
 
-可以结合上文 [平面直角坐标系与极坐标系的相互转换](#平面直角坐标系与极坐标系的相互转换) 和上文 [柱坐标系与球坐标系的相互转换](#柱坐标系与球坐标系的相互转换) 一起使用，或直接使用下面的公式：
+Có thể kết hợp [Chuyển đổi giữa Descartes phẳng và cực](#平面直角坐标系与极坐标系的相互转换) và [Chuyển đổi giữa hệ trụ và hệ cầu](#柱坐标系与球坐标系的相互转换), hoặc dùng trực tiếp:
 
-从空间直角坐标系到球坐标系：
+Từ Descartes không gian sang cầu:
 
 $$
 \begin{aligned}
@@ -230,11 +228,11 @@ r &= \sqrt{x^2 + y^2 + z^2} \\
 \end{aligned}
 $$
 
-其中 $\operatorname{atan2}$ 的定义见 [平面直角坐标系与极坐标系的相互转换](#平面直角坐标系与极坐标系的相互转换)．
+Trong đó $\operatorname{atan2}$ xem ở [Chuyển đổi giữa Descartes phẳng và cực](#平面直角坐标系与极坐标系的相互转换)．
 
-注意对于空间直角坐标系下的点 $(0,0,0)$，其球坐标的 $\vartheta$ 和 $\varphi$ 取值不明确．
+Lưu ý với điểm $(0,0,0)$, $\vartheta$ và $\varphi$ không xác định．
 
-从球坐标系到空间直角坐标系：
+Từ cầu sang Descartes không gian:
 
 $$
 \begin{aligned}

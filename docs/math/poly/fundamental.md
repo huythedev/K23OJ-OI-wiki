@@ -1,107 +1,107 @@
-## 定义
+## Định nghĩa
 
-任何复系数一元 $n$ 次多项式（$n$ 至少为 $1$）方程在复数域上至少有一根．
+Mọi phương trình đa thức một biến bậc $n$ hệ số phức ($n$ ít nhất là $1$) đều có ít nhất một nghiệm trong $\mathbb{C}$.
 
-由此推出，$n$ 次复系数多项式方程在复数域内有且只有 $n$ 个根，重根按重数计算．
+Suy ra, phương trình đa thức bậc $n$ hệ số phức có đúng $n$ nghiệm trong $\mathbb{C}$, tính theo bội số.
 
-有时这个定理也表述为：
+Đôi khi định lý cũng được phát biểu:
 
-任何一个非零的一元 $n$ 次复系数多项式，都正好有 $n$ 个复数根．
+Mọi đa thức một biến bậc $n$ hệ số phức khác không đều có đúng $n$ nghiệm phức.
 
-代数基本定理的证明，一般会用到复变函数或者近世代数，因此往往作为一个熟知结论直接应用．
+Chứng minh định lý cơ bản của đại số thường dùng giải tích phức hoặc đại số hiện đại, nên thường được xem như kết quả đã biết và dùng trực tiếp.
 
-根据代数基本定理，一个复系数多项式 $f(x)=a_nx^n+a_{n-1}x^{n-1}+\ldots+a_0$ 一定可以唯一地分解为：
+Theo định lý cơ bản của đại số, đa thức hệ số phức $f(x)=a_nx^n+a_{n-1}x^{n-1}+\ldots+a_0$ có thể phân tích duy nhất thành:
 
 $$
 f(x)=a_n{(x-x_1)}^{k_1}{(x-x_2)}^{k_2}\ldots{(x-x_t)}^{k_t}
 $$
 
-其中各个根均为复数，$k_1+k_2+\ldots+k_t=n$．
+trong đó mọi nghiệm đều là số phức, $k_1+k_2+\ldots+k_t=n$.
 
-## 虚根成对定理
+## Định lý cặp nghiệm ảo
 
-代数基本定理的研究对象是复系数多项式．当对实系数多项式进行研究时，虽然也能分解出复数根，却需要将研究范围扩大，不太方便．
+Định lý cơ bản của đại số xét đa thức hệ số phức. Khi nghiên cứu đa thức hệ số thực, dù vẫn phân tích ra nghiệm phức, nhưng phải mở rộng trường số, gây bất tiện.
 
-虚根：非实数根．
+Nghiệm ảo: nghiệm không thực.
 
-定理：实系数多项式的根的共轭复数也是该多项式的根．
+Định lý: với đa thức hệ số thực, nghiệm phức liên hợp cũng là nghiệm.
 
-证明：直接在代数基本定理的等式两端取共轭即证毕．
+Chứng minh: lấy liên hợp hai vế của phân tích theo định lý cơ bản của đại số là xong.
 
-如果根本身是实数，则取共轭仍为它本身，不受影响．
+Nếu nghiệm là số thực thì liên hợp chính nó.
 
-如果根是虚根，则虚根的共轭复数也是原多项式的根．那么，两个虚根就可以配对．
+Nếu nghiệm là nghiệm ảo thì nghiệm liên hợp cũng là nghiệm; do đó hai nghiệm ảo có thể ghép cặp.
 
-定理：实数系数方程的共轭虚根一定成对出现，并且共轭虚根的重数相等．
+Định lý: nghiệm ảo liên hợp của phương trình hệ số thực luôn xuất hiện thành cặp và có cùng bội số.
 
-证明：假设一个根为 $a+b\mathrm{i}$，则另一个根为 $a-b\mathrm{i}$．这意味着在分解式中存在两项：
+Chứng minh: giả sử một nghiệm là $a+b\mathrm{i}$ thì nghiệm còn lại là $a-b\mathrm{i}$. Khi đó có hai nhân tử:
 
 $$
 (x-a-b\mathrm{i})(x-a+b\mathrm{i})=x^2-2ax+a^2+b^2
 $$
 
-可以看到两项乘在一起，各项系数会全部变为实数．这个等式右端的二次实系数多项式整除原始的多项式．
+Nhân hai nhân tử, các hệ số đều trở thành số thực. Đa thức bậc hai thực này chia hết đa thức gốc.
 
-于是，在代数基本定理的等式中，两遍同时除以这个二次三项式，得到的仍旧是实系数多项式的等式．对新等式重复操作，随着次数的下降，若干次后即不存在虚根．
+Do đó trong phân tích theo định lý cơ bản của đại số, chia đồng thời hai vế cho nhân tử bậc hai này, ta vẫn có đẳng thức giữa các đa thức hệ số thực. Lặp lại, bậc giảm dần, cuối cùng không còn nghiệm ảo.
 
-因此，每对共轭虚根的重数相等．证毕．
+Vì vậy, mỗi cặp nghiệm ảo liên hợp có cùng bội số. Q.E.D.
 
-以下是虚根成对定理的推论：
+Suy luận từ định lý cặp nghiệm ảo:
 
--   实系数奇次多项式至少有一个实根，并且总共有奇数个实根．
--   实系数偶次多项式可能没有实根，总共有偶数个实根．
+-   Đa thức hệ số thực bậc lẻ có ít nhất một nghiệm thực, và tổng số nghiệm thực là số lẻ.
+-   Đa thức hệ số thực bậc chẵn có thể không có nghiệm thực, và tổng số nghiệm thực là số chẵn.
 
-称上述二次三项式 $x^2-2ax+a^2+b^2=x^2+px+q$ 为二次实系数不可约因式．不可约是指它在实数范围内不可约．
+Gọi đa thức bậc hai hệ số thực $x^2-2ax+a^2+b^2=x^2+px+q$ là **nhân tử bất khả quy bậc hai hệ số thực**. “Bất khả quy” là không phân tích được trên $\mathbb{R}$.
 
-定理：实系数多项式一定是一次或者二次实系数不可约因式的积．
+Định lý: đa thức hệ số thực luôn phân tích thành tích của các nhân tử bậc nhất hoặc các nhân tử bất khả quy bậc hai hệ số thực.
 
-证明：
+Chứng minh:
 
-只要实系数多项式有一个实根 $c$，就有一个实系数因式 $x-c$ 和它对应；有一对虚根 $a\pm b\mathrm{i}$，就有一个实系数因式 $x^2-2ax+a^2+b^2$ 和它对应．
+Nếu đa thức có nghiệm thực $c$ thì có nhân tử thực $x-c$. Nếu có cặp nghiệm ảo $a\pm b\mathrm{i}$ thì có nhân tử thực $x^2-2ax+a^2+b^2$.
 
-因此，只要在原始的代数基本定理分解式中，利用虚根成对定理进行配对，即证毕．
+Do đó chỉ cần ghép cặp nghiệm ảo trong phân tích theo định lý cơ bản của đại số là xong.
 
-根据虚根成对定理，一个实系数多项式 $f(x)=a_nx^n+a_{n-1}x^{n-1}+\ldots+a_0$ 一定可以唯一地分解为：
+Theo định lý cặp nghiệm ảo, đa thức hệ số thực $f(x)=a_nx^n+a_{n-1}x^{n-1}+\ldots+a_0$ phân tích duy nhất thành:
 
 $$
 f(x)=a_n{(x-x_1)}^{k_1}{(x-x_2)}^{k_2}\ldots{(x-x_t)}^{k_t}{(x^2+p_1x+q_1)}^{l_1}{(x^2+p_2x+q_2)}^{l_2}\ldots{(x^2+p_sx+q_s)}^{l_s}
 $$
 
-其中各项系数均为实数，$k_1+k_2+\ldots+k_t+2(l_1+l_2+\ldots+l_s)=n$．
+trong đó các hệ số đều thực, và $k_1+k_2+\ldots+k_t+2(l_1+l_2+\ldots+l_s)=n$.
 
-## 林士谔算法
+## Thuật toán Lin–Shieh
 
-### 简介
+### Giới thiệu
 
-怎样对实系数多项式进行代数基本定理的分解？如果将数域扩充至复数会很复杂．
+Làm thế nào phân tích đa thức hệ số thực theo định lý cơ bản của đại số? Nếu mở rộng trường số lên phức sẽ phức tạp.
 
-如果只在实数范围内进行分解，只能保证，当次数大于 $2$ 的时候，一定存在实系数二次三项式因式．
+Nếu chỉ làm việc trên $\mathbb{R}$ thì khi bậc lớn hơn $2$, chắc chắn tồn tại một nhân tử bậc hai hệ số thực.
 
-这是因为，如果该多项式有虚根，直接凑出一对共轭虚根即可．如果该多项式只有实根，任取两个实根对应的一次因式乘在一起，也能得到实系数二次三项式因式．
+Vì nếu đa thức có nghiệm ảo, chỉ cần ghép một cặp liên hợp; nếu chỉ có nghiệm thực, chọn hai nghiệm thực tương ứng với hai nhân tử bậc nhất rồi nhân lại cũng được một nhân tử bậc hai thực.
 
-找到二次三项式因式之后，再从二次式中解实根或复根就极为容易．于是便有逐次 **找出一个二次因子** 来求得方程的复根的计算方法，这种方法避免了复数运算．
+Sau khi tìm được nhân tử bậc hai, từ đó giải nghiệm thực hoặc phức là dễ dàng. Như vậy có phương pháp lặp để **tìm một nhân tử bậc hai** nhằm giải nghiệm phức, tránh phép toán phức.
 
-在 1940 年 8 月、1943 年 8 月和 1947 年 7 月，林士谔先后在 MIT 出版的《数学物理》杂志上接连正式发表了 3 篇关于解算高阶方程式复根方法的论文[^note1]，每次均有改进．
+Tháng 8/1940, 8/1943 và 7/1947, Lin–Shieh liên tiếp công bố 3 bài trên tạp chí “Mathematical Physics” của MIT về phương pháp tính nghiệm phức của phương trình bậc cao[^note1], mỗi lần đều có cải tiến.
 
-这个方法今天还在现代计算机中进行快速运算，计算机程序包（如 MATLAB）中的多项式求根程序依据的原理也是这个算法．
+Ngày nay phương pháp này vẫn dùng trong tính toán nhanh; các gói phần mềm (như MATLAB) tìm nghiệm đa thức cũng dựa trên thuật toán này.
 
-### 过程
+### Quy trình
 
-要想找到一个二次三项式因子，就要将多项式分解为：
+Để tìm một nhân tử bậc hai, ta phân tích:
 
 $$
 f(x)=(x^2+p_1x+q_1)g(x)
 $$
 
-由于无法一下子找到二次三项式因子，按照迭代求解的思路，对于初始值有：
+Vì không thể tìm ngay nhân tử bậc hai, theo hướng lặp, ta bắt đầu với:
 
 $$
 f(x)=(x^2+px+q)g(x)+rx+s
 $$
 
-会产生一个一次式作为余项．只要余项足够小，即可近似地找到待求因子．
+sinh ra một phần dư bậc nhất. Chỉ cần phần dư đủ nhỏ thì gần như tìm được nhân tử.
 
-我们希望最终解是初始值加一个偏移修正：
+Ta đặt nghiệm cuối là giá trị ban đầu cộng hiệu chỉnh:
 
 $$
 p_1=p+dp
@@ -111,7 +111,7 @@ $$
 q_1=q+dq
 $$
 
-余式中的两个数 $(r, s)$ 由除式的给定系数 $(p, q)$ 决定．有偏导数关系：
+Hai số dư $(r, s)$ phụ thuộc vào $(p, q)$, có quan hệ đạo hàm riêng:
 
 $$
 dr=\frac{\partial r}{\partial p}dp+\frac{\partial r}{\partial q}dq
@@ -121,7 +121,7 @@ $$
 ds=\frac{\partial s}{\partial p}dp+\frac{\partial s}{\partial q}dq
 $$
 
-在初始的等式中，被除式 $f(x)$ 是给定的，商式 $g(x)$ 和余式 $rx+s$ 随着除式 $x^2+px+q$ 的变化而变化．因此有偏导数关系
+Trong đẳng thức ban đầu, bị chia $f(x)$ là cố định, còn thương $g(x)$ và dư $rx+s$ thay đổi theo $x^2+px+q$. Do đó:
 
 $$
 0=xg(x)+\frac{\partial g(x)}{\partial p}(x^2+px+q)+\frac{\partial r}{\partial p}x+\frac{\partial s}{\partial p}
@@ -131,7 +131,7 @@ $$
 0=g(x)+\frac{\partial g(x)}{\partial q}(x^2+px+q)+\frac{\partial r}{\partial q}x+\frac{\partial s}{\partial q}
 $$
 
-注意到，偏导数只是一个数值，与变元 $x$ 无关．因此有整除关系
+Lưu ý đạo hàm riêng là hằng số, không phụ thuộc $x$. Do đó có quan hệ chia hết:
 
 $$
 xg(x)=-\frac{\partial g(x)}{\partial p}(x^2+px+q)-\frac{\partial r}{\partial p}x-\frac{\partial s}{\partial p}
@@ -141,9 +141,9 @@ $$
 g(x)=-\frac{\partial g(x)}{\partial q}(x^2+px+q)-\frac{\partial r}{\partial q}x-\frac{\partial s}{\partial q}
 $$
 
-这里的结论是，待求的偏导数，恰好是对商式继续做除法的余式．多项式对给定二次三项式的除法，直接计算即可．这里就求得了四个偏导数．
+Kết luận: các đạo hàm riêng cần tìm chính là phần dư khi tiếp tục chia thương. Chia đa thức cho nhị thức bậc hai đã cho là tính trực tiếp được, từ đó có bốn đạo hàm riêng.
 
-我们希望 $s$ 和 $r$ 加上偏移 $ds$ 与 $dr$ 得到 $0$，即 $ds$ 与 $dr$ 是 $s$ 和 $r$ 的相反数．因此要解方程：
+Ta muốn $s,r$ cộng với $ds,dr$ thành $0$, tức $ds,dr$ là đối của $s,r$. Cần giải hệ:
 
 $$
 -\frac{\partial r}{\partial p}dp-\frac{\partial r}{\partial q}dq=r
@@ -153,22 +153,22 @@ $$
 -\frac{\partial s}{\partial p}dp-\frac{\partial s}{\partial q}dq=s
 $$
 
-从上述方程组中解得 $p$ 和 $q$ 相应的偏移 $dp$ 和 $dq$，直接用二阶行列式求解即可．
+Giải hệ này (định thức bậc hai) để lấy $dp,dq$, rồi cập nhật $p,q$.
 
-### 实现
+### Cài đặt
 
 ```C
-// a 是原始的多项式，n 是多项式次数，p 是待求的一次项，q 是待求的常数项
+// a là đa thức ban đầu, n là bậc đa thức, p là hệ số bậc nhất cần tìm, q là hằng số cần tìm
 void Shie(double a[], int n, double *p, double *q) {
-  // 数组 b 是多项式 a 除以当前迭代二次三项式的商
+  // mảng b là thương của đa thức a chia cho nhị thức bậc hai hiện tại
   memset(b, 0, sizeof(b));
-  // 数组 c 是多项式 b 乘以 x 平方再除以当前迭代二次三项式的商
+  // mảng c là thương của đa thức b nhân x^2 rồi chia cho nhị thức bậc hai hiện tại
   memset(c, 0, sizeof(c));
   *p = 0;
   *q = 0;
   double dp = 1;
   double dq = 1;
-  while (dp > eps || dp < -eps || dq > eps || dq < -eps)  // eps 自行设定
+  while (dp > eps || dp < -eps || dq > eps || dq < -eps)  // eps tự đặt
   {
     double p0 = p;
     double q0 = q;
@@ -195,6 +195,6 @@ void Shie(double a[], int n, double *p, double *q) {
 }
 ```
 
-## 参考资料与注释
+## Tài liệu tham khảo và chú thích
 
-[^note1]: [林士谔．论劈因法解高阶特征方程根值的应用问题．数学进展，1963(03):207-217.](https://cnki.net/kcms/detail/detail.aspx?filename=SXJZ196303000&dbcode=CJFD&dbname=CJFD1979)
+[^note1]: [Lin–Shieh．Về ứng dụng phương pháp tách nhân tử để giải nghiệm của phương trình đặc trưng bậc cao．Tiến bộ Toán học, 1963(03):207-217.](https://cnki.net/kcms/detail/detail.aspx?filename=SXJZ196303000&dbcode=CJFD&dbname=CJFD1979)

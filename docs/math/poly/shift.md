@@ -1,44 +1,44 @@
-## 多项式平移
+## Tịnh tiến đa thức
 
-多项式平移是简单情况的多项式复合变换，给出 $f(x)=\sum _ {i=0}^nf_ix^i$ 的系数和一个常数 $c$，求 $f(x+c)$ 的系数，即 $f(x)\mapsto f(x+c)$．
+Tịnh tiến đa thức là một trường hợp đơn giản của phép hợp thành đa thức. Cho hệ số của $f(x)=\sum _ {i=0}^nf_ix^i$ và một hằng số $c$, hãy tìm hệ số của $f(x+c)$, tức $f(x)\mapsto f(x+c)$.
 
-### 分治法
+### Phương pháp chia để trị
 
-令
+Đặt
 
 $$
 f(x)=f_0(x)+x^{\left\lfloor n/2\right\rfloor}f_1(x)
 $$
 
-那么
+khi đó
 
 $$
 f(x+c)=f_0(x+c)+(x+c)^{\left\lfloor n/2\right\rfloor}f_1(x+c)
 $$
 
-$(x+c)^{\left\lfloor n/2\right\rfloor}$ 的系数为二项式系数，那么
+Hệ số của $(x+c)^{\left\lfloor n/2\right\rfloor}$ là các hệ số nhị thức, do đó
 
 $$
 T(n)=2T(n/2)+O(n\log n)=O(n\log^2 n)
 $$
 
-其中 $O(n\log n)$ 为多项式乘法的时间．
+trong đó $O(n\log n)$ là thời gian nhân đa thức.
 
-### Taylor 公式法
+### Phương pháp công thức Taylor
 
-对 $f(x)$ 在 $c$ 处应用 Taylor 公式，有
+Áp dụng công thức Taylor của $f(x)$ tại $c$:
 
 $$
 f(x)=f(c)+\frac{f'(c)}{1!}(x-c)+\frac{f''(c)}{2!}(x-c)^2+\cdots +\frac{f^{(n)}(c)}{n!}(x-c)^n
 $$
 
-那么
+Suy ra
 
 $$
 f(x+c)=f(c)+\frac{f'(c)}{1!}x+\frac{f''(c)}{2!}x^2+\cdots +\frac{f^{(n)}(c)}{n!}x^n
 $$
 
-观察到对于 $t\geq 0$ 有
+Nhận thấy với $t\geq 0$:
 
 $$
 \begin{aligned}
@@ -48,7 +48,7 @@ t!\lbrack x^t\rbrack f(x+c)&=f^{(t)}(c)\\
 \end{aligned}
 $$
 
-令
+Đặt
 
 $$
 \begin{aligned}
@@ -57,7 +57,7 @@ B_0(x)&=\sum _ {i=0}^n\frac{c^i}{i!}x^i
 \end{aligned}
 $$
 
-那么
+thì
 
 $$
 \begin{aligned}
@@ -67,9 +67,9 @@ $$
 \end{aligned}
 $$
 
-### 二项式定理法
+### Phương pháp định lý nhị thức
 
-考虑二项式定理 $\displaystyle (a+b)^n=\sum _ {i=0}^n\binom{n}{i}a^ib^{n-i}$ 那么
+Xét định lý nhị thức $\displaystyle (a+b)^n=\sum _ {i=0}^n\binom{n}{i}a^ib^{n-i}$, ta có
 
 $$
 \begin{aligned}
@@ -80,16 +80,16 @@ f(x+c)&=\sum _ {i=0}^nf_i(x+c)^i\\
 \end{aligned}
 $$
 
-得到的结果与上述方法相同．
+Kết quả trùng với các phương pháp trên.
 
-## 连续点值平移
+## Tịnh tiến giá trị tại các điểm liên tiếp
 
-???+ note "例题 [LOJ 166 拉格朗日插值 2](https://loj.ac/p/166)"
-    给出度数小于等于 $n$ 的多项式 $f$ 的连续点值 $f(0),f(1),\dots ,f(n)$，在模 $998244353$ 意义下计算 $f(c),f(c+1),\dots ,f(c+n)$，其中 $1\leq n\leq 10^5,n < m\leq 10^8$．
+???+ note "Ví dụ [LOJ 166 Nội suy Lagrange 2](https://loj.ac/p/166)"
+    Cho các giá trị liên tiếp $f(0),f(1),\dots ,f(n)$ của đa thức $f$ bậc không vượt quá $n$. Tính $f(c),f(c+1),\dots ,f(c+n)$ theo modulo $998244353$, với $1\leq n\leq 10^5,n < m\leq 10^8$.
 
-### Lagrange 插值公式法
+### Phương pháp công thức nội suy Lagrange
 
-考虑 [Lagrange 插值公式](../numerical/interp.md#lagrange-插值法)
+Xét [công thức nội suy Lagrange](../numerical/interp.md#lagrange-插值法):
 
 $$
 \begin{aligned}
@@ -99,7 +99,7 @@ f(x)&=\sum _ {0\leq i\leq n}f(i)\prod _ {0\leq j\leq n\,\land \,j\neq i}\frac{x-
 \end{aligned}
 $$
 
-上式虽然是卷积形式但不能保证分母上 $x-i\neq 0$，所以下面仅考虑 $c > n$ 的情况，其他情况（如系数在模素数意义下时须避免 $B_0(x)$ 系数的分母出现零）可以分类讨论解决，令
+Dù là dạng tích chập nhưng không đảm bảo $x-i\neq 0$ ở mẫu, nên dưới đây chỉ xét $c > n$. Các trường hợp khác (ví dụ hệ số theo modulo số nguyên tố cần tránh mẫu của $B_0(x)$ bằng 0) có thể xử lý phân trường hợp. Đặt
 
 $$
 \begin{aligned}
@@ -108,7 +108,7 @@ B_0(x)&=\sum _ {i\geq 0}\frac{1}{c-n+i}x^i
 \end{aligned}
 $$
 
-那么对于 $t\geq 0$ 有
+khi đó với $t\geq 0$:
 
 $$
 \begin{aligned}
@@ -118,84 +118,84 @@ $$
 \end{aligned}
 $$
 
-实现中取 $B_0(x)$ 需要的部分截断可求出更多点值，且可利用循环卷积．
+Trong cài đặt có thể cắt bớt phần cần thiết của $B_0(x)$ để lấy nhiều điểm hơn, và có thể dùng tích chập vòng.
 
-对问题稍加修改，假设对于某个 $d$ 给出的点值为 $f(d),f(d+k),\dots ,f(d+nk)$，我们可以计算 $f(c+d),f(c+d+k),\dots ,f(c+d+nk)$，视作平移 $g(x)=f(d+kx)$ 的点值 $g(0),g(1),\dots ,g(n)$ 为 $g(c/k),g(c/k+1),\dots ,g(c/k+n)$．
+Sửa bài toán một chút: giả sử ta có các giá trị $f(d),f(d+k),\dots ,f(d+nk)$, thì có thể tính $f(c+d),f(c+d+k),\dots ,f(c+d+nk)$ bằng cách coi đó là tịnh tiến các giá trị của $g(x)=f(d+kx)$ từ $g(0),g(1),\dots ,g(n)$ sang $g(c/k),g(c/k+1),\dots ,g(c/k+n)$.
 
-Lagrange 插值公式也给出了通过维护一些前后缀积的线性计算单个点值的方法．
+Công thức nội suy Lagrange cũng cho cách tính tuyến tính một điểm bằng cách duy trì các tích tiền tố/hậu tố.
 
-## 应用
+## Ứng dụng
 
-### 同一行第一类无符号 Stirling 数
+### Các số Stirling loại một không dấu trên cùng một hàng
 
-???+ note "例题 [P5408 第一类斯特林数·行](https://www.luogu.com.cn/problem/P5408)"
-    在模素数 $167772161$ 意义下求 $\displaystyle {n\brack 0},{n\brack 1},\dots ,{n\brack n}$，其中 $1\leq n< 262144$．
+???+ note "Ví dụ [P5408 Stirling loại một · hàng](https://www.luogu.com.cn/problem/P5408)"
+    Tính $\displaystyle {n\brack 0},{n\brack 1},\dots ,{n\brack n}$ theo modulo số nguyên tố $167772161$, với $1\leq n< 262144$.
 
-考虑
+Xét
 
 $$
 x^{\overline{n}}=\sum _ {i=0}^n{n\brack i}x^i,\quad n\geq 0
 $$
 
-其中 $x^{\overline{n}}=x\cdot (x+1)\cdots (x+n-1)$ 为上升阶乘幂，令 $f_n(x)=x^{\overline{n}}$ 那么
+trong đó $x^{\overline{n}}=x\cdot (x+1)\cdots (x+n-1)$ là lũy thừa giai thừa tăng. Đặt $f_n(x)=x^{\overline{n}}$, ta có
 
 $$
 f_{2n}(x)=x^{\overline{n}}\cdot (x+n)^{\overline{n}}=f_n(x)f_n(x+n)
 $$
 
-通过多项式平移可在 $O(n\log n)$ 求出 $f_n(x+n)$，问题被缩小为原先的一半即求出 $f_n(x)$ 的系数，那么
+Tịnh tiến đa thức cho phép tính $f_n(x+n)$ trong $O(n\log n)$, kích thước bài toán giảm một nửa, nên
 
 $$
 T(n)=T(n/2)+O(n\log n)=O(n\log n)
 $$
 
-### 模素数意义下阶乘
+### Giai thừa theo modulo số nguyên tố
 
-???+ note "例题 [P5282【模板】快速阶乘算法](https://www.luogu.com.cn/problem/P5282)"
-    求 $n!\bmod p$，其中 $p$ 为素数且 $1\leq n< p\leq 2^{31}-1$．
+???+ note "Ví dụ [P5282【Mẫu】Thuật toán giai thừa nhanh](https://www.luogu.com.cn/problem/P5282)"
+    Tính $n!\bmod p$, với $p$ là số nguyên tố và $1\leq n< p\leq 2^{31}-1$.
 
-令 $v=\lfloor\sqrt{n}\rfloor$ 和 $g(x)=\prod _ {i=1}^v(x+i)$ 那么
+Đặt $v=\lfloor\sqrt{n}\rfloor$ và $g(x)=\prod _ {i=1}^v(x+i)$, khi đó
 
 $$
 n!\equiv \left(\prod _ {i=0}^{v-1}g(iv)\right)\cdot \prod _ {i=v^2+1}^n i\pmod{p}
 $$
 
-其中 $\prod _ {i=v^2+1}^n i$ 可在 $O(\sqrt{n})$ 时间计算，我们希望可以快速计算上式的前半部分．
+Trong đó $\prod _ {i=v^2+1}^n i$ tính được trong $O(\sqrt{n})$, ta muốn tính nhanh phần đầu.
 
-#### 多项式多点求值
+#### Đa điểm giá trị đa thức
 
-$g(x)$ 系数的计算可用上述多项式平移算法在 $O(n\log n)$ 时间得到，但多点求值计算 $g(0),g(v),g(2v),\dots ,g(v^2-v)$ 需要 $O(\sqrt{n}\log ^2n)$ 时间．
+Hệ số $g(x)$ có thể tính bằng thuật toán tịnh tiến đa thức trong $O(n\log n)$, nhưng tính $g(0),g(v),g(2v),\dots ,g(v^2-v)$ bằng đa điểm giá trị cần $O(\sqrt{n}\log ^2n)$.
 
-#### 连续点值平移
+#### Tịnh tiến giá trị tại các điểm liên tiếp
 
-令 $g_d(x)=\prod _ {i=1}^d(x+i)$，我们可以用 $d+1$ 个点值 $g_d(0),g_d(v),\dots ,g_d(dv)$ 唯一确定这个次数为 $d$ 的多项式，又
+Đặt $g_d(x)=\prod _ {i=1}^d(x+i)$, ta có thể dùng $d+1$ điểm $g_d(0),g_d(v),\dots ,g_d(dv)$ để xác định duy nhất đa thức bậc $d$. Mặt khác
 
 $$
 g _ {2d}(x)=g_d(x)g_d(x+d)
 $$
 
-所以只需 $2d+1$ 个点值可以唯一确定 $g _ {2d}(x)$，那么使用连续点值平移计算 $g_d((d+1)v),g_d((d+2)v),\dots ,g_d(2dv)$（即平移 $h(x)=g_d(vx)$ 的点值 $h(0),h(1),\dots ,h(d)$ 为 $h(d+1),h(d+2),\dots ,h(2d)$）和 $g_d(d),g_d(v+d),\dots ,g_d(2dv+d)$（即平移 $h(x)=g_d(vx)$ 的点值 $h(0),h(1),\dots ,h(d)$ 为 $h(d/v),h(d/v+1),h(d/v+2),\dots ,h(d/v+2d)$）后将这两者的对应点值相乘即得 $g _ {2d}(0),g _ {2d}(v),\dots ,g _ {2d}(2dv)$．
+nên chỉ cần $2d+1$ điểm là xác định được $g _ {2d}(x)$. Khi đó dùng tịnh tiến điểm liên tiếp để tính $g_d((d+1)v),g_d((d+2)v),\dots ,g_d(2dv)$ (tức tịnh tiến điểm của $h(x)=g_d(vx)$ từ $h(0),h(1),\dots ,h(d)$ sang $h(d+1),h(d+2),\dots ,h(2d)$) và $g_d(d),g_d(v+d),\dots ,g_d(2dv+d)$ (tức tịnh tiến điểm của $h(x)=g_d(vx)$ từ $h(0),h(1),\dots ,h(d)$ sang $h(d/v),h(d/v+1),h(d/v+2),\dots ,h(d/v+2d)$). Nhân từng cặp điểm tương ứng sẽ được $g _ {2d}(0),g _ {2d}(v),\dots ,g _ {2d}(2dv)$.
 
-由 $g_d(0),g_d(v),\dots ,g_d(dv)$ 计算 $g _ {d+1}(0),g _ {d+1}(v),\dots ,g _ {d+1}(dv),g _ {d+1}((d+1)v)$ 考虑
+Từ $g_d(0),g_d(v),\dots ,g_d(dv)$ tính $g _ {d+1}(0),g _ {d+1}(v),\dots ,g _ {d+1}(dv),g _ {d+1}((d+1)v)$, xét
 
 $$
 g _ {d+1}(x)=(x+d+1)\cdot g_d(x)
 $$
 
-额外增加的一个点值使用线性时间的算法即可．那么在开始时维护 $g_1(0)=1,g_1(v)=v+1$ 后使用连续点值平移来倍增地维护这些点值，有
+Điểm bổ sung có thể tính tuyến tính. Khởi tạo $g_1(0)=1,g_1(v)=v+1$, rồi dùng tịnh tiến điểm liên tiếp để nhân đôi và duy trì các điểm, ta có
 
 $$
 T(n)=T(n/2)+O(n\log n)=O(n\log n)
 $$
 
-而我们只需要约 $\sqrt{n}$ 个点值，所以时间复杂度为 $O(\sqrt{n}\log n)$．
+Ta chỉ cần khoảng $\sqrt{n}$ điểm, nên tổng thời gian $O(\sqrt{n}\log n)$.
 
-### 模素数意义下二项式系数前缀和
+### Tổng tiền tố hệ số nhị thức theo modulo số nguyên tố
 
-???+ note "例题 [LOJ 6386 组合数前缀和](https://loj.ac/p/6386)"
-    求 $\displaystyle \sum _ {i=0}^m\binom{n}{i}\bmod 998244353$，其中 $0\leq m\leq n\leq 9\times 10^8$．
+???+ note "Ví dụ [LOJ 6386 Tổng tiền tố tổ hợp](https://loj.ac/p/6386)"
+    Tính $\displaystyle \sum _ {i=0}^m\binom{n}{i}\bmod 998244353$, với $0\leq m\leq n\leq 9\times 10^8$.
 
-考虑使用矩阵描述 $n!=n\cdot (n-1)!$ 这一步递推，我们有
+Xét truy hồi $n!=n\cdot (n-1)!$ dưới dạng ma trận:
 
 $$
 \begin{bmatrix}
@@ -210,7 +210,7 @@ n!
 \end{bmatrix}
 $$
 
-类似的可以将二项式系数前缀和的递推描述为
+Tương tự, truy hồi của tổng tiền tố hệ số nhị thức:
 
 $$
 \begin{bmatrix}
@@ -227,7 +227,7 @@ $$
 \end{bmatrix}
 $$
 
-注意矩阵乘法的顺序，那么
+Chú ý thứ tự nhân ma trận, ta có
 
 $$
 \begin{aligned}
@@ -258,7 +258,7 @@ n-i&0\\i+1&i+1
 \end{aligned}
 $$
 
-令 $v=\lfloor\sqrt{m}\rfloor$，考虑维护矩阵
+Đặt $v=\lfloor\sqrt{m}\rfloor$, xét ma trận
 
 $$
 \begin{aligned}
@@ -276,7 +276,7 @@ g_d(x)&h_d(x)
 \end{aligned}
 $$
 
-的点值 $M _ d(0),M _ d(v),\dots ,M_d(dv)$ 即 $f_d(0),f_d(v),\dots ,f_d(dv)$、$h_d(0),\dots ,h_d(dv)$ 和 $g_d(0),\dots ,g_d(dv)$，又
+Ta duy trì các điểm $M _ d(0),M _ d(v),\dots ,M_d(dv)$, tức các điểm của $f_d,h_d,g_d$, và
 
 $$
 \begin{aligned}
@@ -318,7 +318,7 @@ g_d(x+d)f_d(x)+h_d(x+d)g_d(x)&h_d(x+d)h_d(x)
 \end{aligned}
 $$
 
-且矩阵右下角元素恰为我们在阶乘算法中所维护的，那么
+Phần tử góc phải dưới chính là thứ cần duy trì trong bài giai thừa, nên
 
 $$
 \begin{aligned}
@@ -345,14 +345,14 @@ g_v(0)&h_v(0)
 \end{aligned}
 $$
 
-可在 $O(\sqrt m\log m)$ 时间完成计算．
+Có thể tính trong $O(\sqrt m\log m)$.
 
-### 模素数意义下调和数
+### Số điều hòa theo modulo số nguyên tố
 
-???+ note "例题 [P5702 调和级数求和](https://www.luogu.com.cn/problem/P5702)"
-    求 $\sum _ {i=1}^ni^{-1}\bmod p$，其中 $p$ 为素数且 $1\leq n< p< 2^{30}$．
+???+ note "Ví dụ [P5702 Tổng cấp số điều hòa](https://www.luogu.com.cn/problem/P5702)"
+    Tính $\sum _ {i=1}^ni^{-1}\bmod p$, với $p$ là số nguyên tố và $1\leq n< p< 2^{30}$.
 
-记 $H_n=\sum _ {k=1}^nk^{-1}$，一步递推为
+Đặt $H_n=\sum _ {k=1}^nk^{-1}$, truy hồi một bước:
 
 $$
 \begin{bmatrix}
@@ -366,7 +366,7 @@ n!\\n!H_n
 \end{bmatrix}
 $$
 
-那么
+Suy ra
 
 $$
 \begin{bmatrix}
@@ -386,24 +386,23 @@ i+1&0\\1&i+1
 \end{bmatrix}
 $$
 
-在这里 $\displaystyle {n+1\brack 1}$ 和 $\displaystyle {n+1\brack 2}$ 为第一类无符号 Stirling 数．维护点值矩阵的方法同上．
+Ở đây $\displaystyle {n+1\brack 1}$ và $\displaystyle {n+1\brack 2}$ là số Stirling loại một không dấu. Cách duy trì ma trận điểm giống như trên.
 
-## 整式递推
+## Truy hồi đa thức
 
-对于更一般的情况，类似于上述快速阶乘算法的案例，我们期望得到一个怎么样的算法？
+Với trường hợp tổng quát hơn, tương tự bài giai thừa nhanh ở trên, ta cần một thuật toán như thế nào?
 
-???+ note "例题 [P6115【模板】整式递推](https://www.luogu.com.cn/problem/P6115)"
-    现有数列 $a$ 满足 $\forall n\ge m,\sum_{k=0}^ma_{n-k}P_k(n)=0$，其中 $P_k$ 为不超过 $d$ 次的多项式．  
-    给定所有 $P_k$ 的系数，和 $a_0,a_1,\dots,a_{m-1}$，求 $a_n$．
-    对 $998244353$ 取模．$n\le6\times10^8$，$1\le m,d\le7$，时限 $7s$．
+???+ note "Ví dụ [P6115【Mẫu】Truy hồi đa thức](https://www.luogu.com.cn/problem/P6115)"
+    Dãy $a$ thỏa $\forall n\ge m,\sum_{k=0}^ma_{n-k}P_k(n)=0$, trong đó $P_k$ là đa thức bậc không vượt quá $d$.  
+    Cho hệ số của các $P_k$ và $a_0,a_1,\dots,a_{m-1}$, tính $a_n$ theo modulo $998244353$. $n\le6\times10^8$，$1\le m,d\le7$，giới hạn thời gian $7s$.
 
-为了更系统地描述上述几道例题中构造矩阵的过程，我们引入 [$\lambda$ 矩阵](../linear-algebra/jordan.md#lambda-%E7%9F%A9%E9%98%B5) 的概念．
+Để mô tả hệ thống hóa cách dựng ma trận trong các ví dụ trên, ta dùng khái niệm [ma trận $\lambda$](../linear-algebra/jordan.md#lambda-%E7%9F%A9%E9%98%B5).
 
-为了实现整式递推，我们应当注意到快速阶乘算法过程中，我们维护的点值其实并不是 $n!$，而是 $\prod_{i=0}^{T-1}(aT+i)$，即 **一对点值之间的倍数关系**．
+Trong thuật toán giai thừa nhanh, ta không duy trì $n!$ trực tiếp mà duy trì $\prod_{i=0}^{T-1}(aT+i)$, tức **quan hệ nhân giữa hai điểm**.
 
-由于整式递推阶数 $m$ 不止是 $1$ 了，我们就 **不能直接维护一对数之间的倍数关系了**；而是维护出 **一对 $m$ 维向量之间的线性变换**，即 $m\times m$ 的一个矩阵，**矩阵的每一项对应于某个多项式的一个点值**．
+Với truy hồi đa thức bậc $m>1$, ta **không thể chỉ duy trì quan hệ nhân giữa hai số** nữa; thay vào đó cần **duy trì phép biến đổi tuyến tính giữa hai vector $m$ chiều**, tức một ma trận $m\times m$, **mỗi phần tử là một điểm của một đa thức**.
 
-容易发现，对于一般的整式递推远处系数求值问题，我们可以构造
+Dễ thấy với truy hồi đa thức tổng quát để tính hệ số xa, ta có thể dựng:
 
 $$
 -{\frac{1}{P_0(n)}}\begin{bmatrix}P_1(n)&P_2(n)&P_3(n)&\cdots&P_{m-1}(n)&P_m(n)\\-P_0(n)\\&-P_0(n)\\&&-P_0(n)\\&&&\ddots\\&&&&-P_0(n)\\\end{bmatrix}
@@ -411,7 +410,7 @@ $$
 =\begin{bmatrix}a_n\\a_{n-1}\\a_{n-2}\\\vdots\\a_{n-m+2}\\a_{n-m+1}\end{bmatrix}
 $$
 
-设
+Đặt
 
 $$
 B(\lambda)=\begin{bmatrix}
@@ -424,39 +423,39 @@ B(\lambda)=\begin{bmatrix}
 \end{bmatrix}
 $$
 
-我们先撇开前面的 $-\frac1{P_0(n)}$ 因子不论，我们现在要维护 $\prod_{i=0}^{T-1}B(aT+m+i)$ 这种形式的量，其中乘法自右往左．
+Bỏ qua hệ số $-\frac1{P_0(n)}$, ta cần duy trì dạng $\prod_{i=0}^{T-1}B(aT+m+i)$, nhân từ phải sang trái.
 
-容易发现 $B_T(\lambda)=\prod_{i=0}^{T-1}B(\lambda+i)$ 是一个各项次数不高于 $dT$ 的 $\lambda$ 矩阵，只用 $dT+1$ 个值即可维护．
+Dễ thấy $B_T(\lambda)=\prod_{i=0}^{T-1}B(\lambda+i)$ là ma trận $\lambda$ có bậc không quá $dT$, chỉ cần $dT+1$ giá trị để duy trì.
 
-于是我们维护出 $B_T(m)$，$B_T(m+T)$，$B_T(m+2T)$，$\dots$，$B_T(m+(dT-1)T)$，$B_T(m+dT^2)$ 这几个 $\lambda$ 矩阵的 **点值**，然后用类似于快速阶乘算法的方式暴力进行多项式点值平移和倍增就好了．
+Ta duy trì các **giá trị điểm** của $B_T(m)$, $B_T(m+T)$, $B_T(m+2T)$, $\dots$，$B_T(m+(dT-1)T)$, $B_T(m+dT^2)$, rồi dùng cách tương tự giai thừa nhanh để tịnh tiến điểm và nhân đôi.
 
-具体地，为了让 $t=\log_2T$ 抬高 $1$，我们这么干：
+Cụ thể, để tăng $t=\log_2T$ lên 1:
 
-1.  在 $O(m^2dT\log(dT))$ 时间内获取 $B_T(p+dT^2)$，$B_T(p+(dT+1)T)$，$B_T(p+(dT+2)T)$，$\cdots$，$B_T(p+(2dT-1)T)$，$B_T(p+(2dT)dT)$．
-2.  在 $O(m^2dT\log(dT))$ 时间内获取 $B_T(p+2dT^2)$，$B_T(p+(2dT+1)T)$，$B_T(p+(2dT+2)T)$，$\cdots$，$B_T(p+(3dT-1)T)$，$B_T(p+(3dT)dT)$．
-3.  在 $O(m^2dT\log(dT))$ 时间内获取 $B_T(p+3dT^2)$，$B_T(p+(3dT+1)T)$，$B_T(p+(3dT+2)T)$，$\cdots$，$B_T(p+(4dT-1)T)$，$B_T(p+(4dT)dT)$．
-4.  计算 $B_{2T}(v)=B_{T}(v+T)B_{T}(v)$．
+1.  Trong $O(m^2dT\log(dT))$ tính $B_T(p+dT^2)$, $B_T(p+(dT+1)T)$, $B_T(p+(dT+2)T)$, $\cdots$，$B_T(p+(2dT-1)T)$, $B_T(p+(2dT)dT)$.
+2.  Trong $O(m^2dT\log(dT))$ tính $B_T(p+2dT^2)$, $B_T(p+(2dT+1)T)$, $B_T(p+(2dT+2)T)$, $\cdots$，$B_T(p+(3dT-1)T)$, $B_T(p+(3dT)dT)$.
+3.  Trong $O(m^2dT\log(dT))$ tính $B_T(p+3dT^2)$, $B_T(p+(3dT+1)T)$, $B_T(p+(3dT+2)T)$, $\cdots$，$B_T(p+(4dT-1)T)$, $B_T(p+(4dT)dT)$.
+4.  Tính $B_{2T}(v)=B_{T}(v+T)B_{T}(v)$.
 
-我们每轮花费 $O(m^2dT\log(dT))$ 的复杂度进行平移；同时，我们每轮只用做 $\Theta(dT)$ 次矩阵乘法，复杂度可以认为是 $O(m^3dT)$．
+Mỗi vòng tốn $O(m^2dT\log(dT))$ để tịnh tiến; đồng thời chỉ cần $\Theta(dT)$ phép nhân ma trận, nên coi như $O(m^3dT)$.
 
-最后，我们只用做到 $T\ge\sqrt{n/d}$ 即可．
+Cuối cùng chỉ cần $T\ge\sqrt{n/d}$.
 
-之前的 $-\frac1{P_0(n)}$ 因子可以用类似的方法解决．
+Hệ số $-\frac1{P_0(n)}$ phía trước xử lý tương tự.
 
-这样，我们预处理的复杂度即为 $\Theta(\sqrt{nd}(m^3+m^2\log(nd)))$．
+Độ phức tạp tiền xử lý là $\Theta(\sqrt{nd}(m^3+m^2\log(nd)))$.
 
-考虑查询，我们只用 $\Theta(n/T)$ 次向量与矩阵的乘法，以及 $O(T)$ 次暴力转移．
+Khi truy vấn, ta cần $\Theta(n/T)$ phép nhân vector–ma trận, và $O(T)$ bước chuyển thẳng.
 
-容易发现这部分计算并不是复杂度瓶颈．
+Phần này không phải nút thắt chính.
 
-因此，该算法的总复杂度为 $\Theta(\sqrt{nd}(m^3+m^2\log(nd)))$．
+Vì vậy tổng độ phức tạp là $\Theta(\sqrt{nd}(m^3+m^2\log(nd)))$.
 
-编码时，我们可以使用循环卷积的技巧来减小 NTT 的常数．
+Trong cài đặt có thể dùng tích chập vòng để giảm hằng số của NTT.
 
-在实际应用时，我们往往是对一个已知的微分有限的 GF 提取其远处系数，从而 $m,d$ 均为常数，也即做到了 $\Theta(\sqrt n\log n)$ 的远处系数求值．
+Trong ứng dụng thực tế, thường là trích hệ số xa của một hàm sinh có đạo hàm hữu hạn; khi đó $m,d$ là hằng số, đạt $\Theta(\sqrt n\log n)$.
 
-## 参考文献
+## Tài liệu tham khảo
 
 -   Alin Bostan, Pierrick Gaudry, and Eric Schost. Linear recurrences with polynomial coefficients and application to integer factorization and Cartier–Manin operator.
--   Min\_25 的博客
--   [ZZQ 的博客 - 阶乘模大质数](https://www.cnblogs.com/zzqsblog/p/8408691.html)
+-   Blog của Min\_25
+-   [Blog của ZZQ - giai thừa modulo số nguyên tố lớn](https://www.cnblogs.com/zzqsblog/p/8408691.html)

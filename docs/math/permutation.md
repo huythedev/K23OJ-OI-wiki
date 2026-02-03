@@ -1,30 +1,30 @@
 author: 2008verser, aofall, CoelacanthusHex, Early0v0, Great-designer, Marcythm, Persdre, shuzhouliu, Tiphereth-A, Enter-tainer, gavinliu266, gi-b716, hjsjhn, Ir1d, MegaOwIer, wjy-yy, c-forrest
 
-置换和排列是各类问题中都很常见的概念．
+Hoán vị và sắp xếp là những khái niệm rất thường gặp trong nhiều bài toán.
 
-???+ warning "本文讨论的不是排列数"
-    本文讨论的主题是全排列，而不是排列组合中的排列数．排列数的相关内容应当参考 [排列组合](./combinatorics/combination.md)．
+???+ warning "Bài này không nói về số hoán vị"
+    Chủ đề ở đây là hoán vị toàn phần, không phải số chỉnh hợp trong tổ hợp. Về chỉnh hợp, xem [tổ hợp và chỉnh hợp](./combinatorics/combination.md).
 
-???+ info "约定"
-    本文中如果不加说明，总是讨论有限的集合．
+???+ info "Quy ước"
+    Nếu không nói rõ, ta luôn xét các tập hữu hạn.
 
-## 定义
+## Định nghĩa
 
-一个集合 $X$ 到自身的双射（即一一对应）$\sigma$ 称为 $X$ 的一个 **置换**（permutation）．如果集合 $X$ 上还具有 [全序](./order-theory.md#二元关系) 关系，则它的一个置换也常称作一个 **（全）排列**．这个全序关系称为集合上的自然顺序．
+Một song ánh từ tập $X$ tới chính nó $\sigma$ được gọi là một **hoán vị** (permutation) của $X$. Nếu $X$ còn có [thứ tự toàn phần](./order-theory.md#二元关系) thì một hoán vị cũng gọi là một **(toàn) sắp xếp** (arrangement). Thứ tự toàn phần này gọi là thứ tự tự nhiên của tập.
 
-??? info "「置换」与「排列」"
-    在中文语境下，「置换」通常指改变元素顺序，而「排列」通常指将元素排成一列．当元素之间存在自然的顺序时，这两个概念是一回事：「排列」可以看作「置换」的结果；而相较于元素的自然顺序，「排列」中元素的顺序就指定了「置换」．因为本文使用「排列」一词时，总假定集合上存在自然顺序，故而本文中不会特意区分这两个概念．
+??? info "“Hoán vị” và “sắp xếp”"
+    Trong tiếng Việt, “hoán vị” thường nhấn mạnh việc thay đổi thứ tự, “sắp xếp” thường là dãy kết quả. Khi các phần tử có thứ tự tự nhiên, hai khái niệm này trùng nhau: “sắp xếp” là kết quả của “hoán vị”; “hoán vị” chỉ định thứ tự trong “sắp xếp” so với thứ tự tự nhiên. Vì bài viết dùng “sắp xếp” khi giả định có thứ tự tự nhiên, nên không phân biệt sâu hai khái niệm.
     
-    当然，没有自然顺序的元素也可以进行「排列」．这种「排列」常常出现在组合计数问题中．这超出了本文讨论的范畴．
+    Dù vậy, các phần tử không có thứ tự tự nhiên vẫn có thể “sắp xếp” trong các bài toán đếm tổ hợp, nhưng nằm ngoài phạm vi bài này.
 
-设集合 $X$ 的大小是 $n$，那么，$X$ 上的全体置换的数目就是 $n!$．特别地，$0!=1$，即空集合上有且只有一个置换，也就是空置换．
+Nếu $|X| = n$ thì số hoán vị của $X$ là $n!$. Đặc biệt $0!=1$, tức tập rỗng có đúng một hoán vị, là hoán vị rỗng.
 
-???+ info "记号"
-    置换讨论的是元素间的对应关系，而并不关心元素具体是什么．因而，当讨论大小为 $n$ 的集合时，通常假定讨论的集合就是 $\{1,2,\cdots,n\}$；当集合上需要自然顺序的时候，通常假定使用自然数上的自然顺序．
+???+ info "Ký hiệu"
+    Hoán vị chỉ xét quan hệ tương ứng giữa các phần tử, không quan tâm phần tử cụ thể. Vì vậy, khi xét tập kích thước $n$ thường giả định là $\{1,2,\cdots,n\}$; nếu cần thứ tự tự nhiên thì dùng thứ tự tự nhiên trên $\mathbf{N}$.
 
-## 表示方法
+## Cách biểu diễn
 
-置换有多种表示方法．这里，以如下置换为例，讨论不同的置换表示方法．
+Hoán vị có nhiều cách biểu diễn. Xét ví dụ:
 
 $$
 \sigma(1) = 2,\
@@ -35,9 +35,9 @@ $$
 \sigma(6) = 1.
 $$
 
-### 双行记号
+### Ký hiệu hai hàng
 
-集合 $X=\{x_1,x_2,\cdots,x_n\}$ 上的置换可以表示为
+Hoán vị trên $X=\{x_1,x_2,\cdots,x_n\}$ có thể viết:
 
 $$
 \sigma=\begin{pmatrix}x_1&x_2&\cdots&x_n\\
@@ -45,9 +45,9 @@ x_{p_1}&x_{p_2}&\cdots&x_{p_n}
 \end{pmatrix}.
 $$
 
-它表示置换 $\sigma$ 将元素 $x_i$ 映射到 $x_{p_i}$．这里，当然需要 $X=\{x_{p_1},x_{p_2},\cdots,x_{p_n}\}$．置换的双行记号表示中，首行的元素出现顺序并不重要，重要的是两行之间的对应关系．
+Nó nghĩa là $\sigma$ ánh xạ $x_i$ thành $x_{p_i}$. Ở đây $X=\{x_{p_1},x_{p_2},\cdots,x_{p_n}\}$. Trong ký hiệu hai hàng, thứ tự của hàng trên không quan trọng, quan trọng là quan hệ tương ứng.
 
-比如说，前文的例子可以按照双行记号写作
+Ví dụ trên có thể viết:
 
 $$
 \sigma=
@@ -57,7 +57,7 @@ $$
 \end{pmatrix},
 $$
 
-当然，也可以写作
+hoặc
 
 $$
 \sigma=
@@ -67,303 +67,289 @@ $$
 \end{pmatrix}.
 $$
 
-### 单行记号
+### Ký hiệu một hàng
 
-很多时候，集合 $X$ 上有自然顺序．如果在双行记号中默认首行按照自然的顺序书写，并省略首行，那么，置换可以表示为
+Nhiều khi $X$ có thứ tự tự nhiên. Nếu trong ký hiệu hai hàng ta mặc định hàng trên theo thứ tự tự nhiên và bỏ đi hàng trên, ta được:
 
 $$
 \sigma=\sigma(1)\sigma(2)\cdots\sigma(n).
 $$
 
-这更像自然语言中排列的概念．所以，有时候排列会用来称呼这个有序组．
-
-前文的例子利用单行记号可以写作
+Gần với khái niệm dãy sắp xếp. Ví dụ:
 
 $$
 \sigma=265431.
 $$
 
-这种单行的记号，常用来比较不同排列的大小．
+Ký hiệu này thường dùng để so sánh thứ tự giữa các hoán vị.
 
-### 轮换表示
+### Biểu diễn bằng chu trình
 
-置换还有一种更为紧凑的表达方式，称为置换的轮换表示．它将置换表示为一系列不相交的轮换的乘积．下面描述将给定置换写成轮换表示的步骤．
+Hoán vị còn có cách biểu diễn gọn hơn bằng **chu trình**. Dưới đây là cách viết hoán vị thành tích các chu trình rời nhau.
 
-给定一个置换 $\sigma$，可以通过如下步骤写成轮换表示：
+Cho hoán vị $\sigma$, thực hiện:
 
-1.  如果 $X$ 中还有未曾写下的元素，就写下一个左括号，并写下任意一个这样的元素；
-2.  当前一个写下的元素是 $x$ 时，
-    -   如果 $\sigma(x)$ 已经在前面写下过，就写上右括号，并返回步骤 1；
-    -   如果 $\sigma(x)$ 还没有写下过，就写下 $\sigma(x)$，并继续步骤 2；
-3.  直到 $X$ 的所有元素都已经写下，结束．
+1.  Nếu còn phần tử chưa viết, viết một dấu ngoặc trái và chọn một phần tử chưa viết.
+2.  Nếu phần tử vừa viết là $x$:
+    -   Nếu $\sigma(x)$ đã xuất hiện trước đó, viết ngoặc phải và quay lại bước 1;
+    -   Nếu $\sigma(x)$ chưa xuất hiện, viết $\sigma(x)$ và tiếp tục bước 2.
+3.  Dừng khi mọi phần tử đã viết.
 
-每一对括号中，都是一个轮换．括号中的元素个数，称为对应轮换的长度．实践中，常常省略掉长度为一的轮换．
+Mỗi cặp ngoặc là một chu trình. Số phần tử trong ngoặc là độ dài chu trình. Thực tế thường bỏ chu trình độ dài 1.
 
-前文的例子利用轮换表示可以写作
+Ví dụ:
 
 $$
 \sigma=(126)(35)(4)=(126)(35).
 $$
 
-恒等变换中所有的轮换长度都是一，常常记作 $(1)$ 而不是全部省略．
+Trong phép đồng nhất, mọi chu trình đều dài 1, thường ký hiệu $(1)$ thay vì bỏ hết.
 
-## 复合
+## Hợp thành
 
-置换的复合就是映射的复合．置换的复合也常常称作置换的乘法．
+Hợp thành của hoán vị là hợp thành ánh xạ, còn gọi là phép nhân hoán vị.
 
-给定两个置换
+Cho
 
 $$
 \sigma=\begin{pmatrix}x_1&x_2&\cdots&x_n\\ x_{p_1}&x_{p_2}&\cdots&x_{p_n}\end{pmatrix},\ \pi=\begin{pmatrix}x_{p_1}&x_{p_2}&\cdots&x_{p_n}\\ x_{q_1}&x_{q_2}&\cdots&x_{q_n}\end{pmatrix},
 $$
 
-那么，它们的乘积 $\pi\circ\sigma$ 的值为
+thì
 
 $$
 \pi\circ\sigma=\begin{pmatrix}x_1&x_2&\cdots&x_n\\
 x_{q_1}&x_{q_2}&\cdots&x_{q_n}\end{pmatrix}.
 $$
 
-简单来说就是先经过 $\sigma$ 的映射，再经过 $\pi$ 的映射．注意在上面的双行记号中，内层映射 $\sigma$ 的第二行的顺序和外层映射 $\pi$ 的第一行的顺序一致．
+Nói cách khác, trước hết qua $\sigma$, sau đó qua $\pi$. Trong ký hiệu hai hàng, hàng thứ hai của $\sigma$ trùng thứ tự với hàng thứ nhất của $\pi$.
 
-因为置换 $\sigma$ 和 $\pi$ 本质是两个映射，所以 $(\pi\circ\sigma)(x)=\pi(\sigma(x))$．置换的复合的运算顺序是自右向左的．置换的乘法并不满足交换律，所以使用错误的顺序计算可能会导致错误的结果．
+Vì $\sigma,\pi$ là ánh xạ nên $(\pi\circ\sigma)(x)=\pi(\sigma(x))$. Thứ tự nhân là từ phải sang trái; phép nhân không giao hoán.
 
-连续多个置换的乘积称作排列的幂，可以使用 [快速幂](./binary-exponentiation.md#多次置换) 加速计算．
+Tích nhiều hoán vị gọi là lũy thừa hoán vị, có thể dùng [lũy thừa nhanh](./binary-exponentiation.md#多次置换).
 
-### 逆置换
+### Hoán vị nghịch đảo
 
-因为置换是双射，所以置换总有相应的逆置换．
+Vì hoán vị là song ánh nên luôn có nghịch đảo.
 
-给定置换
+Cho
 
 $$
 \sigma=\begin{pmatrix}x_1&x_2&\cdots&x_n\\ x_{p_1}&x_{p_2}&\cdots&x_{p_n}\end{pmatrix},
 $$
 
-它的逆置换就是
+thì
 
 $$
 \sigma^{-1}=\begin{pmatrix}x_{p_1}&x_{p_2}&\cdots&x_{p_n}\\x_1&x_2&\cdots&x_n\end{pmatrix}.
 $$
 
-在轮换表示中，只要对每个轮换取逆，就能得到原来的置换的逆；而对每个轮换取逆，只要把元素的书写顺序倒过来就可以了．比如说，上文中的例子 $\sigma$ 的逆置换的轮换表示是
+Trong biểu diễn chu trình, đảo mỗi chu trình bằng cách đảo thứ tự phần tử. Ví dụ:
 
 $$
 \sigma^{-1} = (621)(53) = (162)(35).
 $$
 
-给定 $1\sim n$ 的一个排列和它的每个元素的排名的序列，就互为逆排列．
+Một hoán vị $1\sim n$ và dãy thứ hạng của từng phần tử là hai hoán vị nghịch đảo nhau.
 
-## 轮换
+## Chu trình
 
-**轮换**（cycle）本身是特殊的置换．轮换的特性是，从轮换中的任何一点 $x$ 出发，都能通过反复应用置换 $\sigma$ 的方式得到轮换中的另一点 $y$．长度为 $k$ 的轮换也称作 **$k$‑轮换**（$k$-cycle）．反复应用 $k$‑轮换 $k$ 次，将得到恒等变换，即每个元素都回到了最开始的位置．
+**Chu trình** (cycle) là một hoán vị đặc biệt: từ bất kỳ $x$ trong chu trình, lặp $\sigma$ sẽ đi qua mọi phần tử trong chu trình. Chu trình độ dài $k$ gọi là **$k$‑chu trình** ($k$-cycle). Lặp $k$ lần sẽ trở về đồng nhất.
 
-置换的轮换表示可以看作将置换写成这些特殊置换（即轮换）的乘积，因而置换的轮换表示也可以看作是置换的 **轮换分解**（cycle decomposition）．对于每个置换，它分解成轮换乘积的方式在不计顺序后都是唯一的．轮换可以看作是构成置换的基本单元．
+Biểu diễn hoán vị bằng chu trình là **phân tích chu trình**. Mỗi hoán vị có phân tích chu trình duy nhất (bỏ thứ tự các chu trình). Chu trình là đơn vị cơ bản của hoán vị.
 
-置换的轮换分解有着清晰的几何意义．如果将集合 $S$ 上的置换中的每个有序对 $(x,\sigma(x))$ 都看成以 $S$ 为顶点的有向图的边，那么这些轮换就是这个图上面的环路．如果置换 $\sigma$ 能够分解为 $m$ 个轮换，就意味着对应的有向图中共计有 $m$ 个环路（包括自环）．这些环路自然互不相交．
+Về hình học, nếu xem mỗi cặp $(x,\sigma(x))$ là cạnh có hướng trên đồ thị với đỉnh $S$, thì các chu trình là các vòng trên đồ thị. Nếu $\sigma$ phân tích thành $m$ chu trình thì đồ thị có $m$ vòng (gồm cả tự vòng).
 
-### 不动点
+### Điểm bất động
 
-$1$‑轮换就是置换的 **不动点**（fixed point）．对于集合 $X$ 上的置换 $\sigma$，通常用 $X^\sigma$ 表示 $\sigma$ 的不动点集合，即 $X^\sigma=\{x\in X:\sigma(x)=x\}$．
+Chu trình độ dài 1 là **điểm bất động** (fixed point). Với hoán vị $\sigma$ trên $X$, ký hiệu $X^\sigma=\{x\in X:\sigma(x)=x\}$.
 
-### 对换
+### Đối hoán
 
-$2$‑轮换也称作 **对换**（transposition）．也就是说，对换就是只交换了一对元素位置的置换．它的轮换表示是 $(x_ix_j)$，表示它交换了 $x_i$ 和 $x_j$ 的位置．
+Chu trình độ dài 2 gọi là **đối hoán** (transposition), ký hiệu $(x_ix_j)$, nghĩa là hoán đổi $x_i$ và $x_j$.
 
-任何置换都可以写作一系列对换的乘积．这相当于说，任何顺序的排列都可以通过一系列交换两个元素的操作恢复成指定的正序排列．这正是基于交换的排序算法在做的事情．
+Mọi hoán vị đều có thể viết thành tích các đối hoán. Tương đương với việc mọi dãy có thể trở về thứ tự chuẩn bằng các phép đổi chỗ hai phần tử. Đây là bản chất của các thuật toán sắp xếp dựa trên đổi chỗ.
 
-更进一步，[冒泡排序算法](../basic/bubble-sort.md) 的正确性其实说明，任何置换都可以写作一系列相邻对换的乘积．这里的 **相邻对换**（adjacent transposition）指的是只交换相邻元素的对换．
+Hơn nữa, [bubble sort](../basic/bubble-sort.md) cho thấy mọi hoán vị có thể viết thành tích các **đối hoán kề** (adjacent transposition), chỉ đổi chỗ hai phần tử kề nhau.
 
-## 性质
+## Tính chất
 
-在应用中，常常需要关注单个置换的性质．
+### Tính chẵn lẻ
 
-### 奇偶性
-
-将轮换分解成对换的方式并不是唯一的．比如，
+Phân tích hoán vị thành đối hoán không duy nhất. Ví dụ:
 
 $$
 (123)=(13)(12)=(12)(23)=(12)(13)(12)(13).
 $$
 
-但是，置换分解成一系列对换时，需要的对换的数目的奇偶性是固定的．一个置换的对换分解的数目的奇偶性也称作置换的 **奇偶性**（parity）．
+Tuy nhiên, **tính chẵn lẻ** của số đối hoán là bất biến. Hoán vị có số đối hoán chẵn gọi là hoán vị chẵn, lẻ gọi là hoán vị lẻ. Với $n\ge2$, số hoán vị chẵn và lẻ bằng nhau.
 
-能够分解成偶数个对换的乘积的置换叫做偶置换，能够分解成奇数个对换的乘积的置换叫做奇置换．当 $n\ge2$ 时，大小为 $n$ 的奇置换和偶置换的数目相同．
+### Dấu
 
-### 符号
+Định nghĩa **dấu** (sign) của hoán vị $\sigma$ là $\operatorname{sgn}\sigma$. Hoán vị chẵn có dấu $+1$, lẻ có dấu $-1$.
 
-根据置换的奇偶性，还可以定义置换的 **符号**（sign），记作 $\operatorname{sgn}\sigma$．偶置换的符号定义为 $+1$，奇置换的符号定义为 $-1$．
-
-置换的乘积的符号，等于它们的符号的乘积，即
+Dấu của tích:
 
 $$
 \operatorname{sgn}(\pi\circ\sigma)=\operatorname{sgn}
 \pi\cdot\operatorname{sgn}\sigma.
 $$
 
-也就是说，两个奇偶性相同的置换的复合是偶置换，两个奇偶性不同的置换的复合是奇置换．这一结论，从对换分解的角度看是显然的．
+Hai hoán vị cùng chẵn lẻ thì tích là chẵn, khác chẵn lẻ thì tích là lẻ. Đổi chỗ một lần luôn đổi chẵn lẻ.
 
-特别地，单次对换必然改变置换的奇偶性．这也正解释了为什么虽然分解成对换的方式不唯一，但是所需的对换的数目的奇偶性是确定的．
+Dấu xuất hiện trong [khai triển Leibniz của định thức](../math/linear-algebra/determinant.md#全排列方法定义).
 
-置换的符号出现在 [行列式的 Leibniz 展开](../math/linear-algebra/determinant.md#全排列方法定义) 中．
+### Bậc của hoán vị
 
-### 置换的阶
-
-置换的 **阶**（order）是指满足如下条件的最小正整数 $a$：重复该置换 $a$ 次后，所有元素都回到了原位．即
+**Bậc** (order) của hoán vị là số nguyên dương nhỏ nhất $a$ sao cho lặp $a$ lần trở về đồng nhất:
 
 $$
 \operatorname{ord}\sigma=\min\{a\in\mathbf N_+:\sigma^a=(1)\}.
 $$
 
-有限集合上，所有置换的阶都是有限的．这意味着，从起始顺序出发，只要重复按照固定模式打乱给定序列，在有限时间内，总可以将排列恢复原样．
+Trên tập hữu hạn, bậc luôn hữu hạn.
 
-### 置换的型
+### Kiểu của hoán vị
 
-将 $n$ 个元素的置换做轮换分解，置换的 **型**（cycle type）就是分解中轮换长度的可重集合．这些轮换的长度构成了一个置换长度 $n$ 的整数分划．如果得到的分解中长度为 $k$ 的轮换共计 $\alpha_k$ 个，那么置换的型常记作
+Phân tích hoán vị thành chu trình, **kiểu** (cycle type) là đa tập độ dài các chu trình. Các độ dài tạo thành một phân hoạch của $n$. Nếu độ dài $k$ xuất hiện $\alpha_k$ lần, kiểu viết:
 
 $$
 1^{\alpha_1}2^{\alpha_2}\cdots n^{\alpha_n},
 $$
 
-且这些系数满足 $\sum_{k=1}^nk\alpha_k=n$．
+với $\sum_{k=1}^nk\alpha_k=n$.
 
-给定置换的型，不同的置换的数目为
+Số hoán vị có kiểu đó là:
 
 $$
 \frac{n!}{1^{\alpha_1}2^{\alpha_2}\cdots n^{\alpha_n}\alpha_1!\alpha_2!\cdots\alpha_n!}.
 $$
 
-??? note "分析"
-    这是因为，给定任何 $1\sim n$ 的排列，都可以按照置换的型分割成相应的轮换分解．但是，长度相同的轮换之间的顺序并不影响置换，所以总数需要除以 $\prod_k\alpha_k!$．另外，同一轮换内部实际是圆排列，起点的选取也不影响置换，所以需要除以 $\prod_kk^{\alpha_k}$．这就得到上式．
+??? note "Phân tích"
+    Vì mọi hoán vị đều có thể phân tích theo kiểu. Các chu trình cùng độ dài có thể hoán đổi vị trí nên cần chia $\prod_k\alpha_k!$. Mỗi chu trình là một vòng tròn nên chọn điểm bắt đầu không ảnh hưởng, cần chia thêm $\prod_k k^{\alpha_k}$.
 
-如果仅仅给定置换分解成的轮换个数 $c(\sigma)$，则不同的置换的数目为 [第一类斯特林数](./combinatorics/stirling.md#第一类斯特林数stirling-number) $\begin{bmatrix}n\\ k\end{bmatrix}$．不同的型的个数为置换长度 $n$ 的 [分拆数](./combinatorics/partition.md)  $p_n$．
+Nếu chỉ biết số chu trình $c(\sigma)$, số hoán vị là [Stirling loại 1](./combinatorics/stirling.md#第一类斯特林数stirling-number) $\begin{bmatrix}n\\ k\end{bmatrix}$. Số kiểu khác nhau là [số phân hoạch](./combinatorics/partition.md) $p_n$.
 
-从置换的型，可以方便地确定置换的阶和奇偶性等性质．
+Từ kiểu có thể suy ra bậc và chẵn lẻ.
 
-因为 $k$‑轮换的阶是 $k$，不同的轮换又互不相交，所以置换 $\sigma$ 的阶就是
+Vì $k$‑chu trình có bậc $k$ và các chu trình rời nhau, nên
 
 $$
 \operatorname{lcm}\{k:\alpha_k>0\}.
 $$
 
-同样地，因为 $k$‑轮换的奇偶性与 $k$ 的奇偶性相反，所以置换 $\sigma$ 的奇偶性就是
+Chẵn lẻ là:
 
 $$
 \sum_k(k-1)\alpha_k=\sum_{k}k\alpha_k-\sum_{k}\alpha_k=n-c(\sigma)
 $$
 
-的奇偶性．这里，$c(\sigma)$ 是轮换的个数（包括 $1$‑轮换，即不动点）．
+lấy theo parity. Ở đây $c(\sigma)$ là số chu trình (kể cả 1‑chu trình).
 
-置换的型在 [Pólya 计数](./combinatorics/polya.md) 中有重要作用．
+Kiểu hoán vị quan trọng trong [đếm Pólya](./combinatorics/polya.md).
 
-## 排列相关
+## Liên quan đến sắp xếp
 
-如果集合 $X$ 本身具有自然顺序，此时置换 $\sigma$ 常称作排列，并用单行记号
+Nếu tập $X$ có thứ tự tự nhiên, hoán vị $\sigma$ gọi là sắp xếp và dùng ký hiệu một hàng:
 
 $$
 \sigma(1)\sigma(2)\cdots\sigma(n)
 $$
 
-表示．注意不要同轮换混淆．
+Không nhầm với chu trình.
 
-### 逆序数
+### Số nghịch thế
 
-在一个排列中，如果某一个较大的数排在某一个较小的数前面，就说这两个数构成一个 **逆序**（inversion）或反序．这里的比较是在自然顺序下进行的．
+Trong một sắp xếp, nếu một số lớn đứng trước một số nhỏ thì tạo thành **nghịch thế** (inversion). Tổng số nghịch thế gọi là **số nghịch thế**. Đây là số lần đổi chỗ kề tối thiểu để đưa về thứ tự chuẩn, nên parity trùng với parity của hoán vị.
 
-在一个排列里出现的逆序的总个数，叫做这个置换的 **逆序数**．排列的逆序数是它恢复成正序序列所需要做相邻对换的最少次数．因而，排列的逆序数的奇偶性和相应的置换的奇偶性一致．这可以作为置换的奇偶性的等价定义．
+Tính nghịch thế có thể dùng [merge sort](../basic/merge-sort.md#逆序对) hoặc [Fenwick](../ds/fenwick.md#全局逆序对全局二维偏序), đều $O(n\log n)$. Dưới đây là tham khảo.
 
-求解逆序数的算法，可以使用 [归并排序](../basic/merge-sort.md#逆序对) 或 [树状数组](../ds/fenwick.md#全局逆序对全局二维偏序)，时间复杂度均为 $O(n\log n)$．两种算法的解释详见对应章节，这里给出它们的参考实现．
-
-??? example "参考实现"
-    === "归并排序"
+??? example "Tham khảo"
+    === "Merge sort"
         ```cpp
         --8<-- "docs/math/code/permutation/inversion_2.cpp"
         ```
     
-    === "树状数组"
+    === "Fenwick"
         ```cpp
         --8<-- "docs/math/code/permutation/inversion_1.cpp"
         ```
 
-### 顺序
+### Thứ tự từ điển
 
-排列之间是可以比较大小的．因为每个单行记号就是一个字符串，排列的顺序就是这个字符串上的 [字典序](../string/basic.md#字典序)．
+Các sắp xếp có thể so sánh theo **thứ tự từ điển** trên chuỗi ký hiệu một hàng. Trong C++ STL, dùng `prev_permutation` và `next_permutation` để lấy hoán vị trước/sau theo thứ tự từ điển.
 
-在 C++ 的 STL 库 `<algorithm>` 中可以使用 `prev_permutation` 和 `next_permutation` 分别找到当前排列按照字典序的上一个和下一个排列．
+### Xếp hạng
 
-### 排名
+Liệt kê mọi sắp xếp theo thứ tự từ điển, vị trí của một sắp xếp gọi là **xếp hạng**. Nó tạo song ánh giữa sắp xếp và số nguyên, thường dùng để nén trạng thái.
 
-将 $n$ 个元素的排列按照字典序从小到大列举出来，则某一排列在这个序列中的位次就是该排列的排名．它建立了排列和正整数之间的一一对应，常常用于排列相关问题的状态压缩．
+Trong cộng đồng, thường gọi là “khai triển Cantor”, nhưng tên này không chuẩn. Đúng hơn, xếp hạng của một sắp xếp tương ứng với **mã Lehmer** (Lehmer code).
 
-在中文竞赛圈，这个排名常称作排列的「康托展开」，但这种名称并不规范．更为严谨的说法是，一个排列的排名的康托展开，对应着该排列的 **Lehmer 码**（Lehmer code）．
-
-??? info "关于「康托展开」"
-    正如名字所暗示的那样，康托展开是指一种将自然数展开为数列的方法．它可以看作是一种特殊的进制，也叫做 **阶乘进制**（factorial number system）．这种进制中，不同的数位对应的底数（radix）并不相同．比如，十进制数 $463_{10}$ 可以在阶乘进制中表示为
+??? info "Về “khai triển Cantor”"
+    Khai triển Cantor là cách biểu diễn số tự nhiên bằng hệ cơ số giai thừa (factorial number system), với cơ số khác nhau ở từng vị trí. Ví dụ:
     
     $$
     463_{10}=341010_{!}.
     $$
     
-    它表示如下含义
+    Nghĩa là
     
     $$
     463=3\times 5!+4\times 4!+1\times 3!+0\times 2!+1\times 1!+0\times 0!.
     $$
     
-    康托对于这类混合底数的进制进行了研究，故而自然数在这种进制下的数码表示也常称作自然数的康托展开．
+    Cantor đã nghiên cứu hệ cơ số hỗn hợp này, nên biểu diễn còn gọi là khai triển Cantor.
 
-??? example "示例"
-    不熟悉排名的计算方法的读者，可以通过这个简单的例子理解下面的算法的基本思路．
+??? example "Ví dụ"
+    Với sắp xếp $\sigma=452631$, xếp hạng là số sắp xếp nhỏ hơn nó theo thứ tự từ điển cộng một. Tư tưởng giống [DP theo chữ số](../dp/number.md).
     
-    要计算排列 $\sigma=452631$ 的排名，就是要计算有多少排列的字典序小于 $\sigma$，再加一．这里的思想类似于 [数位 DP](../dp/number.md)，都是逐位讨论．
+    -   Vị trí 1 chọn nhỏ hơn 4: $\{1,2,3\}$, còn 5 vị trí: $3\times 5!$;
+    -   Vị trí 1 là 4, vị trí 2 nhỏ hơn 5: $\{1,2,3\}$, còn 4 vị trí: $3\times 4!$;
+    -   Vị trí 3 nhỏ hơn 2: $\{1\}$, còn 3 vị trí: $1\times 3!$;
+    -   Vị trí 4 nhỏ hơn 6: $\{1,3\}$, còn 2 vị trí: $2\times 2!$;
+    -   Vị trí 5 nhỏ hơn 3: $\{1\}$, còn 1 vị trí: $1\times 1!$;
+    -   Vị trí 6 không còn lựa chọn nhỏ hơn: $0\times 0!$.
     
-    -   第 $1$ 位的选取要小于 $\sigma$，只能取自 $\{1,2,3\}$，后面 $5$ 位可以任意选取，共 $3\times 5!$ 个可选的排列；
-    -   如果第 $1$ 位也选择 $4$，那么第 $2$ 位的选取要小于 $\sigma$，只能取自 $\{1,2,3\}$（这里，$4$ 已经选过了），后面的 $4$ 位可以任意选取，共 $3\times 4!$ 个可选的排列；
-    -   类似地，前 $2$ 位的选取和 $\sigma$ 相同时，第 $3$ 位的选取要小于 $\sigma$，只能取自 $\{1\}$，后面的 $3$ 位可以任意选取，共 $1\times 3!$ 个可选的排列；
-    -   前 $3$ 位的选取和 $\sigma$ 相同时，第 $4$ 位的选取要小于 $\sigma$，只能取自 $\{1,3\}$，后面的 $2$ 位可以任意选取，共 $2\times 2!$ 个可选的排列；
-    -   前 $4$ 位的选取和 $\sigma$ 相同时，第 $5$ 位的选取要小于 $\sigma$，只能取自 $\{1\}$，后面的 $1$ 位可以任意选取，共 $1\times 1!$ 个可选的排列；
-    -   前 $5$ 位的选取和 $\sigma$ 相同时，第 $6$ 位的选择无法得到比 $\sigma$ 更小的排列，所以共 $0\times 0!$ 个可选的排列．
-    
-    因此，排列 $\sigma$ 的排名为
+    Do đó:
     
     $$
     1+3\times 5!+3\times 4!+1\times 3!+2\times 2!+1\times 1!+0\times 0!=444.
     $$
     
-    对于不同的排列，关键的点在于确定阶乘前面的系数．实际上，这些系数正是排在该位置之后却小于该位置元素的元素数目．
+    Điểm mấu chốt là hệ số trước giai thừa chính là số phần tử chưa dùng nhỏ hơn phần tử hiện tại.
 
-从例子中可以知道，求解给定排列的排名的算法，可以分为两步：
+Từ ví dụ, thuật toán xếp hạng gồm:
 
-1.  将给定的长度为 $n$ 的排列转化为它的 Lehmer 码，即长度为 $n$ 的序列 $L_\sigma$，其中，第 $i$ 位是
+1.  Chuyển sắp xếp dài $n$ thành mã Lehmer $L_\sigma$, với
 
     $$
     L_\sigma(i)=\#\{j>i:\sigma(j)<\sigma(i)\},
     $$
 
-    也就是在排列中，排在第 $i$ 位后面，但是却比 $\sigma(i)$ 小的元素个数．它等于尚未使用的元素中给定元素的排名（减一）．
+    tức số phần tử sau vị trí $i$ nhỏ hơn $\sigma(i)$, bằng thứ hạng của phần tử trong tập chưa dùng (trừ 1).
 
-2.  将 Lehmar 码看作是自然数的康托展开，求出原来的自然数，并加一．也就是说，最终的排名等于
+2.  Xem mã Lehmer là khai triển Cantor và tính số:
 
     $$
     \operatorname{rank}\sigma=1+L_\sigma(1)(n-1)!+L_\sigma(2)(n-2)!+\cdots+L_\sigma(n)0!.
     $$
 
-要求解这一问题的逆问题，即给定排名求解相应的排列，只要将上述过程反过来操作即可．在这一过程中求得的 Lehmer 码中的数字之和，就是排列的逆序数．
+Bài toán ngược lại (từ xếp hạng ra sắp xếp) chỉ cần đảo các bước. Tổng các chữ số trong mã Lehmer bằng số nghịch thế.
 
-编程实现时，关键是要能够快速计算「尚未使用的元素中给定元素的排名」（求排名时）和「尚未使用的元素中给定排名的元素」（求排列时），这些都可以通过 [树状数组](../ds/fenwick.md) 或 [线段树](../ds/seg.md) 等数据结构维护．正反操作的时间复杂度均为 $O(n\log n)$．
+Khi cài đặt, cần hỗ trợ truy vấn “thứ hạng trong tập chưa dùng” và “phần tử theo thứ hạng” nhanh, có thể dùng [Fenwick](../ds/fenwick.md) hoặc [segment tree](../ds/seg.md). Cả hai chiều đều $O(n\log n)$.
 
-??? example "参考实现"
-    === "求给定排列的排名"
+??? example "Tham khảo"
+    === "Tính xếp hạng của sắp xếp"
         ```cpp
         --8<-- "docs/math/code/permutation/perm_rank.cpp"
         ```
     
-    === "求给定排名的排列"
+    === "Từ xếp hạng ra sắp xếp"
         ```cpp
         --8<-- "docs/math/code/permutation/rank_perm.cpp"
         ```
 
-## 参考资料与注释
+## Tài liệu tham khảo và chú thích
 
 -   [Permutation - Wikipedia](https://en.wikipedia.org/wiki/Permutation)
 -   [Lehmer code - Wikipedia](https://en.wikipedia.org/wiki/Lehmer_code)
