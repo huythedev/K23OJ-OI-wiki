@@ -1,248 +1,245 @@
-本页面将介绍 CDQ 分治．
+Trang này sẽ giới thiệu về CDQ phân trị.
 
-## 简介
+## Giới thiệu
 
-CDQ 分治是一种思想而不是具体的算法，与 [动态规划](../dp/index.md) 类似．目前这个思想的拓展十分广泛，依原理与写法的不同，大致分为三类：
+CDQ phân trị là một tư tưởng chứ không phải một thuật toán cụ thể, tương tự [quy hoạch động](../dp/index.md). Hiện nay, tư tưởng này được mở rộng khá rộng rãi, tùy theo nguyên lý và cách viết có thể chia thành ba loại lớn:
 
--   解决和点对有关的问题．
--   1D 动态规划的优化与转移．
--   通过 CDQ 分治，将一些动态问题转化为静态问题．
+-   Giải các bài toán liên quan đến cặp điểm.
+-   Tối ưu và chuyển trạng thái cho DP 1D.
+-   Thông qua CDQ phân trị, biến một số bài toán động thành bài toán tĩnh.
 
-CDQ 分治的思想最早由 IOI2008 金牌得主陈丹琦在高中时整理并总结，它也因此得名．[^ref1]
+Tư tưởng CDQ phân trị được IOI2008 huy chương vàng Chen Danqi tổng kết khi còn học phổ thông, vì vậy mang tên này.[^ref1]
 
-## 解决和点对有关的问题
+## Giải các bài toán liên quan đến cặp điểm
 
-这类问题多数类似于「给定一个长度为 $n$ 的序列，统计有一些特性的点对 $(i,j)$ 的数量」或「给定一个长度为 $n$ 的序列，找到一对点 $(i,j)$ 使得一些函数的值最大」．
+Loại bài này thường giống như “cho một dãy độ dài $n$, đếm số cặp điểm $(i,j)$ có tính chất nào đó” hoặc “cho một dãy độ dài $n$, tìm một cặp $(i,j)$ sao cho một hàm đạt cực đại”.
 
-CDQ 分治解决这类问题的算法流程如下：
+Quy trình thuật toán CDQ phân trị cho loại này như sau:
 
-1.  找到这个序列的中点 $mid$；
+1.  Tìm điểm giữa $mid$ của dãy;
 
-2.  将所有点对 $(i,j)$ 划分为 3 类：
+2.  Chia tất cả cặp điểm $(i,j)$ thành 3 loại:
 
-    1.  $1 \leq i \leq mid,1 \leq j \leq mid$ 的点对；
-    2.  $1  \leq i \leq mid ,mid+1 \leq j \leq n$ 的点对；
-    3.  $mid+1 \leq  i \leq n,mid+1 \leq j \leq n$ 的点对．
+    1.  $1 \leq i \leq mid,1 \leq j \leq mid$;
+    2.  $1  \leq i \leq mid ,mid+1 \leq j \leq n$;
+    3.  $mid+1 \leq  i \leq n,mid+1 \leq j \leq n$.
 
-3.  将 $(1,n)$ 这个序列拆成两个序列 $(1,mid)$ 和 $(mid+1,n)$．此时第一类点对和第三类点对都在这两个序列之中；
+3.  Tách dãy $(1,n)$ thành hai dãy $(1,mid)$ và $(mid+1,n)$. Khi đó loại 1 và loại 3 đều nằm trong hai dãy này;
 
-4.  递归地处理这两类点对；
+4.  Đệ quy xử lý hai loại này;
 
-5.  设法处理第二类点对．
+5.  Tìm cách xử lý loại 2.
 
-可以看到 CDQ 分治的思想就是不断地把点对通过递归的方式分给左右两个区间．
+Có thể thấy tư tưởng CDQ phân trị là liên tục phân chia các cặp điểm cho hai nửa bằng đệ quy.
 
-在实际应用时，我们通常使用一个函数 `solve(l,r)` 处理 $l \leq i \leq r,l \leq j \leq r$ 的点对．上述算法流程中的递归部分便是通过 `solve(l,mid)` 与 `solve(mid,r)` 来实现的．剩下的第二类点对则需要额外设计算法解决．
+Trong ứng dụng thực tế, ta thường dùng hàm `solve(l,r)` để xử lý các cặp điểm $l \leq i \leq r,l \leq j \leq r$. Phần đệ quy trong quy trình trên được thực hiện bằng `solve(l,mid)` và `solve(mid,r)`. Phần còn lại là loại 2 cần thiết kế thuật toán riêng để giải.
 
-### 例题
+### Ví dụ
 
 ???+ example "[三维偏序](https://www.luogu.com.cn/problem/P3810)"
-    给定一个序列，每个点有 $a_i,b_i,c_i$ 三个属性，试求：这个序列里有多少对点对 $(i,j)$ 满足 $a_j \leq a_i$ 且 $b_j \leq b_i$ 且 $c_j \leq c_i$ 且 $j \ne i$．
+    Cho một dãy, mỗi điểm có ba thuộc tính $a_i,b_i,c_i$. Hãy đếm số cặp điểm $(i,j)$ thỏa $a_j \leq a_i$ và $b_j \leq b_i$ và $c_j \leq c_i$ và $j \ne i$.
 
-??? note "解题思路"
-    三维偏序是 CDQ 分治的经典问题．
+??? note "Ý tưởng"
+    Ba chiều thứ tự là bài kinh điển của CDQ phân trị.
     
-    题目要求统计序列里点对的个数，那试一下用 CDQ 分治．
+    Đề yêu cầu đếm số cặp điểm, nên thử dùng CDQ phân trị.
     
-    首先将序列按 $a$ 排序．
+    Trước tiên sắp dãy theo $a$.
     
-    假设我们现在写好了 `solve(l,r)`，并且通过递归搞定了 `solve(l,mid)` 和 `solve(mid+1,r)`．现在我们要做的，就是统计满足 $l \leq i \leq mid$，$mid+1 \leq j \leq r$ 的点对 $(i,j)$ 中，有多个点对还满足 $a_{i} \leq a_{j}$，$b_{i} \leq b_{j}$，$c_{i} \leq c_{j}$ 的限制条件．
+    Giả sử đã có `solve(l,r)` và đệ quy xong `solve(l,mid)` và `solve(mid+1,r)`. Giờ cần thống kê các cặp $(i,j)$ với $l \leq i \leq mid$ và $mid+1 \leq j \leq r$ mà còn thỏa $a_{i} \leq a_{j}$, $b_{i} \leq b_{j}$, $c_{i} \leq c_{j}$.
     
-    稍微思考一下就会发现，那个 $a_{i} \leq a_{j}$ 的限制条件没啥用了：既然 $i$ 比 $mid$ 小，$j$ 比 $mid$ 大，那 $i$ 肯定比 $j$ 要小；已经将序列按 $a$ 排序，就一定有 $a_{i} \leq a_{j}$．现在还剩下两个限制条件：$b_{i} \leq b_{j}$ 与 $c_{i} \leq c_{j}$．根据这个限制条件我们就可以枚举 $j$, 求出有多少个满足条件的 $i$．
+    Suy nghĩ một chút sẽ thấy điều kiện $a_{i} \leq a_{j}$ không còn tác dụng: vì $i \leq mid < j$ nên chắc chắn $i < j$, và do đã sắp theo $a$ nên $a_{i} \leq a_{j}$. Khi đó chỉ còn $b_{i} \leq b_{j}$ và $c_{i} \leq c_{j}$. Ta có thể duyệt $j$ và đếm số $i$ thỏa.
     
-    为了方便枚举，我们把 $(l,mid)$ 和 $(mid+1,r)$ 中的点全部按照 $b$ 的值从小到大排个序．之后我们依次枚举每一个 $j$, 把所有 $b_{i} \leq b_{j}$ 的点 $i$ 全部插入到某种数据结构里（这里我们选择 [树状数组](../ds/fenwick.md)）．此时只要查询树状数组里有多少个点的 $c$ 值是小于等于 $c_{j}$ 的，我们就求出了对于这个点 $j$，有多少个 $i$ 可以合法匹配它了．
+    Để tiện duyệt, ta sắp các điểm trong $(l,mid)$ và $(mid+1,r)$ theo $b$ tăng dần. Sau đó lần lượt duyệt từng $j$, đưa tất cả điểm $i$ có $b_{i} \leq b_{j}$ vào một cấu trúc dữ liệu (chọn [Fenwick](../ds/fenwick.md)). Khi đó chỉ cần truy vấn Fenwick xem có bao nhiêu điểm có $c \leq c_{j}$ là biết với điểm $j$ có bao nhiêu $i$ hợp lệ.
     
-    当我们插入一个 $c$ 值等于 $x$ 的点时，我们就令树状数组的 $x$ 这个位置单点加一，而查询树状数组里有多少个点小于 $x$ 的操作实际上就是在求 [前缀和](../basic/prefix-sum.md)，只要我们事先对于所有的 $c$ 值做了 [离散化](../misc/discrete.md)，我们的复杂度就是对的．
+    Khi chèn một điểm có $c=x$, ta tăng một đơn vị tại vị trí $x$ trên Fenwick; truy vấn số điểm có $c \le x$ là lấy [tổng tiền tố](../basic/prefix-sum.md). Nếu trước đó ta đã [rời rạc hóa](../misc/discrete.md) tất cả giá trị $c$ thì độ phức tạp là chuẩn.
     
-    对于每一个 $j$，我们都需要将所有 $b_{i} \leq b_{j}$ 的点 $i$ 插入树状数组中．由于所有的 $i$ 和 $j$ 都已事先按照 $b$ 值排好序，这样的话只要以双指针的方式在树状数组里插入点，则对树状数组的插入操作就能从 $O(n^2)$ 次降到 $O(n)$ 次．
+    Với mỗi $j$, ta cần chèn tất cả $i$ có $b_{i} \leq b_{j}$. Do $i$ và $j$ đã được sắp theo $b$, chỉ cần dùng hai con trỏ để chèn, số lần chèn từ $O(n^2)$ giảm còn $O(n)$.
     
-    通过这样一个算法流程，我们就用 $O(n\log n)$ 的时间处理完了关于第二类点对的信息了．此时算法的时间复杂度是 $T(n)=T(\lfloor \frac{n}{2} \rfloor)+T(\lceil \frac{n}{2} \rceil)+O(n\log n)=O(n\log^2n)$．
+    Như vậy ta xử lý phần thông tin của loại 2 trong $O(n\log n)$. Tổng thời gian là $T(n)=T(\lfloor \frac{n}{2} \rfloor)+T(\lceil \frac{n}{2} \rceil)+O(n\log n)=O(n\log^2n)$.
 
-??? note "示例代码"
+??? note "Mã mẫu"
     ```cpp
     --8<-- "docs/misc/code/cdq-divide/cdq-divide_1.cpp"
     ```
 
 ???+ example "[CQOI2011 动态逆序对](https://www.luogu.com.cn/problem/P3157)"
-    对于序列 $a$，它的逆序对数定义为集合 $\{(i,j)| i < j \wedge a_i > a_j \}$ 中的元素个数．
+    Với dãy $a$, số nghịch thế là số phần tử trong tập $\{(i,j)| i < j \wedge a_i > a_j \}$.
     
-    现在给出 $1\sim n$ 的一个排列，按照某种顺序依次删除 $m$ 个元素，你的任务是在每次删除一个元素之前统计整个序列的逆序对数．
+    Cho một hoán vị $1\sim n$, theo một thứ tự nào đó xóa lần lượt $m$ phần tử. Nhiệm vụ là trước mỗi lần xóa, thống kê số nghịch thế của toàn dãy.
 
-??? note "示例代码"
+??? note "Mã mẫu"
     ```cpp
     --8<-- "docs/misc/code/cdq-divide/cdq-divide_2.cpp"
     ```
 
-## CDQ 分治优化 1D/1D 动态规划的转移
+## CDQ phân trị tối ưu chuyển trạng thái DP 1D/1D
 
-相关内容：[CDQ 分治优化 DP](../dp/opt/dp-opt.md#cdq-分治优化-dp)
+Nội dung liên quan: [CDQ 分治优化 DP](../dp/opt/dp-opt.md#cdq-分治优化-dp)
 
-1D/1D 动态规划指的是一类特定的 DP 问题，该类题目的特征是 DP 数组是一维的，转移是 $O(n)$ 的．如果条件良好的话，有时可以通过 CDQ 分治来把它们的时间复杂度由 $O(n^2)$ 降至 $O(n\log^2n)$．
+DP 1D/1D là một lớp bài toán DP có mảng DP một chiều, chuyển trạng thái là $O(n)$. Nếu điều kiện phù hợp, có thể dùng CDQ phân trị để giảm độ phức tạp từ $O(n^2)$ xuống $O(n\log^2n)$.
 
-例如，给定一个序列，每个元素有两个属性 $a$，$b$．我们希望计算一个 DP 式子的值，它的转移方程如下：
+Ví dụ: cho một dãy, mỗi phần tử có hai thuộc tính $a$, $b$. Ta cần tính DP theo công thức:
 
 $dp_{i}=1+ \max_{j=1}^{i-1}dp_{j}[a_{j} < a_{i}][b_{j} < b_{i}]$
 
-这是一个二维最长上升子序列的 DP 方程，即只有 $j < i,a_{j} < a_{i}$,$b_{j} < b_{i}$ 的点 $j$ 可以更新点 $i$ 的 DP 值．
+Đây là DP của dãy tăng hai chiều: chỉ có $j < i,a_{j} < a_{i}$,$b_{j} < b_{i}$ mới cập nhật được $i$.
 
-直接转移显然是 $O(n^2)$ 的．以下是使用 CDQ 分治优化转移过程的讲解．
+Chuyển trạng thái trực tiếp là $O(n^2)$. Dưới đây là cách dùng CDQ phân trị để tối ưu chuyển trạng thái.
 
-我们发现 $dp_{j}$ 转移到 $dp_{i}$ 这种转移关系也是一种点对间的关系，所以我们用类似 CDQ 分治处理点对关系的方式来处理它．
+Ta nhận thấy quan hệ chuyển từ $dp_{j}$ sang $dp_{i}$ cũng là quan hệ giữa cặp điểm, nên dùng cách tương tự CDQ xử lý cặp điểm.
 
-这个转移过程相对来讲比较套路．假设现在正在处理的区间是 $(l,r)$，算法流程大致如下：
+Quá trình này tương đối “công thức”. Giả sử đang xử lý đoạn $(l,r)$, quy trình như sau:
 
-1.  如果 $l=r$，说明 $dp_{r}$ 值已经被计算好了．直接令 $dp_{r}++$ 然后返回即可；
-2.  递归使用 `solve(l,mid)`；
-3.  处理所有 $l \leq j \leq mid$，$mid+1 \leq i \leq r$ 的转移关系；
-4.  递归使用 `solve(mid+1,r)`．
+1.  Nếu $l=r$ nghĩa là $dp_{r}$ đã tính xong. Tăng $dp_{r}$ lên 1 rồi trả về;
+2.  Đệ quy `solve(l,mid)`；
+3.  Xử lý tất cả chuyển trạng thái $l \leq j \leq mid$ và $mid+1 \leq i \leq r$；
+4.  Đệ quy `solve(mid+1,r)`.
 
-第三步的做法与 CDQ 分治求三维偏序差不多．处理 $l \leq j \leq mid$，$mid+1 \leq i \leq r$ 的转移关系的时候，我们会发现已经不用管 $j < i$ 这个限制条件了．因此，我们依然先将所有的点 $i$ 和点 $j$ 按 $a$ 值进行排序处理，然后用双指针的方式将 $j$ 点插入到树状数组里，最后查一下前缀最大值更新一下 $dp_{i}$ 就可以了．
+Bước 3 gần giống CDQ cho ba chiều thứ tự. Khi xử lý $l \leq j \leq mid$ và $mid+1 \leq i \leq r$ thì không cần điều kiện $j<i$ nữa. Ta vẫn sắp tất cả điểm theo $a$, dùng hai con trỏ để chèn các điểm $j$ vào Fenwick, rồi truy vấn giá trị lớn nhất tiền tố để cập nhật $dp_i$.
 
-### 转移过程的正确性证明
+### Chứng minh đúng đắn của quá trình chuyển trạng thái
 
-该 CDQ 写法和处理点对间关系的 CDQ 写法最大的不同就是处理 $l \leq j \leq mid$，$mid+1 \leq i \leq r$ 的点对这一部分．处理点对间关系的 CDQ 写法中，这一部分放到哪里都是可以的．但是，在用 CDQ 分治优化 DP 的时候，这个流程却必须夹在 $solve(l,mid)$,$solve(mid+1,r)$ 的中间．原因是 DP 的转移是 **有序的**，它必须满足两个条件，否则就是不对的：
+Khác biệt lớn nhất giữa cách CDQ này và cách CDQ xử lý cặp điểm là phần xử lý các cặp $l \leq j \leq mid$, $mid+1 \leq i \leq r$. Với CDQ cặp điểm, phần này đặt ở đâu cũng được. Nhưng với CDQ tối ưu DP, phần này **phải** nằm giữa `solve(l,mid)` và `solve(mid+1,r)` vì chuyển trạng thái DP là **có thứ tự**, phải thỏa:
 
-1.  用来计算 $dp_{i}$ 的所有 $dp_{j}$ 值都必须是已经计算完毕的，不能存在「半成品」；
+1.  Mọi $dp_{j}$ dùng để tính $dp_{i}$ đều đã tính xong, không được có “bán thành phẩm”；
+2.  Mọi $dp_{j}$ hợp lệ đều đã cập nhật vào $dp_{i}$, không được bỏ sót.
 
-2.  用来计算 $dp_{i}$ 的所有 $dp_{j}$ 值都必须能更新到 $dp_{i}$，不能存在没有更新到的 $dp_{j}$ 值．
+Hai điều kiện này dễ thỏa trong $O(n^2)$, nhưng CDQ làm đảo thứ tự, nên cần kiểm chứng.
 
-上述两个条件可能在 $O(n^2)$ 暴力的时候是相当容易满足的，但是使用 CDQ 分治后，转移顺序很显然已经乱掉了，所以有必要考察转移的正确性．
+Cây đệ quy CDQ như sau.
 
-CDQ 分治的递归树如下所示．
+![Cây đệ quy CDQ](./images/cdq1.png)
 
-![CDQ 分治的递归树](./images/cdq1.png)
+Nếu thực thi quy trình, lấy điểm $8$ làm ví dụ, giá trị DP của nó được cập nhật trong `solve(1,8)`, `solve(5,8)`, `solve(7,8)`, và các điểm dùng để cập nhật lần lượt thuộc $(1,4)$, $(5,6)$, $(7,7)$; lấy điểm $5$ làm ví dụ, DP của nó được xử lý trong `solve(1,4)` với miền cập nhật $(1,4)$. Quan sát kỹ sẽ thấy một điểm $i$ được cập nhật $\log$ lần, và các miền cập nhật chính là các đoạn con trên cây đoạn của $(1,i)$. Vì vậy mọi $j$ hợp lệ đều cập nhật được $i$, thỏa điều kiện 2.
 
-执行刚才的算法流程的话，以 $8$ 这个点为例，它的 DP 值是在 `solve(1,8)`、`solve(5,8)`、`solve(7,8)` 这 3 个函数中更新完成的，而三次用来更新它的点分别是 $(1,4)$、$(5,6)$、$(7,7)$ 这三个不相交的区间；又以 $5$ 这个点为例，它的 DP 值是在 `solve(1,4)` 函数中解决的，更新它的区间是 $(1,4)$．仔细观察就会发现，一个 $i$ 点的 DP 值被更新了 $\log$ 次，而且，更新它的区间刚好是 $(1,i)$ 在线段树上被拆分出来的 $\log$ 个区间．因此，我们的确保证了所有合法的 $j$ 都更新过点 $i$，满足第 2 个条件．
+Tiếp theo phân tích luồng thực thi:
 
-接着分析我们算法的执行流程：
-
-1.  第一个结束的函数是 `solve(1,1)`．此时我们发现 $dp_{1}$ 的值已经计算完毕了；
-2.  第一个执行转移过程的函数是 `solve(1,2)`．此时我们发现 $dp_{2}$ 的值已经被转移好了；
-3.  第二个结束的函数是 `solve(2,2)`．此时我们发现 $dp_{2}$ 的值已经计算完毕了；
-4.  接下来 `solve(1,2)` 结束，$(1,2)$ 这段区间的 $dp$ 值均被计算好；
-5.  下一个执行转移流程的函数是 `solve(1,4)`．这次转移结束之后我们发现 $dp_{3}$ 的值已经被转移好了；
-6.  接下来结束的函数是 `solve(3,3)`．我们会发现 $dp_{3}$ 的 dp 值被计算好了；
-7.  接下来执行的转移是 `solve(2,4)`．此时 $dp_{4}$ 在 `solve(1,4)` 中被 $(1,2)$ 转移了一次，这次又被 $(3,3)$ 转移了，因此 $dp_{4}$ 的值也被转移好了；
-8.  `solve(4,4)` 结束，$dp_{4}$ 的值计算完毕；
-9.  `solve(3,4)` 结束，$(3,4)$ 的值计算完毕；
-10. `solve(1,4)` 结束，$(1,4)$ 的值计算完毕．
+1.  Hàm kết thúc đầu tiên là `solve(1,1)`; $dp_{1}$ đã tính xong;
+2.  Hàm đầu tiên thực hiện chuyển trạng thái là `solve(1,2)`; $dp_{2}$ đã được cập nhật xong;
+3.  Hàm kết thúc thứ hai là `solve(2,2)`; $dp_{2}$ đã tính xong;
+4.  `solve(1,2)` kết thúc, đoạn $(1,2)$ đã tính xong;
+5.  Chuyển trạng thái tiếp theo là `solve(1,4)`; sau đó $dp_{3}$ đã được cập nhật;
+6.  `solve(3,3)` kết thúc; $dp_{3}$ đã tính xong;
+7.  Tiếp theo `solve(2,4)`; $dp_{4}$ được $(1,2)$ cập nhật trong `solve(1,4)` và lần này được $(3,3)$ cập nhật, nên $dp_{4}$ đã cập nhật xong;
+8.  `solve(4,4)` kết thúc, $dp_{4}$ đã tính xong;
+9.  `solve(3,4)` kết thúc, $(3,4)$ đã tính xong;
+10. `solve(1,4)` kết thúc, $(1,4)$ đã tính xong;
 11. ……
 
-通过模拟函数流程，我们发现一件事：每次 `solve(l,r)` 结束的时候，$(l,r)$ 区间的 DP 值会被全部计算好．由于我们每一次执行转移函数的时候，`solve(l,mid)` 已经结束，因此我们每一次执行的转移过程都是合法的，满足第 1 个条件．
+Mô phỏng quá trình cho thấy: mỗi khi `solve(l,r)` kết thúc, toàn bộ DP trên đoạn $(l,r)$ đã được tính xong. Vì mỗi lần thực hiện chuyển trạng thái, `solve(l,mid)` đã kết thúc, nên chuyển trạng thái luôn hợp lệ, thỏa điều kiện 1.
 
-在刚才的过程我们发现，如果将 CDQ 分治的递归树看成一颗线段树，那么 CDQ 分治就是这个线段树的 **中序遍历函数**，因此我们相当于按顺序处理了所有的 DP 值，只是转移顺序被拆开了而已，所以算法是正确的．
+Nhìn cây đệ quy CDQ như cây đoạn, CDQ tương đương **duyệt trung thứ tự** của cây, nên ta xử lý DP theo đúng thứ tự, chỉ là chuyển trạng thái bị tách nhỏ, do đó thuật toán đúng.
 
-### 例题
+### Ví dụ
 
 ???+ example "[SDOI2011 拦截导弹](https://www.luogu.com.cn/problem/P2487)"
-    某国为了防御敌国的导弹袭击，发展出一种导弹拦截系统．但是这种导弹拦截系统有一个缺陷：虽然它的第一发炮弹能够到达任意的高度、并且能够拦截任意速度的导弹，但是以后每一发炮弹都不能高于前一发的高度，其拦截的导弹的飞行速度也不能大于前一发．某天，雷达捕捉到敌国的导弹来袭．由于该系统还在试用阶段，所以只有一套系统，因此有可能不能拦截所有的导弹．
+    Một nước phát triển hệ thống phòng thủ tên lửa. Hệ thống có nhược điểm: phát đầu có thể đạt mọi độ cao và chặn mọi tốc độ, nhưng các phát sau không được cao hơn phát trước, và tốc độ tên lửa chặn được cũng không lớn hơn phát trước. Một ngày kẻ địch tấn công. Do đang thử nghiệm nên chỉ có một hệ thống, có thể không chặn hết được mọi tên lửa.
     
-    在不能拦截所有的导弹的情况下，我们当然要选择使国家损失最小、也就是拦截导弹的数量最多的方案．但是拦截导弹数量的最多的方案有可能有多个，如果有多个最优方案，那么我们会随机选取一个作为最终的拦截导弹行动蓝图．
+    Khi không thể chặn hết, ta chọn phương án giảm thiệt hại tối đa, tức là chặn được nhiều tên lửa nhất. Nếu có nhiều phương án tối ưu, ta chọn ngẫu nhiên một phương án làm kế hoạch. 
     
-    我方间谍已经获取了所有敌军导弹的高度和速度，你的任务是计算出在执行上述决策时，每枚导弹被拦截掉的概率．
+    Nhiệm vụ: tính xác suất mỗi tên lửa bị chặn trong quá trình ra quyết định trên.
 
-??? note "示例代码"
+??? note "Mã mẫu"
     ```cpp
     --8<-- "docs/misc/code/cdq-divide/cdq-divide_3.cpp"
     ```
 
-## 将动态问题转化为静态问题
+## Biến bài toán động thành bài toán tĩnh
 
-前两种情况使用 CDQ 分治的目的是将序列折半之后递归处理点对间的关系，来获得良好的复杂度．不过在本节中，折半的不是一般的序列，而是时间序列．
+Hai loại trước dùng CDQ để chia đôi dãy rồi xử lý quan hệ giữa các cặp điểm nhằm đạt độ phức tạp tốt. Ở đây, thứ bị chia đôi không phải dãy thông thường mà là dãy theo thời gian.
 
-它适用于一些「需要支持做 xxx 修改然后做 xxx 询问」的数据结构题．该类题目有两个特点：
+Áp dụng cho các bài “hỗ trợ sửa đổi xxx rồi truy vấn xxx”. Loại bài này có hai đặc điểm:
 
--   如果把询问 [离线](offline.md)，所有操作会按照时间自然地排成一个序列．
--   每一个修改均与之后的询问操作息息相关．而这样的「修改 - 询问」关系一共会有 $O(n^2)$ 对．
+-   Nếu [offline](offline.md) các truy vấn, mọi thao tác sẽ xếp theo thứ tự thời gian.
+-   Mỗi thao tác sửa đổi liên quan mật thiết đến các truy vấn sau đó. Quan hệ “sửa đổi - truy vấn” có $O(n^2)$ cặp.
 
-我们可以使用 CDQ 分治对于这个操作序列进行分治，处理修改和询问之间的关系．
+Ta có thể dùng CDQ phân trị trên dãy thao tác để xử lý quan hệ giữa sửa đổi và truy vấn.
 
-与处理点对关系的 CDQ 分治类似，假设正在分治的序列是 $(l,r)$, 我们先递归地处理 $(l,mid)$ 和 $(mid,r)$ 之间的修改 - 询问关系，再处理所有 $l \leq i \leq mid$，$mid+1 \leq j \leq r$ 的修改 - 询问关系，其中 $i$ 是一个修改，$j$ 是一个询问．
+Tương tự CDQ cặp điểm, giả sử đang chia dãy $(l,r)$, ta đệ quy xử lý quan hệ sửa đổi - truy vấn trong $(l,mid)$ và $(mid,r)$, rồi xử lý các cặp $l \leq i \leq mid$, $mid+1 \leq j \leq r$ với $i$ là sửa đổi, $j$ là truy vấn.
 
-注意，如果各个修改之间是 **独立** 的话，我们无需处理 $l \leq i \leq mid$ 和 $mid+1 \leq j \leq r$，以及 `solve(l,mid)` 和 `solve(mid+1,r)` 之间的时序关系（比如普通的加减法问题）．但是如果各个修改之间并不独立（比如说赋值操作），做完这个修改后，序列长什么样可能依赖于之前的序列．此时处理所有跨越 mid 的修改 - 询问关系的步骤就必须放在 `solve(l,mid)` 和 `solve(mid+1,r)` 之间．理由和 CDQ 分治优化 1D/1D 动态规划的原因是一样的：按照中序遍历序进行分治才能保证每一个修改都是严格按照时间顺序执行的．
+Lưu ý: nếu các sửa đổi **độc lập** thì không cần xử lý quan hệ thời gian giữa $l \leq i \leq mid$ và $mid+1 \leq j \leq r$, cũng như giữa `solve(l,mid)` và `solve(mid+1,r)` (ví dụ phép cộng trừ đơn giản). Nhưng nếu các sửa đổi không độc lập (ví dụ phép gán), thì bước xử lý cặp vượt qua $mid$ phải đặt giữa `solve(l,mid)` và `solve(mid+1,r)`. Lý do giống CDQ tối ưu DP 1D: phải theo duyệt trung thứ tự để đảm bảo mọi sửa đổi theo đúng thứ tự thời gian.
 
-### 例题
+### Ví dụ
 
-???+ example "矩形加矩形求和"
-    维护一个二维数组，支持在一个矩形区域内加一个数字，每次询问一个矩形区域的和．
+???+ example "Cộng hình chữ nhật và hỏi tổng hình chữ nhật"
+    Duy trì một mảng 2D, hỗ trợ cộng một giá trị vào một hình chữ nhật, và truy vấn tổng của một hình chữ nhật.
 
-??? note "解题思路"
-    对于这个问题的无修版本，即「给定一个二维数组，多次询问一个矩形区域的和」，有一个扫描线配合线段树的经典做法．具体的做法是先将每个矩形拆成插入和删除两个操作，接着将每个询问拆成二维前缀和相减的形式，最后离线．然而，原题目是带修改的，不能直接使用这种做法．
+??? note "Ý tưởng"
+    Với phiên bản không sửa đổi, tức “cho mảng 2D, nhiều truy vấn tổng hình chữ nhật”, có cách kinh điển dùng sweep line + segment tree: tách mỗi hình chữ nhật thành thao tác thêm/xóa, mỗi truy vấn thành hiệu hai tổng tiền tố 2D, rồi offline. Nhưng bài này có sửa đổi, không thể dùng trực tiếp.
     
-    尝试对其使用 CDQ 分治．我们将所有的询问和修改操作全部离线．这些操作形成了一个序列，并且有 $O(N^2)$ 对修改 - 询问的关系．依然使用 CDQ 分治的一般流程，将所有的关系分成三类，在这一层分治过程当中只处理跨越 $mid$ 的修改 - 询问关系，剩下的修改 - 询问关系通过递归的的方式来解决．
+    Thử dùng CDQ phân trị. Offline toàn bộ sửa đổi và truy vấn tạo thành một dãy, có $O(N^2)$ quan hệ sửa đổi - truy vấn. Vẫn theo quy trình CDQ, chia quan hệ thành ba loại, ở mỗi mức chỉ xử lý quan hệ vượt qua $mid$, còn lại đệ quy xử lý.
     
-    我们发现，所有的修改在询问之前就已完成．这时，原问题等价于「平面上有静态的一些矩形，不停地询问一个矩形区域的和」．
+    Ta nhận thấy mọi sửa đổi đều xảy ra trước truy vấn. Khi đó bài toán tương đương “trên mặt phẳng có một tập hình chữ nhật tĩnh, liên tục hỏi tổng trên một hình chữ nhật”.
     
-    使用一个扫描线在 $O(n\log n)$ 的时间内处理好所有跨越 $mid$ 的修改 - 询问关系，剩下的事情就是递归地分治左右两侧的修改 - 询问关系了．
+    Dùng sweep line xử lý toàn bộ quan hệ vượt qua $mid$ trong $O(n\log n)$, rồi đệ quy xử lý hai nửa còn lại.
     
-    在这样实现的 CDQ 分治中，同一个询问被处理了 $O(\log n)$ 次．不过没有关系，因为每次贡献这个询问的修改是互不相交的．全套流程的时间复杂度为 $T(n)=T(\lfloor \frac{n}{2} \rfloor)+T(\lceil \frac{n}{2} \rceil)+ O(n\log n)=O(n\log^2n)$．
+    Với CDQ này, mỗi truy vấn được xử lý $O(\log n)$ lần. Không sao vì mỗi lần các sửa đổi đóng góp là không giao nhau. Tổng thời gian $T(n)=T(\lfloor \frac{n}{2} \rfloor)+T(\lceil \frac{n}{2} \rceil)+ O(n\log n)=O(n\log^2n)$.
     
-    观察上述的算法流程，我们发现一开始我们只能解决静态的矩形加矩形求和问题，但只是简单地使用 CDQ 分治后，我们就可以离线地解决一个动态的矩形加矩形求和问题了．将动态问题转化为静态问题的精髓就在于 CDQ 分治每次仅仅处理跨越某一个点的修改和询问关系，这样的话我们就只需要考虑「所有询问都在修改之后」这个简单的问题了．也正是因为这一点，CDQ 分治被称为「动态问题转化为静态问题的工具」．
+    Nhìn lại, ban đầu ta chỉ giải được bài toán tĩnh, nhưng dùng CDQ phân trị ta có thể offline để giải bài toán động. Tinh túy của “biến động thành tĩnh” là mỗi lần CDQ chỉ xử lý quan hệ sửa đổi - truy vấn vượt qua một điểm, do đó ta chỉ cần xét trường hợp “mọi truy vấn đều sau mọi sửa đổi” vốn đơn giản hơn. Vì vậy CDQ được gọi là “công cụ biến bài toán động thành tĩnh”.
 
 ???+ example "[\[Ynoi2016\] 镜中的昆虫](https://www.luogu.com.cn/problem/P4690)"
-    维护一个长为 $n$ 的序列 $a_i$，有 $m$ 次操作．
+    Duy trì dãy $a_i$ dài $n$ với $m$ thao tác.
     
-    1.  将区间 $[l,r]$ 的值修改为 $x$；
-    2.  询问区间 $[l,r]$ 出现了多少种不同的数，也就是说同一个数出现多次只算一个．
+    1.  Gán giá trị đoạn $[l,r]$ thành $x$;
+    2.  Hỏi trong đoạn $[l,r]$ có bao nhiêu giá trị khác nhau, tức mỗi số xuất hiện nhiều lần chỉ tính một.
     
-    一句话题意：区间赋值区间数颜色．
+    Tóm tắt: gán đoạn và đếm số màu trong đoạn.
 
-??? note "解题思路"
-    维护一下每个位置左侧第一个同色点的位置，记为 $pre_{i}$，此时区间数颜色就被转化为了一个经典的二维数点问题．
+??? note "Ý tưởng"
+    Duy trì vị trí xuất hiện trước đó của mỗi vị trí là $pre_{i}$, khi đó bài toán đếm số màu trong đoạn trở thành bài toán đếm điểm 2D kinh điển.
     
-    通过将连续的一段颜色看成一个点的方式，可以证明 $pre$ 的变化量是 $O(n+m)$ 的，即单次操作仅仅引起 $O(1)$ 的 $pre$ 值变化，那么我们可以用 CDQ 分治来解决动态的单点加矩形求和问题．
+    Nếu coi một đoạn màu liên tiếp là một điểm, có thể chứng minh số lần thay đổi của $pre$ là $O(n+m)$, tức mỗi thao tác chỉ gây $O(1)$ thay đổi của $pre$, nên có thể dùng CDQ phân trị giải bài toán động “cộng điểm - hỏi tổng hình chữ nhật”.
     
-    $pre$ 数组的具体变化可以使用 `std::set` 来进行处理．这个用 set 维护连续的区间的技巧也被称为 [old driver tree](./odt.md)．
+    Sự thay đổi của mảng $pre$ có thể xử lý bằng `std::set`. Kỹ thuật dùng set để duy trì các đoạn liên tiếp được gọi là [old driver tree](./odt.md).
 
-??? note "示例代码"
+??? note "Mã mẫu"
     ```cpp
     --8<-- "docs/misc/code/cdq-divide/cdq-divide_4.cpp"
     ```
 
 ???+ example "[\[HNOI2010\] 城市建设](https://www.luogu.com.cn/problem/P3206)"
-    PS 国是一个拥有诸多城市的大国．国王 Louis 为城市的交通建设可谓绞尽脑汁．Louis 可以在某些城市之间修建道路，在不同的城市之间修建道路需要不同的花费．
+    Nước PS có nhiều thành phố. Vua Louis muốn xây ít đường nhất để nối thông toàn bộ thành phố. Nhưng chi phí xây đường thay đổi theo thời gian. Louis liên tục nhận được thông báo thay đổi chi phí một con đường. Ông muốn sau mỗi lần thay đổi biết ngay tổng chi phí nhỏ nhất để nối thông toàn bộ thành phố.
     
-    Louis 希望建造最少的道路使得国内所有的城市连通．但是由于某些因素，城市之间修建道路需要的花费会随着时间而改变．Louis 会不断得到某道路的修建代价改变的消息．他希望每得到一条消息后能立即知道使城市连通的最小花费总和．Louis 决定求助于你来完成这个任务．
-    
-    一句话题意：给定一张图支持动态的修改边权，要求在每次修改边权之后输出这张图的最小生成树的最小代价和．
+    Tóm tắt: đồ thị hỗ trợ sửa đổi trọng số cạnh động, cần in ra tổng trọng số cây khung nhỏ nhất sau mỗi lần sửa đổi.
 
-??? note "解题思路"
-    事实上，有一个线段树分治套 lct 的做法可以解决这个问题，但是这个实现方式的常数过大，可能需要精妙的卡常技巧才可以通过本题，因此不妨考虑 CDQ 分治来解决这个问题．
+??? note "Ý tưởng"
+    Có một cách dùng chia để trị trên segment tree kết hợp LCT giải bài, nhưng hằng số lớn, cần tối ưu tinh vi; nên cân nhắc CDQ phân trị.
     
-    和一般的 CDQ 分治解决的问题不同，此时使用 CDQ 分治的时候并没有修改和询问的关系来让我们进行分治，因为无法单独考虑「修改一个边对整张图的最小生成树有什么贡献」．传统的 CDQ 分治思路似乎不是很好使．
+    Không giống CDQ truyền thống, ở đây không có quan hệ sửa đổi - truy vấn đơn giản để phân trị, vì không thể tách “một cạnh thay đổi đóng góp thế nào cho MST” riêng rẽ. Tư duy CDQ truyền thống khó dùng.
     
-    通过刚才的例题可以发现，一般的 CDQ 分治和线段树有着特殊的联系：我们在 CDQ 分治的过程中其实隐式地建了一棵线段树出来（因为 CDQ 分治的递归树就是一颗线段树）．通常的 CDQ 是考虑线段树左右儿子之间的联系．而对于这道题，我们需要考虑的是父亲和孩子之间的关系；换句话来讲，我们在 `$solve(l,r)$` 这段区间的时候，如果可以想办法使图的规模变成和区间长度相关的一个变量的话，就可以解决这个问题了．
+    Quan sát các ví dụ trước: CDQ phân trị có liên hệ đặc biệt với cây đoạn, vì cây đệ quy CDQ chính là một cây đoạn. CDQ thường xét quan hệ giữa hai con của cây đoạn. Còn bài này cần xét quan hệ giữa cha và con; nói cách khác, khi xử lý đoạn `$solve(l,r)$`, nếu ta có thể làm cho quy mô đồ thị phụ thuộc vào độ dài đoạn, thì sẽ giải được.
     
-    那么具体来讲如何设计算法呢？
+    Cụ thể như sau:
     
-    假设我们正在构造 $(l,r)$ 这段区间的最小生成树边集，并且我们已知它父亲最小生成树的边集．我们将在 $(l,r)$ 这段区间中发生变化的边分别赋与 $+ \infty$ 和 $-\infty$ 的边权，并各跑一边 kruskal，求出在最小生成树里的那些边．
+    Giả sử đang xây dựng tập cạnh của MST cho đoạn $(l,r)$, và đã biết tập cạnh MST của nút cha. Ta gán trọng số $+\infty$ và $-\infty$ cho các cạnh bị thay đổi trong $(l,r)$, rồi chạy kruskal hai lần để lấy các cạnh thuộc MST.
     
-    对于一条边来讲：
+    Với một cạnh:
     
-    -   如果最小生成树里所有被修改的边权都被赋成了 $+\infty$，而它未出现在树中，则证明它不可能出现在 $(l,r)$ 这些询问的最小生成树当中．所以我们仅仅在 $(l,r)$ 的边集中加入最小生成树的树边．
-    -   如果最小生成树里所有被修改的边权都被赋成了 $-\infty$，而它出现在树中，则证明它一定会出现 $(l,r)$ 这段的区间的最小生成树当中．这样的话我们就可以使用并查集将这些边对应的点缩起来，并且将答案加上这些边的边权．
+    -   Nếu trong MST khi mọi cạnh bị đổi được gán $+\infty$ mà cạnh này không nằm trong cây, thì nó không thể xuất hiện trong MST của các truy vấn $(l,r)$. Vì vậy ta chỉ thêm các cạnh thuộc MST vào tập cạnh của $(l,r)$.
+    -   Nếu trong MST khi mọi cạnh bị đổi được gán $-\infty$ mà cạnh này xuất hiện trong cây, thì nó chắc chắn xuất hiện trong MST của đoạn $(l,r)$. Khi đó ta dùng DSU để co hai đỉnh, và cộng trọng số vào đáp án.
     
-    这样我们就将 $(l,r)$ 这段区间的边集构造出来了．用这些边求出来的最小生成树和直接求原图的最小生成树等价．
+    Như vậy ta xây được tập cạnh cho đoạn $(l,r)$. MST từ tập cạnh này tương đương MST của đồ thị ban đầu.
     
-    那么为什么我们的复杂度是对的呢？
+    Vì sao độ phức tạp đúng?
     
-    首先，修改过的边一定会加进我们的边集，这些边的数目是 $O(len)$ 级别的．
+    Trước hết, các cạnh bị sửa đổi chắc chắn được thêm vào tập cạnh, số lượng là $O(len)$.
     
-    接下来我们需要证明边集当中不会有过多的未被修改的边．我们只会加入所有边权取 $+\infty$ 最小生成树的树边，因此我们加入的边数目不会超过当前图的点数．
+    Tiếp theo, cần chứng minh không có quá nhiều cạnh chưa bị sửa đổi: ta chỉ thêm các cạnh thuộc MST khi gán $+\infty$, nên số cạnh thêm không vượt quá số đỉnh hiện tại.
     
-    现在我们只需证明每递归一层图的点数是 $O(len)$ 级别的，就可以说明图的边数是 $O(len)$ 级别的了．
+    Còn cần chứng minh rằng số đỉnh mỗi tầng đệ quy là $O(len)$ để suy ra số cạnh là $O(len)$. 
     
-    证明点数是 $O(len)$ 几倍就变得十分简单了．我们每次向下递归的时侯缩掉的边是在 $-\infty$ 生成树中出现的未被修改边，反过来想就是，我们割掉了出现在 $-\infty$ 生成树当中的所有的被修改边．显然我们最多割掉 $len$ 条边，整张图最多分裂成 $O(len)$ 个连通块，这样的话新图点数就是 $O(len)$ 级别的了．所以我们就证明了每次我们用来跑 kruskal 的图都是 $O(len)$ 级别的了，从而每一层的时间复杂度都是 $O(n\log n)$ 了．
+    Điều này đơn giản: mỗi lần xuống đệ quy, các cạnh bị co là những cạnh xuất hiện trong MST với trọng số $-\infty$ mà không bị sửa đổi; tương đương ta cắt bỏ mọi cạnh bị sửa đổi trong MST $-\infty$. Ta cắt nhiều nhất $len$ cạnh, nên đồ thị tách thành $O(len)$ thành phần liên thông, số đỉnh của đồ thị mới là $O(len)$. Do đó mỗi lần chạy kruskal đều trên đồ thị cỡ $O(len)$.
     
-    时间复杂度是 $T(n)=T(\lfloor \frac{n}{2} \rfloor)+T(\lceil \frac{n}{2} \rceil)+ O(n\log n)=O(n\log^2n)$．
+    Vì vậy mỗi tầng là $O(n\log n)$, tổng thời gian $T(n)=T(\lfloor \frac{n}{2} \rfloor)+T(\lceil \frac{n}{2} \rceil)+ O(n\log n)=O(n\log^2n)$.
     
-    代码实现上可能会有一些难度．需要注意的是并查集不能使用路径压缩，否则就不支持回退操作了．执行缩点操作的时候也没有必要真的执行，而是每一层的 kruskal 都在上一层的并查集里直接做就可以了．
+    Cài đặt có thể khó. Lưu ý DSU không dùng nén đường đi để hỗ trợ quay lui. Việc co đỉnh không cần làm thật, mỗi tầng kruskal có thể dùng ngay DSU của tầng trên.
 
-??? note "示例代码"
+??? note "Mã mẫu"
     ```cpp
     --8<-- "docs/misc/code/cdq-divide/cdq-divide_5.cpp"
     ```
 
-## 参考资料与注释
+## Tài liệu tham khảo và chú thích
 
-[^ref1]: [从《Cash》谈一类分治算法的应用](https://www.cs.princeton.edu/~danqic/papers/divide-and-conquer.pdf)
+[^ref1]: [Từ “Cash” bàn về một lớp thuật toán chia để trị](https://www.cs.princeton.edu/~danqic/papers/divide-and-conquer.pdf)

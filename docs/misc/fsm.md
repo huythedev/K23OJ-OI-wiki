@@ -352,20 +352,20 @@ $$
 ???+ example "例题"
     给定一个长度为 $n$ 的 $01?$ 串 $a$，初始变量 $x = 0$，我们按顺序遍历每一位 $a_i$ 并执行如下操作：
     
-    1.  若 $a_i = 0$，令 $x \gets x - \text{lowbit}(x)$；
-    2.  若 $a_i = 1$，令 $x \gets x + \text{lowbit}(2^k - 1 - x)$；
-    3.  若 $a_i = ?$，可任选 $0$ 或 $1$，对应上述两种操作之一．
+    1.  Nếu $a_i = 0$ thì $x \gets x - \text{lowbit}(x)$;
+    2.  Nếu $a_i = 1$ thì $x \gets x + \text{lowbit}(2^k - 1 - x)$;
+    3.  Nếu $a_i = ?$ thì chọn $0$ hoặc $1$.
     
-    最终若 $x \in [0, r]$，则称该操作序列是好的．
+    Nếu kết thúc với $x \in [0, r]$ thì chuỗi thao tác là “tốt”.
     
-    现在需要对每个 $j = 1 \ldots n$，求在强制 $a_j = 0$ 的前提下，有多少「好的」完整序列．特别地，$a_j = 1$ 时，答案为 $0$．
+    Với mỗi $j = 1 \ldots n$, tính số chuỗi “tốt” khi ép $a_j=0$. Đặc biệt nếu $a_j=1$ thì đáp án $0$.
     
-    $1\le n\le 10^5,~1\le k\le 20,~0\le r<2^k$．输出对 $998244353$ 取模．
+    $1\le n\le 10^5,~1\le k\le 20,~0\le r<2^k$. In modulo $998244353$.
 
-??? note "题解"
-    考虑朴素 DP．设 $f_{i,j}$ 表示从 $x=0$ 开始，经过 $[1,i]$ 的操作，当前数为 $j$ 的方案数．设 $g_{i,j}$ 表示从 $x=j$ 开始，经过 $[i,n]$ 的操作，最终 $x \in [0, r]$ 的方案数．强制 $a_i=0$ 的答案，就是 $\sum_j f_{i-1,j}g_{i+1,j - \text{lowbit}(j)}$．复杂度是 $O(n2^k)$．
+??? note "Lời giải"
+    DP ngây thơ: $f_{i,j}$ là số cách từ $x=0$ qua $[1,i]$ đến $j$, $g_{i,j}$ là số cách từ $x=j$ qua $[i,n]$ kết thúc trong $[0,r]$. Khi ép $a_i=0$, đáp án là $\sum_j f_{i-1,j}g_{i+1,j - \text{lowbit}(j)}$. Độ phức tạp $O(n2^k)$.
     
-    考虑直接将 $j$ 的转移建成 DFA，然后跑 DFA 最小化，再 DP 就可以了．
+    Xây DFA cho chuyển $j$, tối thiểu hóa DFA, rồi DP.
 
 ??? note "参考代码"
     ```cpp
@@ -373,55 +373,55 @@ $$
     ```
 
 ???+ example "[Minimal Subset Difference](https://codeforces.com/contest/956/problem/F)"
-    定义 $f(n)$ 表示将十进制数 $n$ 所有数码之间填入加号或者减号，最终得到的值的绝对值最小值．
+    Định nghĩa $f(n)$ là giá trị nhỏ nhất của $\left|\cdot\right|$ khi chèn dấu $+$ hoặc $-$ giữa các chữ số thập phân của $n$.
     
-    $T$ 组询问．每组询问给定 $l, r, k$，求满足 $l \le m \le r$ 且 $f(m) \le k$ 的 $m$ 的个数．
+    Có $T$ truy vấn. Mỗi truy vấn cho $l, r, k$, hỏi số lượng $m$ thỏa $l \le m \le r$ và $f(m) \le k$.
     
-    $1 \le T \le 5\times 10^4$，$1 \le l \le r \le 10^{18}$，$0 \le k \le 9$．
+    $1 \le T \le 5\times 10^4$, $1 \le l \le r \le 10^{18}$, $0 \le k \le 9$.
 
-??? note "题解"
-    先给出一种贪心地计算 $f(n)$ 的方法．从高位向低位考虑一个数，最开始，设得到的数的和是 $0$．计算到某一数位，如果当前合成出的数如果是负数就加上当前数位，如果是正数就减去当前数位．这么处理，贪心计算出的 $f(n)$ 的绝对值一定小于等于 $9$．所以真实的 $f(n)$ 的绝对值一定小于等于 $9$．
+??? note "Lời giải"
+    Trình bày một cách tham lam để tính $f(n)$: duyệt từ chữ số cao xuống thấp, tổng ban đầu là $0$; ở mỗi chữ số, nếu tổng hiện tại âm thì cộng chữ số, nếu dương thì trừ chữ số. Khi đó $|f(n)|\le 9$, nên giá trị thật cũng $\le 9$.
     
-    我们进一步思考，要合成出最终的答案，中间过程中能够合成出来的数最大能是多少．因为答案一定是小于等于 $9$ 的，而且数位只有 $18$ 位，每次最多只能加减 $9$．过程中能够合成出来的数肯定是小于等于 $90$ 的，否则最后减不回来．实际上，这个上限还能够更低[^upper-bound]．
+    Hỏi trong quá trình hợp, giá trị trung gian lớn nhất là bao nhiêu. Vì kết quả $\le 9$ và chỉ có 18 chữ số, mỗi bước cộng/trừ tối đa 9, nên giá trị trung gian không vượt 90 (thực tế còn thấp hơn)[^upper-bound].
     
-    考虑朴素 DP 套 DP．首先，思考内层 DP 怎么判定一个数的答案：定义 $g_{i,c}$ 表示这个数只根据前 $i$ 位，能否合成出 $c$．根据前文，$c$ 只用保留小于等于 $90$ 的数．如果当前这一位填的是 $v$，那么，有转移：
+    Làm DP lồng DP. DP trong: $g_{i,c}$ là khả năng tạo $c$ chỉ từ $i$ chữ số đầu; chỉ cần giữ $c\le 90$. Nếu chữ số là $v$ thì:
     
     $$
     g_{i+1,c+v}\gets g_{i,c},~
     g_{i+1,|c-v|}\gets g_{i,c}.
     $$
     
-    外层 DP 考虑数位 DP．将询问差分．设状态为 $f_{\textit{len},\textit{lim},\textit{sta}}$，它的下标分别表示已经考虑到第 $\textit{len}$ 位，是否有上界限制，当前自动机的状态位于 $\textit{sta}$ 等．
+    DP ngoài là digit DP, trạng thái $f_{\textit{len},\textit{lim},\textit{sta}}$ với số chữ số đã xét, có ràng buộc trên hay không, và trạng thái tự động cơ.
     
-    与普通的 DFA 不同，我们需要对自动机的每个状态记录对应的答案．跑一次暴力搜索，会发现内层 DP 的状态数只有 $19564$．然后接下来直接跑 DFA 最小化，可以将状态数优化到 $715$．
+    Không như DFA thường, mỗi trạng thái cần lưu đáp án. Chạy brute force thấy số trạng thái trong DP trong là $19564$, tối thiểu hóa DFA giảm còn $715$.
     
-    此时我们将 $\textit{lim}=0$ 的数位 DP 答案都预处理出来，在多测时就只需要跑 $\textit{lim}=1$ 的情况，可以很快地求出答案．
+    Tiền xử lý các trạng thái $\textit{lim}=0$, khi nhiều truy vấn chỉ cần xử lý $\textit{lim}=1$ nên rất nhanh.
     
-    时间复杂度 $O(|S||\Sigma|\log |S|+(|Q||\Sigma|+T)|\Sigma|\log_{10} V)$（$|S|=19564$，$|Q|=715$）．
+    Độ phức tạp $O(|S||\Sigma|\log |S|+(|Q||\Sigma|+T)|\Sigma|\log_{10} V)$ ($|S|=19564$, $|Q|=715$).
 
 ??? note "参考代码"
     ```cpp
     --8<-- "docs/misc/code/fsm/fsm_3.cpp:main"
     ```
 
-### 习题
+### Bài tập
 
 -   [Language Recognition](http://poj.org/problem?id=3576)
 -   [Equanimous](https://qoj.ac/problem/7083)
 
-## 自动机常见应用
+## Ứng dụng thường gặp của tự động cơ
 
-本节列举了一些算法竞赛中常见的自动机的应用[^is-dfa]．
+Phần này liệt kê các ứng dụng thường gặp trong thi đấu[^is-dfa].
 
-### 字典树
+### Trie
 
-[字典树](../string/trie.md) 是大部分 OIer 接触到的第一个自动机，接受且仅接受指定的字符串集合中的元素．转移函数就是 Trie 上的边，接受状态是将每个字符串插入到 Trie 时到达的那个状态．
+[Trie](../string/trie.md) là tự động cơ đầu tiên nhiều OIer gặp; nó nhận đúng các chuỗi đã chèn. Hàm chuyển là cạnh Trie, trạng thái chấp nhận là trạng thái kết thúc khi chèn chuỗi.
 
-### KMP 自动机
+### KMP tự động cơ
 
-[KMP 算法](../string/kmp.md) 可以视作自动机，基于字符串 $s$ 的 KMP 自动机接受且仅接受以 $s$ 为后缀的字符串，其接受状态为 $|s|$．
+[KMP](../string/kmp.md) có thể xem là tự động cơ. KMP tự động cơ của chuỗi $s$ nhận đúng các chuỗi có hậu tố $s$, trạng thái chấp nhận là $|s|$.
 
-转移函数：
+Hàm chuyển:
 
 $$
 \delta(i, c)=
@@ -432,43 +432,41 @@ i+1&s[i+1]=c\\
 \end{cases}
 $$
 
-### AC 自动机
+### AC tự động cơ
 
-[AC 自动机](../string/ac-automaton.md) 接受且仅接受以指定的字符串集合中的某个元素为后缀的字符串．也就是 Trie + KMP．
+[AC tự động cơ](../string/ac-automaton.md) nhận đúng các chuỗi có hậu tố là một phần tử trong tập chuỗi đã cho. Tức là Trie + KMP.
 
-### 后缀自动机
+### Hậu tố tự động cơ
 
-[后缀自动机](../string/sam.md) 接受且仅接受指定字符串的后缀．
+[SAM](../string/sam.md) nhận đúng mọi hậu tố của một chuỗi.
 
-### 广义后缀自动机
+### Hậu tố tự động cơ mở rộng
 
-[广义后缀自动机](../string/general-sam.md) 接受且仅接受指定的字符串集合中的某个元素的后缀．也就是 Trie + SAM．
+[SAM mở rộng](../string/general-sam.md) nhận đúng mọi hậu tố của một phần tử trong tập chuỗi. Quan hệ giữa SAM mở rộng và SAM giống quan hệ AC và KMP.
 
-广义 SAM 与 SAM 的关系就是 AC 自动机与 KMP 自动机的关系．
+### Tự động cơ palindrome
 
-### 回文自动机
+[PAM](../string/pam.md) khá đặc biệt, khó định nghĩa như tự động cơ.
 
-[回文自动机](../string/pam.md) 比较特殊，它不能非常方便地定义为自动机．
+Nếu cần định nghĩa, nó nhận đúng **tâm và nửa phải** của mọi palindrome con của một chuỗi.
 
-如果需要定义的话，它接受且仅接受某个字符串的所有回文子串的 **中心及右半部分**．
+“tâm và nửa phải” ở palindrome lẻ là nghĩa đen; ở palindrome chẵn là thêm một ký tự đặc biệt rồi lấy nửa phải. Định nghĩa này giúp PAM thật sự là tự động cơ chứ không chỉ là hai cây.
 
-「中心及右边部分」在奇回文串中就是字面意思，在偶回文串中定义为一个特殊字符加上右边部分．这个定义看起来很奇怪，但它能让 PAM 真正成为一个自动机，而不仅是两棵树．
+### Tự động cơ dãy con
 
-### 序列自动机
+[Tự động cơ dãy con](../string/seq-automaton.md) nhận đúng các dãy con của chuỗi.
 
-[序列自动机](../string/seq-automaton.md) 接受且仅接受指定字符串的子序列．
+### DP lồng DP
 
-### DP 套 DP
+[DP lồng DP](../dp/dp-of-dp.md) là một ứng dụng: dùng DP trong để xây tự động cơ, rồi DP ngoài trên tự động cơ để đếm/tối ưu.
 
-[DP 套 DP](../dp/dp-of-dp.md) 是自动机的一个应用，可以看作是先通过内层 DP 建出自动机，再在外层通过自动机上的 DP 实现计数、最优化任务的技巧．
+## Liên kết hậu tố
 
-## 后缀链接
+Vì tự động cơ gắn chặt với khớp chuỗi, một ý tưởng cơ bản là “nếu chuỗi này không được thì thử hậu tố của nó”. Do đó nhiều tự động cơ (KMP, AC, SAM, PAM) có khái niệm liên kết hậu tố.
 
-由于自动机和匹配有着密不可分的关系，而匹配的一个基本思想是「这个串不行，就试试它的后缀可不可以」，所以在很多自动机（KMP、AC 自动机、SAM、PAM）中，都有后缀链接的概念．
+Một trạng thái tương ứng nhiều chuỗi. Liên kết hậu tố trỏ tới trạng thái tương ứng với hậu tố đúng dài nhất chung của các chuỗi đó. Liên kết hậu tố tạo thành một cây; giữa các tự động cơ khác nhau, cây liên kết hậu tố có nhiều tính chất tương tự.
 
-一个状态会对应若干字符串．它的后缀链接，就指向自动机上该状态对应的字符串的公共真后缀中，最长的那个对应的状态．一般地，后缀链接会形成一棵树，并且不同自动机的后缀链接树有着一些相同的性质，学习时可以加以注意．
-
-## 拓展阅读
+## Đọc thêm
 
 -   [计算复杂性（1）Warming Up: 自动机模型](https://lingeros-tot.github.io/2019/03/05/Warming-Up-自动机模型/)
 -   [国家集训队 2021 论文 徐哲安 浅谈有限状态自动机及其应用](https://github.com/OIerTFX/IOI/blob/master/%E5%9B%BD%E5%AE%B6%E9%9B%86%E8%AE%AD%E9%98%9F2021%E8%AE%BA%E6%96%87%E9%9B%86/pdf-files/%E5%BE%90%E5%93%B2%E5%AE%89%20%E6%B5%85%E8%B0%88%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E8%87%AA%E5%8A%A8%E6%9C%BA%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8.pdf)
@@ -476,16 +474,16 @@ $$
 -   Knuutila, Timo. "Re-describing an algorithm by Hopcroft." Theoretical Computer Science 250, no. 1-2 (2001): 333-363.
 -   Hopcroft, John E., Rajeev Motwani, and Jeffrey D. Ullman. "Introduction to automata theory, languages, and computation." Acm Sigact News 32, no. 1 (2001): 60-65.
 
-[^nfa-and-nfaepsilon]: 这个定义中我们允许状态之间通过空字符（$\varepsilon$）转移，因此更准确地说，这是一个带 $\varepsilon$ 转移的非确定有限自动机（NFA-$\varepsilon$）．有些教材中将它直接称为 NFA，为简洁起见，本文采用这一用法．在理论上 NFA 与 NFA-$\varepsilon$ 是有所区分的，但是实际上它们的计算能力是一致的．
+[^nfa-and-nfaepsilon]: Trong định nghĩa này cho phép chuyển trạng thái bằng ký tự rỗng ($\varepsilon$), nên chính xác là NFA có $\varepsilon$-chuyển (NFA-$\varepsilon$). Một số tài liệu gọi thẳng là NFA để đơn giản. Trên lý thuyết NFA và NFA-$\varepsilon$ khác nhau, nhưng năng lực tính toán là như nhau.
 
-[^state-elimination-method]: 详见 [国家集训队 2021 论文 徐哲安 浅谈有限状态自动机及其应用](https://github.com/OIerTFX/IOI/blob/master/%E5%9B%BD%E5%AE%B6%E9%9B%86%E8%AE%AD%E9%98%9F2021%E8%AE%BA%E6%96%87%E9%9B%86/pdf-files/%E5%BE%90%E5%93%B2%E5%AE%89%20%E6%B5%85%E8%B0%88%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E8%87%AA%E5%8A%A8%E6%9C%BA%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8.pdf) 中 3.2 节．
+[^state-elimination-method]: Xem [国家集训队 2021 论文 徐哲安 浅谈有限状态自动机及其应用](https://github.com/OIerTFX/IOI/blob/master/%E5%9B%BD%E5%AE%B6%E9%9B%86%E8%AE%AD%E9%98%9F2021%E8%AE%BA%E6%96%87%E9%9B%86/pdf-files/%E5%BE%90%E5%93%B2%E5%AE%89%20%E6%B5%85%E8%B0%88%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E8%87%AA%E5%8A%A8%E6%9C%BA%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8.pdf) mục 3.2.
 
-[^prove-regular-language]: 详见 [官方题解](https://qoj.ac/download.php?type=attachments&id=2079&r=1)．
+[^prove-regular-language]: Xem [lời giải chính thức](https://qoj.ac/download.php?type=attachments&id=2079&r=1).
 
-[^smaller-evidence]: 此处的「相当于」指的是，尽管实际上 $P_x$ 可能并没有实际检验过，但是，即使对当前划分进行 $P_x$ 的检验，也不会有任何改进．简单理解，就是在集合分裂得到的证据集合的树上，它的某个祖先和路径上的所有旁支都已经得到了检验，因此，可以归纳地说明，就相当于它也已经检验过了．
+[^smaller-evidence]: “Tương đương” ở đây nghĩa là: dù $P_x$ có thể chưa được kiểm tra trực tiếp, nhưng nếu kiểm tra cũng không làm phân hoạch tốt hơn. Trực quan, trong cây chứng cứ sau tách, một tổ tiên và các nhánh bên đã được kiểm tra nên có thể suy ra $P_x$ cũng đã “được kiểm tra”.
 
-[^detail]: 算法实现中有一处细节：对于一个证据 $A$，有可能检验完一部分字符后，这个证据集合就已经分裂为 $B$ 和 $C$ 了．不妨设 $|B|\ge |C|$．由于参考实现中，较小的集合 $C$ 插入到了证据队列的末尾，而较大的证据集合 $B$ 替换到了集合 $A$ 原来的位置．算法继续运行时，实际只是利用证据 $B$ 检验剩余的字符．这样做是正确的．这是因为对于已经检验完的字符，至少验证了 $A$ 和 $C$ 两个集合；而对于尚未检验的字符，至少验证了 $B$ 和 $C$ 两个集合．
+[^detail]: Có một chi tiết: với chứng cứ $A$, sau khi kiểm tra một phần ký tự, $A$ có thể tách thành $B$ và $C$. Giả sử $|B|\ge |C|$. Trong mã tham khảo, tập nhỏ $C$ đưa vào cuối hàng đợi chứng cứ, còn tập lớn $B$ thay thế vị trí của $A$. Khi chạy tiếp, chỉ dùng $B$ kiểm tra các ký tự còn lại. Điều này đúng vì các ký tự đã kiểm tra đã xác thực $A$ và $C$, còn các ký tự chưa kiểm tra sẽ xác thực $B$ và $C$.
 
-[^upper-bound]: 详见 [国家集训队 2021 论文 徐哲安 浅谈有限状态自动机及其应用](https://github.com/OIerTFX/IOI/blob/master/%E5%9B%BD%E5%AE%B6%E9%9B%86%E8%AE%AD%E9%98%9F2021%E8%AE%BA%E6%96%87%E9%9B%86/pdf-files/%E5%BE%90%E5%93%B2%E5%AE%89%20%E6%B5%85%E8%B0%88%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E8%87%AA%E5%8A%A8%E6%9C%BA%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8.pdf) 中的例题 5.2．
+[^upper-bound]: Xem [国家集训队 2021 论文 徐哲安 浅谈有限状态自动机及其应用](https://github.com/OIerTFX/IOI/blob/master/%E5%9B%BD%E5%AE%B6%E9%9B%86%E8%AE%AD%E9%98%9F2021%E8%AE%BA%E6%96%87%E9%9B%86/pdf-files/%E5%BE%90%E5%93%B2%E5%AE%89%20%E6%B5%85%E8%B0%88%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E8%87%AA%E5%8A%A8%E6%9C%BA%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8.pdf) ví dụ 5.2.
 
-[^is-dfa]: 本文对自动机的定义要求它是完备的，即任一状态在任一字符下都必须有转移．对这些字符串相关的自动机的描述中，通常会忽略失配状态．Trie、SAM 等都是这样的例子．为了与本文提供的定义相适应，需要在这些自动机的描述中显式地添加失配状态．
+[^is-dfa]: Bài viết yêu cầu tự động cơ là “đầy đủ”, tức mỗi trạng thái với mỗi ký tự đều có chuyển. Trong mô tả các tự động cơ chuỗi, thường bỏ qua trạng thái thất bại. Trie, SAM là ví dụ. Để phù hợp định nghĩa, cần thêm trạng thái thất bại.

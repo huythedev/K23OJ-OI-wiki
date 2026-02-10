@@ -1,43 +1,43 @@
-本页面将简要介绍字节顺序的概念和分类．
+Trang này sẽ giới thiệu ngắn gọn khái niệm và phân loại thứ tự byte.
 
-## 简介
+## Giới thiệu
 
-字节顺序是跨越多字节的程序对象的存储规则，表示一个对象的字节的排列方法．
+Thứ tự byte là quy tắc lưu trữ của các đối tượng chương trình có nhiều byte, biểu thị cách sắp xếp các byte của một đối tượng.
 
-## 分类
+## Phân loại
 
-字节顺序有两种，分为小端序（little endian）和大端序（big endian）．
+Thứ tự byte có hai loại: little-endian (tiểu đầu) và big-endian (đại đầu).
 
-为方便介绍，接下来以一个位于 `0x100` 处，类型为 `int`，十六进制值为 `0x01234567` 的变量为例．其中 `0x01` 是最高位有效字节，`0x67` 是最低位有效字节．
+Để tiện giới thiệu, xét một biến nằm tại `0x100`, kiểu `int`, giá trị thập lục phân là `0x01234567`. Trong đó `0x01` là byte có trọng số lớn nhất, `0x67` là byte có trọng số nhỏ nhất.
 
-### 小端序
+### Little-endian
 
-小端序是指机器选择在内存中按照从 **最低** 有效字节到 **最高** 有效字节的顺序存储对象．
+Little-endian là cách máy lưu trữ đối tượng trong bộ nhớ theo thứ tự từ byte **có trọng số nhỏ nhất** đến byte **có trọng số lớn nhất**.
 
-上文提到的变量表示如下：
+Biến ở trên được biểu diễn như sau:
 
 | .... | 0x100 | 0x101 | 0x102 | 0x103 | .... |
 | ---- | ----- | ----- | ----- | ----- | ---- |
 | .... | 67    | 45    | 23    | 01    | .... |
 
-### 大端序
+### Big-endian
 
-大端序是指机器选择在内存中按照从 **最高** 有效字节到 **最低** 有效字节的顺序存储对象．
+Big-endian là cách máy lưu trữ đối tượng trong bộ nhớ theo thứ tự từ byte **có trọng số lớn nhất** đến byte **có trọng số nhỏ nhất**.
 
-上文提到的变量表示如下：
+Biến ở trên được biểu diễn như sau:
 
 | .... | 0x100 | 0x101 | 0x102 | 0x103 | .... |
 | ---- | ----- | ----- | ----- | ----- | ---- |
 | .... | 01    | 23    | 45    | 67    | .... |
 
-### 两种顺序的区别
+### Sự khác nhau giữa hai thứ tự
 
-事实上，这两种字节顺序没有孰优孰劣之分．这两种顺序的名字「小端」和「大端」，正是出自《格列佛游记》一书．书中，小人国里两个派别交战不休的原因是无法就从小端还是大端剥鸡蛋达成一致．就和剥鸡蛋的争论一样，选择何种字节顺序的争论是非技术性的．
+Thực tế, hai thứ tự byte này không có ưu nhược điểm tuyệt đối. Tên gọi “little-endian” và “big-endian” xuất phát từ cuốn *Gulliver’s Travels*. Trong truyện, hai phe ở xứ người tí hon giao chiến không ngừng vì không thể thống nhất việc đập trứng từ đầu nhỏ hay đầu to. Tương tự như vậy, tranh luận về việc chọn thứ tự byte nào là vấn đề phi kỹ thuật.
 
-当然，字节顺序的不一致会导致二进制数据在不同类型的机器之间进行传输时被反序．为了避免这件事情，网络应用程序建立了一套标准，保证发送过程中是使用约定好的网络标准，而不是不同机器的内部表示．
+Tuy nhiên, sự không nhất quán về thứ tự byte sẽ khiến dữ liệu nhị phân bị đảo thứ tự khi truyền giữa các loại máy khác nhau. Để tránh điều này, các ứng dụng mạng thiết lập một tiêu chuẩn, đảm bảo khi truyền sẽ dùng chuẩn mạng đã thỏa thuận thay vì biểu diễn nội bộ của từng máy.
 
-## 顺序选择惯例
+## Quy ước lựa chọn thứ tự
 
--   小端序：x86, ARM processors running Android, iOS, and Windows
+-   Little-endian: x86, các bộ xử lý ARM chạy Android, iOS và Windows
 
--   大端序：Sun, PPC Mac, Internet
+-   Big-endian: Sun, PPC Mac, Internet
